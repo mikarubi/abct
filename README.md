@@ -1,2 +1,2 @@
 # abct
-Analytical Brain Connectivity Toolbox
+analytical brain connectivity toolbox
