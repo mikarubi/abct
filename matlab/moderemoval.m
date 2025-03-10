@@ -1,10 +1,7 @@
 function X = moderemoval(X, method)
 % MODEREMOVAL Mode removal from network or timeseries
 %
-%   X1 = moderemoval(X, "degree")
-%   X1 = moderemoval(X, "global")
-%   X1 = moderemoval(X, "mode")
-%   X1 = moderemoval(X, "soft")
+%   X1 = moderemoval(X, method)
 %
 %   Inputs:
 %       X: Input network or timeseries matrix.
