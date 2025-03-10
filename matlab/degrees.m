@@ -8,7 +8,7 @@ function S = degrees(W, type)
 %
 %       type: Degree type
 %           "first": (First) degree (default).
-%           "second": (Second) degree.
+%           "second": Second degree.
 %           "residual": Degree after first-mode removal.
 %
 %   Outputs:
