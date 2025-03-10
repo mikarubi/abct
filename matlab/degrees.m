@@ -1,15 +1,14 @@
 function S = degrees(W, type)
 % DEGREES Degree of network matrix
 %
-%   S = degrees(W)
 %   S = degrees(W, type)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
 %
-%       type: Degree order
-%           "first": First degree (default).
-%           "second": Second degree.
+%       type: Degree type
+%           "first": (First) degree (default).
+%           "second": (Second) degree.
 %           "residual": Degree after first-mode removal.
 %
 %   Outputs:

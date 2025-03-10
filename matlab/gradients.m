@@ -1,7 +1,7 @@
 function V = gradients(W, k, p, args)
 % GRADIENTS Low-dimensional representation of common-neighbor matrices
 %
-%   V = gradients(W, k, p)
+%   V = gradients(W, k)
 %   V = gradients(W, k, p, Name=Value)
 %
 %   Inputs:
