@@ -47,6 +47,11 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       Q: Value of normalized modularity, k-means, or spectral objective.
 %
 %   Methodological notes:
+%       Loyvain unifies the Lloyd algorithm for k-means clustering and the
+%       Louvain algorithm for modularity maximization, and thus shows
+%       equivalences between modularity maximization, k-means clustering,
+%       and spectral clustering.
+%
 %       Normalized degree-corrected modularity is approximately equivalent
 %       to k-means objective after global signal regression (removal of the
 %       mean signal from the data). When the input is a data matrix rather
