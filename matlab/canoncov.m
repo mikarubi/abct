@@ -1,12 +1,16 @@
 function [A, B, U, V] = canoncov(X, Y, k, args)
 % CANONCOV Canonical covariance analysis (aka Partial least squares)
 %
-%   [A, B, U, V] = canoncov(X, Y, k)
+%   [A, B] = canoncov(X, Y, k)
 %   [A, B, U, V] = canoncov(X, Y, k, Name=Value)
 %
 %   Inputs:
 %       X: Input matrix of size n x q.
+%          n is the number of observations and q is the number of variables.
+%
 %       Y: Input matrix of size n x r.
+%          n is the number of observations and r is the number of variables.
+%
 %       k: Number of canonical components.
 %
 %       Name=[Value] Arguments (Optional):

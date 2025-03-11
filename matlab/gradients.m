@@ -20,7 +20,7 @@ function V = gradients(W, k, type, p, varargin)
 %           Loyvain algorithm options (See LOYVAIN for details).
 %
 %   Outputs:
-%       V: Gradient matrix of size n x k.
+%       V: Gradient matrix (size n x k).
 %
 %   Methodological notes:
 %       Weighted gradients are the eigenvectors of common-neighbors

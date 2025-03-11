@@ -12,7 +12,7 @@ function S = degrees(W, type)
 %           "residual": Degree after first-mode removal.
 %
 %   Outputs:
-%       S: Degree vector of size n.
+%       S: Degree vector (size n).
 %
 %   Methodological notes:
 %       The first-degree degree is the sum of connection weights. The
