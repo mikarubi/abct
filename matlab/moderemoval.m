@@ -1,5 +1,5 @@
 function X = moderemoval(X, method)
-% MODEREMOVAL Mode removal from network or timeseries
+% MODEREMOVAL Mode removal from network or timeseries data
 %
 %   X1 = moderemoval(X, method)
 %
@@ -14,6 +14,15 @@ function X = moderemoval(X, method)
 %
 %   Outputs:
 %       X1: Network or timeseries matrix with mode removed.
+%
+%   Methodological notes:
+%       Degree correction, global signal regression, and first-mode removal
+%       all produce approximatley equivalent results. The "soft" mode removal
+%       produces sparse network representations through the despiking of an
+%       initial peak in the eigenspectrum with cubic interpolation.
+%
+%   See also:
+%       DEGREES, GRADIENTS.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

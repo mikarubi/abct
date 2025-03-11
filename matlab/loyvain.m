@@ -44,12 +44,15 @@ function [M, Q] = loyvain(X, k, args)
 %
 %       Q: Value of K-means or spectral objective (normalized cut).
 %
-%   Note:
+%   Methodological notes:
 %       Normalized degree-corrected modularity is approximately equivalent
 %       to k-means objective after global signal regression (removal of the
 %       mean signal from the data). When the input is a data matrix rather
 %       than a similarity matrix, degree correction is replaced with global
 %       signal regression, which may give slightly different results.
+%
+%   See also:
+%       GRADIENTS, MODEREMOVAL.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
