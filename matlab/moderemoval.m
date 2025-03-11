@@ -51,7 +51,7 @@ switch method
         
     case "soft"
         %% Soft removal of primary modes
-        assert(any(X - X' < eps("single"), "all"), "Input matrix must be symmetric.")
+        assert(all(X - X' < eps("single"), "all"), "Input matrix must be symmetric.")
         [V, D] = eig(X, "vector");
         [~, ix] = sort(D, "descend");
         V = V(:, ix);
