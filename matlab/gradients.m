@@ -27,7 +27,7 @@ arguments
     args.Type (1, 1) string {mustBeMember(args.Type, ["weighted", "binary"])} = "weighted"
 end
 
-B = common_neighbors(W, p);
+B = coneighbors(W, p);
 
 switch args.Type
     case "weighted"
