@@ -13,7 +13,8 @@ function V = gradients(W, k, type, p, varargin)
 %           "weighted": Weighted gradient (default).
 %           "binary": Binary gradient.
 %
-%       p: Fraction to define neighbors (see CONEIGHBORS for details).
+%       p: Fraction to define neighbors as the top-p connections.
+%           Set p = [] for default value (see CONEIGHBORS for details).
 %
 %       Name=[Value] Arguments.
 %           Loyvain algorithm options (See LOYVAIN for details).
@@ -22,10 +23,11 @@ function V = gradients(W, k, type, p, varargin)
 %       V: Gradient matrix of size n x k.
 %
 %   Methodological notes:
-%       Weighted gradients are the eigenvectors of common-neighbors matrices.
-%       Binary gradients are the modules of common-neighbors matrices, estimated
-%       using Loyvain. These matrices are approximately equivalent to the output
-%       of standard diffusion-map embedding of neuroimaging co-activity data.
+%       Weighted gradients are the eigenvectors of common-neighbors
+%       matrices. These gradients are approximately equivalent to the
+%       output of standard diffusion-map embedding of neuroimaging
+%       co-activity data. Binary gradients are the modules of
+%       common-neighbors matrices, estimated using the Loyvain algorithm.
 %
 %   See also:
 %       CONEIGHBORS, LOYVAIN.
@@ -34,20 +36,28 @@ arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
-    p (1, 1) double {mustBeInRange(p, 0, 1)}
+    p = []
 end
 arguments (Repeating)
     varargin
 end
+if type == "weighted" && ~isempty(varargin)
+    warning("Ignoring Name=Value arguments for weighted gradients.")
+end
 
-B = coneighbors(W, p);
+% Get common-neighbors matrix
+if isempty(p)
+    B = coneighbors(W);
+else
+    B = coneighbors(W, p);
+end
 
-switch args.Type
+% Get gradients
+switch type
     case "weighted"
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
-        n = length(B);
-        M = loyvain(B, k, objective="modularity");
-        V = full(sparse(1:n, M, 1));
+        M = loyvain(B, k, "modularity", varargin{:});
+        V = full(sparse(1:length(B), M, 1));
 end
