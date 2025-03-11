@@ -31,5 +31,5 @@ end
 
 assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
 n = size(W, 1);
-CV2 = var(W, 0, 2) ./ mean(W, 2).^2;
+CV2 = var(W, 1, 2) ./ mean(W, 2).^2;
 CV2_nrm = (n - 1 - CV2) / (n - 1);
