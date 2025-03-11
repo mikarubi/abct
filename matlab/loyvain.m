@@ -85,7 +85,7 @@ if args.similarity == "precomputed"
 else
     W = [];
 end
-assert(issymmetric(W), "Similarity matrix must be symmetric.");
+assert(any(W - W' < eps("single"), "all"), "Similarity matrix must be symmetric.");
 
 % Test non-negativity for spectral and modularity
 if ismember(objective, ["modularity" "spectral"])
