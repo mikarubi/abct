@@ -1,10 +1,11 @@
 function [M, Q] = loyvain(X, k, objective, args)
-% LOYVAIN Modularity, K-means or spectral clustering with Lloyd-Louvain
+% LOYVAIN Normalized modularity, K-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k, objective, Name=Value)
 %
 %   Inputs:
-%       X: Similarity matrix (size n x n) or data matrix (size n x t).
+%       X: Network matrix of size n x n, or data matrix of size n x t.
+%          n is the number of nodes and t is the number of observations.
 %
 %       k: Number of clusters (positive integer).
 %
@@ -41,9 +42,9 @@ function [M, Q] = loyvain(X, k, objective, args)
 %               Positive integer (default is 10).
 %
 %   Outputs:
-%       M: A vector of cluster indices.
+%       M: Vector of cluster indices (size n).
 %
-%       Q: Value of K-means or spectral objective (normalized cut).
+%       Q: Value of normalized modularity, k-means, or spectral objective.
 %
 %   Methodological notes:
 %       Normalized degree-corrected modularity is approximately equivalent

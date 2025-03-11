@@ -10,7 +10,7 @@ function B = coneighbors(W, p)
 %           0 < p < 1 (default is 0.1).
 %
 %   Outputs:
-%       B: Common-neighbors matrix of size n x n.
+%       B: Common-neighbors matrix (size n x n).
 %
 %   Methodological notes:
 %       Integer-valued common-neighbors matrices denote the number of common

@@ -6,21 +6,19 @@ function X0 = nulltime(X, M, t, s)
 %
 %   X0 = nulltime(X, M, t, s)
 %
-%   Inputs
-%       X,  Timeseries matrix of size n x t.
-%       M,  Module assignment vector of length n.
-%       t,  Number of timepoints for null data.
-%       s,  Number of samples for null data.
+%   Inputs:
+%       X: Timeseries matrix (size n x t).
+%       M: Module assignment vector (length n).
+%       t: Number of timepoints for null data.
+%       s: Number of samples for null data.
 %
-%   Outputs
-%       X0,  Samples of timeseries matrix of size n x t.
+%   Outputs:
+%       X0: A set of samples of timeseries matrices (size n x t).
 %
 %   Methodological notes:
 %       This function uses nullspace sampling to generate synthetic timeseries.
 %       It is memory intensive and may thus not scale well to large datasets.
-%
-%   See also:
-%       NULLSPACE.
+
 
 n = size(X, 1);
 

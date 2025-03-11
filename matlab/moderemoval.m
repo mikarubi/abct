@@ -4,7 +4,8 @@ function X = moderemoval(X, method)
 %   X1 = moderemoval(X, method)
 %
 %   Inputs:
-%       X: Input network or timeseries matrix.
+%       X: Network matrix of size n x n, or data matrix of size n x t.
+%          n is the number of nodes and t is the number of observations.
 %
 %       method: Method for mode removal.
 %           "degree": Degree correction (default).
@@ -13,7 +14,7 @@ function X = moderemoval(X, method)
 %           "soft": Soft removal of primary modes.
 %
 %   Outputs:
-%       X1: Network or timeseries matrix with mode removed.
+%       X1: Network or timeseries matrix after mode removal.
 %
 %   Methodological notes:
 %       Degree correction, global signal regression, and first-mode removal
