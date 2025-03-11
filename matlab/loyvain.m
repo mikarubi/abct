@@ -1,5 +1,5 @@
 function [M, Q] = loyvain(X, k, objective, args)
-% LOYVAIN Normalized modularity, K-means, or spectral clustering
+% LOYVAIN Normalized modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k, objective, Name=Value)
 %
@@ -85,7 +85,8 @@ if args.similarity == "precomputed"
 else
     W = [];
 end
-assert(all(W - W' < eps("single"), "all"), "Similarity matrix must be symmetric.");
+assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
+    "Ensure similarity matrix is symmetric or change similarity metric.")
 
 % Test non-negativity for spectral and modularity
 if ismember(objective, ["modularity" "spectral"])
@@ -149,7 +150,7 @@ M(randperm(n, k)) = 1:k;                    % ensure there are k modules
 Idx = M + k*(0:n-1);                        % two-dimensional indices of M
 
 MM = sparse(M, 1:n, 1);                     % two-dimensional representation
-N = sum(MM, 2);                             % number of nodes in module
+N = full(sum(MM, 2));                       % number of nodes in module
 if args.similarity == "precomputed"
     Smn = MM * W;                           % degree of module to node
 else
