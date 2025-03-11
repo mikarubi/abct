@@ -9,8 +9,8 @@ function X0 = nulltime(X, M, t, s)
 %   Inputs:
 %       X: Timeseries matrix (size n x t).
 %       M: Module assignment vector (length n).
-%       t: Number of timepoints for null data.
-%       s: Number of samples for null data.
+%       t: Number of timepoints for null data (default t).
+%       s: Number of samples for null data (default 1).
 %
 %   Outputs:
 %       X0: A set of samples of timeseries matrices (size n x t).
@@ -19,21 +19,40 @@ function X0 = nulltime(X, M, t, s)
 %       This function uses nullspace sampling to generate synthetic timeseries.
 %       It is memory intensive and may thus not scale well to large datasets.
 
+arguments
+    X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
+    M (1, :) double {mustBeInteger, mustBePositive}
+    t (1, 1) double {mustBeInteger, mustBePositive} = size(X, 2);
+    s (1, 1) double {mustBeInteger, mustBePositive} = 1
+end
 
 n = size(X, 1);
+assert(length(M) == n, "Module assignment vector must have length n.")
+if isempty(t)
+    t = t_;
+end
 
-MM = sparse(M, 1:n, 1);                     % two-dimensional representation
-G = MM * X;                                 % cluster centroid
+% timeseries mean and variance
+MeanX = mean(X, 2);
+VarX = var(X, 0, 2);
+
+% normalized centroids
+MM = sparse(M, 1:n, 1);
+G = MM * X;
 G = G - mean(G, 2);
 G = G ./ vecnorm(G, 2, 2);
 
+% correlation constraints
 Smm = G * G';
-Snm = X * G';                               % dot of centroid with node
+Snm = X * G';
+
 X0 = cell(s, 1);
-for i = 1:s
-    % loop over samples and get null models
+for i = 1:s         % return cell array if many samples
     G0 = covnode_nullspace(Smm, t);
-    X0{i} = covnodemode_nullspace(Snm, G0);
+    X0{i} = covnodemode_nullspace(Snm, G0, MeanX, VarX);
+end
+if s == 1           % convert to matrix if only one sample
+    X0 = X0{1};
 end
 
 end
@@ -45,8 +64,8 @@ function X = covnode_nullspace(C, t)
 % Outputs
 %   X,  timeseries with preserved correlation matrix
 
-% singular value decomposition
-[U, S] = svd(C);
+% target eigendecomposition
+[V, D] = eig(C, "vector");
 
 n = size(C, 1);
 X0 = zeros(n, t);
@@ -57,27 +76,28 @@ for i = 1:n
     Z = null(A);
 
     % sample from nullspace
-    X0(i, :) = nullspace(Z, A, b, S(i, i), t);
+    X0(i, :) = nullspace(Z, A, b, D(i), t);
 end
-X = U * X0;
+X = V * X0 / sqrt(t - 1);
 
 end
 
-function X = covnodemode_nullspace(Cnm, Xm)
+function X = covnodemode_nullspace(Cnm, Xm, MeanX, Varx)
 % Inputs
 %   Y,  (modes x timepoints) input mode timeseries
 %   C,  (nodes x timepoints) input node-mode cov
 % Outputs
 %   X,   timeseries with preserved node-to-module sum of correlations
 
-% set up system
-A = Xm;
-b = Cnm;
-Z = null(A);
 t = size(Xm, 2);
 
+% set up system
+A = [Xm; ones(1, t)/t];
+b = [Cnm MeanX];
+Z = null(A);
+
 % sample from nullspace
-X = nullspace(Z, A, b, 1, t);
+X = nullspace(Z, A, b, Varx, t);
 
 end
 

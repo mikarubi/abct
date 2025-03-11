@@ -48,10 +48,11 @@ switch method
         %% Subtraction of rank-one approximation
         [U, S, V] = svds(X, 1);
         X = X - U * S * V';
-        
+
     case "soft"
         %% Soft removal of primary modes
-        assert(all(X - X' < eps("single"), "all"), "Input matrix must be symmetric.")
+        assert(isequal(size(X, 1), size(X, 2)) && all(X - X' < eps("single"), "all"), ...
+            "Input matrix must be symmetric.")
         [V, D] = eig(X, "vector");
         [~, ix] = sort(D, "descend");
         V = V(:, ix);
