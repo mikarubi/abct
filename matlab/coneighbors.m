@@ -5,8 +5,8 @@ function B = coneighbors(W, p)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
-%       p: Fraction to define neighbors
-%           (Neighbors are the top-p fraction of connections)
+%
+%       p: Fraction to define neighbors as the top-p connections.
 %           0 < p < 1 (default is 0.1).
 %
 %   Outputs:

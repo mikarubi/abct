@@ -1,19 +1,20 @@
-function [M, Q] = loyvain(X, k, args)
+function [M, Q] = loyvain(X, k, objective, args)
 % LOYVAIN Modularity, K-means or spectral clustering with Lloyd-Louvain
 %
-%   [M, Q] = loyvain(X, k, Name=Value)
+%   [M, Q] = loyvain(X, k, objective, Name=Value)
 %
 %   Inputs:
-%       X: Input similarity or data matrix.
+%       X: Similarity matrix (size n x n) or data matrix (size n x t).
 %
 %       k: Number of clusters (positive integer).
 %
-%       Name=[Value] Arguments (Optional):
+%       objective: Clustering objective.
+%           "modularity": Normalized modularity (default).
+%           "kmeans": K-means clustering objective.
+%           "spectral": Spectral clustering objective (normalized cut).
 %
-%           Objective=[Clustering objective].
-%               "modularity": Normalized modularity (default).
-%               "spectral": Spectral clustering objective (normalized cut).
-%               "kmeans": K-means clustering objective.
+%
+%       Name=[Value] Arguments (Optional):
 %
 %           Similarity=[Type of similarity].
 %               "precomputed": Input similarity network (default)
@@ -57,7 +58,7 @@ function [M, Q] = loyvain(X, k, args)
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    args.objective (1, 1) string {mustBeMember(args.objective, ...
+    objective (1, 1) string {mustBeMember(objective, ...
         ["kmeans", "spectral", "modularity"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
         ["dot", "cov", "cosim", "corr", "precomputed"])} = "precomputed"
@@ -81,27 +82,27 @@ end
 assert(issymmetric(W), "Similarity matrix must be symmetric.");
 
 % Test non-negativity for spectral and modularity
-if ismember(args.objective, ["modularity" "spectral"])
-    err = "Similarity matrix for " + args.objective + ...
+if ismember(objective, ["modularity" "spectral"])
+    err = "Similarity matrix for " + objective + ...
         "clustering must not contain negative values.";
     if args.similarity == "precomputed"
         assert(all(W >= 0, "all"), err);
-    elseif (args.objective == "spectral") && (n < 1e4)
+    elseif (objective == "spectral") && (n < 1e4)
         assert(all(X * X' >= 0, "all"), err)
-    elseif (args.objective == "spectral")
+    elseif (objective == "spectral")
         warning("Not checking similarity matrix for negative values because " + ...
             "number of nodes > 1e4. Ensure that this matrix has no negative " + ...
-            "values for compatibility with " + args.objective + " clustering.")
+            "values for compatibility with " + objective + " clustering.")
     end
 end
 
-if args.objective == "modularity"
+if objective == "modularity"
     if args.similarity == "precomputed"
-        W = first_mode_removal(W, "degree");
+        W = moderemoval(W, "degree");
     else
-        X = first_mode_removal(X, "global");
+        X = moderemoval(X, "global");
     end
-    args.objective = "kmeans";
+    objective = "kmeans";
 end
 
 % Center data
@@ -126,7 +127,7 @@ end
 Q = - inf;
 for i = 1:args.replicates
     % Run kmeans and keep best output
-    [M1, Q1] = run_loyvain(X, W, Wii, n, k, args, i);
+    [M1, Q1] = run_loyvain(X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
         Q = Q1;
         M = M1;
@@ -135,7 +136,7 @@ end
 
 end
 
-function [M, Q] = run_loyvain(X, W, Wii, n, k, args, replicate_i)
+function [M, Q] = run_loyvain(X, W, Wii, n, k, objective, args, replicate_i)
 
 M = randi(k, 1, n);                         % initial module partition
 M(randperm(n, k)) = 1:k;                    % ensure there are k modules
@@ -151,7 +152,7 @@ else
 end
 Cii = diag(Smn * MM');                      % within-module weight sum
 
-switch args.objective
+switch objective
     case "kmeans"
         Cii_nrm = Cii ./ N;
     case "spectral"
@@ -161,7 +162,7 @@ switch args.objective
 end
 
 for v = 1:args.maxiter
-    switch args.objective
+    switch objective
         case "kmeans"
             delta_Q = ...
                 ((2 * Smn      + Wii) - Cii_nrm    ) ./ (N     + 1) - ...
@@ -218,7 +219,7 @@ for v = 1:args.maxiter
 
         % Get Cii, C_nrm, and Dm
         Cii = diag(Smn * MM');              % within-module weight sum
-        switch args.objective
+        switch objective
             case "kmeans"
                 Cii_nrm = Cii ./ N;
             case "spectral"
