@@ -1,4 +1,4 @@
-function V = gradients(W, k, p, args)
+function V = gradients(W, k, type, p, varargin)
 % GRADIENTS Low-dimensional representation of common-neighbor matrices
 %
 %   V = gradients(W, k)
@@ -7,24 +7,37 @@ function V = gradients(W, k, p, args)
 %   Inputs:
 %       W: Network matrix of size n x n.
 %       k: Number of gradient outputs.
-%       p: Neighbor fraction
-%           Neighbors are the top-p fraction of connections
-%           0 < p < 1 (default is 0.1).
 %
-%       Name=[Value] Arguments (Optional):
+%   Optional Inputs:
+%       type: Type of gradient
+%           "weighted": Weighted gradient (default).
+%           "binary": Binary gradient.
 %
-%           Type=[Type of common neighbors].
-%               "weighted": Eigenvectors of common-neighbors matrix (default).
-%               "binary": Modules of common neighbors.
+%       p: Fraction to define neighbors (see CONEIGHBORS for details).
+%
+%       Name=[Value] Arguments.
+%           Loyvain algorithm options (See LOYVAIN for details).
 %
 %   Outputs:
-%       V: Eigenvectors or modules of common-neighbors matrix.
+%       V: Gradient matrix of size n x k.
+%
+%   Methodological notes:
+%       Weighted gradients are the eigenvectors of common-neighbors matrices.
+%       Binary gradients are the modules of common-neighbors matrices, estimated
+%       using Loyvain. These matrices are approximately equivalent to the output
+%       of standard diffusion-map embedding of neuroimaging co-activity data.
+%
+%   See also:
+%       CONEIGHBORS, LOYVAIN.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    p (1, 1) double {mustBeInRange(p, 0, 1)} = 0.1
-    args.Type (1, 1) string {mustBeMember(args.Type, ["weighted", "binary"])} = "weighted"
+    type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
+    p (1, 1) double {mustBeInRange(p, 0, 1)}
+end
+arguments (Repeating)
+    varargin
 end
 
 B = coneighbors(W, p);

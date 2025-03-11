@@ -12,7 +12,19 @@ function S = degrees(W, type)
 %           "residual": Degree after first-mode removal.
 %
 %   Outputs:
-%       S: Degree vector.
+%       S: Degree vector of size n.
+%
+%   Methodological notes:
+%       The first-degree degree is the sum of connection weights. The
+%       second-degree degree is the sum of squared connection weights.
+%       Together, the first and second degrees are exactly or approximately
+%       equivalent to several measures of network communication and control.
+%
+%       The residual degree is the degree after first-mode removal and can be
+%       approximately equivalent to the primary gradient in co-activity networks.
+%
+%   See also:
+%       MODEREMOVAL, LOYVAIN.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

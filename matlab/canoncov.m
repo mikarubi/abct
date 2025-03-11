@@ -16,10 +16,19 @@ function [A, B, U, V] = canoncov(X, Y, k, args)
 %               "binary": Binary CCA.
 %
 %   Outputs:
-%       A: Canonical coefficients of X.
-%       B: Canonical coefficients of Y.
-%       U: Canonical scores of X.
-%       V: Canonical scores of Y.
+%       A: Canonical weights of X (size q x k).
+%       B: Canonical weights of Y (size r x k).
+%       U: Canonical components of X (size n x k).
+%       V: Canonical components of Y (size n x k).
+%
+%   Methodological notes:
+%       Standard CCA is computed via the SVD of the cross-covariance matrix.
+%       Binary CCA is computed via Loyvain clustering of the cross-covariance
+%       matrix, followed by iterative cluster matching between X and Y. Note
+%       that the binary components will not be generally ordered by covariance.
+%
+%   See also:
+%       CANONCORR, LOYVAIN.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

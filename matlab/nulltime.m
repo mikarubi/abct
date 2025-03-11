@@ -1,8 +1,8 @@
 function X0 = nulltime(X, M, t, s)
-% NULLTIME Null timeseries with preserved correlation structure.
+% NULLTIME Null timeseries with preserved covariance structure.
 %
-%   This function generates null timeseries with correlation structure between
-%   modules. It also preserves the correlations between nodes and moduels.
+%   This function generates null timeseries with preserved module-to-module
+%   covariance structure as well as node-to-module covariance structure.
 %
 %   X0 = nulltime(X, M, t, s)
 %
@@ -14,6 +14,13 @@ function X0 = nulltime(X, M, t, s)
 %
 %   Outputs
 %       X0,  Samples of timeseries matrix of size n x t.
+%
+%   Methodological notes:
+%       This function uses nullspace sampling to generate synthetic timeseries.
+%       It is memory intensive and may thus not scale well to large datasets.
+%
+%   See also:
+%       NULLSPACE.
 
 n = size(X, 1);
 
