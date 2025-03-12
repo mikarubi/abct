@@ -7,6 +7,7 @@ function V = gradients(W, k, type, p, varargin)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
+%
 %       k: Number of gradient outputs.
 %
 %   Optional Inputs:
