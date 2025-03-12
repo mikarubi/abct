@@ -1,7 +1,7 @@
 function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 % CANONCOV Canonical covariance analysis (aka Partial least squares)
 %
-%   [A, B] = canoncov(X, Y, k)
+%   [A, B, U, V] = canoncov(X, Y, k)
 %   [A, B, U, V] = canoncov(X, Y, k, type)
 %   [A, B, U, V] = canoncov(X, Y, k, type, Name=Value)
 %

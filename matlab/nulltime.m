@@ -1,36 +1,42 @@
-function X0 = nulltime(X, M, t, s)
-% NULLTIME Null timeseries with preserved covariance structure.
+function [X0, G0] = nulltime(X, M, s)
+% NULLTIME Null timeseries with preserved node-to-module correlation structure.
 %
-%   This function generates null timeseries with preserved module-to-module
-%   covariance structure as well as node-to-module covariance structure.
+%   [X0, G0] = nulltime(X, M, s)
 %
-%   X0 = nulltime(X, M, t, s)
+%   This function takes an empirical timeseries matrix and a corresponding
+%   module assignment vector. It then generates the following null data:
+%
+%   1. A set of k modes that have the same cross-node correlation structure
+%      as the centroids of k empirical modules.
+%
+%   2. Null timeseries where the correlation between node i and mode u matches
+%      the corresponding empirical correlation between node i and mode u.
+%
+%   In practice, this procedure generates null timeseries with similar
+%   node-to-module correlation structure as the empirical data but are
+%   otherwise maximally random.
 %
 %   Inputs:
 %       X: Timeseries matrix (size n x t).
 %       M: Module assignment vector (length n).
-%       t: Number of timepoints for null data (default t).
-%       s: Number of samples for null data (default 1).
+%       s: Number of samples for null data (default is 1).
 %
 %   Outputs:
-%       X0: A set of samples of timeseries matrices (size n x t x s).
+%       X0: Samples of timeseries matrices (size n x t x s).
+%       G0: Samples of corresponding modes (size n x k x s).
 %
 %   Methodological notes:
-%       This function uses nullspace sampling to generate synthetic timeseries.
-%       It is memory intensive and may thus not scale well to large datasets.
+%       This function uses nullspace sampling to generate null timeseries.
+%       It is memory intensive and may not scale well to large datasets.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     M (1, :) double {mustBeInteger, mustBePositive}
-    t (1, 1) double {mustBeInteger, mustBePositive} = size(X, 2);
     s (1, 1) double {mustBeInteger, mustBePositive} = 1
 end
 
-n = size(X, 1);
+[n, t] = size(X);
 assert(length(M) == n, "Module assignment vector must have length n.")
-if isempty(t)
-    t = t_;
-end
 
 % timeseries mean and variance
 MeanX = mean(X, 2);
@@ -45,10 +51,11 @@ Smm = G * G' / (t - 1);     % preserve covnode via rotated eigen-nullspace
 Snm = X * G';               % preserve covnodemode via standard nullspace
 
 % generate null timeseries
+G0 = zeros(n, k, s);
 X0 = zeros(n, t, s);
 for i = 1:s
-    G0 = covnode_nullspace(Smm, t);
-    X0(:,:,i) = covnodemode_nullspace(Snm, G0, MeanX, VarX);
+    G0(:,:,i) = covnode_nullspace(Smm, t);
+    X0(:,:,i) = covnodemode_nullspace(Snm, G0(:,:,i), MeanX, VarX);
 end
 
 end

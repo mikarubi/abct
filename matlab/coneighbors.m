@@ -1,6 +1,7 @@
 function B = coneighbors(W, p)
 % CONEIGHBORS Common-neighbors matrix of network matrix
 %
+%   B = coneighbors(W)
 %   B = coneighbors(W, p)
 %
 %   Inputs:

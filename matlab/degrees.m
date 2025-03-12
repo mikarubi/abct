@@ -1,6 +1,7 @@
 function S = degrees(W, type)
 % DEGREES Degree of network matrix
 %
+%   S = degrees(W)
 %   S = degrees(W, type)
 %
 %   Inputs:
