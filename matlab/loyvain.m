@@ -7,8 +7,8 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       X: Network matrix of size n x n, or data matrix of size n x t.
 %          n is the number of nodes and t is the number of observations.
 %
-%       k: Number of modules (positive integer).
-%           Leave empty to infer number from initial module assignment.
+%       k: Number of modules (positive integer or 0).
+%           Set to 0 to infer number from initial module assignment.
 %
 %       objective: Clustering objective.
 %           "modularity": Normalized modularity (default).
@@ -69,7 +69,7 @@ function [M, Q] = loyvain(X, k, objective, args)
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBePositive} = []
+    k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     objective (1, 1) string {mustBeMember(objective, ...
         ["kmeans", "spectral", "modularity"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
@@ -114,14 +114,14 @@ if isscalar(args.start)
 elseif isvector(args.start)
     r = 1;
     args.start = reshape(args.start, 1, []);
-    if isempty(k)
+    if k==0
         k = max(args.start);
     end
     assert(length(args.start) == n, "Starting module assignment must have length n.")
     assert(isequal(unique(args.start), 1:k), "Starting module assignments must contain values 1 to k.")
 end
 
-assert(~isempty(k), "Specify number of modules or starting module assignment.")
+assert(k > 0, "Specify number of modules or starting module assignment.")
 assert(k < n, "Number of modules must be smaller than number of nodes.")
 
 if objective == "modularity"
