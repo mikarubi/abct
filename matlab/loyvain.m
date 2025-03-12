@@ -14,7 +14,6 @@ function [M, Q] = loyvain(X, k, objective, args)
 %           "kmeans": K-means clustering objective.
 %           "spectral": Spectral clustering objective (normalized cut).
 %
-%
 %       Name=[Value] Arguments (Optional):
 %
 %           Similarity=[Type of similarity].
@@ -38,11 +37,17 @@ function [M, Q] = loyvain(X, k, objective, args)
 %           MaxIter=[Maximum number of algorithm iterations].
 %               Positive integer (default is 1000).
 %
-%           Replicates=[Number of attemps from different initial partitions].
-%               Positive integer (default is 10).
+%           Start=[Initial module assignments or number of starts].
+%               Positive integer vector of length n.
+%                   Initial module assignments.
+%               Positive integer: (default is 10)
+%                   Number of starts from random initial module assignments.
+%
+%           Verbose=[Display progress].
+%               Logical (default is false).
 %
 %   Outputs:
-%       M: Vector of cluster indices (size n).
+%       M: Vector of module assignments (length n).
 %
 %       Q: Value of normalized modularity, k-means, or spectral objective.
 %
@@ -69,9 +74,9 @@ arguments
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
         ["dot", "cov", "cosim", "corr", "precomputed"])} = "precomputed"
     args.acceptance (1, 1) double ...
-        {mustBeInRange(args.acceptance, 0, 1)} = 0.5;
+        {mustBeInRange(args.acceptance, 0, 1)} = 0.5
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
-    args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
+    args.starts (1, :) double {mustBeInteger, mustBePositive} = 10
     args.verbose (1, 1) logical = false;
 end
 
@@ -103,6 +108,15 @@ if ismember(objective, ["modularity" "spectral"])
     end
 end
 
+% Process starts
+if isscalar(args.starts)
+    r = args.starts;
+elseif isvector(args.starts)
+    r = 1;
+    args.starts = reshape(args.starts, 1, []);
+    assert(length(args.starts) == n, "Starting module assignment must have length n.")
+end
+
 if objective == "modularity"
     if args.similarity == "precomputed"
         W = moderemoval(W, "degree");
@@ -132,9 +146,16 @@ else
 end
 
 Q = - inf;
-for i = 1:args.replicates
+for i = 1:r
     % Run kmeans and keep best output
-    [M1, Q1] = run_loyvain(X, W, Wii, n, k, objective, args, i);
+    if isscalar(args.starts)
+        M = randi(k, 1, n);                 % initial module partition
+        M(randperm(n, k)) = 1:k;            % ensure there are k modules
+    else
+        M = args.starts(i, :);
+        assert(isequal(unique(M), 1:k), "Starting module assignments must contain values 1 to k.")
+    end
+    [M1, Q1] = run_loyvain(M, X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
         Q = Q1;
         M = M1;
@@ -143,13 +164,11 @@ end
 
 end
 
-function [M, Q] = run_loyvain(X, W, Wii, n, k, objective, args, replicate_i)
+function [M, Q] = run_loyvain(M, X, W, Wii, n, k, objective, args, replicate_i)
 
-M = randi(k, 1, n);                         % initial module partition
-M(randperm(n, k)) = 1:k;                    % ensure there are k modules
 Idx = M + k*(0:n-1);                        % two-dimensional indices of M
 
-MM = sparse(M, 1:n, 1);                     % two-dimensional representation
+MM = sparse(M, 1:n, 1, k, n);               % two-dimensional representation
 N = full(sum(MM, 2));                       % number of nodes in module
 if args.similarity == "precomputed"
     Smn = MM * W;                           % degree of module to node
