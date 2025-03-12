@@ -15,7 +15,7 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %       k: Number of canonical components.
 %
 %       type: Type of analysis.
-%           "standard": Standard canonical covariance (default).
+%           "weighted": Standard canonical covariance (default).
 %           "binary": Binary canonical covariance.
 %
 %       Name=[Value] Arguments:
@@ -32,10 +32,10 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %       V: Canonical components of Y (size n x k).
 %
 %   Methodological notes:
-%       Standard CCA is computed via the SVD of the cross-covariance matrix.
-%       Binary CCA is computed via Loyvain clustering of the cross-covariance
-%       matrix, followed by iterative cluster matching between X and Y. Note
-%       that the binary components will not be generally ordered by covariance.
+%       Weighted CCA is computed via the SVD of the cross-covariance
+%       matrix. Binary CCA is computed via Loyvain clustering of the
+%       cross-covariance matrix, followed by iterative cluster matching.
+%       The output weigths vectors A and B are rescaled to have norm 1.
 %
 %   See also:
 %       CANONCORR, LOYVAIN.
@@ -44,10 +44,13 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ["standard", "binary"])} = "standard"
+    type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
 end
 arguments (Repeating)
     varargin
+end
+if type == "weighted" && ~isempty(varargin)
+    warning("Ignoring Name=Value arguments for weighted gradients.")
 end
 
 [n, q] = size(X);
@@ -60,11 +63,8 @@ X = X - mean(X, 1);
 Y = Y - mean(Y, 1);
 Z = X' * Y / n;
 
-% Check if k is too large
-k = min(k, rank(Z));
-
 switch type
-    case "standard"
+    case "weighted"
         % Standard PLS
         [A, ~, B] = svds(Z, k);
 
@@ -74,6 +74,8 @@ switch type
         Mb = loyvain(Z', k, "kmeans", varargin{:}, similarity="dot");
         A = full(sparse(1:q, Ma, 1));
         B = full(sparse(1:r, Mb, 1));
+        A = A ./ vecnorm(A, 2, 1);
+        B = B ./ vecnorm(B, 2, 1);
 
         % Choose k largest components
         C = corr(X * A, Y * B);
