@@ -38,6 +38,6 @@ switch type
     case "second"
         S = sum(W.^2, 2);
     case "residual"
-        W = moderemoval(W, "mode");
+        W = moderemoval(W, "rankone");
         S = sum(W, 2);
 end

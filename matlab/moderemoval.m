@@ -11,24 +11,24 @@ function X = moderemoval(X, method)
 %       method: Method for mode removal.
 %           "degree": Degree correction (default).
 %           "global": Global signal regression.
-%           "mode": Subtraction of rank-one approximation.
+%           "rankone": Subtraction of rank-one approximation.
 %           "soft": Soft removal of primary modes.
 %
 %   Outputs:
 %       X1: Network or timeseries matrix after mode removal.
 %
 %   Methodological notes:
-%       Degree correction, global signal regression, and first-mode removal
-%       all produce approximatley equivalent results. The "soft" mode removal
-%       produces sparse network representations through the despiking of an
-%       initial peak in the eigenspectrum with cubic interpolation.
+%       Degree correction, global signal regression, and subtraction of
+%       rank-one approximation all produce approximatley equivalent
+%       results. The "soft" method makes the network sparse by using
+%       cubic interpolation to "despike" an initial eigenspectrum peak.
 %
 %   See also:
 %       DEGREES, GRADIENTS.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
-    method (1, 1) string {mustBeMember(method, ["degree", "global", "mode", "soft"])} = "degree"
+    method (1, 1) string {mustBeMember(method, ["degree", "global", "rankone", "soft"])} = "degree"
 end
 
 switch method
@@ -45,7 +45,7 @@ switch method
         X = X - (X * G') * G / (G * G');
         % (X - (X * G') * G / (G * G')) * G' = 0    % verification
 
-    case "mode"
+    case "rankone"
         %% Subtraction of rank-one approximation
         [U, S, V] = svds(X, 1);
         X = X - U * S * V';
