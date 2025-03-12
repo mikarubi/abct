@@ -76,7 +76,7 @@ arguments
     args.acceptance (1, 1) double ...
         {mustBeInRange(args.acceptance, 0, 1)} = 0.5
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
-    args.starts (1, :) double {mustBeInteger, mustBePositive} = 10
+    args.start (1, :) double {mustBeInteger, mustBePositive} = 10
     args.verbose (1, 1) logical = false;
 end
 
@@ -109,12 +109,12 @@ if ismember(objective, ["modularity" "spectral"])
 end
 
 % Process starts
-if isscalar(args.starts)
-    r = args.starts;
-elseif isvector(args.starts)
+if isscalar(args.start)
+    r = args.start;
+elseif isvector(args.start)
     r = 1;
-    args.starts = reshape(args.starts, 1, []);
-    assert(length(args.starts) == n, "Starting module assignment must have length n.")
+    args.start = reshape(args.start, 1, []);
+    assert(length(args.start) == n, "Starting module assignment must have length n.")
 end
 
 if objective == "modularity"
@@ -148,11 +148,11 @@ end
 Q = - inf;
 for i = 1:r
     % Run kmeans and keep best output
-    if isscalar(args.starts)
+    if isscalar(args.start)
         M = randi(k, 1, n);                 % initial module partition
         M(randperm(n, k)) = 1:k;            % ensure there are k modules
     else
-        M = args.starts(i, :);
+        M = args.start;
         assert(isequal(unique(M), 1:k), "Starting module assignments must contain values 1 to k.")
     end
     [M1, Q1] = run_loyvain(M, X, W, Wii, n, k, objective, args, i);
