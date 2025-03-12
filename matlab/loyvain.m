@@ -150,12 +150,12 @@ Q = - inf;
 for i = 1:r
     % Run kmeans and keep best output
     if isscalar(args.start)
-        M = randi(k, 1, n);                 % initial module partition
-        M(randperm(n, k)) = 1:k;            % ensure there are k modules
+        M0 = randi(k, 1, n);                 % initial module partition
+        M0(randperm(n, k)) = 1:k;            % ensure there are k modules
     elseif isvector(args.start)
-        M = args.start;
+        M0 = args.start;
     end
-    [M1, Q1] = run_loyvain(M, X, W, Wii, n, k, objective, args, i);
+    [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
         Q = Q1;
         M = M1;
