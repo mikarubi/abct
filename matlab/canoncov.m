@@ -24,8 +24,11 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %
 %   Outputs:
 %       A: Canonical weights of X (size q x k).
+%
 %       B: Canonical weights of Y (size r x k).
+%
 %       U: Canonical components of X (size n x k).
+%
 %       V: Canonical components of Y (size n x k).
 %
 %   Methodological notes:

@@ -18,12 +18,15 @@ function [X0, G0] = nulltime(X, M, s)
 %
 %   Inputs:
 %       X: Timeseries matrix (size n x t).
+%
 %       M: Module assignment vector (length n).
+%
 %       s: Number of samples for null data (default is 1).
 %
 %   Outputs:
-%       X0: Samples of timeseries matrices (size n x t x s).
-%       G0: Samples of corresponding modes (size n x k x s).
+%       X0: Samples of null timeseries (size n x t x s).
+%
+%       G0: Samples of null modes (size n x k x s).
 %
 %   Methodological notes:
 %       This function uses nullspace sampling to generate null timeseries.
