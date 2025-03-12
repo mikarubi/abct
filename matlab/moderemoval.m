@@ -1,6 +1,7 @@
 function X = moderemoval(X, method)
 % MODEREMOVAL Mode removal from network or timeseries data
 %
+%   X1 = moderemoval(X)
 %   X1 = moderemoval(X, method)
 %
 %   Inputs:

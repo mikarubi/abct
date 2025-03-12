@@ -2,7 +2,8 @@ function V = gradients(W, k, type, p, varargin)
 % GRADIENTS Low-dimensional representation of common-neighbor matrices
 %
 %   V = gradients(W, k)
-%   V = gradients(W, k, p, Name=Value)
+%   V = gradients(W, k, type, p)
+%   V = gradients(W, k, type, p, Name=Value)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
