@@ -38,13 +38,11 @@ VarX = var(X, 0, 2);
 
 % normalized centroids
 MM = sparse(M, 1:n, 1);
-G = MM * X;
-G = G - mean(G, 2);
-G = G ./ vecnorm(G, 2, 2);
+G = normalize(MM * X, 2);
 
 % correlation constraints
-Smm = G * G';
-Snm = X * G';
+Smm = G * G' / (t - 1);     % preserve corrs via rotated eigen-nullspace
+Snm = X * G';               % preserve sums via standard nullspace
 
 X0 = cell(s, 1);
 for i = 1:s         % return cell array if many samples
@@ -78,11 +76,11 @@ for i = 1:n
     % sample from nullspace
     X0(i, :) = nullspace(Z, A, b, D(i), t);
 end
-X = V * X0 / sqrt(t - 1);
+X = V * X0;
 
 end
 
-function X = covnodemode_nullspace(Cnm, Xm, MeanX, Varx)
+function X = covnodemode_nullspace(Cnm, Xm, MeanX, VarX)
 % Inputs
 %   Y,  (modes x timepoints) input mode timeseries
 %   C,  (nodes x timepoints) input node-mode cov
@@ -97,7 +95,7 @@ b = [Cnm MeanX];
 Z = null(A);
 
 % sample from nullspace
-X = nullspace(Z, A, b, Varx, t);
+X = nullspace(Z, A, b, VarX, t);
 
 end
 
