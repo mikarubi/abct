@@ -115,6 +115,7 @@ elseif isvector(args.start)
     r = 1;
     args.start = reshape(args.start, 1, []);
     assert(length(args.start) == n, "Starting module assignment must have length n.")
+    assert(isequal(unique(args.start), 1:k), "Starting module assignments must contain values 1 to k.")
 end
 
 if objective == "modularity"
@@ -151,9 +152,8 @@ for i = 1:r
     if isscalar(args.start)
         M = randi(k, 1, n);                 % initial module partition
         M(randperm(n, k)) = 1:k;            % ensure there are k modules
-    else
+    elseif isvector(args.start)
         M = args.start;
-        assert(isequal(unique(M), 1:k), "Starting module assignments must contain values 1 to k.")
     end
     [M1, Q1] = run_loyvain(M, X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
