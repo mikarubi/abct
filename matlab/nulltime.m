@@ -13,7 +13,7 @@ function X0 = nulltime(X, M, t, s)
 %       s: Number of samples for null data (default 1).
 %
 %   Outputs:
-%       X0: A set of samples of timeseries matrices (size n x t).
+%       X0: A set of samples of timeseries matrices (size n x t x s).
 %
 %   Methodological notes:
 %       This function uses nullspace sampling to generate synthetic timeseries.
@@ -41,16 +41,14 @@ MM = sparse(M, 1:n, 1);
 G = normalize(MM * X, 2);
 
 % correlation constraints
-Smm = G * G' / (t - 1);     % preserve corrs via rotated eigen-nullspace
-Snm = X * G';               % preserve sums via standard nullspace
+Smm = G * G' / (t - 1);     % preserve covnode via rotated eigen-nullspace
+Snm = X * G';               % preserve covnodemode via standard nullspace
 
-X0 = cell(s, 1);
-for i = 1:s         % return cell array if many samples
+% generate null timeseries
+X0 = zeros(n, t, s);
+for i = 1:s
     G0 = covnode_nullspace(Smm, t);
-    X0{i} = covnodemode_nullspace(Snm, G0, MeanX, VarX);
-end
-if s == 1           % convert to matrix if only one sample
-    X0 = X0{1};
+    X0(:,:,i) = covnodemode_nullspace(Snm, G0, MeanX, VarX);
 end
 
 end
