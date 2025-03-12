@@ -28,8 +28,9 @@ function V = gradients(W, k, type, p, varargin)
 %       Weighted gradients are the eigenvectors of common-neighbors
 %       matrices. These gradients are approximately equivalent to the
 %       output of standard diffusion-map embedding of neuroimaging
-%       co-activity data. Binary gradients are the modules of
-%       common-neighbors matrices, estimated using the Loyvain algorithm.
+%       co-activity data. Binary gradients are the modules of common-
+%       neighbors matrices, estimated using the Loyvain algorithm. Note
+%       that the order of binary gradients is generally arbitrary. 
 %
 %   See also:
 %       CONEIGHBORS, LOYVAIN.
