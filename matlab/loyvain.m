@@ -1,10 +1,9 @@
-function [M, Q] = loyvain(X, k, objective, similarity, args)
+function [M, Q] = loyvain(X, k, objective, args)
 % LOYVAIN Normalized modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k)
 %   [M, Q] = loyvain(X, k, objective)
-%   [M, Q] = loyvain(X, k, objective, similarity)
-%   [M, Q] = loyvain(X, k, [], [], Name=Value)
+%   [M, Q] = loyvain(X, k, objective, Name=Value)
 %
 %   Inputs:
 %       X: Network matrix of size n x n, or data matrix of size n x t.
@@ -18,22 +17,22 @@ function [M, Q] = loyvain(X, k, objective, similarity, args)
 %           "kmeans": K-means clustering objective.
 %           "spectral": Spectral clustering objective (normalized cut).
 %
-%       similarity: Type of similarity.
-%           The default option assumes that X is a network matrix.
-%               "network": X is a symmetric network (default).
-%                   No additional similarity is computed.
-%           The remaining options assume that X is a data matrix.
-%               "corr": Pearson correlation coefficient.
-%                   A scale-invariant measure of linear association,
-%                   a normalized dot product of mean-centered vectors.
-%               "cosim": Cosine similarity.
-%                   A normalized dot product.
-%               "cov":  Covariance.
-%                   A dot product of mean-centered vectors.
-%               "dot": Dot product.
-%                   A sum of an elementwise vector product.
-%
 %       Name=[Value] Arguments:
+
+%           Similarity=[Type of similarity].
+%               The default option assumes that X is a network matrix.
+%                   "network": X is a symmetric network (default).
+%                       No additional similarity is computed.
+%               The remaining options assume that X is a data matrix.
+%                   "corr": Pearson correlation coefficient.
+%                       A scale-invariant measure of linear association,
+%                       a normalized dot product of mean-centered vectors.
+%                   "cosim": Cosine similarity.
+%                       A normalized dot product.
+%                   "cov":  Covariance.
+%                       A dot product of mean-centered vectors.
+%                   "dot": Dot product.
+%                       A sum of an elementwise vector product.
 %
 %           Acceptance=[Probability of acceptance of individual swaps].
 %               0 < Acceptance < 1 (default is 0.5).
@@ -66,7 +65,7 @@ function [M, Q] = loyvain(X, k, objective, similarity, args)
 %       Normalized degree-corrected modularity is approximately equivalent
 %       to k-means objective after global-signal regression (removal of the
 %       mean signal from the data). When the input is a data matrix rather
-%       than a similarity matrix, degree correction is replaced with global-
+%       than a network matrix, degree correction is replaced with global-
 %       signal regression, which may give slightly different results.
 %
 %   See also:
@@ -77,7 +76,7 @@ arguments
     k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     objective (1, 1) string {mustBeMember(objective, ...
         ["modularity", "kmeans", "spectral"])} = "modularity"
-    similarity (1, 1) string {mustBeMember(similarity, ...
+    args.similarity (1, 1) string {mustBeMember(args.similarity, ...
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
     args.acceptance (1, 1) double ...
         {mustBeInRange(args.acceptance, 0, 1)} = 0.5
@@ -90,7 +89,7 @@ end
 [n, t] = size(X);
 
 % Get network matrix
-if similarity == "network"
+if args.similarity == "network"
     W = X;
 else
     W = [];
@@ -102,7 +101,7 @@ assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ..
 if ismember(objective, ["modularity" "spectral"])
     err = "Similarity matrix for " + objective + ...
         "clustering must not contain negative values.";
-    if similarity == "network"
+    if args.similarity == "network"
         assert(all(W >= 0, "all"), err);
     elseif (objective == "spectral") && (n < 1e4)
         assert(all(X * X' >= 0, "all"), err)
@@ -130,7 +129,7 @@ assert(k > 0, "Specify number of modules or starting module assignment.")
 assert(k < n, "Number of modules must be smaller than number of nodes.")
 
 if objective == "modularity"
-    if similarity == "network"
+    if args.similarity == "network"
         W = moderemoval(W, "degree");
     else
         X = moderemoval(X, "global");
@@ -139,19 +138,19 @@ if objective == "modularity"
 end
 
 % Center data
-if ismember(similarity, ["cov", "corr"])
+if ismember(args.similarity, ["cov", "corr"])
     X = X - mean(X, 2);
 end
 
 % Normalize data
-if ismember(similarity, ["cosim", "corr"])
+if ismember(args.similarity, ["cosim", "corr"])
     X = X ./ vecnorm(X, 2, 2);
-elseif ismember(similarity, ["dot", "cov"])
+elseif ismember(args.similarity, ["dot", "cov"])
     X = X / sqrt(t);
 end
 
 % Get self-connections
-if similarity == "network"
+if args.similarity == "network"
     Wii = diag(W)';                         % network self connections
 else
     Wii = sum(X.^2, 2)';                    % data sum of squares
@@ -166,7 +165,7 @@ for i = 1:r
     elseif isvector(args.start)
         M0 = args.start;
     end
-    [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, similarity, args, i);
+    [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
         Q = Q1;
         M = M1;
@@ -175,13 +174,13 @@ end
 
 end
 
-function [M, Q] = run_loyvain(M, X, W, Wii, n, k, objective, similarity, args, replicate_i)
+function [M, Q] = run_loyvain(M, X, W, Wii, n, k, objective, args, replicate_i)
 
 Idx = M + k*(0:n-1);                        % two-dimensional indices of M
 
 MM = sparse(M, 1:n, 1, k, n);               % two-dimensional representation
 N = full(sum(MM, 2));                       % number of nodes in module
-if similarity == "network"
+if args.similarity == "network"
     Smn = MM * W;                           % degree of module to node
 else
     G = MM * X;                             % cluster centroid
@@ -245,7 +244,7 @@ for v = 1:args.maxiter
         MM = sparse(M, 1:n, 1);
 
         % Update G and Dmn
-        if similarity == "network"
+        if args.similarity == "network"
             delta_Dmn = delta_MMI * W(I, :);
         else
             delta_G = delta_MMI * X(I, :);  % change in centroid

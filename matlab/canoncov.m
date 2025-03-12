@@ -70,8 +70,8 @@ switch type
 
     case "binary"
         % Binary PLS
-        Ma = loyvain(Z, k, "kmeans", "dot", varargin{:});
-        Mb = loyvain(Z', k, "kmeans", "dot", varargin{:});
+        Ma = loyvain(Z, k, "kmeans", varargin{:}, similarity="dot");
+        Mb = loyvain(Z', k, "kmeans", varargin{:}, similarity="dot");
         A = full(sparse(1:q, Ma, 1));
         B = full(sparse(1:r, Mb, 1));
 

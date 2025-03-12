@@ -10,7 +10,6 @@ function V = gradients(W, k, type, p, varargin)
 %
 %       k: Number of gradient outputs.
 %
-%   Optional Inputs:
 %       type: Type of gradient
 %           "weighted": Weighted gradient (default).
 %           "binary": Binary gradient.
@@ -61,6 +60,6 @@ switch type
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
-        M = loyvain(B, k, "modularity", "network", varargin{:});
+        M = loyvain(B, k, "modularity", varargin{:}, similarity="network");
         V = full(sparse(1:length(B), M, 1));
 end
