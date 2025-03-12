@@ -1,8 +1,9 @@
-function [A, B, U, V] = canoncov(X, Y, k, args)
+function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 % CANONCOV Canonical covariance analysis (aka Partial least squares)
 %
 %   [A, B] = canoncov(X, Y, k)
-%   [A, B, U, V] = canoncov(X, Y, k, Name=Value)
+%   [A, B, U, V] = canoncov(X, Y, k, type)
+%   [A, B, U, V] = canoncov(X, Y, k, type, Name=Value)
 %
 %   Inputs:
 %       X: Input matrix of size n x q.
@@ -13,11 +14,13 @@ function [A, B, U, V] = canoncov(X, Y, k, args)
 %
 %       k: Number of canonical components.
 %
-%       Name=[Value] Arguments (Optional):
+%       type: Type of analysis.
+%           "standard": Standard canonical covariance (default).
+%           "binary": Binary canonical covariance.
 %
-%           Type=[Type of CCA].
-%               "standard": Standard CCA (default).
-%               "binary": Binary CCA.
+%       Name=[Value] Arguments:
+%           Name-value arguments for the Loyvain algorithm.
+%           Only used if type = "binary". See LOYVAIN for details.
 %
 %   Outputs:
 %       A: Canonical weights of X (size q x k).
@@ -38,53 +41,53 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    args.Type (1, 1) string {mustBeMember(args.Type, ["standard", "binary"])} = "standard"
+    type (1, 1) string {mustBeMember(type, ["standard", "binary"])} = "standard"
+end
+arguments (Repeating)
+    varargin
 end
 
 [n, q] = size(X);
 [n_, r] = size(Y);
 assert(n == n_, "The input matrices must have the same number of rows.")
+assert(k <= min(q, r), "k must not exceed the number of columns in X or Y.")
 
 % Mean center columns instead of rows
 X = X - mean(X, 1);
 Y = Y - mean(Y, 1);
-Z = Y' * X / n;
+Z = X' * Y / n;
 
 % Check if k is too large
 k = min(k, rank(Z));
 
-switch args.Type
+switch type
     case "standard"
         % Standard PLS
         [A, ~, B] = svds(Z, k);
 
     case "binary"
         % Binary PLS
-        Ma = loyvain(Z, k, similarity="dot", objective="kmeans");
-        Mb = loyvain(Z', k, similarity="dot", objective="kmeans");
+        Ma = loyvain(Z, k, "kmeans", "dot", varargin{:});
+        Mb = loyvain(Z', k, "kmeans", "dot", varargin{:});
         A = full(sparse(1:q, Ma, 1));
         B = full(sparse(1:r, Mb, 1));
 
         % Choose k largest components
-        C = (X * A)' * (Y * B) / n;
+        C = corr(X * A, Y * B);
         [~, Idx] = sort(C(:), "descend");
-        Idx = Idx(1:k);
-        I = ceil(Idx / q);
-        J = mod(Idx, q);
-        [i, j] = ind2sub(size(C), Idx);
-        assert(isequal([I J], [i, j]))
+        [I, J] = ind2sub([k, k], Idx(1:k));
 
         % Find the first non-unique element of I
-        [~, uIdx_I] = unique(I, "first", "stable");
-        [~, uIdx_J] = unique(J, "first", "stable");
-        max_kI = find(diff(uIdx_I) > 1, 1, "first");
-        max_kJ = find(diff(uIdx_J) > 1, 1, "first");
+        [~, Idx_uI] = unique(I, "first");
+        [~, Idx_uJ] = unique(J, "first");
+        max_kI = find(diff([0; sort(Idx_uI)]) == 1, 1, "last");
+        max_kJ = find(diff([0; sort(Idx_uJ)]) == 1, 1, "last");
         maxk = min([max_kI, max_kJ, k]);
         if maxk < k
             warning("Only %d components supported.", maxk)
         end
-        A = A(i(1:maxk), :);
-        B = B(j(1:maxk), :);
+        A = A(:, I(1:maxk));
+        B = B(:, J(1:maxk));
 end
 
 U = X * A;

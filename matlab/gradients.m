@@ -14,10 +14,11 @@ function V = gradients(W, k, type, p, varargin)
 %           "binary": Binary gradient.
 %
 %       p: Fraction to define neighbors as the top-p connections.
-%           Set p = [] for default value (see CONEIGHBORS for details).
+%           Set p = [] for default value. See CONEIGHBORS for details.
 %
-%       Name=[Value] Arguments.
-%           Loyvain algorithm options (See LOYVAIN for details).
+%       Name=[Value] Arguments:
+%           Name-value arguments for the Loyvain algorithm.
+%           Only used if type = "binary". See LOYVAIN for details.
 %
 %   Outputs:
 %       V: Gradient matrix (size n x k).
@@ -58,6 +59,6 @@ switch type
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
-        M = loyvain(B, k, "modularity", varargin{:});
+        M = loyvain(B, k, "modularity", "network", varargin{:});
         V = full(sparse(1:length(B), M, 1));
 end
