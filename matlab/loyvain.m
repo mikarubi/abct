@@ -7,7 +7,8 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       X: Network matrix of size n x n, or data matrix of size n x t.
 %          n is the number of nodes and t is the number of observations.
 %
-%       k: Number of clusters (positive integer).
+%       k: Number of modules (positive integer).
+%           Leave empty to infer number from initial module assignment.
 %
 %       objective: Clustering objective.
 %           "modularity": Normalized modularity (default).
@@ -58,9 +59,9 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       and spectral clustering.
 %
 %       Normalized degree-corrected modularity is approximately equivalent
-%       to k-means objective after global signal regression (removal of the
+%       to k-means objective after global-signal regression (removal of the
 %       mean signal from the data). When the input is a data matrix rather
-%       than a similarity matrix, degree correction is replaced with global
+%       than a similarity matrix, degree correction is replaced with global-
 %       signal regression, which may give slightly different results.
 %
 %   See also:
@@ -68,7 +69,7 @@ function [M, Q] = loyvain(X, k, objective, args)
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBePositive}
+    k (1, 1) double {mustBeInteger, mustBePositive} = []
     objective (1, 1) string {mustBeMember(objective, ...
         ["kmeans", "spectral", "modularity"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
@@ -82,7 +83,6 @@ end
 
 % Get dimensions
 [n, t] = size(X);
-assert(k < n, "Number of clusters must be smaller than number of nodes.")
 
 % Check precomputed matrix
 if args.similarity == "precomputed"
@@ -114,9 +114,15 @@ if isscalar(args.start)
 elseif isvector(args.start)
     r = 1;
     args.start = reshape(args.start, 1, []);
+    if isempty(k)
+        k = max(args.start);
+    end
     assert(length(args.start) == n, "Starting module assignment must have length n.")
     assert(isequal(unique(args.start), 1:k), "Starting module assignments must contain values 1 to k.")
 end
+
+assert(~isempty(k), "Specify number of modules or starting module assignment.")
+assert(k < n, "Number of modules must be smaller than number of nodes.")
 
 if objective == "modularity"
     if args.similarity == "precomputed"
