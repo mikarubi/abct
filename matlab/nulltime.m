@@ -38,6 +38,7 @@ arguments
     s (1, 1) double {mustBeInteger, mustBePositive} = 1
 end
 
+k = max(M);
 [n, t] = size(X);
 assert(length(M) == n, "Module assignment vector must have length n.")
 
@@ -54,7 +55,7 @@ Smm = G * G' / (t - 1);     % preserve covnode via rotated eigen-nullspace
 Snm = X * G';               % preserve covnodemode via standard nullspace
 
 % generate null timeseries
-G0 = zeros(n, k, s);
+G0 = zeros(k, t, s);
 X0 = zeros(n, t, s);
 for i = 1:s
     G0(:,:,i) = covnode_nullspace(Smm, t);

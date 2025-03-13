@@ -23,19 +23,21 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %           Only used if type = "binary". See LOYVAIN for details.
 %
 %   Outputs:
-%       A: Canonical weights of X (size q x k).
+%       A: Canonical coefficients of X (size q x k).
 %
-%       B: Canonical weights of Y (size r x k).
+%       B: Canonical coefficients of Y (size r x k).
 %
 %       U: Canonical components of X (size n x k).
 %
 %       V: Canonical components of Y (size n x k).
 %
 %   Methodological notes:
-%       Weighted CCA is computed via the SVD of the cross-covariance
-%       matrix. Binary CCA is computed via Loyvain clustering of the
-%       cross-covariance matrix, followed by iterative cluster matching.
-%       The output weigths vectors A and B are rescaled to have norm 1.
+%       Weighted canonical covariance analysis (aka partial least squares)
+%       is computed via the singular value decomposition of the
+%       cross-covariance matrix. Binary canonical covariance analysis is
+%       computed via Loyvain clustering of the cross-covariance matrix,
+%       followed by iterative cluster matching. For convenience the output
+%       canonical coefficients A and B are rescaled to have norm 1.
 %
 %   See also:
 %       CANONCORR, LOYVAIN.
@@ -78,7 +80,7 @@ switch type
         B = B ./ vecnorm(B, 2, 1);
 
         % Choose k largest components
-        C = corr(X * A, Y * B);
+        C = (X * A)' * (Y * B) / n;
         [~, Idx] = sort(C(:), "descend");
         [I, J] = ind2sub([k, k], Idx(1:k));
 
