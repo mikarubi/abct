@@ -77,5 +77,5 @@ switch method
         end
 
         D = polyval(b, (1:n).');
-        X = V * D * V';
+        X = V * diag(D) * V';
 end
