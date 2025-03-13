@@ -174,20 +174,25 @@ Q = - inf;
 for i = 1:r
     % kmeans++ initialization
     if isscalar(args.start)
+        % initialize (normalized) centroids
+        G0_nrm = nan(k, t);
+
         % select the first seed uniformly at random
-        G0 = nan(k, t);
-        G0(1, :) = X(randi(n), :);
+        G0_nrm(1, :) = X(randi(n), :);
+        G0_nrm(1, :) = G0_nrm(1, :) / norm(G0_nrm(1, :));
 
         % select the other seeds with a probabilistic model
-        minDist = inf(n, 1);
+        minDist = inf(1, n);
         for j = 2:k
-            G0j = G0(j-1, :);
-            minDist = min(minDist, 1 - X * G0j' ./ (Lx * norm(G0j)));
+            G0_nrm_j = G0_nrm(j-1, :);
+            minDist = min(minDist, 1 - G0_nrm_j * (X ./ Lx)');
             sampleProbability = minDist / sum(minDist);
             P = [0 cumsum(sampleProbability)]; P(end) = 1;
-            G0(j, :) = X(find(rand < P, 1), :);
+            G0_nrm(j, :) = X(find(rand < P, 1) - 1, :);
+            G0_nrm(j, :) = G0_nrm(j, :) / norm(G0_nrm(j, :));
         end
-        [~, M0] = max(G0' * X, [], 1);         % initialize modules
+        % initialize modules from cenroids (guarantees k modules)
+        [~, M0] = min(1 - G0_nrm * (X ./ Lx)', [], 1);
 
         % M0 = randi(k, 1, n);                 % initial module partition
         % M0(randperm(n, k)) = 1:k;            % ensure there are k modules
