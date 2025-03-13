@@ -18,7 +18,7 @@ function [M, Q] = loyvain(X, k, objective, args)
 %           "spectral": Spectral clustering objective (normalized cut).
 %
 %       Name=[Value] Arguments:
-
+%
 %           Similarity=[Type of similarity].
 %               The default option assumes that X is a network matrix.
 %                   "network": X is a symmetric network (default).
@@ -46,7 +46,8 @@ function [M, Q] = loyvain(X, k, objective, args)
 %               Positive integer vector of length n.
 %                   Initial module assignments.
 %               Positive integer: (default is 10)
-%                   Number of starts from random initial module assignments.
+%                   Number of starts from module assignments
+%                   initialized with the kmeans++ algorithm.
 %
 %           Verbose=[Display progress].
 %               Logical (default is false).
@@ -62,11 +63,13 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       equivalences between modularity maximization, k-means clustering,
 %       and spectral clustering.
 %
-%       Normalized degree-corrected modularity is approximately equivalent
-%       to k-means objective after global-signal regression (removal of the
-%       mean signal from the data). When the input is a data matrix rather
-%       than a network matrix, degree correction is replaced with global-
-%       signal regression, which may give slightly different results.
+%       The normalized modularity maximization is equivalent to k-means
+%       clustering of data after degree correction. When the input is a data
+%       rather than a network matrix, degree correction is implemented via
+%       an approximately (but not exactly) equivalent process of global-
+%       signal regression. Ultimately, degree correction and global-signal
+%       regression are both approximately equivalent to the subtraction of
+%       the rank-one approximation of the data.
 %
 %   See also:
 %       GRADIENTS, MODEREMOVAL.
@@ -87,15 +90,17 @@ end
 
 % Get dimensions
 [n, t] = size(X);
+assert(all(vecnorm(X, 2, 2) > 0, "all"), "Input data must not contain zero rows or NaN values.")
 
 % Get network matrix
 if args.similarity == "network"
     W = X;
+    X = [];
 else
     W = [];
 end
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
-    "Ensure similarity matrix is symmetric or change similarity metric.")
+    "Network matrix must be symmetric or similarity metric must not be set to ""network"".")
 
 % Test non-negativity for spectral and modularity
 if ismember(objective, ["modularity" "spectral"])
@@ -115,6 +120,7 @@ end
 % Process starts
 if isscalar(args.start)
     r = args.start;
+    assert(k > 0, "Specify number of modules or starting module assignment.")
 elseif isvector(args.start)
     r = 1;
     args.start = reshape(args.start, 1, []);
@@ -125,7 +131,6 @@ elseif isvector(args.start)
     assert(isequal(unique(args.start), 1:k), "Starting module assignments must contain values 1 to k.")
 end
 
-assert(k > 0, "Specify number of modules or starting module assignment.")
 assert(k < n, "Number of modules must be smaller than number of nodes.")
 
 if objective == "modularity"
@@ -156,12 +161,36 @@ else
     Wii = sum(X.^2, 2)';                    % data sum of squares
 end
 
+if isscalar(args.start)
+    % Use network as data for kmeans++ initialization
+    if args.similarity == "network"
+        X = W;
+    end
+    Lx = vecnorm(X, 2, 2);
+end
+
 Q = - inf;
+% Run kmeans and keep best output
 for i = 1:r
-    % Run kmeans and keep best output
+    % kmeans++ initialization
     if isscalar(args.start)
-        M0 = randi(k, 1, n);                 % initial module partition
-        M0(randperm(n, k)) = 1:k;            % ensure there are k modules
+        % select the first seed uniformly at random
+        G0 = nan(k, t);
+        G0(1, :) = X(randi(n), :);
+
+        % select the other seeds with a probabilistic model
+        minDist = inf(n, 1);
+        for j = 2:k
+            G0j = G0(j-1, :);
+            minDist = min(minDist, 1 - X * G0j' ./ (Lx * norm(G0j)));
+            sampleProbability = minDist / sum(minDist);
+            P = [0 cumsum(sampleProbability)]; P(end) = 1;
+            G0(j, :) = X(find(rand < P, 1), :);
+        end
+        [~, M0] = max(G0' * X, [], 1);         % initialize modules
+
+        % M0 = randi(k, 1, n);                 % initial module partition
+        % M0(randperm(n, k)) = 1:k;            % ensure there are k modules
     elseif isvector(args.start)
         M0 = args.start;
     end
