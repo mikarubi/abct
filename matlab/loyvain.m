@@ -92,18 +92,19 @@ arguments
     args.verbose (1, 1) logical = false;
 end
 
-% Get dimensions
+% Get dimensions and network matrix
 [n, t] = size(X);
-assert(all(vecnorm(X, 2, 2) > 0, "all"), "Input data must not contain zero rows or NaN values.")
-assert(k < n, "Number of modules must be smaller than number of nodes.")
-
-% Get network matrix
 if args.similarity == "network"
     W = X;
     X = [];
 else
     W = [];
 end
+
+%% Additional tests
+
+assert(all(vecnorm(X, 2, 2) > 0, "all"), "Input data must not contain zero rows or NaN values.")
+assert(k < n, "Number of modules must be smaller than number of nodes.")
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
     "Network matrix must be symmetric or similarity must not be ""network"".")
 
@@ -122,17 +123,19 @@ if ismember(objective, ["modularity" "spectral"])
     end
 end
 
-% Process start
+% Test initialization
 if isstring(args.start)
     assert(ismember(args.start, ["kmeans++", "random"]), ...
-        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignments.")
+        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignment.")
 elseif isvector(args.start)
     args.replicates = 1;
-    assert(length(args.start) == n, "Initial module assignment must have length n.")
-    assert(isequal(unique(args.start), 1:k), "Initial module assignment must contain integers 1 to %d.", k)
+    assert((length(args.start) == n) && isequal(unique(args.start), 1:k), ...
+        "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
 end
 
-% Process modularity
+%% Process data
+
+% Remove first mode for modularity
 if objective == "modularity"
     if args.similarity == "network"
         W = moderemoval(W, "degree");
@@ -142,65 +145,73 @@ if objective == "modularity"
     objective = "kmeans";
 end
 
-% Center data
+% Center to mean 0 for covariance and correlation
 if ismember(args.similarity, ["cov", "corr"])
     X = X - mean(X, 2);
 end
 
-% Normalize data
+% Normalize to norm 1 for cosine and correlation
 if ismember(args.similarity, ["cosim", "corr"])
     X = X ./ vecnorm(X, 2, 2);
 elseif ismember(args.similarity, ["dot", "cov"])
     X = X / sqrt(t);
 end
 
-% Get self-connections
+% Compute self-connection weights
 if args.similarity == "network"
-    Wii = diag(W)';                         % network self connections
+    Wii = diag(W)';
 else
-    Wii = sum(X.^2, 2)';                    % data sum of squares
+    Wii = sum(X.^2, 2)';
 end
 
-if isscalar(args.start)
-    % Use network as data for kmeans++ initialization
+%% Run k-means and store best result
+
+% Precompute kmeans++ variables
+if args.start == "kmeans++"
     if args.similarity == "network"
-        X = W;
+        Dist = W ./ vecnorm(W, 2, 2);
+        Dist = 1 - Dist * Dist';
+    else
+        normX = vecnorm(X, 2, 2);
     end
-    Lx = vecnorm(X, 2, 2);
 end
 
 Q = - inf;
-% Run kmeans and keep best output
 for i = 1:args.replicates
     switch args.start
         case "kmeans++"
-            % initialize (normalized) centroids
-            G0_nrm = nan(k, t);
-
-            % select the first seed uniformly at random
-            G0_nrm(1, :) = X(randi(n), :);
-            G0_nrm(1, :) = G0_nrm(1, :) / norm(G0_nrm(1, :));
-
-            % select the other seeds with a probabilistic model
+            Idx = [randi(n) nan(1, k-1)];           % centroid indices
+            if args.similarity ~= "network"         % normalized centroids
+                G = [X(Idx(1), :) ./ normX(Idx(1)); nan(k-1, t)];
+            end
             minDist = inf(1, n);
             for j = 2:k
-                G0_nrm_j = G0_nrm(j-1, :);
-                minDist = min(minDist, 1 - G0_nrm_j * (X ./ Lx)');
+                if args.similarity ~= "network"
+                    Dj = 1 - G(j-1, :) * (X ./ normX)'; % compute distance
+                else
+                    Dj = Dist(Idx(j-1), :);         % use precomputed distance
+                end
+                minDist = min(minDist, Dj);         % min distance to centroid
                 sampleProbability = minDist / sum(minDist);
                 P = [0 cumsum(sampleProbability)]; P(end) = 1;
-                G0_nrm(j, :) = X(find(rand < P, 1) - 1, :);
-                G0_nrm(j, :) = G0_nrm(j, :) / norm(G0_nrm(j, :));
+                Idx(j) = find(rand < P, 1) - 1;     % sample new centroid
+                if args.similarity ~= "network"
+                    G(j, :) = X(Idx(j), :) ./ normX(Idx(j));
+                end
             end
-            % initialize modules from cenroids (guarantees k modules)
-            [~, M0] = min(1 - G0_nrm * (X ./ Lx)', [], 1);
+            if args.similarity ~= "network"         % initial module partition
+                [~, M0] = min(1 - G * (X ./ normX)', [], 1);
+            else
+                [~, M0] = min(Dist(Idx, :), [], 1);
+            end
         case "random"
-            M0 = randi(k, 1, n);                 % initial module partition
-            M0(randperm(n, k)) = 1:k;            % ensure there are k modules
+            M0 = randi(k, 1, n);                    % initial module partition
+            M0(randperm(n, k)) = 1:k;               % ensure there are k modules
         otherwise
-            M0 = args.start;
+            M0 = args.start;                        % custom module partition
     end
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
-    if mean(Q1) > mean(Q)
+    if Q1 > Q
         Q = Q1;
         M = M1;
     end
