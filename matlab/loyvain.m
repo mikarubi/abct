@@ -42,12 +42,15 @@ function [M, Q] = loyvain(X, k, objective, args)
 %           MaxIter=[Maximum number of algorithm iterations].
 %               Positive integer (default is 1000).
 %
-%           Start=[Initial module assignments or number of starts].
-%               Positive integer vector of length n.
-%                   Initial module assignments.
-%               Positive integer: (default is 10)
-%                   Number of starts from module assignments
-%                   initialized with the kmeans++ algorithm.
+%           Replicates=[Number of replicates].
+%               Positive integer (default is 10).
+%               The number of replicates is ignored if Start is a custom
+%               initial module assignment vector.
+%
+%           Start=[Initial module assignments].
+%               "kmeans++": Kmeans++ initialized module assignments. (default)
+%               "random": Uniformly random initial module assignments.
+%               A custom initial module assignment vector of length n.
 %
 %           Verbose=[Display progress].
 %               Logical (default is false).
@@ -76,7 +79,7 @@ function [M, Q] = loyvain(X, k, objective, args)
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
+    k (1, 1) double {mustBeInteger, mustBePositive}
     objective (1, 1) string {mustBeMember(objective, ...
         ["modularity", "kmeans", "spectral"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
@@ -84,13 +87,15 @@ arguments
     args.acceptance (1, 1) double ...
         {mustBeInRange(args.acceptance, 0, 1)} = 0.5
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
-    args.start (1, :) double {mustBeInteger, mustBePositive} = 10
+    args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
+    args.start (1, :) = "kmeans++"
     args.verbose (1, 1) logical = false;
 end
 
 % Get dimensions
 [n, t] = size(X);
 assert(all(vecnorm(X, 2, 2) > 0, "all"), "Input data must not contain zero rows or NaN values.")
+assert(k < n, "Number of modules must be smaller than number of nodes.")
 
 % Get network matrix
 if args.similarity == "network"
@@ -100,7 +105,7 @@ else
     W = [];
 end
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
-    "Network matrix must be symmetric or similarity metric must not be set to ""network"".")
+    "Network matrix must be symmetric or similarity must not be ""network"".")
 
 % Test non-negativity for spectral and modularity
 if ismember(objective, ["modularity" "spectral"])
@@ -117,22 +122,17 @@ if ismember(objective, ["modularity" "spectral"])
     end
 end
 
-% Process starts
-if isscalar(args.start)
-    r = args.start;
-    assert(k > 0, "Specify number of modules or starting module assignment.")
+% Process start
+if isstring(args.start)
+    assert(ismember(args.start, ["kmeans++", "random"]), ...
+        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignments.")
 elseif isvector(args.start)
-    r = 1;
-    args.start = reshape(args.start, 1, []);
-    if k==0
-        k = max(args.start);
-    end
-    assert(length(args.start) == n, "Starting module assignment must have length n.")
-    assert(isequal(unique(args.start), 1:k), "Starting module assignments must contain values 1 to k.")
+    args.replicates = 1;
+    assert(length(args.start) == n, "Initial module assignment must have length n.")
+    assert(isequal(unique(args.start), 1:k), "Initial module assignment must contain integers 1 to %d.", k)
 end
 
-assert(k < n, "Number of modules must be smaller than number of nodes.")
-
+% Process modularity
 if objective == "modularity"
     if args.similarity == "network"
         W = moderemoval(W, "degree");
@@ -171,33 +171,33 @@ end
 
 Q = - inf;
 % Run kmeans and keep best output
-for i = 1:r
-    % kmeans++ initialization
-    if isscalar(args.start)
-        % initialize (normalized) centroids
-        G0_nrm = nan(k, t);
+for i = 1:args.replicates
+    switch args.start
+        case "kmeans++"
+            % initialize (normalized) centroids
+            G0_nrm = nan(k, t);
 
-        % select the first seed uniformly at random
-        G0_nrm(1, :) = X(randi(n), :);
-        G0_nrm(1, :) = G0_nrm(1, :) / norm(G0_nrm(1, :));
+            % select the first seed uniformly at random
+            G0_nrm(1, :) = X(randi(n), :);
+            G0_nrm(1, :) = G0_nrm(1, :) / norm(G0_nrm(1, :));
 
-        % select the other seeds with a probabilistic model
-        minDist = inf(1, n);
-        for j = 2:k
-            G0_nrm_j = G0_nrm(j-1, :);
-            minDist = min(minDist, 1 - G0_nrm_j * (X ./ Lx)');
-            sampleProbability = minDist / sum(minDist);
-            P = [0 cumsum(sampleProbability)]; P(end) = 1;
-            G0_nrm(j, :) = X(find(rand < P, 1) - 1, :);
-            G0_nrm(j, :) = G0_nrm(j, :) / norm(G0_nrm(j, :));
-        end
-        % initialize modules from cenroids (guarantees k modules)
-        [~, M0] = min(1 - G0_nrm * (X ./ Lx)', [], 1);
-
-        % M0 = randi(k, 1, n);                 % initial module partition
-        % M0(randperm(n, k)) = 1:k;            % ensure there are k modules
-    elseif isvector(args.start)
-        M0 = args.start;
+            % select the other seeds with a probabilistic model
+            minDist = inf(1, n);
+            for j = 2:k
+                G0_nrm_j = G0_nrm(j-1, :);
+                minDist = min(minDist, 1 - G0_nrm_j * (X ./ Lx)');
+                sampleProbability = minDist / sum(minDist);
+                P = [0 cumsum(sampleProbability)]; P(end) = 1;
+                G0_nrm(j, :) = X(find(rand < P, 1) - 1, :);
+                G0_nrm(j, :) = G0_nrm(j, :) / norm(G0_nrm(j, :));
+            end
+            % initialize modules from cenroids (guarantees k modules)
+            [~, M0] = min(1 - G0_nrm * (X ./ Lx)', [], 1);
+        case "random"
+            M0 = randi(k, 1, n);                 % initial module partition
+            M0(randperm(n, k)) = 1:k;            % ensure there are k modules
+        otherwise
+            M0 = args.start;
     end
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if mean(Q1) > mean(Q)
