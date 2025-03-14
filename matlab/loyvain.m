@@ -21,8 +21,10 @@ function [M, Q] = loyvain(X, k, objective, args)
 %
 %           Similarity=[Type of similarity].
 %               The default option assumes that X is a network matrix.
-%                   "network": X is a symmetric network (default).
-%                       No additional similarity is computed.
+%                   "network": Network connectivity (default).
+%                       X is a symmetric network matrix. The network must
+%                       be non-negative for the spectral and modularity
+%                       objectives. No additional similarity is computed.
 %               The remaining options assume that X is a data matrix.
 %                   "corr": Pearson correlation coefficient.
 %                       A scale-invariant measure of linear association,
@@ -44,8 +46,6 @@ function [M, Q] = loyvain(X, k, objective, args)
 %
 %           Replicates=[Number of replicates].
 %               Positive integer (default is 10).
-%               The number of replicates is ignored if Start is a custom
-%               initial module assignment vector.
 %
 %           Start=[Initial module assignments].
 %               "kmeans++": Kmeans++ initialized module assignments. (default)
@@ -74,12 +74,17 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       regression are both approximately equivalent to the subtraction of
 %       the rank-one approximation of the data.
 %
+%       The Loyvain algorithm is deterministic if all swaps are accepted
+%       at each iteration (Acceptance = 1), and is non-deterministic otherwise
+%       (Acceptance < 1). It follows that the algorithm may generate different
+%       results from the same initial conditions at different replicates.
+%
 %   See also:
 %       GRADIENTS, MODEREMOVAL.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBePositive}
+    k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     objective (1, 1) string {mustBeMember(objective, ...
         ["modularity", "kmeans", "spectral"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
@@ -112,6 +117,15 @@ if objective == "modularity"
     objective = "kmeans";
 end
 
+% Process custom initial module assignment
+if isnumeric(args.start)
+    M0 = args.start;
+    if k == 0
+        k = max(M0);
+    end
+    args.start = "custom";
+end
+
 % Center to mean 0 for covariance and correlation
 if ismember(args.similarity, ["cov", "corr"])
     X = X - mean(X, 2);
@@ -133,31 +147,29 @@ end
 
 %% Additional tests
 
-assert(all(isfinite(X), "all"), "Data matrix must be finite and not contain zero rows.")
+assert(k > 0, "Specify number of modules or starting module assignment.")
 assert(k < n, "Number of modules must be smaller than number of nodes.")
+assert(all(isfinite(X), "all"), "Data matrix must be finite and not have zero rows.")
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
     "Network matrix must be symmetric or similarity must not be ""network"".")
 
 % Test non-negativity for spectral and modularity
 if ismember(objective, ["modularity" "spectral"])
-    err = "Network matrix must be non-negative.";
     if args.similarity == "network"
-        assert(all(W >= 0, "all"), err);
+        assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
     elseif (objective == "spectral") && (n*t < 1e6)
-        assert(all(X * X' >= 0, "all"), err)
+        assert(all(X * X' >= 0, "all"), "Similarity matrix must be non-negative.")
     elseif (objective == "spectral")
-        warning("Not checking network matrix for negative values because " + ...
-            "of large data size. Ensure that network matrix is non-negative.")
+        warning("Not checking similarity matrix for negative values because " + ...
+            "of large data size. Ensure that similarity matrix is non-negative.")
     end
 end
 
 % Test initialization
-if isstring(args.start)
-    assert(ismember(args.start, ["kmeans++", "random"]), ...
-        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignment.")
-elseif isvector(args.start)
-    args.replicates = 1;
-    assert((length(args.start) == n) && isequal(unique(args.start), 1:k), ...
+assert(ismember(args.start, ["kmeans++", "random", "custom"]), ...
+    "Start must be either ""kmeans++"", ""random"", or a numeric vector.")
+if args.start == "custom"
+    assert((length(M0) == n) && isequal(unique(M0), 1:k), ...
         "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
 end
 
@@ -175,37 +187,28 @@ end
 
 Q = - inf;
 for i = 1:args.replicates
-    switch args.start
-        case "kmeans++"
-            Idx = [randi(n) nan(1, k-1)];           % centroid indices
-            if args.similarity ~= "network"         % normalized centroids
-                G = [X(Idx(1), :) ./ normX(Idx(1)); nan(k-1, t)];
+    if args.start == "kmeans++"
+        Idx = [randi(n) nan(1, k-1)];           % centroid indices
+        minDist = inf(1, n);
+        for j = 2:k
+            if args.similarity == "network"     % use precomputed distance
+                Dj = Dist(Idx(j-1), :);
+            else                                % compute distance on the fly
+                Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
             end
-            minDist = inf(1, n);
-            for j = 2:k
-                if args.similarity ~= "network"
-                    Dj = 1 - G(j-1, :) * (X ./ normX)'; % compute distance
-                else
-                    Dj = Dist(Idx(j-1), :);         % use precomputed distance
-                end
-                minDist = min(minDist, Dj);         % min distance to centroid
-                sampleProbability = minDist / sum(minDist);
-                P = [0 cumsum(sampleProbability)]; P(end) = 1;
-                Idx(j) = find(rand < P, 1) - 1;     % sample new centroid
-                if args.similarity ~= "network"
-                    G(j, :) = X(Idx(j), :) ./ normX(Idx(j));
-                end
-            end
-            if args.similarity ~= "network"         % get initial partition
-                [~, M0] = min(1 - G * (X ./ normX)', [], 1);
-            else
-                [~, M0] = min(Dist(Idx, :), [], 1);
-            end
-        case "random"
-            M0 = randi(k, 1, n);                    % initial module partition
-            M0(randperm(n, k)) = 1:k;               % ensure there are k modules
-        otherwise
-            M0 = args.start;                        % custom module partition
+            minDist = min(minDist, Dj);         % min distance to centroid
+            sampleProbability = minDist / sum(minDist);
+            P = [0 cumsum(sampleProbability)]; P(end) = 1;
+            Idx(j) = find(rand < P, 1) - 1;     % sample new centroid
+        end
+        if args.similarity == "network"         % use precomputed distance
+            [~, M0] = min(Dist(Idx, :), [], 1);
+        else                                    % compute distance on the fly
+            [~, M0] = min(1 - (X(Idx, :) * X') ./ (normX(Idx) * normX'), [], 1);
+        end
+    elseif args.start == "random"
+        M0 = randi(k, 1, n);                    % initial module partition
+        M0(randperm(n, k)) = 1:k;               % ensure there are k modules
     end
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if Q1 > Q
