@@ -34,7 +34,7 @@ end
 switch method
     case "degree"
         %% Degree correction
-        assert(all(X >= 0, "all"), "Input matrix must be non-negative.")
+        assert(all(X >= 0, "all"), "Network matrix must be non-negative.")
         So = sum(X, 2);
         Si = sum(X, 1);
         X = X - So * Si / sum(So);
@@ -53,7 +53,7 @@ switch method
     case "soft"
         %% Soft removal of primary modes
         assert(isequal(size(X, 1), size(X, 2)) && all(X - X' < eps("single"), "all"), ...
-            "Input matrix must be symmetric.")
+            "Network matrix must be symmetric.")
         [V, D] = eig(X, "vector");
         [~, ix] = sort(D, "descend");
         V = V(:, ix);

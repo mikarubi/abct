@@ -92,7 +92,8 @@ arguments
     args.verbose (1, 1) logical = false;
 end
 
-% Get dimensions and network matrix
+%% Initial processing
+
 [n, t] = size(X);
 if args.similarity == "network"
     W = X;
@@ -100,40 +101,6 @@ if args.similarity == "network"
 else
     W = [];
 end
-
-%% Additional tests
-
-assert(all(vecnorm(X, 2, 2) > 0, "all"), "Input data must not contain zero rows or NaN values.")
-assert(k < n, "Number of modules must be smaller than number of nodes.")
-assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
-    "Network matrix must be symmetric or similarity must not be ""network"".")
-
-% Test non-negativity for spectral and modularity
-if ismember(objective, ["modularity" "spectral"])
-    err = "Similarity matrix for " + objective + ...
-        "clustering must not contain negative values.";
-    if args.similarity == "network"
-        assert(all(W >= 0, "all"), err);
-    elseif (objective == "spectral") && (n < 1e4)
-        assert(all(X * X' >= 0, "all"), err)
-    elseif (objective == "spectral")
-        warning("Not checking similarity matrix for negative values because " + ...
-            "number of nodes > 1e4. Ensure that this matrix has no negative " + ...
-            "values for compatibility with " + objective + " clustering.")
-    end
-end
-
-% Test initialization
-if isstring(args.start)
-    assert(ismember(args.start, ["kmeans++", "random"]), ...
-        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignment.")
-elseif isvector(args.start)
-    args.replicates = 1;
-    assert((length(args.start) == n) && isequal(unique(args.start), 1:k), ...
-        "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
-end
-
-%% Process data
 
 % Remove first mode for modularity
 if objective == "modularity"
@@ -162,6 +129,36 @@ if args.similarity == "network"
     Wii = diag(W)';
 else
     Wii = sum(X.^2, 2)';
+end
+
+%% Additional tests
+
+assert(all(isfinite(X), "all"), "Data matrix must be finite and not contain zero rows.")
+assert(k < n, "Number of modules must be smaller than number of nodes.")
+assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
+    "Network matrix must be symmetric or similarity must not be ""network"".")
+
+% Test non-negativity for spectral and modularity
+if ismember(objective, ["modularity" "spectral"])
+    err = "Network matrix must be non-negative.";
+    if args.similarity == "network"
+        assert(all(W >= 0, "all"), err);
+    elseif (objective == "spectral") && (n*t < 1e6)
+        assert(all(X * X' >= 0, "all"), err)
+    elseif (objective == "spectral")
+        warning("Not checking network matrix for negative values because " + ...
+            "of large data size. Ensure that network matrix is non-negative.")
+    end
+end
+
+% Test initialization
+if isstring(args.start)
+    assert(ismember(args.start, ["kmeans++", "random"]), ...
+        "Start must be either ""kmeans++"", ""random"", or a custom initial module assignment.")
+elseif isvector(args.start)
+    args.replicates = 1;
+    assert((length(args.start) == n) && isequal(unique(args.start), 1:k), ...
+        "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
 end
 
 %% Run k-means and store best result
@@ -199,7 +196,7 @@ for i = 1:args.replicates
                     G(j, :) = X(Idx(j), :) ./ normX(Idx(j));
                 end
             end
-            if args.similarity ~= "network"         % initial module partition
+            if args.similarity ~= "network"         % get initial partition
                 [~, M0] = min(1 - G * (X ./ normX)', [], 1);
             else
                 [~, M0] = min(Dist(Idx, :), [], 1);
@@ -311,7 +308,7 @@ for v = 1:args.maxiter
         break;
     end
     if args.verbose
-        fprintf("Attempt: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
+        fprintf("Replicate: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
             replicate_i, v, n_i, max(max_delta_Q))
     end
     if v == args.maxiter
