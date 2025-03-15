@@ -1,4 +1,4 @@
-function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
+function [A, B, U, V] = canoncov(X, Y, k, type, order, varargin)
 % CANONCOV Canonical covariance analysis (aka Partial least squares)
 %
 %   [A, B, U, V] = canoncov(X, Y, k)
@@ -18,9 +18,14 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %           "weighted": Standard canonical covariance (default).
 %           "binary": Binary canonical covariance.
 %
+%   Inputs for binary analysis. Only used if type = "binary".
+%       order: Order of binary canonical components.
+%           "ordcov": Ordered by covariance (default).
+%           "ordcorr": Ordered by correlation.
+%
 %       Name=[Value] Arguments:
 %           Name-value arguments for the Loyvain algorithm.
-%           Only used if type = "binary". See LOYVAIN for details.
+%           See LOYVAIN for details.
 %
 %   Outputs:
 %       A: Canonical coefficients of X (size q x k).
@@ -36,8 +41,12 @@ function [A, B, U, V] = canoncov(X, Y, k, type, varargin)
 %       is computed via the singular value decomposition of the
 %       cross-covariance matrix. Binary canonical covariance analysis is
 %       computed via Loyvain clustering of the cross-covariance matrix,
-%       followed by iterative cluster matching. For convenience the output
+%       followed by iterative cluster matching. For convenience the binary
 %       canonical coefficients A and B are rescaled to have norm 1.
+%
+%       Pairs of binary components are selected until their association
+%       (covariance or correlation) is larger than their associations with
+%       any of the previously selected components.
 %
 %   See also:
 %       CANONCORR, LOYVAIN.
@@ -47,6 +56,7 @@ arguments
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
+    order (1, 1) string {mustBeMember(order, ["ordcov", "ordcorr"])} = "ordcov"
 end
 arguments (Repeating)
     varargin
@@ -80,7 +90,13 @@ switch type
         B = B ./ vecnorm(B, 2, 1);
 
         % Choose k largest components
-        C = (X * A)' * (Y * B) / n;
+        U = X * A / sqrt(n);
+        V = Y * B / sqrt(n);
+        if order == "ordcorr"
+            U = U ./ vecnorm(U, 2, 1);
+            V = V ./ vecnorm(V, 2, 1);
+        end
+        C = U' * V;
         [~, Idx] = sort(C(:), "descend");
         [I, J] = ind2sub([k, k], Idx(1:k));
 
