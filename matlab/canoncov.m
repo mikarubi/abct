@@ -44,7 +44,7 @@ function [A, B, U, V] = canoncov(X, Y, k, type, order, varargin)
 %       followed by iterative cluster matching. For convenience the binary
 %       canonical coefficients A and B are rescaled to have norm 1.
 %
-%       Pairs of binary components are selected until their association
+%       Pairs of binary components are selected while their association
 %       (covariance or correlation) is larger than their associations with
 %       any of the previously selected components.
 %
