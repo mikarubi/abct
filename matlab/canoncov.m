@@ -20,8 +20,8 @@ function [A, B, U, V] = canoncov(X, Y, k, type, order, varargin)
 %
 %   Inputs for binary analysis. Only used if type = "binary".
 %       order: Order of binary canonical components.
-%           "ordcov": Ordered by covariance (default).
-%           "ordcorr": Ordered by correlation.
+%           "ordcov": Ordered by covariance.
+%           "ordcorr": Ordered by correlation (default).
 %
 %       Name=[Value] Arguments:
 %           Name-value arguments for the Loyvain algorithm.
@@ -56,7 +56,7 @@ arguments
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
-    order (1, 1) string {mustBeMember(order, ["ordcov", "ordcorr"])} = "ordcov"
+    order (1, 1) string {mustBeMember(order, ["ordcov", "ordcorr"])} = "ordcorr"
 end
 arguments (Repeating)
     varargin
