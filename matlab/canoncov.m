@@ -3,7 +3,7 @@ function [A, B, U, V] = canoncov(X, Y, k, type, order, varargin)
 %
 %   [A, B, U, V] = canoncov(X, Y, k)
 %   [A, B, U, V] = canoncov(X, Y, k, type)
-%   [A, B, U, V] = canoncov(X, Y, k, type, Name=Value)
+%   [A, B, U, V] = canoncov(X, Y, k, type, order, Name=Value)
 %
 %   Inputs:
 %       X: Input matrix of size n x q.
@@ -15,8 +15,8 @@ function [A, B, U, V] = canoncov(X, Y, k, type, order, varargin)
 %       k: Number of canonical components.
 %
 %       type: Type of analysis.
-%           "weighted": Standard canonical covariance (default).
-%           "binary": Binary canonical covariance.
+%           "weighted": Standard canonical covariance analysis (default).
+%           "binary": Binary canonical covariance analysis.
 %
 %   Inputs for binary analysis. Only used if type = "binary".
 %       order: Order of binary canonical components.
