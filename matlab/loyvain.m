@@ -48,12 +48,15 @@ function [M, Q] = loyvain(X, k, objective, args)
 %               Positive integer (default is 10).
 %
 %           Start=[Initial module assignments].
-%               "kmeans++": Kmeans++ initialized module assignments. (default)
-%               "random": Uniformly random initial module assignments.
-%               A custom initial module assignment vector of length n.
+%               "farthest": Farthest-first-traversal initialization (default).
+%               "kmeans++": Kmeans++ initialization.
+%               "random": Uniformly random initialization.
+%               Initial-module-assignment vector of length n.
 %
-%           Verbose=[Display progress].
-%               Logical (default is false).
+%           Display=[Display progress].
+%               "none": no display (default).
+%               "replicate": display progress at each replicate.
+%               "iteration": display progress at each iteration.
 %
 %   Outputs:
 %       M: Vector of module assignments (length n).
@@ -93,8 +96,9 @@ arguments
         {mustBeInRange(args.acceptance, 0, 1)} = 0.5
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
     args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
-    args.start (1, :) = "kmeans++"
-    args.verbose (1, 1) logical = false;
+    args.start (1, :) = "farthest"
+    args.display (1, 1) string {mustBeMember(args.display, ...
+        ["none", "replicate", "iteration"])} = "none"
 end
 
 %% Initial processing
@@ -166,8 +170,8 @@ if ismember(objective, ["modularity" "spectral"])
 end
 
 % Test initialization
-assert(ismember(args.start, ["kmeans++", "random", "custom"]), ...
-    "Start must be either ""kmeans++"", ""random"", or a numeric vector.")
+assert(ismember(args.start, ["farthest", "kmeans++", "random", "custom"]), ...
+    "Start must be either ""farthest"", ""kmeans++"", ""random"", or a numeric vector.")
 if args.start == "custom"
     assert((length(M0) == n) && isequal(unique(M0), 1:k), ...
         "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
@@ -187,7 +191,7 @@ end
 
 Q = - inf;
 for i = 1:args.replicates
-    if args.start == "kmeans++"
+    if (args.start == "farthest") || (args.start == "kmeans++")
         Idx = [randi(n) nan(1, k-1)];           % centroid indices
         minDist = inf(1, n);
         for j = 2:k
@@ -197,7 +201,11 @@ for i = 1:args.replicates
                 Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
             end
             minDist = min(minDist, Dj);         % min distance to centroid
-            sampleProbability = minDist / sum(minDist);
+            if args.start == "farthest"
+                sampleProbability = (minDist == max(minDist));
+            elseif args.start == "kmeans++"
+                sampleProbability = (minDist / sum(minDist));
+            end
             P = [0 cumsum(sampleProbability)]; P(end) = 1;
             Idx(j) = find(rand < P, 1) - 1;     % sample new centroid
         end
@@ -212,6 +220,9 @@ for i = 1:args.replicates
     end
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if Q1 > Q
+        if args.display == "replicate"
+            fprintf("Replicate: %5d.  Objective: %5.3f.  Improvement: %5.3f\n", i, Q1, Q1 - Q);
+        end
         Q = Q1;
         M = M1;
     end
@@ -310,7 +321,7 @@ for v = 1:args.maxiter
     else
         break;
     end
-    if args.verbose
+    if args.display == "iteration"
         fprintf("Replicate: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
             replicate_i, v, n_i, max(max_delta_Q))
     end
