@@ -180,7 +180,7 @@ end
 %% Run k-means and store best result
 
 % Precompute kmeans++ variables
-if args.start == "kmeans++"
+if ismember(args.start, ["farthest", "kmeans++"])
     if args.similarity == "network"
         Dist = W ./ vecnorm(W, 2, 2);
         Dist = 1 - Dist * Dist';
@@ -191,7 +191,7 @@ end
 
 Q = - inf;
 for i = 1:args.replicates
-    if (args.start == "farthest") || (args.start == "kmeans++")
+    if ismember(args.start, ["farthest", "kmeans++"])
         Idx = [randi(n) nan(1, k-1)];           % centroid indices
         minDist = inf(1, n);
         for j = 2:k
