@@ -77,6 +77,14 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       regression are both approximately equivalent to the subtraction of
 %       the rank-one approximation of the data.
 %
+%       Note that for Similarity="network", the value of the normalized
+%       modularity is rescaled by the following factor:
+%           (average module size) / ([absolute] sum of all weights)
+%       This rescaling approximately aligns the value of the objective
+%       function with values of the unnormalized modularity. For other
+%       similarity measures the value of the objective function is not
+%       rescaled, but the algorithm still optimizes an equivalent objective.
+%
 %       The Loyvain algorithm is deterministic if all swaps are accepted
 %       at each iteration (Acceptance = 1), and is non-deterministic otherwise
 %       (Acceptance < 1). It follows that the algorithm may generate different
@@ -114,6 +122,7 @@ end
 % Remove first mode for modularity
 if objective == "modularity"
     if args.similarity == "network"
+        W = W * (n/k) / sum(abs(W), "all");
         W = moderemoval(W, "degree");
     else
         X = moderemoval(X, "global");
@@ -264,7 +273,8 @@ for v = 1:args.maxiter
                 ((2 * Smn      + Wii) - Cii_nrm     .* Sn) ./ (Sm     + Sn) - ...
                 ((2 * Smn(Idx) - Wii) - Cii_nrm(M)' .* Sn) ./ (Sm(M)' - Sn);
     end
-    delta_Q(Idx) = 0;
+    delta_Q(Idx) = 0;                       % no change if node stays in own module
+    delta_Q(:, N(M) == 1) = - inf;          % no change allowed if one-node cluster
 
     % Update if improvements
     [max_delta_Q, M_new] = max(delta_Q);
