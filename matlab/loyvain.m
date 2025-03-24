@@ -291,16 +291,26 @@ for v = 1:args.maxiter
             I = U(IU);                          % actual indices of nodes to be switched
             MI_new = MU_new(IU);                % new module assignments
 
-            % get delta modules
+            % get delta modules and ensure non-empty modules
             n_i = numel(I);
-            MMI     = sparse(  M(I), 1:n_i, 1, k, n_i);
-            MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
-            delta_MMI = (MMI_new - MMI);
+            MMI = sparse(M(I), 1:n_i, 1, k, n_i);
+            while 1
+                MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
+                delta_MMI = (MMI_new - MMI);
+                N_new = N + sum(delta_MMI, 2);
+                if all(N_new)
+                    break;
+                else
+                    M0 = find(~N_new);          % empty modules
+                    n0_i = numel(M0);           % number of empty modules
+                    MI_new(randperm(n_i, n0_i)) = M0;
+                end
+            end
 
-            % Update M, MM, N, and LinIdx
+            % Update N, M, MM, and LinIdx
+            N = N_new;
             M(I) = MI_new;
-            MM = sparse(M, 1:n, 1);
-            N = N + sum(delta_MMI, 2);
+            MM = sparse(M, 1:n, 1, k, n);
             LinIdx(I) = MI_new + k*(I-1);
 
             % Update G and Dmn
