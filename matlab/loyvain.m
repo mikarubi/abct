@@ -46,8 +46,8 @@ function [M, Q] = loyvain(X, k, objective, args)
 %               Positive integer (default is 10).
 %
 %           Start=[Initial module assignments].
-%               "farthest": Farthest-first-traversal initialization (default).
-%               "kmeans++": Kmeans++ initialization.
+%               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
+%               "balanced": Standard kmeans++ initialization.
 %               "random": Uniformly random initialization.
 %               Initial-module-assignment vector of length n.
 %
@@ -100,7 +100,7 @@ arguments
     args.numbatches (1, 1) double {mustBeInteger, mustBePositive} = 2
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
     args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
-    args.start (1, :) = "farthest"
+    args.start (1, :) = "greedy"
     args.display (1, 1) string {mustBeMember(args.display, ...
         ["none", "replicate", "iteration"])} = "none"
 end
@@ -176,8 +176,8 @@ if ismember(objective, ["modularity" "spectral"])
 end
 
 % Test initialization
-assert(ismember(args.start, ["farthest", "kmeans++", "random", "custom"]), ...
-    "Start must be either ""farthest"", ""kmeans++"", ""random"", or a numeric vector.")
+assert(ismember(args.start, ["greedy", "balanced", "random", "custom"]), ...
+    "Start must be either ""greedy"", ""balanced"", ""random"", or a numeric vector.")
 if args.start == "custom"
     assert((length(M0) == n) && isequal(unique(M0), 1:k), ...
         "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
@@ -186,7 +186,7 @@ end
 %% Run k-means and store best result
 
 % Precompute kmeans++ variables
-if ismember(args.start, ["farthest", "kmeans++"])
+if ismember(args.start, ["greedy", "balanced"])
     if args.similarity == "network"
         Dist = W ./ vecnorm(W, 2, 2);
         Dist = 1 - Dist * Dist';
@@ -197,7 +197,7 @@ end
 
 Q = - inf;
 for i = 1:args.replicates
-    if ismember(args.start, ["farthest", "kmeans++"])
+    if ismember(args.start, ["greedy", "balanced"])
         Idx = [randi(n) nan(1, k-1)];           % centroid indices
         minDist = inf(1, n);
         for j = 2:k
@@ -207,9 +207,9 @@ for i = 1:args.replicates
                 Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
             end
             minDist = min(minDist, Dj);         % min distance to centroid
-            if args.start == "farthest"
+            if args.start == "greedy"
                 sampleProbability = (minDist == max(minDist));
-            elseif args.start == "kmeans++"
+            elseif args.start == "balanced"
                 sampleProbability = (minDist / sum(minDist));
             end
             P = [0 cumsum(sampleProbability)]; P(end) = 1;
