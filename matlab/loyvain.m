@@ -301,9 +301,9 @@ for v = 1:args.maxiter
                 if all(N_new)
                     break;
                 else
-                    M0 = find(~N_new);          % empty modules
-                    n0_i = numel(M0);           % number of empty modules
-                    MI_new(randperm(n_i, n0_i)) = M0;
+                    E = find(~N_new);           % empty modules
+                    k_e = numel(E);             % number of empty modules
+                    MI_new(randperm(n_i, k_e)) = E;
                 end
             end
 
