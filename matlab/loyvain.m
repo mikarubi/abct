@@ -36,10 +36,8 @@ function [M, Q] = loyvain(X, k, objective, args)
 %                   "dot": Dot product.
 %                       A sum of an elementwise vector product.
 %
-%           Acceptance=[Probability of acceptance of individual swaps].
-%               0 < Acceptance < 1 (default is 0.5).
-%               Higher values lead to faster convergence but also have
-%               higher likelihood of getting stuck in local optima.
+%           NumBatches=[Number of batches].
+%               Positive integer (default is 2).
 %
 %           MaxIter=[Maximum number of algorithm iterations].
 %               Positive integer (default is 1000).
@@ -79,16 +77,15 @@ function [M, Q] = loyvain(X, k, objective, args)
 %
 %       Note that for Similarity="network", the value of the normalized
 %       modularity is rescaled by the following factor:
-%           (average module size) / ([absolute] sum of all weights)
+%           (average module size) / (absolute sum of all weights)
 %       This rescaling approximately aligns the value of the objective
 %       function with values of the unnormalized modularity. For other
 %       similarity measures the value of the objective function is not
 %       rescaled, but the algorithm still optimizes an equivalent objective.
 %
-%       The Loyvain algorithm is deterministic if all swaps are accepted
-%       at each iteration (Acceptance = 1), and is non-deterministic otherwise
-%       (Acceptance < 1). It follows that the algorithm may generate different
-%       results from the same initial conditions at different replicates.
+%       Note that the Loyvain algorithm is not guaranteed to converge if
+%       all swaps are accepted at each iteration (NumBatches = 1).
+%       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
 %       GRADIENTS, MODEREMOVAL.
@@ -100,8 +97,7 @@ arguments
         ["modularity", "kmeans", "spectral"])} = "modularity"
     args.similarity (1, 1) string {mustBeMember(args.similarity, ...
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
-    args.acceptance (1, 1) double ...
-        {mustBeInRange(args.acceptance, 0, 1)} = 0.5
+    args.numbatches (1, 1) double {mustBeInteger, mustBePositive} = 2
     args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
     args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
     args.start (1, :) = "farthest"
@@ -162,6 +158,7 @@ end
 
 assert(k > 0, "Specify number of modules or starting module assignment.")
 assert(k < n, "Number of modules must be smaller than number of nodes.")
+assert(args.numbatches <= n, "Number of batches must not be larger than number of nodes.")
 assert(all(isfinite(X), "all"), "Data matrix must be finite and not have zero rows.")
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
     "Network matrix must be symmetric or similarity must not be ""network"".")
@@ -241,7 +238,7 @@ end
 
 function [M, Q] = run_loyvain(M, X, W, Wii, n, k, objective, args, replicate_i)
 
-Idx = M + k*(0:n-1);                        % two-dimensional indices of M
+LinIdx = M + k*(0:n-1);                     % two-dimensional indices of M
 
 MM = sparse(M, 1:n, 1, k, n);               % two-dimensional representation
 N = full(sum(MM, 2));                       % number of nodes in module
@@ -262,78 +259,79 @@ switch objective
         Cii_nrm = Cii ./ Sm;
 end
 
+tol = 1e-10;
 for v = 1:args.maxiter
-    switch objective
-        case "kmeans"
-            delta_Q = ...
-                ((2 * Smn      + Wii) - Cii_nrm    ) ./ (N     + 1) - ...
-                ((2 * Smn(Idx) - Wii) - Cii_nrm(M)') ./ (N(M)' - 1);
-        case "spectral"
-            delta_Q = ...
-                ((2 * Smn      + Wii) - Cii_nrm     .* Sn) ./ (Sm     + Sn) - ...
-                ((2 * Smn(Idx) - Wii) - Cii_nrm(M)' .* Sn) ./ (Sm(M)' - Sn);
-    end
-    delta_Q(Idx) = 0;                       % no change if node stays in own module
-    delta_Q(:, N(M) == 1) = - inf;          % no change allowed if one-node cluster
 
-    % Update if improvements
-    [max_delta_Q, M_new] = max(delta_Q);
-    if max(max_delta_Q) > 1e-10
-        I = find(M ~= M_new);
-        n_i = numel(I);
-        if args.acceptance < 1
-            % Accept a random fraction of swaps
-            s_i = max(1, round(args.acceptance * n_i));
-            I = I(randperm(n_i, s_i));
-            n_i = numel(I);
-        end
+    max_delta_Q = 1;
+    while max_delta_Q > tol
+        max_delta_Q = 0;
 
-        while 1
-            MMI     = sparse(    M(I), 1:n_i, 1, k, n_i);
-            MMI_new = sparse(M_new(I), 1:n_i, 1, k, n_i);
+        Batch = mat2cell(randperm(n), 1, diff(round(0:n/args.numbatches:n)));
+        for u = 1:args.numbatches
+            U = Batch{u};                           % indices of nodes in batch
+            LinU = LinIdx(U);                       % linear indices of nodes in batch
+            MU = M(U);                              % module assignments of nodes in batch
+            b = numel(U);                           % number of nodes in batch
 
-            % Get delta modules and make modules non-empty
-            delta_MMI = (MMI_new - MMI);
-            N_new = N + sum(delta_MMI, 2);
-            ix0 = find(~N_new);
-            if isempty(ix0)
-                break;
-            else
-                M_new(I(randperm(n_i, numel(ix0)))) = ix0;
+            switch objective
+                case "kmeans"
+                    delta_QU = ...
+                        ((2 * Smn(:, U) + Wii(U)) - Cii_nrm     ) ./ (N      + 1) - ...
+                        ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)') ./ (N(MU)' - 1);
+                case "spectral"
+                    delta_QU = ...
+                        ((2 * Smn(:, U) + Wii(U)) - Cii_nrm      .* Sn(U)) ./ (Sm      + Sn(U)) - ...
+                        ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
+            end
+            delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
+            delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
+
+            % Update if improvements
+            [max_delta_QU, MU_new] = max(delta_QU);
+            if max(max_delta_QU) > tol
+                max_delta_Q = max(max_delta_Q, max(max_delta_QU));
+
+                IU = find(MU ~= MU_new);            % batch indices of nodes to be switched
+                I = U(IU);                          % actual indices of nodes to be switched
+                MI_new = MU_new(IU);                % new module assignments
+
+                % get delta modules
+                n_i = numel(I);
+                MMI     = sparse(  M(I), 1:n_i, 1, k, n_i);
+                MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
+                delta_MMI = (MMI_new - MMI);
+
+                % Update M, MM, N, and LinIdx
+                M(I) = MI_new;
+                MM = sparse(M, 1:n, 1);
+                N = N + sum(delta_MMI, 2);
+                LinIdx(I) = MI_new + k*(I-1);
+
+                % Update G and Dmn
+                if args.similarity == "network"
+                    delta_Dmn = delta_MMI * W(I, :);
+                else
+                    delta_G = delta_MMI * X(I, :);  % change in centroid
+                    G = G + delta_G;                % update centroids
+                    delta_Dmn = delta_G * X';       % change in degree of module to node
+                end
+                Smn = Smn + delta_Dmn;              % update degree of module to node
+
+                % Get Cii, C_nrm, and Dm
+                Cii = diag(Smn * MM');              % within-module weight sum
+                switch objective
+                    case "kmeans"
+                        Cii_nrm = Cii ./ N;
+                    case "spectral"
+                        Sm = Sm + sum(delta_Dmn, 2);
+                        Cii_nrm = Cii ./ Sm;
+                end
             end
         end
-
-        % Update N, M, MM, and M_Idx
-        N = N_new;
-        M(I) = M_new(I);
-        Idx(I) = M_new(I) + k*(I-1);
-        MM = sparse(M, 1:n, 1);
-
-        % Update G and Dmn
-        if args.similarity == "network"
-            delta_Dmn = delta_MMI * W(I, :);
-        else
-            delta_G = delta_MMI * X(I, :);  % change in centroid
-            G = G + delta_G;                % update centroids
-            delta_Dmn = delta_G * X';       % change in degree of module to node
+        if args.display == "iteration"
+            fprintf("Replicate: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
+                replicate_i, v, n_i, max_delta_Q)
         end
-        Smn = Smn + delta_Dmn;              % update degree of module to node
-
-        % Get Cii, C_nrm, and Dm
-        Cii = diag(Smn * MM');              % within-module weight sum
-        switch objective
-            case "kmeans"
-                Cii_nrm = Cii ./ N;
-            case "spectral"
-                Sm = Sm + sum(delta_Dmn, 2);
-                Cii_nrm = Cii ./ Sm;
-        end
-    else
-        break;
-    end
-    if args.display == "iteration"
-        fprintf("Replicate: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
-            replicate_i, v, n_i, max(max_delta_Q))
     end
     if v == args.maxiter
         warning("Algorithm did not converge after %d iterations.", v)
