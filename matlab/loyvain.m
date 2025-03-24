@@ -262,76 +262,75 @@ end
 tol = 1e-10;
 for v = 1:args.maxiter
 
-    max_delta_Q = 1;
-    while max_delta_Q > tol
-        max_delta_Q = 0;
+    max_delta_Q = 0;                            % maximal increase over all batches
+    Batches = mat2cell(randperm(n), 1, diff(round(0:n/args.numbatches:n)));
+    for u = 1:args.numbatches
+        U = Batches{u};                         % indices of nodes in batch
+        LinU = LinIdx(U);                       % linear indices of nodes in batch
+        MU = M(U);                              % module assignments of nodes in batch
+        b = numel(U);                           % number of nodes in batch
 
-        Batch = mat2cell(randperm(n), 1, diff(round(0:n/args.numbatches:n)));
-        for u = 1:args.numbatches
-            U = Batch{u};                           % indices of nodes in batch
-            LinU = LinIdx(U);                       % linear indices of nodes in batch
-            MU = M(U);                              % module assignments of nodes in batch
-            b = numel(U);                           % number of nodes in batch
+        switch objective
+            case "kmeans"
+                delta_QU = ...
+                    ((2 * Smn(:, U) + Wii(U)) - Cii_nrm     ) ./ (N      + 1) - ...
+                    ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)') ./ (N(MU)' - 1);
+            case "spectral"
+                delta_QU = ...
+                    ((2 * Smn(:, U) + Wii(U)) - Cii_nrm      .* Sn(U)) ./ (Sm      + Sn(U)) - ...
+                    ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
+        end
+        delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
+        delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
+        % Update if improvements
+        [max_delta_QU, MU_new] = max(delta_QU);
+        if max(max_delta_QU) > tol
+            max_delta_Q = max(max_delta_Q, max(max_delta_QU));
+
+            IU = find(MU ~= MU_new);            % batch indices of nodes to be switched
+            I = U(IU);                          % actual indices of nodes to be switched
+            MI_new = MU_new(IU);                % new module assignments
+
+            % get delta modules
+            n_i = numel(I);
+            MMI     = sparse(  M(I), 1:n_i, 1, k, n_i);
+            MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
+            delta_MMI = (MMI_new - MMI);
+
+            % Update M, MM, N, and LinIdx
+            M(I) = MI_new;
+            MM = sparse(M, 1:n, 1);
+            N = N + sum(delta_MMI, 2);
+            LinIdx(I) = MI_new + k*(I-1);
+
+            % Update G and Dmn
+            if args.similarity == "network"
+                delta_Dmn = delta_MMI * W(I, :);
+            else
+                delta_G = delta_MMI * X(I, :);  % change in centroid
+                G = G + delta_G;                % update centroids
+                delta_Dmn = delta_G * X';       % change in degree of module to node
+            end
+            Smn = Smn + delta_Dmn;              % update degree of module to node
+
+            % Get Cii, C_nrm, and Dm
+            Cii = diag(Smn * MM');              % within-module weight sum
             switch objective
                 case "kmeans"
-                    delta_QU = ...
-                        ((2 * Smn(:, U) + Wii(U)) - Cii_nrm     ) ./ (N      + 1) - ...
-                        ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)') ./ (N(MU)' - 1);
+                    Cii_nrm = Cii ./ N;
                 case "spectral"
-                    delta_QU = ...
-                        ((2 * Smn(:, U) + Wii(U)) - Cii_nrm      .* Sn(U)) ./ (Sm      + Sn(U)) - ...
-                        ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
-            end
-            delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
-            delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
-
-            % Update if improvements
-            [max_delta_QU, MU_new] = max(delta_QU);
-            if max(max_delta_QU) > tol
-                max_delta_Q = max(max_delta_Q, max(max_delta_QU));
-
-                IU = find(MU ~= MU_new);            % batch indices of nodes to be switched
-                I = U(IU);                          % actual indices of nodes to be switched
-                MI_new = MU_new(IU);                % new module assignments
-
-                % get delta modules
-                n_i = numel(I);
-                MMI     = sparse(  M(I), 1:n_i, 1, k, n_i);
-                MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
-                delta_MMI = (MMI_new - MMI);
-
-                % Update M, MM, N, and LinIdx
-                M(I) = MI_new;
-                MM = sparse(M, 1:n, 1);
-                N = N + sum(delta_MMI, 2);
-                LinIdx(I) = MI_new + k*(I-1);
-
-                % Update G and Dmn
-                if args.similarity == "network"
-                    delta_Dmn = delta_MMI * W(I, :);
-                else
-                    delta_G = delta_MMI * X(I, :);  % change in centroid
-                    G = G + delta_G;                % update centroids
-                    delta_Dmn = delta_G * X';       % change in degree of module to node
-                end
-                Smn = Smn + delta_Dmn;              % update degree of module to node
-
-                % Get Cii, C_nrm, and Dm
-                Cii = diag(Smn * MM');              % within-module weight sum
-                switch objective
-                    case "kmeans"
-                        Cii_nrm = Cii ./ N;
-                    case "spectral"
-                        Sm = Sm + sum(delta_Dmn, 2);
-                        Cii_nrm = Cii ./ Sm;
-                end
+                    Sm = Sm + sum(delta_Dmn, 2);
+                    Cii_nrm = Cii ./ Sm;
             end
         end
-        if args.display == "iteration"
-            fprintf("Replicate: %5d.  Iteration: %5d.  Swaps: %5d.  Improvement: %5.3f\n", ...
-                replicate_i, v, n_i, max_delta_Q)
-        end
+    end
+    if max_delta_Q < tol
+        break
+    end
+    if args.display == "iteration"
+        fprintf("Replicate:%5d.   Iteration:%5d.   Largest \\Delta: %5.3f\n", ...
+            replicate_i, v, max_delta_Q)
     end
     if v == args.maxiter
         warning("Algorithm did not converge after %d iterations.", v)
