@@ -62,28 +62,27 @@ function [M, Q] = loyvain(X, k, objective, args)
 %       Q: Value of normalized modularity, k-means, or spectral objective.
 %
 %   Methodological notes:
-%       Loyvain unifies the Lloyd algorithm for k-means clustering and the
-%       Louvain algorithm for modularity maximization, and thus shows
-%       equivalences between modularity maximization, k-means clustering,
-%       and spectral clustering.
+%       Loyvain is a unification of:
+%           Lloyd's algorithm for k-means clustering and
+%           Louvain algorithm for modularity maximization.
 %
-%       The normalized modularity maximization is equivalent to k-means
-%       clustering of data after degree correction. When the input is a data
-%       rather than a network matrix, degree correction is implemented via
-%       an approximately (but not exactly) equivalent process of global-
-%       signal regression. Ultimately, degree correction and global-signal
-%       regression are both approximately equivalent to the subtraction of
-%       the rank-one approximation of the data.
+%       Note 1. The normalized modularity maximization is equivalent to
+%       k-means clustering of data after degree correction. When the input
+%       is a data rather than a network matrix, degree correction is
+%       implemented via an approximately equivalent step of global-signal
+%       regression. More generally, degree correction and global-signal
+%       regression are both approximately equivalent to first-mode removal,
+%       or subtraction of the rank-one approximation of the data.
 %
-%       Note that for Similarity="network", the value of the normalized
+%       Note 2. For Similarity="network", the value of the normalized
 %       modularity is rescaled by the following factor:
 %           (average module size) / (absolute sum of all weights)
 %       This rescaling approximately aligns the value of the objective
 %       function with values of the unnormalized modularity. For other
 %       similarity measures the value of the objective function is not
-%       rescaled, but the algorithm still optimizes an equivalent objective.
+%       rescaled, but the algorithm optimizes an equivalent objective.
 %
-%       Note that the Loyvain algorithm is not guaranteed to converge if
+%       Note 3. The Loyvain algorithm is not guaranteed to converge if
 %       all swaps are accepted at each iteration (NumBatches = 1).
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
@@ -183,7 +182,7 @@ if args.start == "custom"
         "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
 end
 
-%% Run k-means and store best result
+%% Run algorithm
 
 % Precompute kmeans++ variables
 if ismember(args.start, ["greedy", "balanced"])
@@ -226,8 +225,8 @@ for i = 1:args.replicates
     end
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if Q1 > Q
-        if args.display == "replicate"
-            fprintf("Replicate: %5d.  Objective: %5.3f.  Improvement: %5.3f\n", i, Q1, Q1 - Q);
+        if ismember(args.display, ["replicate", "iteration"])
+            fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
         end
         Q = Q1;
         M = M1;
@@ -329,7 +328,7 @@ for v = 1:args.maxiter
         break
     end
     if args.display == "iteration"
-        fprintf("Replicate:%5d.   Iteration:%5d.   Largest \\Delta: %5.3f\n", ...
+        fprintf("Replicate: %4d.    Iteration: %4d.    Largest \x0394: %4.4f\n", ...
             replicate_i, v, max_delta_Q)
     end
     if v == args.maxiter
