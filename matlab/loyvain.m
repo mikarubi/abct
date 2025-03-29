@@ -155,8 +155,8 @@ end
 
 %% Additional tests
 
-assert(k > 0, "Specify number of modules or starting module assignment.")
-assert(k < n, "Number of modules must be smaller than number of nodes.")
+assert(k >= 1, "Specify number of modules or starting module assignment.")
+assert(k <= n, "Number of modules must be smaller than number of nodes.")
 assert(args.numbatches <= n, "Number of batches must not be larger than number of nodes.")
 assert(all(isfinite(X), "all"), "Data matrix must be finite and not have zero rows.")
 assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
