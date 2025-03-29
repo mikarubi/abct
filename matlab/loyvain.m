@@ -189,40 +189,16 @@ if ismember(args.start, ["greedy", "balanced"])
     if args.similarity == "network"
         Dist = W ./ vecnorm(W, 2, 2);
         Dist = 1 - Dist * Dist';
+        normX = [];
     else
+        Dist = [];
         normX = vecnorm(X, 2, 2);
     end
 end
 
 Q = - inf;
 for i = 1:args.replicates
-    if ismember(args.start, ["greedy", "balanced"])
-        Idx = [randi(n) nan(1, k-1)];           % centroid indices
-        minDist = inf(1, n);
-        for j = 2:k
-            if args.similarity == "network"     % use precomputed distance
-                Dj = Dist(Idx(j-1), :);
-            else                                % compute distance on the fly
-                Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
-            end
-            minDist = min(minDist, Dj);         % min distance to centroid
-            if args.start == "greedy"
-                sampleProbability = (minDist == max(minDist));
-            elseif args.start == "balanced"
-                sampleProbability = (minDist / sum(minDist));
-            end
-            P = [0 cumsum(sampleProbability)]; P(end) = 1;
-            Idx(j) = find(rand < P, 1) - 1;     % sample new centroid
-        end
-        if args.similarity == "network"         % use precomputed distance
-            [~, M0] = min(Dist(Idx, :), [], 1);
-        else                                    % compute distance on the fly
-            [~, M0] = min(1 - (X(Idx, :) * X') ./ (normX(Idx) * normX'), [], 1);
-        end
-    elseif args.start == "random"
-        M0 = randi(k, 1, n);                    % initial module partition
-        M0(randperm(n, k)) = 1:k;               % ensure there are k modules
-    end
+    M0 = initialize_loyvain(X, Dist, normX, n, k, args);
     [M1, Q1] = run_loyvain(M0, X, W, Wii, n, k, objective, args, i);
     if Q1 > Q
         if ismember(args.display, ["replicate", "iteration"])
@@ -235,26 +211,58 @@ end
 
 end
 
+function M0 = initialize_loyvain(X, Dist, normX, n, k, args)
+
+if ismember(args.start, ["greedy", "balanced"])
+    Idx = [randi(n) nan(1, k-1)];               % centroid indices
+    minDist = inf(1, n);
+    for j = 2:k
+        if args.similarity == "network"         % use precomputed distance
+            Dj = Dist(Idx(j-1), :);
+        else                                    % compute distance on the fly
+            Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
+        end
+        minDist = min(minDist, Dj);             % min distance to centroid
+        if args.start == "greedy"
+            sampleProbability = (minDist == max(minDist));
+        elseif args.start == "balanced"
+            sampleProbability = (minDist / sum(minDist));
+        end
+        P = [0 cumsum(sampleProbability)]; P(end) = 1;
+        Idx(j) = find(rand < P, 1) - 1;         % sample new centroid
+    end
+    if args.similarity == "network"             % use precomputed distance
+        [~, M0] = min(Dist(Idx, :), [], 1);
+    else                                        % compute distance on the fly
+        [~, M0] = min(1 - (X(Idx, :) * X') ./ (normX(Idx) * normX'), [], 1);
+    end
+elseif args.start == "random"
+    M0 = randi(k, 1, n);                        % initial module partition
+    M0(randperm(n, k)) = 1:k;                   % ensure there are k modules
+end
+
+end
+
 function [M, Q] = run_loyvain(M, X, W, Wii, n, k, objective, args, replicate_i)
 
-LinIdx = M + k*(0:n-1);                     % two-dimensional indices of M
+LinIdx = M + k*(0:n-1);                         % two-dimensional indices of M
 
-MM = sparse(M, 1:n, 1, k, n);               % two-dimensional representation
-N = full(sum(MM, 2));                       % number of nodes in module
+MM = sparse(M, 1:n, 1, k, n);                   % two-dimensional representation
+N = full(sum(MM, 2));                           % number of nodes in module
 if args.similarity == "network"
-    Smn = MM * W;                           % degree of module to node
+    Smn = MM * W;                               % degree of module to node
 else
-    G = MM * X;                             % cluster centroid
-    Smn = G * X';                           % dot of centroid with node
+    G = MM * X;                                 % cluster centroid
+    Smn = G * X';                               % dot of centroid with node
 end
-Cii = diag(Smn * MM');                      % within-module weight sum
+Cii = diag(Smn * MM');                          % within-module weight sum
 
 switch objective
     case "kmeans"
         Cii_nrm = Cii ./ N;
     case "spectral"
-        Sn = sum(Smn, 1);                   % degree of node
-        Sm = sum(Smn, 2);                   % degree of module
+        Sn = sum(Smn, 1);                       % degree of node
+        Sm = sum(Smn, 2);                       % degree of module
         Cii_nrm = Cii ./ Sm;
 end
 
