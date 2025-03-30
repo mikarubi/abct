@@ -1,4 +1,4 @@
-function Args = step1_proc(Args)
+function Args = step1_proc_loyvain(Args)
 % Loyvain arguments processing
 
 [Args.n, Args.t] = size(Args.X);

@@ -1,8 +1,10 @@
-function Args = step0_args(Args)
+function Args = step0_args(method, Args)
 % Loyvain arguments initialization
 
 arguments
+    method (1, 1) = "loyvain";
     Args.X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
+    Args.Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     Args.k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     Args.objective (1, 1) string {mustBeMember(Args.objective, ...
         ["modularity", "kmeans", "spectral"])} = "modularity"
@@ -16,7 +18,17 @@ arguments
         ["none", "replicate", "iteration"])} = "none"
 end
 
-err = "Start must be either ""greedy"", ""balanced"", ""random"", or a numeric vector.";
-assert(isnumeric(Args.start) || ismember(Args.start, ["greedy", "balanced", "random"]), err)
+Args.method = method;
+if (Args.method == "loyvain") && isnumeric(Args.start)
+elseif (isStringScalar(Args.start) || ischar(Args.start)) && ...
+        ismember(Args.start, ["greedy", "balanced", "random"])
+else
+    error("Start must be either ""greedy"", ""balanced"", " + ...
+        """random"", or a numeric vector for loyvain.");
+end
+if (Args.method == "coloyvain")
+    assert(size(Args.X, 1) == size(Args.Y, 1), "X and Y must have the same number of rows.")
+    assert(Args.similarity ~= "network", "Network similarity is incompatible with coloyvain.")
+end
 
 end
