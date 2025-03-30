@@ -6,8 +6,11 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %   [M, Q] = loyvain(X, k, objective, Name=Value)
 %
 %   Inputs:
-%       X: Network matrix of size n x n, or data matrix of size n x t.
-%          n is the number of nodes and t is the number of observations.
+%       X:  Network matrix of size n x n, where
+%           n is the number of nodes.
+%       OR  Data matrix of size n x t, where
+%           n is the number of features and
+%           t is the number of observations.
 %
 %       k: Number of modules (positive integer or 0).
 %           Set to 0 to infer number from initial module assignment.
@@ -96,9 +99,9 @@ Args.k = k; clear k;
 Args.objective = objective; clear objective;
 Args = namedargs2cell(Args);
 
-Args = loyv.step0_args(Args{:});              % parse and test arguments
-Args = loyv.step1_proc(Args);                 % process inputs
-loyv.step2_test(Args);                        % additional tests
+Args = loyv.step0_args("loyvain", Args{:});              % parse and test arguments
+Args = loyv.step1_proc_loyvain(Args);                    % process inputs
+loyv.step2_test(Args.X, Args.n, Args.W, Args.k, Args);   % additional tests
 
 %% Run algorithm
 
@@ -107,7 +110,8 @@ for i = 1:Args.replicates
     if Args.start == "custom"
         M0 = Args.M0;
     else
-        M0 = loyv.step3_init(Args);           % initialize
+        % initialize
+        M0 = loyv.step3_init(Args.X, Args.n, Args.Dist, Args.normX, Args);
     end
     [M1, Q1] = loyv.step4_run(Args, M0, i);   % run
     if Q1 > Q

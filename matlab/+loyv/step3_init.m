@@ -1,20 +1,23 @@
-function M0 = step3_init(Args)
+function M0 = step3_init(X, n, Dist, normX, Args)
 % Loyvain partition initialization
 
 % Unpack arguments
-X = Args.X;
+% n = size(X, 1);
+% X = Args.X;
 k = Args.k;
-n = Args.n;
-Dist = Args.Dist;
-normX = Args.normX;
+% n = Args.n;
+% Dist = Args.Dist;
+% normX = Args.normX;
 
 if ismember(Args.start, ["greedy", "balanced"])
     Idx = [randi(n) nan(1, k-1)];               % centroid indices
     minDist = inf(1, n);
     for j = 2:k
-        if Args.similarity == "network"         % use precomputed distance
+        if (Args.similarity == "network") || (Args.method == "coloyvain")
+            % use precomputed distance
             Dj = Dist(Idx(j-1), :);
-        else                                    % compute distance on the fly
+        else
+            % compute distance on the fly
             Dj = 1 - (X(Idx(j-1), :) * X') ./ (normX(Idx(j-1)) * normX');
         end
         minDist = min(minDist, Dj);             % min distance to centroid
@@ -26,9 +29,11 @@ if ismember(Args.start, ["greedy", "balanced"])
         P = [0 cumsum(sampleProbability)]; P(end) = 1;
         Idx(j) = find(rand < P, 1) - 1;         % sample new centroid
     end
-    if Args.similarity == "network"             % use precomputed distance
+    if (Args.similarity == "network") || (Args.method == "coloyvain")
+        % use precomputed distance
         [~, M0] = min(Dist(Idx, :), [], 1);
-    else                                        % compute distance on the fly
+    else
+        % compute distance on the fly
         [~, M0] = min(1 - (X(Idx, :) * X') ./ (normX(Idx) * normX'), [], 1);
     end
 elseif Args.start == "random"
