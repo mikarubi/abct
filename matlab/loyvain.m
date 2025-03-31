@@ -90,7 +90,18 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
-%       GRADIENTS, MODEREMOVAL.
+%       COLOYVAIN, GRADIENTS, MODEREMOVAL.
+arguments
+    X
+    k
+    objective
+end
+arguments (Repeating)
+    varargin
+end
+assert(mod(length(varargin), 2) == 0, "The input must comprise the " + ...
+    "required 'X', 'k', and 'objective' arguments, followed by the " + ...
+    "optional paired Name=[Value] arguments.")
 
 % consolidate arguments
 Args = struct(varargin{:}); clear varargin
@@ -107,13 +118,14 @@ loyv.step2_test(Args.X, Args.n, Args.W, Args.k, Args);   % additional tests
 
 Q = - inf;
 for i = 1:Args.replicates
+    Args.replicate_i = i;
     if Args.start == "custom"
         M0 = Args.M0;
     else
         % initialize
         M0 = loyv.step3_init(Args.X, Args.n, Args.Dist, Args.normX, Args);
     end
-    [M1, Q1] = loyv.step4_run(Args, M0, i);   % run
+    [M1, Q1] = loyv.step4_run(Args, M0);   % run
     if Q1 > Q
         if ismember(Args.display, ["replicate", "iteration"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);

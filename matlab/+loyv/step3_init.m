@@ -2,12 +2,7 @@ function M0 = step3_init(X, n, Dist, normX, Args)
 % Loyvain partition initialization
 
 % Unpack arguments
-% n = size(X, 1);
-% X = Args.X;
 k = Args.k;
-% n = Args.n;
-% Dist = Args.Dist;
-% normX = Args.normX;
 
 if ismember(Args.start, ["greedy", "balanced"])
     Idx = [randi(n) nan(1, k-1)];               % centroid indices

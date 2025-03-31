@@ -15,7 +15,7 @@ if Args.method == "loyvain"
             assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
         elseif (Args.objective == "spectral") && (numel(X) < 1e6)
             assert(all(X * X' >= 0, "all"), "Similarity matrix must be non-negative.")
-        elseif (Args.objective == "spectral")
+        elseif Args.objective == "spectral"
             warning("Not checking similarity matrix for negative values because " + ...
                 "of large data size. Ensure that similarity matrix is non-negative.")
         end
