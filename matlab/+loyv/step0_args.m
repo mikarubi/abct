@@ -2,7 +2,8 @@ function Args = step0_args(method, Args)
 % Loyvain arguments initialization
 
 arguments
-    method (1, 1) = "loyvain";
+    method (1, 1) string {mustBeMember(method, ...
+        ["loyvain", "coloyvain"])} = "loyvain";
     Args.X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     Args.Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     Args.k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0

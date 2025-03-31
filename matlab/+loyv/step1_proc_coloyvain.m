@@ -1,12 +1,14 @@
 function Args = step1_proc_coloyvain(Args)
 % co-Loyvain arguments processing
 
-[Args.X, Args.px, Args.s, Args.Cx, Args.DistX] = proc(Args.X, Args);
-[Args.Y, Args.py, Args.s, Args.Cy, Args.DistY] = proc(Args.Y, Args);
-Args.W = Args.X * Args.Y';
+[Args.X, Args.px, Args.s, Args.Wxx, Args.DistX] = proc(Args.X, Args);
+[Args.Y, Args.py, Args.s, Args.Wyy, Args.DistY] = proc(Args.Y, Args);
+Args.Wxy = Args.X * Args.Y';
 
-if Args.objective == "modularity"
-    Args.objective = "kmeans";
+switch Args.objective
+    case "modularity"; Args.objective = "cokmeans";     % first mode already removed
+    case "kmeans";     Args.objective = "cokmeans";
+    case "spectral";   Args.objective = "cospectral";
 end
 
 end

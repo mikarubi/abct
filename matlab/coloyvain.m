@@ -36,6 +36,18 @@ function [Mx, My, r] = coloyvain(X, Y, k, objective, varargin)
 %
 %   See also:
 %       CANONCORR, LOYVAIN.
+arguments
+    X
+    Y
+    k
+    objective
+end
+arguments (Repeating)
+    varargin
+end
+assert(mod(length(varargin), 2) == 0, "The input must comprise the " + ...
+    "required 'X', 'Y', 'k', and 'objective' arguments, followed by the " + ...
+    "optional paired Name=[Value] arguments.")
 
 % consolidate arguments
 Args = struct(varargin{:}); clear varargin
@@ -62,29 +74,27 @@ for i = 1:Args.replicates
     % get between-module correlations
     MMx0 = sparse(1:p, Mx0, 1);
     MMy0 = sparse(1:q, My0, 1);
+    C0_nrm = MMx0' * Args.W * MMy0;
     switch Args.objective
-        case "kmeans"
-            Ox = eye(Args.p);
-            Oy = eye(Args.q);
-        case "spectral"
-            Ox = Args.Cx;
-            Oy = Args.Cy;
+        case "cokmeans"
+            C0_nrm = C0_nrm ./ sqrt((MMx0' * MMx0) .* (MMy0' * MMy0));
+        case "cospectral"
+            C0_nrm = C0_nrm ./ sqrt((MMx0' * Args.Wxx * MMx0) .* (MMy0' * Args.Wyy * MMy0));
     end
-    R0 = MMx0' * Args.W * MMy0 ./ sqrt((MMx0' * Ox * MMx0) .* (MMy0' * Oy * MMy0));
 
     % align modules
     for h = 1:k
-        [ix, iy] = find(R0 == max(R0, [], "all"));
+        [ix, iy] = find(C0_nrm == max(C0_nrm, [], "all"));
         Mx0(Mx0 == ix) = - h;
         My0(My0 == iy) = - h;
-        R0(ix, :) = nan;
-        R0(:, iy) = nan;
+        C0_nrm(ix, :) = nan;
+        C0_nrm(:, iy) = nan;
     end
     Mx0 = - Mx0;
     My0 = - My0;
 
-    [Mx1, r0] = loyv.step4_run(Args, Mx0, i);   % run
-    [My1, r1] = loyv.step4_run(Args, My0, i);   % run
+    [Mx1, r0] = loyv.step4_run(Args, Mx0, My0, Args.Wx, Args.Wy);   % run
+    [My1, r1] = loyv.step4_run(Args, My0, Mx1, Args.Wy, Args.Wx);   % run
     assert(r1 >= r0)
     if r1 > r
         if ismember(Args.display, ["replicate", "iteration"])
