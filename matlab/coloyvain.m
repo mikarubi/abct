@@ -1,4 +1,4 @@
-function [Mx, My, r] = coloyvain(X, Y, k, objective, varargin)
+function [Mx, My, R] = coloyvain(X, Y, k, objective, varargin)
 % COLOYVAIN Normalized modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(X, Y, k)
@@ -59,48 +59,59 @@ Args = namedargs2cell(Args);
 
 Args = loyv.step0_args("coloyvain", Args{:});   % parse and test arguments
 Args = loyv.step1_proc_coloyvain(Args);         % process inputs
-loyv.step2_test(Args.X, Args.p, Args.W, Args.k, Args);
-loyv.step2_test(Args.Y, Args.q, Args.W, Args.k, Args);
+loyv.step2_test(Args.X, Args.Wxy, Args.px, Args.k, Args);
+loyv.step2_test(Args.Y, Args.Wxy, Args.py, Args.k, Args);
 
 %% Run algorithm
 
-r = - inf;
+R = - inf;
 for i = 1:Args.replicates
+    Args.replicate_i = i;
 
     % initialize
-    Mx0 = loyv.step3_init([], Args.p, Args.DistX, [], Args);
-    My0 = loyv.step3_init([], Args.q, Args.DistY, [], Args);
+    Mx0 = loyv.step3_init([], [], Args.DistX, Args.px, Args);
+    My0 = loyv.step3_init([], [], Args.DistY, Args.py, Args);
 
     % get between-module correlations
-    MMx0 = sparse(1:p, Mx0, 1);
-    MMy0 = sparse(1:q, My0, 1);
-    C0_nrm = MMx0' * Args.W * MMy0;
+    MMx0 = sparse(Mx0, 1:Args.px, 1);
+    MMy0 = sparse(My0, 1:Args.py, 1);
     switch Args.objective
         case "cokmeans"
-            C0_nrm = C0_nrm ./ sqrt((MMx0' * MMx0) .* (MMy0' * MMy0));
+            Ox = full(sum(MMx0, 2));
+            Oy = full(sum(MMy0, 2));
         case "cospectral"
-            C0_nrm = C0_nrm ./ sqrt((MMx0' * Args.Wxx * MMx0) .* (MMy0' * Args.Wyy * MMy0));
+            Ox = Args.Wx;
+            Oy = Args.Wy;
     end
+    C0_nrm = (MMx0 * Args.Wxy * MMy0') ./ sqrt(Ox .* Oy');
 
     % align modules
+    Mx1 = zeros(size(Mx0));
+    My1 = zeros(size(My0));
     for h = 1:k
         [ix, iy] = find(C0_nrm == max(C0_nrm, [], "all"));
-        Mx0(Mx0 == ix) = - h;
-        My0(My0 == iy) = - h;
+        Mx1(Mx0 == ix) = h;
+        My1(My0 == iy) = h;
         C0_nrm(ix, :) = nan;
         C0_nrm(:, iy) = nan;
     end
-    Mx0 = - Mx0;
-    My0 = - My0;
 
-    [Mx1, r0] = loyv.step4_run(Args, Mx0, My0, Args.Wx, Args.Wy);   % run
-    [My1, r1] = loyv.step4_run(Args, My0, Mx1, Args.Wy, Args.Wx);   % run
-    assert(r1 >= r0)
-    if r1 > r
-        if ismember(Args.display, ["replicate", "iteration"])
-            fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, r1, r1 - r);
+    % fixed point iteration until convergence
+    for v = 1:Args.maxiter
+        My0 = My1;
+        [Mx1,  ~] = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy);   % optimize Mx
+        [My1, R1] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx);   % optimize My
+        if isequal(My0, My1)    % if identical, neither Mx1 nor My1 will change
+            break
         end
-        r = r1;
+    end
+
+    % check if replicate has improved on previous result
+    if R1 > R
+        if ismember(Args.display, ["replicate", "iteration"])
+            fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, R1, R1 - R);
+        end
+        R = R1;
         Mx = Mx1;
         My = My1;
     end

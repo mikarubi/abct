@@ -18,6 +18,7 @@ arguments
     Args.display (1, 1) string {mustBeMember(Args.display, ...
         ["none", "replicate", "iteration"])} = "none"
 end
+Args.tolerance = 1e-10;
 
 Args.method = method;
 if (Args.method == "loyvain") && isnumeric(Args.start)
@@ -28,7 +29,7 @@ else
         """random"", or a numeric vector for loyvain.");
 end
 if (Args.method == "coloyvain")
-    assert(size(Args.X, 1) == size(Args.Y, 1), "X and Y must have the same number of rows.")
+    assert(size(Args.X, 2) == size(Args.Y, 2), "X and Y must have the same number of columns.")
     assert(Args.similarity ~= "network", "Network similarity is incompatible with coloyvain.")
 end
 

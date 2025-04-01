@@ -112,7 +112,7 @@ Args = namedargs2cell(Args);
 
 Args = loyv.step0_args("loyvain", Args{:});              % parse and test arguments
 Args = loyv.step1_proc_loyvain(Args);                    % process inputs
-loyv.step2_test(Args.X, Args.n, Args.W, Args.k, Args);   % additional tests
+loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);   % additional tests
 
 %% Run algorithm
 
@@ -123,9 +123,9 @@ for i = 1:Args.replicates
         M0 = Args.M0;
     else
         % initialize
-        M0 = loyv.step3_init(Args.X, Args.n, Args.Dist, Args.normX, Args);
+        M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args);
     end
-    [M1, Q1] = loyv.step4_run(Args, M0);   % run
+    [M1, Q1] = loyv.step4_run(Args, Args.W, M0);         % run
     if Q1 > Q
         if ismember(Args.display, ["replicate", "iteration"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
