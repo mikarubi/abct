@@ -1,4 +1,4 @@
-function step2_test(X, n, W, k, Args)
+function step2_test(X, W, n, k, Args)
 % Loyvain arguments tests
 
 assert(k >= 1, "Specify number of modules or starting module assignment.")

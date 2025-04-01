@@ -1,9 +1,7 @@
-function [M, Q] = step4_run(Args, M, My, Wx, Wy)
+function [M, Q] = step4_run(Args, W, M, My, Vx, Vy)
 % Loyvain main algorithm
 
 % Unpack arguments
-X = Args.X;
-W = Args.W;
 k = Args.k;
 
 n = length(M);
@@ -11,9 +9,15 @@ LinIdx = M + k*(0:n-1);                         % two-dimensional indices of M
 
 MM = sparse(M, 1:n, 1, k, n);                   % two-dimensional representation
 N = full(sum(MM, 2));                           % number of nodes in module
-if (Args.similarity == "network") || (Args.method == "coloyvain")
+if Args.similarity == "network"
     Smn = MM * W;                               % degree of module to node
+elseif Args.method == "coloyvain"
+    ny = length(My);
+    MMy = sparse(My, 1:ny, 1, k, ny);           % two-dimensional representation
+    Ny = full(sum(MMy, 2));
+    Smn = MMy * W';
 else
+    X = Args.X;
     G = MM * X;                                 % cluster centroid
     Smn = G * X';                               % dot of centroid with node
 end
@@ -27,14 +31,11 @@ switch Args.method
         Wii = Args.Wii;                         % within-node weight sum
         Cii = diag(Smn * MM');                  % within-module weight sum
     case "coloyvain"
-        Wxii = diag(Wx);
-        ny = length(My);
-        MMy = sparse(M, 1:ny, 1, k, ny);        % two-dimensional representation
-        Ny = full(sum(MMy, 2));
-        Cii = diag(Smn * MMy');                 % within-module weight sum
+        Vii = diag(Vx);
+        Cii = diag(MM * Smn');                  % within-module weight sum
         if Args.objective == "cospectral"
-            Dii = diag(MM * Wx * MM');          % within-module weight sum of X
-            Eii = diag(MMy * Wy * MMy);         % within-module weight sum of Y
+            Dii = diag(MM  * Vx * MM');         % within-module weight sum of X
+            Eii = diag(MMy * Vy * MMy);         % within-module weight sum of Y
         end
 end
 
@@ -49,7 +50,6 @@ switch Args.objective
         Cii_nrm = Cii ./ sqrt(Dii .* Eii);
 end
 
-tol = 1e-10;
 for v = 1:Args.maxiter
 
     max_delta_Q = 0;                            % maximal increase over all batches
@@ -71,19 +71,19 @@ for v = 1:Args.maxiter
                     ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
             case "cokmeans"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((N      + 1) .* Ny) - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU)' - 1) .* Ny) - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((N      + 1) .* Ny     ) - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU)' - 1) .* Ny(MU)') - Cii_nrm(MU)';
             case "cospectral"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((Dii       + 2 * Smn(:, U) - Wxii(U)) .* Eii) - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((Dii(MU)' -  2 * Smn(LinU) - Wxii(U)) .* Eii) - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((Dii       + 2 * Smn(:, U) - Vii(U)) .* Eii) - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((Dii(MU)' -  2 * Smn(LinU) - Vii(U)) .* Eii) - Cii_nrm(MU)';
         end
         delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
         % Update if improvements
         [max_delta_QU, MU_new] = max(delta_QU);
-        if max(max_delta_QU) > tol
+        if max(max_delta_QU) > Args.tolerance
             max_delta_Q = max(max_delta_Q, max(max_delta_QU));
 
             IU = find(MU ~= MU_new);            % batch indices of nodes to be switched
@@ -112,27 +112,26 @@ for v = 1:Args.maxiter
             MM = sparse(M, 1:n, 1, k, n);
             LinIdx(I) = MI_new + k*(I-1);
 
-            % Update G and Dmn
-            if (Args.similarity == "network") || (Args.method == "coloyvain")
-                delta_Dmn = delta_MMI * W(I, :);
-            else
-                delta_G = delta_MMI * X(I, :);  % change in centroid
-                G = G + delta_G;                % update centroids
-                delta_Dmn = delta_G * X';       % change in degree of module to node
-            end
-            Smn = Smn + delta_Dmn;              % update degree of module to node
-            if Args.objective == "spectral"
-                Sm = Sm + sum(delta_Dmn, 2);
-            end
-
             % Get Cii, C_nrm, and Dm
             switch Args.method
                 case "loyvain"
                     Cii = diag(Smn * MM');              % within-module weight sum
+                    % Update G and Dmn
+                    if Args.similarity == "network"
+                        delta_Dmn = delta_MMI * W(I, :);
+                    else
+                        delta_G = delta_MMI * X(I, :);  % change in centroid
+                        G = G + delta_G;                % update centroids
+                        delta_Dmn = delta_G * X';       % change in degree of module to node
+                    end
+                    Smn = Smn + delta_Dmn;              % update degree of module to node
+                    if Args.objective == "spectral"
+                        Sm = Sm + sum(delta_Dmn, 2);
+                    end
                 case "coloyvain"
-                    Cii = diag(Smn * MMy');             % within-module weight sum
+                    Cii = diag(MM * Smn');              % within-module weight sum
                     if Args.objective == "cospectral"
-                        Dii = diag(MM * Wx * MM');      % within-module weight sum of X
+                        Dii = diag(MM * Vx * MM');      % within-module weight sum of X
                     end
             end
 
@@ -148,7 +147,7 @@ for v = 1:Args.maxiter
             end
         end
     end
-    if max_delta_Q < tol
+    if max_delta_Q < Args.tolerance
         break
     end
     if Args.display == "iteration"
