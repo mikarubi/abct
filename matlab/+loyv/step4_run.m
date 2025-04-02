@@ -69,8 +69,8 @@ for v = 1:Args.maxiter
                     ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
             case "cokmeans"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((N     + 1)  .* Ny     ) - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU) - 1)' .* Ny(MU)') - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((N      + 1) .* Ny     ) - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU)' - 1) .* Ny(MU)') - Cii_nrm(MU)';
             case "cospectral"
                 delta_QU = ...
                     (Cii      + Smn(:, U)) ./ sqrt((Dii      + 2 * Tmn(:, U) + Vii(U)) .* Eii)      - Cii_nrm + ...
@@ -79,12 +79,12 @@ for v = 1:Args.maxiter
         delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
-        % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
-        for name = ["My" "Vx" "Vy"]
-            if ~exist(name, "var"); eval(name + " = [];"); end
-        end
-        loyv.tests.test_objective_updates(Args, W, M, My, Vx, Vy, U, MU, delta_QU)
-        % END UNCOMMENT TO TEST OBJECTIVE UPDATES
+        % % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
+        % for name = ["My" "Vx" "Vy"]
+        %     if ~exist(name, "var"); eval(name + " = [];"); end
+        % end
+        % loyv.tests.test_objective_updates(Args, W, M, My, Vx, Vy, U, MU, delta_QU)
+        % % END UNCOMMENT TO TEST OBJECTIVE UPDATES
 
         % Update if improvements
         [max_delta_QU, MU_new] = max(delta_QU);
@@ -145,14 +145,14 @@ for v = 1:Args.maxiter
                 case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
                 case "cospectral";  Cii_nrm = Cii ./ sqrt(Dii .* Eii);
             end
-            % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
-            Vals = struct();
-            for name = ["N" "M" "MM" "LinIdx" "Smn" "Sm" "Tmn" "Dii" "Cii" "Cii_nrm"]
-                if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
-                Vals.(name) = val;
-            end
-            loyv.tests.test_variable_updates(Args, W, M, My, Vx, Vy, Vals)
-            % END UNCOMMENT TO TEST VARIABLE UPDATES
+            % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
+            % Vals = struct();
+            % for name = ["N" "M" "MM" "LinIdx" "Smn" "Sm" "Tmn" "Dii" "Cii" "Cii_nrm"]
+            %     if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
+            %     Vals.(name) = val;
+            % end
+            % loyv.tests.test_variable_updates(Args, W, M, My, Vx, Vy, Vals)
+            % % END UNCOMMENT TO TEST VARIABLE UPDATES
         end
     end
     if max_delta_Q < Args.tolerance
