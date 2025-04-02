@@ -9,34 +9,38 @@ LinIdx = M + k*(0:n-1);                         % two-dimensional indices of M
 
 MM = sparse(M, 1:n, 1, k, n);                   % two-dimensional representation
 N = full(sum(MM, 2));                           % number of nodes in module
-if Args.similarity == "network"
-    Smn = MM * W;                               % degree of module to node
-elseif Args.method == "coloyvain"
-    ny = length(My);
-    MMy = sparse(My, 1:ny, 1, k, ny);           % two-dimensional representation
-    Ny = full(sum(MMy, 2));
-    Smn = MMy * W';                             % strength node to module of Wxy
-    Tmn = MM * Vx;                              % strength node to module of Wxx
-else
-    X = Args.X;
-    G = MM * X;                                 % cluster centroid
-    Smn = G * X';                               % dot of centroid with node
-end
-if Args.objective == "spectral"
-    Sn = sum(Smn, 1);                           % degree of node
-    Sm = sum(Smn, 2);                           % degree of module
+switch Args.method
+    case "loyvain"
+        if Args.similarity == "network"
+            Smn = MM * W;                       % degree of module to node
+        else
+            X = Args.X;
+            G = MM * X;                         % cluster centroid
+            Smn = G * X';                       % dot of centroid with node
+        end
+        Cii = diag(Smn * MM');                  % within-module weight sum
+        if Args.objective == "spectral"
+            Sn = sum(Smn, 1);                   % degree of node
+            Sm = sum(Smn, 2);                   % degree of module
+        end
+        Wii = Args.Wii;                         % within-node weight sum
+
+    case "coloyvain"
+        ny = length(My);
+        MMy = sparse(My, 1:ny, 1, k, ny);       % two-dimensional representation
+        Ny = full(sum(MMy, 2));
+        Smn = MMy * W';                         % strength node to module of Wxy
+        Cii = diag(MM * Smn');                  % within-module weight sum
+        if Args.objective == "cospectral"
+            Tmn = MM * Vx;                      % strength node to module of Wxx
+            Dii = diag(Tmn * MM');              % within-module weight sum of X
+            Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
+        end
 end
 
 switch Args.method
     case "loyvain"
-        Wii = Args.Wii;                         % within-node weight sum
-        Cii = diag(Smn * MM');                  % within-module weight sum
     case "coloyvain"
-        Cii = diag(MM * Smn');                  % within-module weight sum
-        if Args.objective == "cospectral"
-            Dii = diag(MM  * Vx * MM');         % within-module weight sum of X
-            Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
-        end
 end
 
 switch Args.objective
@@ -115,7 +119,6 @@ for v = 1:Args.maxiter
             % Get Cii, C_nrm, and Sm
             switch Args.method
                 case "loyvain"
-                    Cii = diag(Smn * MM');              % within-module weight sum
                     % Update G and Smn
                     if Args.similarity == "network"
                         delta_Smn = delta_MMI * W(I, :);
@@ -128,11 +131,13 @@ for v = 1:Args.maxiter
                     if Args.objective == "spectral"
                         Sm = Sm + sum(delta_Smn, 2);
                     end
+                    Cii = diag(Smn * MM');              % within-module weight sum
                 case "coloyvain"
                     Cii = diag(MM * Smn');              % within-module weight sum
                     if Args.objective == "cospectral"
-                        Dii = diag(MM * Vx * MM');      % within-module weight sum of X
-                        Tmn = MM * Vx;                  % strength node to module of Wxx
+                        delta_Tmn = delta_MMI * Vx(I, :);
+                        Tmn = Tmn + delta_Tmn;
+                        Dii = diag(Tmn * MM');          % within-module weight sum of X
                     end
             end
 
