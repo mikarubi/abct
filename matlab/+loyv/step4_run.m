@@ -38,22 +38,16 @@ switch Args.method
         end
 end
 
-switch Args.method
-    case "loyvain"
-    case "coloyvain"
-end
-
 switch Args.objective
-    case "kmeans"
-        Cii_nrm = Cii ./ N;
-    case "spectral"
-        Cii_nrm = Cii ./ Sm;
-    case "cokmeans"
-        Cii_nrm = Cii ./ sqrt(N .* Ny);
-    case "cospectral"
-        Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+    case "kmeans";      Cii_nrm = Cii ./ N;
+    case "spectral";    Cii_nrm = Cii ./ Sm;
+    case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
+    case "cospectral";  Cii_nrm = Cii ./ sqrt(Dii .* Eii);
 end
 
+if (k == 1) || (k == n)
+    Args.maxiter = 0;                           % skip loop if trivial partition
+end
 for v = 1:Args.maxiter
 
     max_delta_Q = 0;                            % maximal increase over all batches
@@ -85,6 +79,13 @@ for v = 1:Args.maxiter
         delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
+        % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
+        for name = ["My" "Vx" "Vy"]
+            if ~exist(name, "var"); eval(name + " = [];"); end
+        end
+        loyv.tests.test_objective_updates(Args, W, M, My, Vx, Vy, U, MU, delta_QU)
+        % END UNCOMMENT TO TEST OBJECTIVE UPDATES
+
         % Update if improvements
         [max_delta_QU, MU_new] = max(delta_QU);
         if max(max_delta_QU) > Args.tolerance
@@ -110,13 +111,11 @@ for v = 1:Args.maxiter
                 end
             end
 
-            % Update N, M, MM, and LinIdx
+            % Update all relevant variables
             N = N_new;
             M(I) = MI_new;
             MM = sparse(M, 1:n, 1, k, n);
             LinIdx(I) = MI_new + k*(I-1);
-
-            % Get Cii, C_nrm, and Sm
             switch Args.method
                 case "loyvain"
                     % Update G and Smn
@@ -140,17 +139,20 @@ for v = 1:Args.maxiter
                         Dii = diag(Tmn * MM');          % within-module weight sum of X
                     end
             end
-
             switch Args.objective
-                case "kmeans"
-                    Cii_nrm = Cii ./ N;
-                case "spectral"
-                    Cii_nrm = Cii ./ Sm;
-                case "cokmeans"
-                    Cii_nrm = Cii ./ sqrt(N .* Ny);
-                case "cospectral"
-                    Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+                case "kmeans";      Cii_nrm = Cii ./ N;
+                case "spectral";    Cii_nrm = Cii ./ Sm;
+                case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
+                case "cospectral";  Cii_nrm = Cii ./ sqrt(Dii .* Eii);
             end
+            % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
+            Vals = struct();
+            for name = ["N" "M" "MM" "LinIdx" "Smn" "Sm" "Tmn" "Dii" "Cii" "Cii_nrm"]
+                if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
+                Vals.(name) = val;
+            end
+            loyv.tests.test_variable_updates(Args, W, M, My, Vx, Vy, Vals)
+            % END UNCOMMENT TO TEST VARIABLE UPDATES
         end
     end
     if max_delta_Q < Args.tolerance
