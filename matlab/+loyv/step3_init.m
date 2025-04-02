@@ -31,6 +31,10 @@ if ismember(Args.start, ["greedy", "balanced"])
         % compute distance on the fly
         [~, M0] = min(1 - (X(Idx, :) * X') ./ (normX(Idx) * normX'), [], 1);
     end
+    k0 = max(M0);
+    if k0 < k
+        M0(randperm(n, k-k0)) = k0+1:k;         % ensure there are k modules
+    end
 elseif Args.start == "random"
     M0 = randi(k, 1, n);                        % initial module partition
     M0(randperm(n, k)) = 1:k;                   % ensure there are k modules

@@ -77,19 +77,20 @@ for i = 1:Args.replicates
     MMy0 = sparse(My0, 1:Args.py, 1);
     switch Args.objective
         case "cokmeans"
-            Ox = full(sum(MMx0, 2));
-            Oy = full(sum(MMy0, 2));
+            Ox = eye(Args.px);
+            Oy = eye(Args.py);
         case "cospectral"
             Ox = Args.Wx;
             Oy = Args.Wy;
     end
-    C0_nrm = (MMx0 * Args.Wxy * MMy0') ./ sqrt(Ox .* Oy');
+    C0_nrm = (MMx0 * Args.Wxy * MMy0') ./ ...
+        sqrt(diag(MMx0 * Ox * MMx0') * diag(MMy0 * Oy * MMy0')');
 
     % align modules
     Mx1 = zeros(size(Mx0));
     My1 = zeros(size(My0));
     for h = 1:k
-        [ix, iy] = find(C0_nrm == max(C0_nrm, [], "all"));
+        [ix, iy] = find(C0_nrm == max(C0_nrm, [], "all"), 1);
         Mx1(Mx0 == ix) = h;
         My1(My0 == iy) = h;
         C0_nrm(ix, :) = nan;
@@ -99,8 +100,8 @@ for i = 1:Args.replicates
     % fixed point iteration until convergence
     for v = 1:Args.maxiter
         My0 = My1;
-        [Mx1,  ~] = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy);   % optimize Mx
-        [My1, R1] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx);   % optimize My
+        [Mx1,  ~] = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy, Args.Wx_ii);   % optimize Mx
+        [My1, R1] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx, Args.Wy_ii);   % optimize My
         if isequal(My0, My1)    % if identical, neither Mx1 nor My1 will change
             break
         end

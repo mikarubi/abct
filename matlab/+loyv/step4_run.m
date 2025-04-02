@@ -1,4 +1,4 @@
-function [M, Q] = step4_run(Args, W, M, My, Vx, Vy)
+function [M, Q] = step4_run(Args, W, M, My, Vx, Vy, Vii)
 % Loyvain main algorithm
 
 % Unpack arguments
@@ -15,7 +15,8 @@ elseif Args.method == "coloyvain"
     ny = length(My);
     MMy = sparse(My, 1:ny, 1, k, ny);           % two-dimensional representation
     Ny = full(sum(MMy, 2));
-    Smn = MMy * W';
+    Smn = MMy * W';                             % strength node to module of Wxy
+    Tmn = MM * Vx;                              % strength node to module of Wxx
 else
     X = Args.X;
     G = MM * X;                                 % cluster centroid
@@ -31,11 +32,10 @@ switch Args.method
         Wii = Args.Wii;                         % within-node weight sum
         Cii = diag(Smn * MM');                  % within-module weight sum
     case "coloyvain"
-        Vii = diag(Vx);
         Cii = diag(MM * Smn');                  % within-module weight sum
         if Args.objective == "cospectral"
             Dii = diag(MM  * Vx * MM');         % within-module weight sum of X
-            Eii = diag(MMy * Vy * MMy);         % within-module weight sum of Y
+            Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
         end
 end
 
@@ -71,12 +71,12 @@ for v = 1:Args.maxiter
                     ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
             case "cokmeans"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((N      + 1) .* Ny     ) - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU)' - 1) .* Ny(MU)') - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((N     + 1)  .* Ny     ) - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU) - 1)' .* Ny(MU)') - Cii_nrm(MU)';
             case "cospectral"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((Dii       + 2 * Smn(:, U) - Vii(U)) .* Eii) - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((Dii(MU)' -  2 * Smn(LinU) - Vii(U)) .* Eii) - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((Dii      + 2 * Tmn(:, U) + Vii(U)) .* Eii)      - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((Dii(MU)' - 2 * Tmn(LinU) + Vii(U)) .* Eii(MU)') - Cii_nrm(MU)';
         end
         delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
@@ -112,26 +112,27 @@ for v = 1:Args.maxiter
             MM = sparse(M, 1:n, 1, k, n);
             LinIdx(I) = MI_new + k*(I-1);
 
-            % Get Cii, C_nrm, and Dm
+            % Get Cii, C_nrm, and Sm
             switch Args.method
                 case "loyvain"
                     Cii = diag(Smn * MM');              % within-module weight sum
-                    % Update G and Dmn
+                    % Update G and Smn
                     if Args.similarity == "network"
-                        delta_Dmn = delta_MMI * W(I, :);
+                        delta_Smn = delta_MMI * W(I, :);
                     else
                         delta_G = delta_MMI * X(I, :);  % change in centroid
                         G = G + delta_G;                % update centroids
-                        delta_Dmn = delta_G * X';       % change in degree of module to node
+                        delta_Smn = delta_G * X';       % change in degree of module to node
                     end
-                    Smn = Smn + delta_Dmn;              % update degree of module to node
+                    Smn = Smn + delta_Smn;              % update degree of module to node
                     if Args.objective == "spectral"
-                        Sm = Sm + sum(delta_Dmn, 2);
+                        Sm = Sm + sum(delta_Smn, 2);
                     end
                 case "coloyvain"
                     Cii = diag(MM * Smn');              % within-module weight sum
                     if Args.objective == "cospectral"
                         Dii = diag(MM * Vx * MM');      % within-module weight sum of X
+                        Tmn = MM * Vx;                  % strength node to module of Wxx
                     end
             end
 

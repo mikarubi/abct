@@ -1,8 +1,8 @@
 function Args = step1_proc_coloyvain(Args)
 % co-Loyvain arguments processing
 
-[Args.X, Args.px, Args.s, Args.Wx, Args.DistX] = proc(Args.X, Args);
-[Args.Y, Args.py, Args.s, Args.Wy, Args.DistY] = proc(Args.Y, Args);
+[Args.X, Args.Wx, Args.Wx_ii, Args.DistX, Args.px, Args.s] = proc(Args.X, Args);
+[Args.Y, Args.Wy, Args.Wy_ii, Args.DistY, Args.py, Args.s] = proc(Args.Y, Args);
 Args.Wxy = Args.X * Args.Y';
 
 switch Args.objective
@@ -13,7 +13,7 @@ end
 
 end
 
-function [X, p, s, C, DistC] = proc(X, Args)
+function [X, W, Wii, Dist, p, s] = proc(X, Args)
 
 [p, s] = size(X);
 
@@ -34,12 +34,15 @@ elseif ismember(Args.similarity, ["dot", "cov"])
     X = X / sqrt(s);
 end
 
+% Compute correlation weights
+W = X * X';
+Wii = diag(W)';
+
 % Precompute kmeans++ variables
-C = X * X';
-DistC = [];
+Dist = [];
 if ismember(Args.start, ["greedy", "balanced"])
-    DistC = C ./ vecnorm(C, 2, 2);
-    DistC = 1 - DistC * DistC';
+    Dist = W ./ vecnorm(W, 2, 2);
+    Dist = 1 - Dist * Dist';
 end
 
 end
