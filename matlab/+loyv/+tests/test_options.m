@@ -1,4 +1,4 @@
-classdef opts_tests < matlab.unittest.TestCase
+classdef test_options < matlab.unittest.TestCase
     % Comprehensive Loyvain options tests
 
     properties (TestParameter)
@@ -49,6 +49,7 @@ classdef opts_tests < matlab.unittest.TestCase
 
             TestCase.verifyThat(M, matlab.unittest.constraints.IsFinite);
             TestCase.verifyThat(Q, matlab.unittest.constraints.IsFinite);
+            TestCase.verifyEqual(unique(M), 1:N.(NumClusters));
         end
     end
 end
