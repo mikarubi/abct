@@ -25,7 +25,6 @@ function [X0, G0] = nulltime(X, M, s)
 %
 %   Outputs:
 %       X0: Samples of null timeseries (size n x t x s).
-%
 %       G0: Samples of null modes (size n x k x s).
 %
 %   Methodological notes:

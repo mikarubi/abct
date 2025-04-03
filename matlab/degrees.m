@@ -25,7 +25,7 @@ function S = degrees(W, type)
 %       approximately equivalent to the primary gradient in co-activity networks.
 %
 %   See also:
-%       MODEREMOVAL, LOYVAIN.
+%       MODEREMOVAL, COEFVAR2.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
