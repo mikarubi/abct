@@ -1,6 +1,16 @@
 classdef test_options < matlab.unittest.TestCase
     % Comprehensive Loyvain options tests
 
+    methods (TestClassSetup)
+        function intro_test(~)
+            clc
+            disp("*** Uncomment two snippets in step4_run to test" ...
+                + newline + ...
+                "     updates of objective and variable values.   ***.")
+            pause(3)
+        end
+    end
+
     properties (TestParameter)
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};

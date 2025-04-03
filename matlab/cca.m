@@ -6,13 +6,13 @@ function [A, B, U, V] = cca(X, Y, k, type, weight, varargin)
 %   [A, B, U, V] = cca(X, Y, k, type, weight, Name=Value)
 %
 %   Inputs:
-%       X: Data matrix of size p x s, where
-%          p is the number of features of X and
-%          s is the number of observations
+%       X: Data matrix of size s x p, where
+%          s is the number of observations and
+%          p is the number of features of X
 %
-%       Y: Data matrix of size q x s, where
-%          q is the number of features of Y and
-%          s is the number of observations
+%       Y: Data matrix of size s x q, where
+%          s is the number of observations and
+%          q is the number of features of Y
 %
 %       k: Number of canonical components (positive integer).
 %
@@ -30,8 +30,8 @@ function [A, B, U, V] = cca(X, Y, k, type, weight, varargin)
 %   Outputs:
 %       A: Canonical coefficients of X (size p x k).
 %       B: Canonical coefficients of Y (size q x k).
-%       U: Canonical components of X (size k x s).
-%       V: Canonical components of Y (size k x s).
+%       U: Canonical components of X (size s x k).
+%       V: Canonical components of Y (size s x k).
 %
 %   Methodological note:
 %       Binary canonical correlation or covariance analysis is computed with
@@ -52,10 +52,10 @@ arguments (Repeating)
     varargin
 end
 % Do basic checks
-[p, s] = size(X);
-[q, s_] = size(Y);
-assert(s == s_, "X and Y must have the same number of columns.")
-assert(k <= min(p, q), "k must not exceed number of rows in X or Y.")
+[s,  p] = size(X);
+[s_, q] = size(Y);
+assert(s == s_, "X and Y must have the same number of observations.")
+assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
 
 switch weight
     case "weighted"
@@ -64,28 +64,28 @@ switch weight
         end
 
         % Center data
-        X = X - mean(X, 2);
-        Y = Y - mean(Y, 2);
+        X = X - mean(X, 1);
+        Y = Y - mean(Y, 1);
         switch type
             case "canoncov"
-                [A, ~, B] = svds(X * Y', k);
+                [A, ~, B] = svds(X' * Y, k);
             case "canoncorr"
-                [Ux, Sx, Vx] = svd(X', "econ");
-                [Uy, Sy, Vy] = svd(Y', "econ");
-                [Uw,  ~, Vw] = svds(Ux' * Uy, k);
-                A = Vx * Sx^(-1) * Uw;
-                B = Vy * Sy^(-1) * Vw;
+                [ux, sx, vx] = svd(X, "econ");
+                [uy, sy, vy] = svd(Y, "econ");
+                [Uw,  ~, Vw] = svds(ux' * uy, k);
+                A = vx * sx^(-1) * Uw;
+                B = vy * sy^(-1) * Vw;
         end 
     case "binary"
         switch type
             case "canoncov"
-                [Mx, My] = coloyvain(X, Y, k, "objective", "kmeans", "similarity", "cov");
+                [Mx, My] = coloyvain(X', Y', k, "kmeans", "cov");
             case "canoncorr"
-                [Mx, My] = coloyvain(X, Y, k, "objective", "spectral", "similarity", "cov");
+                [Mx, My] = coloyvain(X', Y', k, "spectral", "cov");
         end
         A = full(sparse(1:p, Mx, 1));
         B = full(sparse(1:q, My, 1));
 end
 
-U = A * X;
-V = B * Y;
+U = X * A;
+V = Y * B;
