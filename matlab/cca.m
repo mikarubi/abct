@@ -3,6 +3,7 @@ function [A, B, U, V] = cca(X, Y, k, type, weight, varargin)
 %
 %   [A, B, U, V] = cca(X, Y, k)
 %   [A, B, U, V] = cca(X, Y, k, type)
+%   [A, B, U, V] = cca(X, Y, k, type, weight)
 %   [A, B, U, V] = cca(X, Y, k, type, weight, Name=Value)
 %
 %   Inputs:
