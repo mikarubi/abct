@@ -158,7 +158,7 @@ for v = 1:Args.maxiter
     if max_delta_Q < Args.tolerance
         break
     end
-    if Args.display == "iteration"
+    if (Args.display == "iteration") && (Args.method == "loyvain")
         fprintf("Replicate: %4d.    Iteration: %4d.    Largest \x0394: %4.4f\n", ...
             Args.replicate_i, v, max_delta_Q)
     end

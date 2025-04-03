@@ -2,8 +2,8 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 % LOYVAIN Normalized modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k)
-%   [M, Q] = loyvain(X, k, objective)
-%   [M, Q] = loyvain(X, k, objective, Name=Value)
+%   [M, Q] = loyvain(X, k, objective, similarity)
+%   [M, Q] = loyvain(X, k, objective, similarity, Name=Value)
 %
 %   Inputs:
 %       X:  Network matrix of size n x n, where
@@ -78,7 +78,7 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %       regression are both approximately equivalent to first-mode removal,
 %       or subtraction of the rank-one approximation of the data.
 %
-%       Note 2. For Similarity="network", the value of the normalized
+%       Note 2. For "network" similarity, the value of the normalized
 %       modularity is rescaled by the following factor:
 %           (average module size) / (absolute sum of all weights)
 %       This rescaling approximately aligns the value of the objective
@@ -91,7 +91,7 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
-%       COLOYVAIN, GRADIENTS, MODEREMOVAL.
+%       COLOYVAIN, CCA, GRADIENTS, MODEREMOVAL.
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
@@ -106,7 +106,7 @@ end
 
 % parse, process, and test arguments
 Args = loyv.step0_args("method", "loyvain", "X", X, "k", k, ...
-                       "objective", objective, "similarity", similarity, varargin{:});
+    "objective", objective, "similarity", similarity, varargin{:});
 clear X k objective similarity
 Args = loyv.step1_proc_loyvain(Args);
 loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);
@@ -122,8 +122,8 @@ for i = 1:Args.replicates
         % initialize
         M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args);
     end
-    [M1, Q1] = loyv.step4_run(Args, Args.W, M0);         % run
-    if Q1 > Q
+    [M1, Q1] = loyv.step4_run(Args, Args.W, M0);    % run
+    if (Q1 - Q) > Args.tolerance                    % test for increase
         if ismember(Args.display, ["replicate", "iteration"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
         end

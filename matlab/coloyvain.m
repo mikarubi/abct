@@ -2,7 +2,6 @@ function [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, varargin)
 % COLOYVAIN Normalized modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(X, Y, k)
-%   [Mx, My, R] = coloyvain(X, Y, k, objective)
 %   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
 %   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, Name=Value)
 %
@@ -22,12 +21,12 @@ function [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, varargin)
 %               In combination with "cov" or "corr" similarity, optimization
 %               of this modified normalized cut objective is equivalent to
 %               canonical correlation analysis with binary constraints on
-%               values of coefficients. 
+%               values of coefficients.
 %           "kmeans": K-means clustering objective.
 %               In combination with "cov" similarity, optimization of this
 %               objective is equivalent to canonical covariance analysis
 %               (aka partial least squares) with binary constraints on
-%               values of coefficients. 
+%               values of coefficients.
 %           "modularity": Normalized modularity.
 %
 %       similarity: Type of similarity.
@@ -71,7 +70,7 @@ end
 
 % parse, process, and test arguments
 Args = loyv.step0_args("method", "coloyvain", "X", X, "Y", Y, "k", k, ...
-                       "objective", objective, "similarity", similarity, varargin{:});
+    "objective", objective, "similarity", similarity, varargin{:});
 clear X Y k objective similarity
 Args = loyv.step1_proc_coloyvain(Args);
 loyv.step2_test(Args.X, Args.Wxy, Args.px, Args.k, Args);
@@ -120,10 +119,17 @@ for i = 1:Args.replicates
         if isequal(My0, My1)    % if identical, neither Mx1 nor My1 will change
             break
         end
+        if Args.display == "iteration"
+            fprintf("Replicate: %4d.    Iteration: %4d.    Objective: %4.4f.\n", ...
+                Args.replicate_i, v, R1)
+        end
+        if v == Args.maxiter
+            warning("Algorithm did not converge after %d iterations.", v)
+        end
     end
 
     % check if replicate has improved on previous result
-    if R1 > R
+    if (R1 - R) > Args.tolerance            % test for increase
         if ismember(Args.display, ["replicate", "iteration"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, R1, R1 - R);
         end
