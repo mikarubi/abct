@@ -38,7 +38,7 @@ function [A, B, U, V] = cca(X, Y, k, type, weight, varargin)
 %       spectral or k-means co-Loyvain clustering of cross-covariance matrix.
 %
 %   See also:
-%       CANONCORR, LOYVAIN.
+%       COLOYVAIN, LOYVAIN.
 
 % Parse inputs and test arguments
 arguments
@@ -70,19 +70,20 @@ switch weight
             case "canoncov"
                 [A, ~, B] = svds(X' * Y, k);
             case "canoncorr"
-                [ux, sx, vx] = svd(X, "econ");
-                [uy, sy, vy] = svd(Y, "econ");
+                [ux, sx, vx] = svd(X, "econ", "vector");
+                [uy, sy, vy] = svd(Y, "econ", "vector");
                 [Uw,  ~, Vw] = svds(ux' * uy, k);
-                A = vx * sx^(-1) * Uw;
-                B = vy * sy^(-1) * Vw;
-        end 
-    case "binary"
-        switch type
-            case "canoncov"
-                [Mx, My] = coloyvain(X', Y', k, "kmeans", "cov");
-            case "canoncorr"
-                [Mx, My] = coloyvain(X', Y', k, "spectral", "cov");
+                A = vx * diag(1./sx) * Uw;
+                B = vy * diag(1./sy) * Vw;
         end
+    case "binary"
+        numbatches = min(32, min(p, q));
+        switch type
+            case "canoncov"; objective = "kmeans";
+            case "canoncorr"; objective = "spectral";
+        end
+        opts = [{objective}, {"cov"}, {"numbatches"}, {numbatches}, varargin];
+        [Mx, My] = coloyvain(X', Y', k, opts{:});
         A = full(sparse(1:p, Mx, 1));
         B = full(sparse(1:q, My, 1));
 end
