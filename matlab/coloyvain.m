@@ -1,9 +1,10 @@
-function [Mx, My, R] = coloyvain(X, Y, k, objective, varargin)
+function [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, varargin)
 % COLOYVAIN Normalized modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(X, Y, k)
 %   [Mx, My, R] = coloyvain(X, Y, k, objective)
-%   [Mx, My, R] = coloyvain(X, Y, k, objective, Name=Value)
+%   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
+%   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size p x s, where
@@ -14,13 +15,30 @@ function [Mx, My, R] = coloyvain(X, Y, k, objective, varargin)
 %          q is the number of features of Y and
 %          s is the number of observations
 %
-%       k: Number of modules (positive integer or 0).
-%           Set to 0 to infer number from initial module assignment.
+%       k: Number of modules (positive integer).
 %
-%       objective: Co-clustering objective.
-%           "modularity": Normalized modularity (default).
+%       objective: Clustering objective.
+%           "spectral": Modified spectral clustering objective (default).
+%               In combination with "cov" or "corr" similarity, optimization
+%               of this modified normalized cut objective is equivalent to
+%               canonical correlation analysis with binary constraints on
+%               values of coefficients. 
 %           "kmeans": K-means clustering objective.
-%           "spectral": Spectral clustering objective (normalized cut).
+%               In combination with "cov" similarity, optimization of this
+%               objective is equivalent to canonical covariance analysis
+%               (aka partial least squares) with binary constraints on
+%               values of coefficients. 
+%           "modularity": Normalized modularity.
+%
+%       similarity: Type of similarity.
+%           "corr": Pearson correlation coefficient (default).
+%               A magnitude-normalized dot product of mean-centered vectors.
+%           "cosim": Cosine similarity.
+%               A normalized dot product.
+%           "cov":  Covariance.
+%               A dot product of mean-centered vectors.
+%           "dot": Dot product.
+%               A sum of an elementwise vector product.
 %
 %       Name=[Value] Arguments:
 %
@@ -29,36 +47,33 @@ function [Mx, My, R] = coloyvain(X, Y, k, objective, varargin)
 %   Outputs:
 %       Mx: Vector of module assignments for X (length p).
 %       My: Vector of module assignments for Y (length q).
+%       R: Value of maximized objective.
 %
 %   Methodological notes:
-%       Binary canonical analysis is computed via Loyvain co-clustering of the
-%       cross-correlation or cross-covariance matrix.
+%       Coloyvain simultaneously clusters X and Y via Loyvain
+%       co-clustering of the cross-similarity matrix.
 %
 %   See also:
-%       CANONCORR, LOYVAIN.
+%       LOYVAIN, CCA.
+
 arguments
-    X
-    Y
-    k
-    objective
+    X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
+    Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
+    k (1, 1) double {mustBeInteger, mustBePositive}
+    objective (1, 1) string {mustBeMember(objective, ...
+        ["spectral", "kmeans", "modularity"])} = "spectral"
+    similarity (1, 1) string {mustBeMember(similarity, ...
+        ["corr", "cosim", "cov", "dot"])} = "corr"
 end
 arguments (Repeating)
     varargin
 end
-assert(mod(length(varargin), 2) == 0, "The input must comprise the " + ...
-    "required 'X', 'Y', 'k', and 'objective' arguments, followed by the " + ...
-    "optional paired Name=[Value] arguments.")
 
-% consolidate arguments
-Args = struct(varargin{:}); clear varargin
-Args.X = X; clear X;
-Args.Y = Y; clear Y;
-Args.k = k;
-Args.objective = objective; clear objective;
-Args = namedargs2cell(Args);
-
-Args = loyv.step0_args("coloyvain", Args{:});   % parse and test arguments
-Args = loyv.step1_proc_coloyvain(Args);         % process inputs
+% parse, process, and test arguments
+Args = loyv.step0_args("method", "coloyvain", "X", X, "Y", Y, "k", k, ...
+                       "objective", objective, "similarity", similarity, varargin{:});
+clear X Y k objective similarity
+Args = loyv.step1_proc_coloyvain(Args);
 loyv.step2_test(Args.X, Args.Wxy, Args.px, Args.k, Args);
 loyv.step2_test(Args.Y, Args.Wxy, Args.py, Args.k, Args);
 

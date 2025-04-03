@@ -1,4 +1,4 @@
-function [M, Q] = loyvain(X, k, objective, varargin)
+function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 % LOYVAIN Normalized modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k)
@@ -18,26 +18,31 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %       objective: Clustering objective.
 %           "modularity": Normalized modularity (default).
 %           "kmeans": K-means clustering objective.
-%           "spectral": Spectral clustering objective (normalized cut).
+%           "spectral": Spectral clustering objective.
+%
+%       similarity: Type of similarity.
+%         The first option assumes that X is a network matrix.
+%           "network": Network connectivity (default).
+%               X is a symmetric network matrix. The network must
+%               be non-negative for the spectral and modularity
+%               objectives. No additional similarity is computed.
+%         The other options assume that X is a data matrix.
+%           "corr": Pearson correlation coefficient.
+%               A magnitude-normalized dot product of mean-centered vectors.
+%           "cosim": Cosine similarity.
+%               A normalized dot product.
+%           "cov":  Covariance.
+%               A dot product of mean-centered vectors.
+%           "dot": Dot product.
+%               A sum of an elementwise vector product.
 %
 %       Name=[Value] Arguments:
 %
-%           Similarity=[Type of similarity].
-%               The default option assumes that X is a network matrix.
-%                   "network": Network connectivity (default).
-%                       X is a symmetric network matrix. The network must
-%                       be non-negative for the spectral and modularity
-%                       objectives. No additional similarity is computed.
-%               The remaining options assume that X is a data matrix.
-%                   "corr": Pearson correlation coefficient.
-%                       A scale-invariant measure of linear association,
-%                       a normalized dot product of mean-centered vectors.
-%                   "cosim": Cosine similarity.
-%                       A normalized dot product.
-%                   "cov":  Covariance.
-%                       A dot product of mean-centered vectors.
-%                   "dot": Dot product.
-%                       A sum of an elementwise vector product.
+%           Start=[Initial module assignments].
+%               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
+%               "balanced": Standard kmeans++ initialization.
+%               "random": Uniformly random initialization.
+%               Initial-module-assignment vector of length n.
 %
 %           NumBatches=[Number of batches].
 %               Positive integer (default is 2).
@@ -48,11 +53,8 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %           Replicates=[Number of replicates].
 %               Positive integer (default is 10).
 %
-%           Start=[Initial module assignments].
-%               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
-%               "balanced": Standard kmeans++ initialization.
-%               "random": Uniformly random initialization.
-%               Initial-module-assignment vector of length n.
+%           Tolerance=[Convergence tolerance].
+%               Positive scalar (default is 1e-10).
 %
 %           Display=[Display progress].
 %               "none": no display (default).
@@ -61,8 +63,7 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %
 %   Outputs:
 %       M: Vector of module assignments (length n).
-%
-%       Q: Value of normalized modularity, k-means, or spectral objective.
+%       Q: Value of maximized objective.
 %
 %   Methodological notes:
 %       Loyvain is a unification of:
@@ -92,27 +93,23 @@ function [M, Q] = loyvain(X, k, objective, varargin)
 %   See also:
 %       COLOYVAIN, GRADIENTS, MODEREMOVAL.
 arguments
-    X
-    k
-    objective
+    X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
+    k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
+    objective (1, 1) string {mustBeMember(objective, ...
+        ["modularity", "kmeans", "spectral"])} = "modularity"
+    similarity (1, 1) string {mustBeMember(similarity, ...
+        ["network", "corr", "cosim", "cov", "dot"])} = "network"
 end
 arguments (Repeating)
     varargin
 end
-assert(mod(length(varargin), 2) == 0, "The input must comprise the " + ...
-    "required 'X', 'k', and 'objective' arguments, followed by the " + ...
-    "optional paired Name=[Value] arguments.")
 
-% consolidate arguments
-Args = struct(varargin{:}); clear varargin
-Args.X = X; clear X;
-Args.k = k; clear k;
-Args.objective = objective; clear objective;
-Args = namedargs2cell(Args);
-
-Args = loyv.step0_args("loyvain", Args{:});              % parse and test arguments
-Args = loyv.step1_proc_loyvain(Args);                    % process inputs
-loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);   % additional tests
+% parse, process, and test arguments
+Args = loyv.step0_args("method", "loyvain", "X", X, "k", k, ...
+                       "objective", objective, "similarity", similarity, varargin{:});
+clear X k objective similarity
+Args = loyv.step1_proc_loyvain(Args);
+loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);
 
 %% Run algorithm
 
