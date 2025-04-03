@@ -26,7 +26,7 @@ else
 end
 if (Args.method == "coloyvain")
     assert(size(Args.X, 2) == size(Args.Y, 2), ...
-    "X and Y must have the same number of columns.")
+    "X and Y must have the same number of observations.")
 end
 
 end

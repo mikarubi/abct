@@ -104,7 +104,7 @@ for i = 1:Args.replicates
     % align modules
     Mx1 = zeros(size(Mx0));
     My1 = zeros(size(My0));
-    for h = 1:k
+    for h = 1:Args.k
         [ix, iy] = find(C0_nrm == max(C0_nrm, [], "all"), 1);
         Mx1(Mx0 == ix) = h;
         My1(My0 == iy) = h;
