@@ -9,11 +9,11 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 %   Inputs:
 %       X: Data matrix of size s x p, where
 %          s is the number of data points and
-%          p is the number of features
+%          p is the number of features.
 %
 %       Y: Data matrix of size s x q, where
 %          s is the number of data points and
-%          q is the number of features
+%          q is the number of features.
 %
 %       k: Number of canonical components (positive integer).
 %
@@ -104,8 +104,13 @@ switch weight
         end
         opts = [{objective}, {"cov"}, {"numbatches"}, {numbatches}, varargin];
         [Mx, My, ~, R] = coloyvain(X', Y', k, opts{:});
-        A = full(sparse(1:p, Mx, 1));
-        B = full(sparse(1:q, My, 1));
+        [~, ix] = sort(R, "descend");
+        A = zeros(p, k);
+        B = zeros(q, k);
+        for h = 1:k
+            A(Mx == ix(h), h) = 1;
+            B(My == ix(h), h) = 1;
+        end
 end
 
 U = X * A;
