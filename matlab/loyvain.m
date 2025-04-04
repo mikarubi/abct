@@ -9,8 +9,8 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %       X:  Network matrix of size n x n, where
 %           n is the number of nodes.
 %       OR  Data matrix of size n x t, where
-%           n is the number of features and
-%           t is the number of observations.
+%           n is the number of data points and
+%           t is the number of features.
 %
 %       k: Number of modules (positive integer or 0).
 %           Set to 0 to infer number from initial module assignment.

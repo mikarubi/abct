@@ -8,12 +8,12 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
-%          s is the number of observations and
-%          p is the number of features of X
+%          s is the number of data points and
+%          p is the number of features
 %
 %       Y: Data matrix of size s x q, where
-%          s is the number of observations and
-%          q is the number of features of Y
+%          s is the number of data points and
+%          q is the number of features
 %
 %       k: Number of canonical components (positive integer).
 %

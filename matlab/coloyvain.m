@@ -6,13 +6,13 @@ function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin
 %   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, Name=Value)
 %
 %   Inputs:
-%       X: Data matrix of size p x s, where
-%          p is the number of features of X and
-%          s is the number of observations
+%       X: Data matrix of size s x p, where
+%          s is the number of data points and
+%          p is the number of features.
 %
-%       Y: Data matrix of size q x s, where
-%          q is the number of features of Y and
-%          s is the number of observations
+%       Y: Data matrix of size s x q, where
+%          s is the number of data points and
+%          q is the number of features.
 %
 %       k: Number of modules (positive integer).
 %
