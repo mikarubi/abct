@@ -28,6 +28,10 @@ function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin
 %               (aka partial least squares) with binary constraints on
 %               values of coefficients.
 %           "modularity": Normalized modularity.
+%               In combination with "cov" similarity, optimization of this
+%               objective is approximately equivalent to canonical covariance
+%               analysis (aka partial least squares) after first-mode removal
+%               and with binary constraints on values of coefficients.
 %
 %       similarity: Type of similarity.
 %           "corr": Pearson correlation coefficient (default).

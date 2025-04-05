@@ -9,13 +9,13 @@ if Args.method == "loyvain"
     assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
         "Network matrix must be symmetric or similarity must not be ""network"".")
 
-    % Test non-negativity for spectral and modularity
-    if ismember(Args.objective, ["modularity" "spectral"])
+    % Test non-negativity for spectral clustering
+    if Args.objective == "spectral"
         if Args.similarity == "network"
             assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
-        elseif (Args.objective == "spectral") && (numel(X) < 1e6)
+        elseif numel(X) < 1e6
             assert(all(X * X' >= 0, "all"), "Similarity matrix must be non-negative.")
-        elseif Args.objective == "spectral"
+        else
             warning("Not checking similarity matrix for negative values because " + ...
                 "of large data size. Ensure that similarity matrix is non-negative.")
         end
