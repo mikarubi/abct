@@ -1,4 +1,4 @@
-function [M, Q] = step4_run(Args, W, M, My, Vx, Vy, Vii)
+function [M, Q, Cii_nrm] = step4_run(Args, W, M, My, Vx, Vy, Vii)
 % Loyvain main algorithm
 
 % Unpack arguments
