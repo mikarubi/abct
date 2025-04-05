@@ -1,11 +1,11 @@
-function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
+function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 % CCA Canonical correlation or covariance analysis
 %
 %   [A, B, R, U, V] = cca(X, Y, k)
 %   [A, B, R, U, V] = cca(X, Y, k, type)
 %   [A, B, R, U, V] = cca(X, Y, k, type, weight)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, Name=Value)
+%   [A, B, R, U, V] = cca(X, Y, k, type, weight)
+%   [A, B, R, U, V] = cca(X, Y, k, type, weight, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
@@ -19,19 +19,15 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
 %       k: Number of canonical components (positive integer).
 %
 %       type: Type of canonical analysis.
-%           "canoncov": Canonical covariance analysis,
-%                       aka partial least squares (default).
+%           "canoncov": Canonical covariance analysis (default).
+%                       NB: This analysis is also known as partial least squares.
 %           "canoncorr": Canonical correlation analysis.
+%           "canoncov1": Canonical covariance analysis after first-mode removal.
+%           "canoncorr1": Canonical correlation analysis after first-mode removal.
 %
 %       weight: Weighted or binary canonical analysis.
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
-%
-%       moderm: Mode removal from data.
-%           "none": No mode removal (default).
-%           "degree": Degree correction.
-%           "global": Global signal regression.
-%           "rankone": Subtraction of rank-one approximation.
 %
 %       Name=[Value] Arguments (binary canonical analysis only):
 %           See LOYVAIN for all Name=Value options.
@@ -43,14 +39,15 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
 %       U: Canonical components of X (size s x k).
 %       V: Canonical components of Y (size s x k).
 %
-%   Methodological note:
+%   Methodological notes:
 %       Weighted canonical correlation or covariance analysis is computed via
 %       singular value decomposition of cross-covariance matrix.
 %
 %       Binary canonical covariance or correlation analysis is computed via
 %       Loyvain spectral or k-means co-clustering of cross-covariance matrix.
-%       Mode removal converts the k-means co-clustering algorithm into
-%       normalized modularity maximization.
+%
+%       First-mode removal is performed via generalized degree correction, and
+%       converts k-means co-clustering into normalized modularity maximization.
 %
 %   See also:
 %       COLOYVAIN, LOYVAIN, MODEREMOVAL.
@@ -60,9 +57,9 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ["canoncorr", "canoncov"])} = "canoncorr"
+    type (1, 1) string {mustBeMember(type, ...
+                ["canoncorr", "canoncov", "canoncorr1", "canoncov1"])} = "canoncov"
     weight (1, 1) string {mustBeMember(weight, ["weighted", "binary"])} = "weighted"
-    moderm (1, 1) string {mustBeMember(moderm, ["none", "degree", "global", "rankone"])} = "none"
 end
 arguments (Repeating)
     varargin
@@ -73,9 +70,10 @@ end
 assert(s == s_, "X and Y must have the same number of observations.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
 
-if moderm ~= "none"
-    X = moderemoval(X, moderm);
-    Y = moderemoval(Y, moderm);
+if ismember(type, ["canoncov1", "canoncorr1"])
+    X = moderemoval(X, "degree");
+    Y = moderemoval(Y, "degree");
+    type = erase(type, "1");
 end
 
 switch weight
