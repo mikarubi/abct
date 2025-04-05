@@ -1,9 +1,10 @@
 function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 % CCA Canonical correlation or covariance analysis
 %
-%   [A, B, R, U, V] = cca(X, Y, k)
-%   [A, B, R, U, V] = cca(X, Y, k, type)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, Name=Value)
+%   [A, B, U, V] = cca(X, Y, k)
+%   [A, B, U, V] = cca(X, Y, k, type)
+%   [A, B, U, V] = cca(X, Y, k, type, weight)
+%   [A, B, U, V] = cca(X, Y, k, type, weight, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where

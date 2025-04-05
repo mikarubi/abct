@@ -1,14 +1,14 @@
-function X = moderemoval(X, method)
+function X = moderemoval(X, type)
 % MODEREMOVAL Mode removal from network or timeseries data
 %
 %   X1 = moderemoval(X)
-%   X1 = moderemoval(X, method)
+%   X1 = moderemoval(X, type)
 %
 %   Inputs:
 %       X: Network matrix of size n x n, or data matrix of size n x t.
 %          n is the number of nodes and t is the number of observations.
 %
-%       method: Method for mode removal.
+%       type: Type of mode removal.
 %           "degree": Degree correction (default).
 %           "global": Global signal regression.
 %           "rankone": Subtraction of rank-one approximation.
@@ -20,7 +20,7 @@ function X = moderemoval(X, method)
 %   Methodological notes:
 %       Degree correction, global signal regression, and subtraction of
 %       rank-one approximation all produce approximatley equivalent
-%       results. The "soft" method makes the network sparse by using
+%       results. The "soft" mode removal makes the network sparse by using
 %       cubic interpolation to "despike" an initial eigenspectrum peak.
 %
 %   See also:
@@ -28,30 +28,26 @@ function X = moderemoval(X, method)
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
-    method (1, 1) string {mustBeMember(method, ["degree", "global", "rankone", "soft"])} = "degree"
+    type (1, 1) string {mustBeMember(type, ["degree", "global", "rankone", "soft"])} = "degree"
 end
 
-switch method
-    case "degree"
-        %% Degree correction
+switch type
+    case "degree"       % Degree correction
         assert(all(X >= 0, "all"), "Network matrix must be non-negative.")
         So = sum(X, 2);
         Si = sum(X, 1);
         X = X - So * Si / sum(So);
 
-    case "global"
-        %% Global signal regression
+    case "global"       % Global signal regression
         G = mean(X, 1);
         X = X - (X * G') * G / (G * G');
         % (X - (X * G') * G / (G * G')) * G' = 0    % verification
 
-    case "rankone"
-        %% Subtraction of rank-one approximation
+    case "rankone"      % Subtraction of rank-one approximation
         [U, S, V] = svds(X, 1);
         X = X - U * S * V';
 
-    case "soft"
-        %% Soft removal of primary modes
+    case "soft"         % Soft removal of primary modes
         assert(isequal(size(X, 1), size(X, 2)) && all(X - X' < eps("single"), "all"), ...
             "Network matrix must be symmetric.")
         [V, D] = eig(X, "vector");

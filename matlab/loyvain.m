@@ -92,6 +92,7 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %
 %   See also:
 %       COLOYVAIN, CCA, GRADIENTS, MODEREMOVAL.
+
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0

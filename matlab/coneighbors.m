@@ -20,7 +20,7 @@ function B = coneighbors(W, p)
 %       diffusion-map embedding of neuroimaging co-activity data.
 %
 %   See also:
-%       GRADIENTS, LOYVAIN.
+%       GRADIENTS.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
