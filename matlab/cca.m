@@ -104,7 +104,7 @@ switch weight
         end
         opts = [{objective}, {"cov"}, {"numbatches"}, {numbatches}, varargin];
         [Mx, My, ~, R] = coloyvain(X', Y', k, opts{:});
-        [~, ix] = sort(R, "descend");
+        [R, ix] = sort(R, "descend");
         A = zeros(p, k);
         B = zeros(q, k);
         for h = 1:k
