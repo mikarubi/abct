@@ -1,4 +1,4 @@
-function [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, varargin)
+function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin)
 % COLOYVAIN Normalized modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(X, Y, k)
@@ -114,8 +114,8 @@ for i = 1:Args.replicates
     % fixed point iteration until convergence
     for v = 1:Args.maxiter
         My0 = My1;
-        [Mx1,  ~] = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy, Args.Wx_ii);   % optimize Mx
-        [My1, R1] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx, Args.Wy_ii);   % optimize My
+        Mx1 = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy, Args.Wx_ii);   % optimize Mx
+        [My1, R1, R1_all] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx, Args.Wy_ii);   % optimize My
         if isequal(My0, My1)    % if identical, neither Mx1 nor My1 will change
             break
         end
@@ -136,6 +136,7 @@ for i = 1:Args.replicates
         R = R1;
         Mx = Mx1;
         My = My1;
+        R_all = R1_all;
     end
 end
 
