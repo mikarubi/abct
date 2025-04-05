@@ -7,9 +7,8 @@ function [CV2, CV2_nrm] = coefvar2(W)
 %       W: Network matrix of size n x n.
 %
 %   Outputs:
-%       CV2: Vector of squared coefficients of variation (size n).
-%
-%       CV2_nrm: Vector of normalized squared coefficients of variation (size n).
+%       CV2: Vector of squared coefficients of variation (length n).
+%       CV2_nrm: Vector of normalized squared coefficients of variation (length n).
 %
 %   Methodological notes:
 %       The squared coefficient of variation, or CV2, is the ratio of the
@@ -23,7 +22,7 @@ function [CV2, CV2_nrm] = coefvar2(W)
 %       networks, including correlation and common-neighbor networks.
 %
 %   See also:
-%       DEGREES, CONEIGHBORS.
+%       DEGREES.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

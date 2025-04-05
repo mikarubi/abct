@@ -1,25 +1,25 @@
-function V = gradients(W, k, type, p, varargin)
+function V = gradients(W, k, weight, p, varargin)
 % GRADIENTS Low-dimensional representation of common-neighbor matrices
 %
 %   V = gradients(W, k)
-%   V = gradients(W, k, type, p)
-%   V = gradients(W, k, type, p, Name=Value)
+%   V = gradients(W, k, weight)
+%   V = gradients(W, k, weight, p)
+%   V = gradients(W, k, weight, p, Name=Value)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
 %
 %       k: Number of gradient outputs.
 %
-%       type: Type of gradient
+%       weight: Type of gradient
 %           "weighted": Weighted gradient (default).
 %           "binary": Binary gradient.
 %
 %       p: Fraction to define neighbors as the top-p connections.
 %           Set p = [] for default value. See CONEIGHBORS for details.
 %
-%       Name=[Value] Arguments:
-%           Name-value arguments for the Loyvain algorithm.
-%           Only used if type = "binary". See LOYVAIN for details.
+%       Name=[Value] Arguments (binary gradients only):
+%           See LOYVAIN for all Name=Value options.
 %
 %   Outputs:
 %       V: Gradient matrix (size n x k).
@@ -38,14 +38,11 @@ function V = gradients(W, k, type, p, varargin)
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
+    weight (1, 1) string {mustBeMember(weight, ["weighted", "binary"])} = "weighted"
     p = []
 end
 arguments (Repeating)
     varargin
-end
-if type == "weighted" && ~isempty(varargin)
-    warning("Ignoring Name=Value arguments for weighted gradients.")
 end
 
 % Get common-neighbors matrix
@@ -56,8 +53,11 @@ else
 end
 
 % Get gradients
-switch type
+switch weight
     case "weighted"
+        if ~isempty(varargin)
+            warning("Ignoring Name=Value arguments for weighted gradients.")
+        end
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
