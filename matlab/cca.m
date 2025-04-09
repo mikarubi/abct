@@ -1,11 +1,11 @@
-function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
+function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
 % CCA Canonical correlation or covariance analysis
 %
 %   [A, B, R, U, V] = cca(X, Y, k)
 %   [A, B, R, U, V] = cca(X, Y, k, type)
 %   [A, B, R, U, V] = cca(X, Y, k, type, weight)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, Name=Value)
+%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm)
+%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
@@ -19,15 +19,19 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 %       k: Number of canonical components (positive integer).
 %
 %       type: Type of canonical analysis.
-%           "canoncov": Canonical covariance analysis (default).
-%                       NB: This analysis is also known as partial least squares.
+%           "canoncov": Canonical covariance analysis,
+%                       aka partial least squares (default).
 %           "canoncorr": Canonical correlation analysis.
-%           "canoncov1": Canonical covariance analysis after first-mode removal.
-%           "canoncorr1": Canonical correlation analysis after first-mode removal.
 %
 %       weight: Weighted or binary canonical analysis.
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
+%           "hybrid": Hybrid canonical analysis 
+%                     (only compatible with canonical correlation).
+%
+%       moderm: First-mode removal (logical scalar).
+%           0: No first-mode removal (default).
+%           1: First-mode removal via degree correction.
 %
 %       Name=[Value] Arguments (binary canonical analysis only):
 %           See LOYVAIN for all Name=Value options.
@@ -43,8 +47,14 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, varargin)
 %       Weighted canonical correlation or covariance analysis is computed via
 %       singular value decomposition of cross-covariance matrix.
 %
-%       Binary canonical covariance or correlation analysis is computed via
-%       Loyvain spectral or k-means co-clustering of cross-covariance matrix.
+%       Binary canonical covariance (respectively canonical correlation)
+%       analysis is computed via Loyvain k-means (respectively Loyvain spectral)
+%       co-clustering of cross-covariance matrix. This analysis produces binary
+%       orthogonal canonical coefficients.
+%
+%       Hybrid canonical correlation analysis is computed via Loyvain k-means
+%       co-clustering of whitened cross-covariance matrix. This analysis produces
+%       orthogonal canonical components, but not binary canonical coefficients.
 %
 %       First-mode removal is performed via generalized degree correction, and
 %       converts k-means co-clustering into normalized modularity maximization.
@@ -57,77 +67,87 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ...
-                ["canoncorr", "canoncov", "canoncorr1", "canoncov1"])} = "canoncov"
-    weight (1, 1) string {mustBeMember(weight, ["weighted", "binary"])} = "weighted"
+    type (1, 1) string {mustBeMember(type, ["canoncorr", "canoncov"])} = "canoncov"
+    weight (1, 1) string {mustBeMember(weight, ["weighted", "binary", "hybrid"])} = "weighted"
+    moderm (1, 1) logical = false
 end
 arguments (Repeating)
     varargin
 end
-% Do basic checks
+
+% Basic checks
 [s,  p] = size(X);
 [s_, q] = size(Y);
 assert(s == s_, "X and Y must have the same number of observations.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
+assert(weight ~= "hybrid" || type == "canoncorr", ...
+    "Hybrid analysis is only compatible with canonical correlation.")
 
-if ismember(type, ["canoncov1", "canoncorr1"])
-    X = moderemoval(X, "degree");
-    Y = moderemoval(Y, "degree");
-    type = erase(type, "1");
+% Initial processing
+if weight == "weighted"
+    if ~isempty(varargin)
+        warning("Ignoring Name=Value arguments for weighted analysis.")
+    end
+elseif (weight == "hybrid") || (type == "canoncov")
+    objective = "kmeans";
+else
+    objective = "spectral";
 end
 
-switch weight
-    case "weighted"
-        if ~isempty(varargin)
-            warning("Ignoring Name=Value arguments for weighted analysis.")
-        end
+% First-mode removal or centering
+if moderm       % Degree correction automatically centers data
+    X = moderemoval(X, "degree");
+    Y = moderemoval(Y, "degree");
+else
+    X = X - mean(X, 1);
+    Y = Y - mean(Y, 1);
+end
 
-        % Center data
-        X = X - mean(X, 1);
-        Y = Y - mean(Y, 1);
-        switch type
-            case "canoncov"
-                [A, R, B] = svds(X' * Y, k);
-                R = diag(R);
-            case "canoncorr"
-                [ux, sx, vx] = svd(X, "econ", "vector");
-                rankx = nnz(sx > length(X) * eps(max(sx)));
-                if rankx < length(sx)
-                    warning("X is not full rank.")
-                    sx = sx(1:rankx);
-                    ux = ux(:, 1:rankx);
-                    vx = vx(:, 1:rankx);
-                end
+% Set up problem
+if (type == "canoncorr") && (weight ~= "binary")
+    [Ux, Sx, Vx] = svd(X, "econ", "vector");
+    rankx = nnz(Sx > length(X) * eps(max(Sx)));
+    if rankx < length(Sx)
+        warning("X is not full rank.")
+        Sx = Sx(1:rankx);
+        Ux = Ux(:, 1:rankx);
+        Vx = Vx(:, 1:rankx);
+    end
 
-                [uy, sy, vy] = svd(Y, "econ", "vector");
-                ranky = nnz(sy > length(Y) * eps(max(sy)));
-                if ranky < length(sy)
-                    warning("Y is not full rank.")
-                    sy = sy(1:ranky);
-                    uy = uy(:, 1:ranky);
-                    vy = vy(:, 1:ranky);
-                end
+    [Uy, Sy, Vy] = svd(Y, "econ", "vector");
+    ranky = nnz(Sy > length(Y) * eps(max(Sy)));
+    if ranky < length(Sy)
+        warning("Y is not full rank.")
+        Sy = Sy(1:ranky);
+        Uy = Uy(:, 1:ranky);
+        Vy = Vy(:, 1:ranky);
+    end
+else
+    Ux = X;
+    Uy = Y;
+end
 
-                [Uw,  R, Vw] = svds(ux' * uy, k);
-                A = vx * diag(1./sx) * Uw;
-                B = vy * diag(1./sy) * Vw;
-                R = diag(R);
-        end
-    case "binary"
-        numbatches = min(32, min(p, q));
-        switch type
-            case "canoncov"; objective = "kmeans";
-            case "canoncorr"; objective = "spectral";
-        end
-        opts = [{objective}, {"cov"}, {"numbatches"}, {numbatches}, varargin];
-        [Mx, My, ~, R] = coloyvain(X', Y', k, opts{:});
-        [R, ix] = sort(R, "descend");
-        A = zeros(p, k);
-        B = zeros(q, k);
-        for h = 1:k
-            A(Mx == ix(h), h) = 1;
-            B(My == ix(h), h) = 1;
-        end
+% Solve problem
+if weight == "weighted"
+    [A, R, B] = svds(Ux' * Uy, k);
+    R = diag(R);
+else
+    numbatches = min(32, min(p, q));
+    opts = [{objective}, {"dot"}, {"numbatches"}, {numbatches}, varargin];
+    [Mx, My, ~, R] = coloyvain(Ux', Uy', k, opts{:});
+    [R, ix] = sort(R, "descend");
+    A = zeros(p, k);
+    B = zeros(q, k);
+    for h = 1:k
+        A(Mx == ix(h), h) = 1;
+        B(My == ix(h), h) = 1;
+    end
+end
+
+% Recover coefficients
+if (type == "canoncorr") && (weight ~= "binary")
+    A = Vx * diag(1./Sx) * A;
+    B = Vy * diag(1./Sy) * B;
 end
 
 U = X * A;
