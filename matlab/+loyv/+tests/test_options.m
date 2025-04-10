@@ -14,7 +14,7 @@ classdef test_options < matlab.unittest.TestCase
     properties (TestParameter)
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};
-        Objective = {"modularity", "kmeans", "spectral"};
+        Objective = {"kmodularity", "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
         Start = {"greedy", "balanced", "random", "custom"}
         MaxIter = {1, 10};

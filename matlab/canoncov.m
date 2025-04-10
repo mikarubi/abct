@@ -1,11 +1,12 @@
-function [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, varargin)
-% CCA Canonical correlation or covariance analysis
+function [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, varargin)
+% CANONCOV Canonical covariance analysis (aka partial least squares)
+%          Canonical correlation analysis.
 %
-%   [A, B, U, V, R] = cca(X, Y, k)
-%   [A, B, U, V, R] = cca(X, Y, k, type)
-%   [A, B, U, V, R] = cca(X, Y, k, type, weight)
-%   [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm)
-%   [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, Name=Value)
+%   [A, B, U, V, R] = canoncov(X, Y, k)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
@@ -27,13 +28,14 @@ function [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, varargin)
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
 %           "hybrid": Hybrid canonical analysis
-%                     (only compatible with canonical correlation).
+%                     (canonical correlation analysis only).
 %
 %       moderm: First-mode removal (logical scalar).
 %           0: No first-mode removal (default).
 %           1: First-mode removal via degree correction.
 %
-%       Name=[Value] Arguments (binary canonical analysis only):
+%       Name=[Value] Arguments 
+%           (binary canonical analysis only):
 %           See LOYVAIN for all Name=Value options.
 %
 %   Outputs:
@@ -47,17 +49,17 @@ function [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, varargin)
 %       Weighted canonical correlation or covariance analysis is computed via
 %       singular value decomposition of cross-covariance matrix.
 %
-%       Binary canonical covariance (respectively canonical correlation)
-%       analysis is computed via Loyvain k-means (respectively Loyvain spectral)
+%       Binary canonical covariance analysis (respectively canonical correlation
+%       analysis) is computed via Loyvain k-means (respectively Loyvain spectral)
 %       co-clustering of cross-covariance matrix. This analysis produces binary
-%       orthogonal canonical coefficients.
+%       orthogonal canonical coefficients but not canonical components.
 %
 %       Hybrid canonical correlation analysis is computed via Loyvain k-means
 %       co-clustering of whitened cross-covariance matrix. This analysis produces
-%       orthogonal canonical components, but not binary canonical coefficients.
+%       orthogonal canonical components but not binary canonical coefficients.
 %
 %       First-mode removal is performed via generalized degree correction, and
-%       converts k-means co-clustering into normalized modularity maximization.
+%       converts k-means co-clustering into k-modularity co-maximization.
 %
 %   See also:
 %       COLOYVAIN, LOYVAIN, MODEREMOVAL.

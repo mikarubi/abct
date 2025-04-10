@@ -18,8 +18,8 @@ if isnumeric(Args.start)
     Args.start = "custom";
 end
 
-% Remove first mode for modularity
-if Args.objective == "modularity"
+% Remove first mode for kmodularity
+if Args.objective == "kmodularity"
     if Args.similarity == "network"
         Args.W = Args.W * (Args.n/Args.k) / sum(abs(Args.W), "all");
         Args.W = moderemoval(Args.W, "degree");

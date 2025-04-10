@@ -1,5 +1,5 @@
 function [M, Q] = loyvain(X, k, objective, similarity, varargin)
-% LOYVAIN Normalized modularity, k-means, or spectral clustering
+% LOYVAIN K-modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(X, k)
 %   [M, Q] = loyvain(X, k, objective, similarity)
@@ -16,15 +16,15 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %           Set to 0 to infer number from initial module assignment.
 %
 %       objective: Clustering objective.
-%           "modularity": Normalized modularity (default).
+%           "kmodularity": K-modularity (default).
 %           "kmeans": K-means clustering objective.
-%           "spectral": Spectral clustering objective.
+%           "spectral": Spectral clustering objective (normalized cut).
 %
 %       similarity: Type of similarity.
 %         The first option assumes that X is a network matrix.
 %           "network": Network connectivity (default).
 %               X is a symmetric network matrix. The network must
-%               be non-negative for the spectral and modularity
+%               be non-negative for k-modularity and spectral 
 %               objectives. No additional similarity is computed.
 %         The other options assume that X is a data matrix.
 %           "corr": Pearson correlation coefficient.
@@ -70,34 +70,31 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %           Lloyd's algorithm for k-means clustering and
 %           Louvain algorithm for modularity maximization.
 %
-%       Note 1. The normalized modularity maximization is equivalent to
-%       k-means clustering of data after degree correction. When the input
-%       is a data rather than a network matrix, degree correction is
-%       implemented via an approximately equivalent step of global-signal
-%       regression. More generally, degree correction and global-signal
-%       regression are both approximately equivalent to first-mode removal,
-%       or subtraction of the rank-one approximation of the data.
+%       Note 1. K-modularity maximization is exactly equivalent to
+%       normalized modularity maximization and approximately equivalent 
+%       to k-means clustering after first-mode removal.
+%       * When the input is a network matrix, first-mode 
+%         removal is implemented via degree correction.
+%       * When the input is a data matrix, first-mode removal
+%         is implemented via global-signal regression.
 %
-%       Note 2. For "network" similarity, the value of the normalized
-%       modularity is rescaled by the following factor:
+%       Note 2. For "network" similarity, k-modularity is rescaled by:
 %           (average module size) / (absolute sum of all weights)
-%       This rescaling approximately aligns the value of the objective
-%       function with values of the unnormalized modularity. For other
-%       similarity measures the value of the objective function is not
-%       rescaled, but the algorithm optimizes an equivalent objective.
+%       This rescaling aligns k-modularity within the range of the
+%       modularity, but has no effect on the optimization algorithm.
 %
 %       Note 3. The Loyvain algorithm is not guaranteed to converge if
 %       all swaps are accepted at each iteration (NumBatches = 1).
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
-%       COLOYVAIN, CCA, GRADIENTS, MODEREMOVAL.
+%       COLOYVAIN, CANONCOV, GRADIENTS, MODEREMOVAL.
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     objective (1, 1) string {mustBeMember(objective, ...
-        ["modularity", "kmeans", "spectral"])} = "modularity"
+        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
     similarity (1, 1) string {mustBeMember(similarity, ...
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
 end
