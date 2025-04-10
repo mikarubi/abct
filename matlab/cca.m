@@ -1,11 +1,11 @@
-function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
+function [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, varargin)
 % CCA Canonical correlation or covariance analysis
 %
-%   [A, B, R, U, V] = cca(X, Y, k)
-%   [A, B, R, U, V] = cca(X, Y, k, type)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm)
-%   [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, Name=Value)
+%   [A, B, U, V, R] = cca(X, Y, k)
+%   [A, B, U, V, R] = cca(X, Y, k, type)
+%   [A, B, U, V, R] = cca(X, Y, k, type, weight)
+%   [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm)
+%   [A, B, U, V, R] = cca(X, Y, k, type, weight, moderm, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
@@ -26,7 +26,7 @@ function [A, B, R, U, V] = cca(X, Y, k, type, weight, moderm, varargin)
 %       weight: Weighted or binary canonical analysis.
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
-%           "hybrid": Hybrid canonical analysis 
+%           "hybrid": Hybrid canonical analysis
 %                     (only compatible with canonical correlation).
 %
 %       moderm: First-mode removal (logical scalar).
@@ -105,23 +105,31 @@ end
 
 % Set up problem
 if (type == "canoncorr") && (weight ~= "binary")
-    [Ux, Sx, Vx] = svd(X, "econ", "vector");
-    rankx = nnz(Sx > length(X) * eps(max(Sx)));
-    if rankx < length(Sx)
+    % inv_Sx is named so because it is immediately inverted
+    [Ux, inv_Sx, Vx] = svd(X, "econ", "vector");
+    rankx = nnz(inv_Sx > length(X) * eps(max(inv_Sx)));
+    if rankx < length(inv_Sx)
         warning("X is not full rank.")
-        Sx = Sx(1:rankx);
-        Ux = Ux(:, 1:rankx);
-        Vx = Vx(:, 1:rankx);
+        if weight == "weighted"
+            inv_Sx = inv_Sx(1:rankx);
+            Ux = Ux(:, 1:rankx);
+            Vx = Vx(:, 1:rankx);
+        end
     end
+    inv_Sx(1:rankx) = 1 ./ inv_Sx(1:rankx);
 
-    [Uy, Sy, Vy] = svd(Y, "econ", "vector");
-    ranky = nnz(Sy > length(Y) * eps(max(Sy)));
-    if ranky < length(Sy)
+    % inv_Sy is named so because it is immediately inverted
+    [Uy, inv_Sy, Vy] = svd(Y, "econ", "vector");
+    ranky = nnz(inv_Sy > length(Y) * eps(max(inv_Sy)));
+    if ranky < length(inv_Sy)
         warning("Y is not full rank.")
-        Sy = Sy(1:ranky);
-        Uy = Uy(:, 1:ranky);
-        Vy = Vy(:, 1:ranky);
+        if weight == "weighted"
+            inv_Sy = inv_Sy(1:ranky);
+            Uy = Uy(:, 1:ranky);
+            Vy = Vy(:, 1:ranky);
+        end
     end
+    inv_Sy(1:ranky) = 1 ./ inv_Sy(1:ranky);
 else
     Ux = X;
     Uy = Y;
@@ -146,9 +154,20 @@ end
 
 % Recover coefficients
 if (type == "canoncorr") && (weight ~= "binary")
-    A = Vx * diag(1./Sx) * A;
-    B = Vy * diag(1./Sy) * B;
+    A = Vx * diag(inv_Sx) * A;
+    B = Vy * diag(inv_Sy) * B;
 end
 
 U = X * A;
 V = Y * B;
+
+% Recover correlations
+if (nargout > 4)
+    u = U - mean(U);
+    v = V - mean(V);
+    if type == "canoncorr"
+        u = u ./ std(u);
+        v = v ./ std(v);
+    end
+    R = u' * v / (s - 1);
+end
