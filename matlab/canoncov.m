@@ -41,9 +41,12 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, varargin)
 %   Outputs:
 %       A: Canonical coefficients of X (size p x k).
 %       B: Canonical coefficients of Y (size q x k).
-%       R: Canonical covariances or correlations (size k x 1)
 %       U: Canonical components of X (size s x k).
 %       V: Canonical components of Y (size s x k).
+%       R: Canonical covariances or correlations (size k x k).
+%          If weight is "weighted", R denotes the actual covariances or
+%          correlations. If weight is "binary" or "hybrid", R denotes the
+%          normalized covariances or correlations.
 %
 %   Methodological notes:
 %       Weighted canonical correlation or covariance analysis is computed via
@@ -163,13 +166,13 @@ end
 U = X * A;
 V = Y * B;
 
-% Recover correlations
-if (nargout > 4)
-    u = U - mean(U);
-    v = V - mean(V);
-    if type == "canoncorr"
-        u = u ./ std(u);
-        v = v ./ std(v);
-    end
-    R = u' * v / (s - 1);
-end
+% % Recover correlations
+% if (nargout > 4)
+%     u = U - mean(U);
+%     v = V - mean(V);
+%     if type == "canoncorr"
+%         u = u ./ std(u);
+%         v = v ./ std(v);
+%     end
+%     R = u' * v / (s - 1);
+% end
