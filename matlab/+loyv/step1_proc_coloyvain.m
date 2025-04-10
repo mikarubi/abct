@@ -6,9 +6,9 @@ function Args = step1_proc_coloyvain(Args)
 Args.Wxy = Args.X * Args.Y';
 
 switch Args.objective
-    case "modularity"; Args.objective = "cokmeans";     % first mode already removed
-    case "kmeans";     Args.objective = "cokmeans";
-    case "spectral";   Args.objective = "cospectral";
+    case "kmodularity"; Args.objective = "cokmeans";     % first mode already removed
+    case "kmeans";      Args.objective = "cokmeans";
+    case "spectral";    Args.objective = "cospectral";
 end
 
 end
@@ -17,8 +17,8 @@ function [X, W, Wii, Dist, p, s] = proc(X, Args)
 
 [p, s] = size(X);
 
-% Remove first mode for modularity
-if Args.objective == "modularity"
+% Remove first mode for kmodularity
+if Args.objective == "kmodularity"
     X = moderemoval(X, "global");
 end
 

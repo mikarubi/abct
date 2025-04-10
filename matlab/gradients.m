@@ -61,6 +61,6 @@ switch weight
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
-        M = loyvain(B, k, "modularity", "network", varargin{:});
+        M = loyvain(B, k, "kmodularity", "network", varargin{:});
         V = full(sparse(1:length(B), M, 1));
 end

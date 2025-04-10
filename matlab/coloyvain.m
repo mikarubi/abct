@@ -1,5 +1,5 @@
 function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin)
-% COLOYVAIN Normalized modularity, k-means, or spectral co-clustering
+% COLOYVAIN K-modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(X, Y, k)
 %   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
@@ -17,21 +17,9 @@ function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin
 %       k: Number of modules (positive integer).
 %
 %       objective: Clustering objective.
-%           "spectral": Modified spectral clustering objective (default).
-%               In combination with "cov" or "corr" similarity, optimization
-%               of this modified normalized cut objective is equivalent to
-%               canonical correlation analysis with binary constraints on
-%               values of coefficients.
+%           "kmodularity": K-modularity (default).
 %           "kmeans": K-means clustering objective.
-%               In combination with "cov" similarity, optimization of this
-%               objective is equivalent to canonical covariance analysis
-%               (aka partial least squares) with binary constraints on
-%               values of coefficients.
-%           "modularity": Normalized modularity.
-%               In combination with "cov" similarity, optimization of this
-%               objective is approximately equivalent to canonical covariance
-%               analysis (aka partial least squares) after first-mode removal
-%               and with binary constraints on values of coefficients.
+%           "spectral": Modified spectral clustering objective.
 %
 %       similarity: Type of similarity.
 %           "corr": Pearson correlation coefficient (default).
@@ -64,7 +52,7 @@ arguments
     Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
     k (1, 1) double {mustBeInteger, mustBePositive}
     objective (1, 1) string {mustBeMember(objective, ...
-        ["spectral", "kmeans", "modularity"])} = "spectral"
+        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
     similarity (1, 1) string {mustBeMember(similarity, ...
         ["corr", "cosim", "cov", "dot"])} = "corr"
 end
