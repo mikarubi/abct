@@ -1,12 +1,12 @@
-function [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, varargin)
+function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 % CANONCOV Canonical covariance analysis (aka partial least squares)
 %          Canonical correlation analysis.
 %
 %   [A, B, U, V, R] = canoncov(X, Y, k)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, Name=Value)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size s x p, where
@@ -19,16 +19,15 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, varargin)
 %
 %       k: Number of canonical components (positive integer).
 %
-%       type: Type of canonical analysis.
-%           "canoncov": Canonical covariance analysis,
-%                       aka partial least squares (default).
-%           "canoncorr": Canonical correlation analysis.
-%
-%       weight: Weighted or binary canonical analysis.
+%       type: Weighted or binary canonical analysis.
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
 %           "hybrid": Hybrid canonical analysis
 %                     (canonical correlation analysis only).
+%
+%       cca: Canonical correlation analysis (logical scalar).
+%           0: Canonical covariance analysis (default).
+%           1: Canonical correlation analysis.
 %
 %       moderm: First-mode removal (logical scalar).
 %           0: No first-mode removal (default).
@@ -44,8 +43,8 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, weight, moderm, varargin)
 %       U: Canonical components of X (size s x k).
 %       V: Canonical components of Y (size s x k).
 %       R: Canonical covariances or correlations (size k x k).
-%          If weight is "weighted", R denotes the actual covariances or
-%          correlations. If weight is "binary" or "hybrid", R denotes the
+%          If type is "weighted", R denotes the actual covariances or
+%          correlations. If type is "binary" or "hybrid", R denotes the
 %          normalized covariances or correlations.
 %
 %   Methodological notes:
@@ -72,8 +71,8 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ["canoncorr", "canoncov"])} = "canoncov"
-    weight (1, 1) string {mustBeMember(weight, ["weighted", "binary", "hybrid"])} = "weighted"
+    type (1, 1) string {mustBeMember(type, ["weighted", "binary", "hybrid"])} = "weighted"
+    cca (1, 1) logical = false
     moderm (1, 1) logical = false
 end
 arguments (Repeating)
@@ -85,15 +84,15 @@ end
 [s_, q] = size(Y);
 assert(s == s_, "X and Y must have the same number of observations.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
-assert(weight ~= "hybrid" || type == "canoncorr", ...
+assert(type ~= "hybrid" || cca, ...
     "Hybrid analysis is only compatible with canonical correlation.")
 
 % Initial processing
-if weight == "weighted"
+if type == "weighted"
     if ~isempty(varargin)
         warning("Ignoring Name=Value arguments for weighted analysis.")
     end
-elseif (weight == "hybrid") || (type == "canoncov")
+elseif (type == "hybrid") || (~cca)
     objective = "kmeans";
 else
     objective = "spectral";
@@ -109,13 +108,13 @@ else
 end
 
 % Set up problem
-if (type == "canoncorr") && (weight ~= "binary")
+if cca && (type ~= "binary")
     % inv_Sx is named so because it is immediately inverted
     [Ux, inv_Sx, Vx] = svd(X, "econ", "vector");
     rankx = nnz(inv_Sx > length(X) * eps(max(inv_Sx)));
     if rankx < length(inv_Sx)
         warning("X is not full rank.")
-        if weight == "weighted"
+        if type == "weighted"
             inv_Sx = inv_Sx(1:rankx);
             Ux = Ux(:, 1:rankx);
             Vx = Vx(:, 1:rankx);
@@ -128,7 +127,7 @@ if (type == "canoncorr") && (weight ~= "binary")
     ranky = nnz(inv_Sy > length(Y) * eps(max(inv_Sy)));
     if ranky < length(inv_Sy)
         warning("Y is not full rank.")
-        if weight == "weighted"
+        if type == "weighted"
             inv_Sy = inv_Sy(1:ranky);
             Uy = Uy(:, 1:ranky);
             Vy = Vy(:, 1:ranky);
@@ -141,7 +140,7 @@ else
 end
 
 % Solve problem
-if weight == "weighted"
+if type == "weighted"
     [A, R, B] = svds(Ux' * Uy, k);
     R = diag(R);
 else
@@ -158,7 +157,7 @@ else
 end
 
 % Recover coefficients
-if (type == "canoncorr") && (weight ~= "binary")
+if cca && (type ~= "binary")
     A = Vx * diag(inv_Sx) * A;
     B = Vy * diag(inv_Sy) * B;
 end
@@ -170,7 +169,7 @@ V = Y * B;
 % if (nargout > 4)
 %     u = U - mean(U);
 %     v = V - mean(V);
-%     if type == "canoncorr"
+%     if cca
 %         u = u ./ std(u);
 %         v = v ./ std(v);
 %     end
