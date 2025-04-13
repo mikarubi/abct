@@ -1,15 +1,18 @@
-function [M, Q] = loyvain(X, k, objective, similarity, varargin)
+function [M, Q] = loyvain(W, k, objective, similarity, varargin)
 % LOYVAIN K-modularity, k-means, or spectral clustering
 %
+%   [M, Q] = loyvain(W, k)
 %   [M, Q] = loyvain(X, k)
-%   [M, Q] = loyvain(X, k, objective, similarity)
-%   [M, Q] = loyvain(X, k, objective, similarity, Name=Value)
+%   [M, Q] = loyvain(_, objective, similarity)
+%   [M, Q] = loyvain(_, objective, similarity, Name=Value)
 %
 %   Inputs:
-%       X:  Network matrix of size n x n, where
-%           n is the number of nodes.
-%       OR  Data matrix of size n x t, where
-%           n is the number of data points and
+%       W:  Network matrix of size n x n.
+%
+%       OR
+%
+%       X:  Data matrix of size n x t, where
+%           n is the number of data points, and
 %           t is the number of features.
 %
 %       k: Number of modules (positive integer or 0).
@@ -24,7 +27,7 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %         The first option assumes that X is a network matrix.
 %           "network": Network connectivity (default).
 %               X is a symmetric network matrix. The network must
-%               be non-negative for k-modularity and spectral 
+%               be non-negative for k-modularity and spectral
 %               objectives. No additional similarity is computed.
 %         The other options assume that X is a data matrix.
 %           "corr": Pearson correlation coefficient.
@@ -71,9 +74,9 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %           Louvain algorithm for modularity maximization.
 %
 %       Note 1. K-modularity maximization is exactly equivalent to
-%       normalized modularity maximization and approximately equivalent 
+%       normalized modularity maximization and approximately equivalent
 %       to k-means clustering after first-mode removal.
-%       * When the input is a network matrix, first-mode 
+%       * When the input is a network matrix, first-mode
 %         removal is implemented via degree correction.
 %       * When the input is a data matrix, first-mode removal
 %         is implemented via global-signal regression.
@@ -90,23 +93,17 @@ function [M, Q] = loyvain(X, k, objective, similarity, varargin)
 %   See also:
 %       COLOYVAIN, CANONCOV, GRADIENTS, MODEREMOVAL.
 
-arguments
-    X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
-    objective (1, 1) string {mustBeMember(objective, ...
-        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
-    similarity (1, 1) string {mustBeMember(similarity, ...
-        ["network", "corr", "cosim", "cov", "dot"])} = "network"
-end
-arguments (Repeating)
-    varargin
-end
+%% Parse, process, and test arguments
 
-% parse, process, and test arguments
-Args = loyv.step0_args("method", "loyvain", "X", X, "k", k, ...
+% Parse arguments
+Args = loyv.step0_args("method", "loyvain", "W", W, "X", W, "k", k, ...
     "objective", objective, "similarity", similarity, varargin{:});
-clear X k objective similarity
+clear W k objective similarity
+
+% Process all other arguments
 Args = loyv.step1_proc_loyvain(Args);
+
+% Test arguments
 loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);
 
 %% Run algorithm

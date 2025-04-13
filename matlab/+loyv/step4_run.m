@@ -1,4 +1,4 @@
-function [M, Q, Cii_nrm] = step4_run(Args, W, M, My, Vx, Vy, Vii)
+function [M, Q, Cii_nrm] = step4_run(Args, W, M, My)
 % Loyvain main algorithm
 
 % Unpack arguments
@@ -20,8 +20,8 @@ switch Args.method
         end
         Cii = diag(Smn * MM');                  % within-module weight sum
         if Args.objective == "spectral"
-            Sn = sum(Smn, 1);                   % degree of node
-            Sm = sum(Smn, 2);                   % degree of module
+            S = sum(Smn, 1);                    % degree of node
+            D = sum(Smn, 2);                    % degree of module
         end
         Wii = Args.Wii;                         % within-node weight sum
 
@@ -32,17 +32,17 @@ switch Args.method
         Smn = MMy * W';                         % strength node to module of Wxy
         Cii = diag(MM * Smn');                  % within-module weight sum
         if Args.objective == "cospectral"
-            Tmn = MM * Vx;                      % strength node to module of Wxx
-            Dii = diag(Tmn * MM');              % within-module weight sum of X
-            Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
+            S = sum(W, 2)';
+            D = sum(MM * W, 2);
+            Dy = sum(MMy * W', 2);
         end
 end
 
 switch Args.objective
     case "kmeans";      Cii_nrm = Cii ./ N;
-    case "spectral";    Cii_nrm = Cii ./ Sm;
+    case "spectral";    Cii_nrm = Cii ./ D;
     case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
-    case "cospectral";  Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+    case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
 end
 
 if (k == 1) || (k == n)
@@ -65,25 +65,23 @@ for v = 1:Args.maxiter
                     ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)') ./ (N(MU)' - 1);
             case "spectral"
                 delta_QU = ...
-                    ((2 * Smn(:, U) + Wii(U)) - Cii_nrm      .* Sn(U)) ./ (Sm      + Sn(U)) - ...
-                    ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* Sn(U)) ./ (Sm(MU)' - Sn(U));
+                    ((2 * Smn(:, U) + Wii(U)) - Cii_nrm      .* S(U)) ./ (D      + S(U)) - ...
+                    ((2 * Smn(LinU) - Wii(U)) - Cii_nrm(MU)' .* S(U)) ./ (D(MU)' - S(U));
             case "cokmeans"
                 delta_QU = ...
                     (Cii      + Smn(:, U)) ./ sqrt((N      + 1) .* Ny     ) - Cii_nrm + ...
                     (Cii(MU)' - Smn(LinU)) ./ sqrt((N(MU)' - 1) .* Ny(MU)') - Cii_nrm(MU)';
             case "cospectral"
                 delta_QU = ...
-                    (Cii      + Smn(:, U)) ./ sqrt((Dii      + 2 * Tmn(:, U) + Vii(U)) .* Eii)      - Cii_nrm + ...
-                    (Cii(MU)' - Smn(LinU)) ./ sqrt((Dii(MU)' - 2 * Tmn(LinU) + Vii(U)) .* Eii(MU)') - Cii_nrm(MU)';
+                    (Cii      + Smn(:, U)) ./ sqrt((D      + S(U)) .* Dy     ) - Cii_nrm + ...
+                    (Cii(MU)' - Smn(LinU)) ./ sqrt((D(MU)' - S(U)) .* Dy(MU)') - Cii_nrm(MU)';
         end
         delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
         % % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
-        % for name = ["My" "Vx" "Vy"]
-        %     if ~exist(name, "var"); eval(name + " = [];"); end
-        % end
-        % loyv.tests.test_objective_updates(Args, W, M, My, Vx, Vy, U, MU, delta_QU)
+        % if ~exist("My", "var"); My = []; end
+        % loyv.tests.test_objective_updates(Args, W, M, My, U, MU, delta_QU)
         % % END UNCOMMENT TO TEST OBJECTIVE UPDATES
 
         % Update if improvements
@@ -127,32 +125,31 @@ for v = 1:Args.maxiter
                         delta_Smn = delta_G * X';       % change in degree of module to node
                     end
                     Smn = Smn + delta_Smn;              % update degree of module to node
-                    if Args.objective == "spectral"
-                        Sm = Sm + sum(delta_Smn, 2);
-                    end
                     Cii = diag(Smn * MM');              % within-module weight sum
                 case "coloyvain"
                     Cii = diag(MM * Smn');              % within-module weight sum
                     if Args.objective == "cospectral"
-                        delta_Tmn = delta_MMI * Vx(I, :);
-                        Tmn = Tmn + delta_Tmn;
-                        Dii = diag(Tmn * MM');          % within-module weight sum of X
+                        delta_Smn = delta_MMI * W(I, :);
                     end
             end
+            if ismember(Args.objective, ["spectral", "cospectral"])
+                D = D + sum(delta_Smn, 2);
+            end
+
             switch Args.objective
                 case "kmeans";      Cii_nrm = Cii ./ N;
-                case "spectral";    Cii_nrm = Cii ./ Sm;
+                case "spectral";    Cii_nrm = Cii ./ D;
                 case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
-                case "cospectral";  Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+                case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
             end
-            % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
-            % Vals = struct();
-            % for name = ["N" "M" "MM" "LinIdx" "Smn" "Sm" "Tmn" "Dii" "Cii" "Cii_nrm"]
+            % % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
+            % % Vals = struct();
+            % for name = ["N" "M" "MM" "LinIdx" "G" "D" "Smn" "Cii" "Cii_nrm"]
             %     if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
             %     Vals.(name) = val;
             % end
-            % loyv.tests.test_variable_updates(Args, W, M, My, Vx, Vy, Vals)
-            % % END UNCOMMENT TO TEST VARIABLE UPDATES
+            % loyv.tests.test_variable_updates(Args, W, M, My, Vals)
+            % % % END UNCOMMENT TO TEST VARIABLE UPDATES
         end
     end
     if max_delta_Q < Args.tolerance

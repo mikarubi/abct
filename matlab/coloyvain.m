@@ -1,11 +1,15 @@
-function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin)
+function [Mx, My, R, R_all] = coloyvain(varargin)
 % COLOYVAIN K-modularity, k-means, or spectral co-clustering
 %
+%   [Mx, My, R] = coloyvain(W, k)
 %   [Mx, My, R] = coloyvain(X, Y, k)
-%   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
-%   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity, Name=Value)
+%   [Mx, My, R] = coloyvain(_, objective, similarity)
+%   [Mx, My, R] = coloyvain(_, objective, similarity, Name=Value)
 %
 %   Inputs:
+%
+%       W: Bipartite network matrix of size p x q.
+%
 %       X: Data matrix of size s x p, where
 %          s is the number of data points and
 %          p is the number of features.
@@ -47,26 +51,37 @@ function [Mx, My, R, R_all] = coloyvain(X, Y, k, objective, similarity, varargin
 %   See also:
 %       LOYVAIN, CCA.
 
-arguments
-    X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite}
-    k (1, 1) double {mustBeInteger, mustBePositive}
-    objective (1, 1) string {mustBeMember(objective, ...
-        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
-    similarity (1, 1) string {mustBeMember(similarity, ...
-        ["corr", "cosim", "cov", "dot"])} = "corr"
+%% Parse, process, and test arguments
+n_args = length(varargin);
+n_num_args = find(cellfun(@(x) ischar(x) || isstring(x), varargin), 1, "first") - 1;
+switch n_num_args
+    case 2
+        [W, k] = deal(varargin{1:n_num_args});
+        [X, Y] = deal(0);
+    case 3
+        [X, Y, k] = deal(varargin{1:n_num_args});
+        W = 0;
+    otherwise
+        error("Wrong number of input arguments.")
 end
-arguments (Repeating)
-    varargin
+varargin = varargin(n_num_args+1:end);
+if n_args >= n_num_args + 1
+    varargin = [varargin(2:end), {"objective"}, varargin(1)];
+    if n_args >= n_num_args + 2
+        varargin = [varargin(2:end), {"similarity"}, varargin(1)];
+    end
 end
 
-% parse, process, and test arguments
-Args = loyv.step0_args("method", "coloyvain", "X", X, "Y", Y, "k", k, ...
-    "objective", objective, "similarity", similarity, varargin{:});
-clear X Y k objective similarity
+% Parse arguments
+Args = loyv.step0_args("method", "coloyvain", "W", W, "X", X, "Y", Y, "k", k, varargin{:});
+clear W X Y k objective similarity
+
+% Process initial arguments
 Args = loyv.step1_proc_coloyvain(Args);
-loyv.step2_test(Args.X, Args.Wxy, Args.px, Args.k, Args);
-loyv.step2_test(Args.Y, Args.Wxy, Args.py, Args.k, Args);
+
+% Test arguments
+loyv.step2_test(Args.X, Args.W, Args.px, Args.k, Args);
+loyv.step2_test(Args.Y, Args.W, Args.py, Args.k, Args);
 
 %% Run algorithm
 
@@ -83,14 +98,13 @@ for i = 1:Args.replicates
     MMy0 = sparse(My0, 1:Args.py, 1);
     switch Args.objective
         case "cokmeans"
-            Ox = eye(Args.px);
-            Oy = eye(Args.py);
+            Ox = ones(Args.px, 1);
+            Oy = ones(Args.py, 1);
         case "cospectral"
-            Ox = Args.Wx;
-            Oy = Args.Wy;
+            Ox = sum(Args.W, 2);
+            Oy = sum(Args.W, 1)';
     end
-    C0_nrm = (MMx0 * Args.Wxy * MMy0') ./ ...
-        sqrt(diag(MMx0 * Ox * MMx0') * diag(MMy0 * Oy * MMy0')');
+    C0_nrm = (MMx0 * Args.W * MMy0') ./ sqrt((MMx0 * Ox) * (MMy0 * Oy)');
 
     % align modules
     Mx1 = zeros(size(Mx0));
@@ -106,8 +120,8 @@ for i = 1:Args.replicates
     % fixed point iteration until convergence
     for v = 1:Args.maxiter
         My0 = My1;
-        Mx1 = loyv.step4_run(Args, Args.Wxy,  Mx1, My1, Args.Wx, Args.Wy, Args.Wx_ii);   % optimize Mx
-        [My1, R1, R1_all] = loyv.step4_run(Args, Args.Wxy', My1, Mx1, Args.Wy, Args.Wx, Args.Wy_ii);   % optimize My
+        Mx1 = loyv.step4_run(Args, Args.W, Mx1, My1);                   % optimize Mx
+        [My1, R1, R1_all] = loyv.step4_run(Args, Args.W', My1, Mx1);    % optimize My
         if isequal(My0, My1)    % if identical, neither Mx1 nor My1 will change
             break
         end

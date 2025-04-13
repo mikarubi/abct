@@ -1,4 +1,4 @@
-function test_objective_updates(Args, W, M, My, Vx, Vy, U, MU, delta_QU)
+function test_objective_updates(Args, W, M, My, U, MU, delta_QU)
 % Test accuracy of objective update rules for Nodes U in Modules MU
 
 % Unpack arguments
@@ -29,8 +29,10 @@ for i = 1:numel(U)
                 end
                 Cii = diag(Smn * MM');                  % within-module weight sum
                 if Args.objective == "spectral"
-                    Sm = sum(Smn, 2);                   % degree of module
+                    S = sum(Smn, 1);                    % degree of node
+                    D = sum(Smn, 2);                    % degree of module
                 end
+                Wii = Args.Wii;                         % within-node weight sum
 
             case "coloyvain"
                 ny = length(My);
@@ -39,21 +41,17 @@ for i = 1:numel(U)
                 Smn = MMy * W';                         % strength node to module of Wxy
                 Cii = diag(MM * Smn');                  % within-module weight sum
                 if Args.objective == "cospectral"
-                    Tmn = MM * Vx;                      % strength node to module of Wxx
-                    Dii = diag(Tmn * MM');              % within-module weight sum of X
-                    Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
+                    S = sum(W, 2)';
+                    D = sum(MM * W, 2);
+                    Dy = sum(MMy * W', 2);
                 end
         end
 
         switch Args.objective
-            case "kmeans"
-                Cii_nrm = Cii ./ N;
-            case "spectral"
-                Cii_nrm = Cii ./ Sm;
-            case "cokmeans"
-                Cii_nrm = Cii ./ sqrt(N .* Ny);
-            case "cospectral"
-                Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+            case "kmeans";      Cii_nrm = Cii ./ N;
+            case "spectral";    Cii_nrm = Cii ./ D;
+            case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
+            case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
         end
 
         cii_nrm(mv) = sum(Cii_nrm);
