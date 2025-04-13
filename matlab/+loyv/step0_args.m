@@ -2,12 +2,15 @@ function Args = step0_args(Args)
 % Loyvain arguments initialization
 
 arguments
-    Args.method
-    Args.X
-    Args.Y
-    Args.k
-    Args.objective
-    Args.similarity
+    Args.method (1, 1) string {mustBeMember(Args.method, ["loyvain", "coloyvain"])}
+    Args.W (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite} = 0
+    Args.X (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite} = 0
+    Args.Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite} = 0
+    Args.k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
+    Args.objective (1, 1) string {mustBeMember(Args.objective, ...
+        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
+    Args.similarity (1, 1) string {mustBeMember(Args.similarity, ...
+        ["network", "corr", "cosim", "cov", "dot"])} = "network"
     Args.start (1, :) = "greedy"
     Args.numbatches (1, 1) double {mustBeInteger, mustBePositive} = 10
     Args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
@@ -24,9 +27,18 @@ else
     error("Start must be either ""greedy"", ""balanced"", " + ...
         """random"", or a numeric vector (loyvain only).");
 end
-if (Args.method == "coloyvain")
-    assert(size(Args.X, 2) == size(Args.Y, 2), ...
-    "X and Y must have the same number of observations.")
+
+if Args.method == "coloyvain"
+    assert(Args.k > 0, "k must be positive for co-Loyvain.")
+    if Args.similarity == "network"
+        assert(isequal(Args.X, 0) && isequal(Args.Y, 0), ...
+            "X and Y can only be arguments if similarity is not ""network"".")
+    else
+        assert(isequal(Args.W, 0), ...
+            "W can only be an argument if similarity is ""network"".")
+        assert(size(Args.X, 1) == size(Args.Y, 1), ...
+            "X and Y must have the same number of data points.")
+    end
 end
 
 end

@@ -33,7 +33,7 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %           0: No first-mode removal (default).
 %           1: First-mode removal via degree correction.
 %
-%       Name=[Value] Arguments 
+%       Name=[Value] Arguments
 %           (binary canonical analysis only):
 %           See LOYVAIN for all Name=Value options.
 %
@@ -82,7 +82,7 @@ end
 % Basic checks
 [s,  p] = size(X);
 [s_, q] = size(Y);
-assert(s == s_, "X and Y must have the same number of observations.")
+assert(s == s_, "X and Y must have the same number of data points.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
 assert(type ~= "hybrid" || cca, ...
     "Hybrid analysis is only compatible with canonical correlation.")
@@ -108,7 +108,7 @@ else
 end
 
 % Set up problem
-if cca && (type ~= "binary")
+if cca % && (type ~= "binary")
     % inv_Sx is named so because it is immediately inverted
     [Ux, inv_Sx, Vx] = svd(X, "econ", "vector");
     rankx = nnz(inv_Sx > length(X) * eps(max(inv_Sx)));
@@ -134,19 +134,19 @@ if cca && (type ~= "binary")
         end
     end
     inv_Sy(1:ranky) = 1 ./ inv_Sy(1:ranky);
+
+    Z = Vx * Ux' * Uy * Vy';
 else
-    Ux = X;
-    Uy = Y;
+    Z = X' * Y;
 end
 
 % Solve problem
 if type == "weighted"
-    [A, R, B] = svds(Ux' * Uy, k);
+    [A, R, B] = svds(Z, k);
     R = diag(R);
 else
     numbatches = min(32, min(p, q));
-    opts = [{objective}, {"dot"}, {"numbatches"}, {numbatches}, varargin];
-    [Mx, My, ~, R] = coloyvain(Ux', Uy', k, opts{:});
+    [Mx, My, ~, R] = coloyvain(Z, k, "numbatches", numbatches, varargin{:});
     [R, ix] = sort(R, "descend");
     A = zeros(p, k);
     B = zeros(q, k);
@@ -158,20 +158,9 @@ end
 
 % Recover coefficients
 if cca && (type ~= "binary")
-    A = Vx * diag(inv_Sx) * A;
-    B = Vy * diag(inv_Sy) * B;
+    A = Vx * diag(inv_Sx) * Vx' * A;
+    B = Vy * diag(inv_Sy) * Vy' * B;
 end
 
 U = X * A;
 V = Y * B;
-
-% % Recover correlations
-% if (nargout > 4)
-%     u = U - mean(U);
-%     v = V - mean(V);
-%     if cca
-%         u = u ./ std(u);
-%         v = v ./ std(v);
-%     end
-%     R = u' * v / (s - 1);
-% end

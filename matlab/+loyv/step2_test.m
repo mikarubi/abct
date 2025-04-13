@@ -2,24 +2,27 @@ function step2_test(X, W, n, k, Args)
 % Loyvain arguments tests
 
 assert(k >= 1, "Specify number of modules or starting module assignment.")
-assert(k <= n, "Number of modules must be not exceed number of nodes or features.")
-assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes or features.")
-assert(all(isfinite(X), "all"), "Data matrix must be finite.")
+assert(k <= n, "Number of modules must be not exceed number of nodes or data points.")
+assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes or data points.")
+assert(all(isfinite(X), "all"), "Data matrix becomes non-finite after processing, aborting.")
+
+% Test non-negativity for spectral clustering
+if ismember(Args.objective, ["spectral", "cospectral"])
+    ending = "non-negative if objective is ""spectral"".";
+    if Args.similarity == "network"
+        assert(all(W >= 0, "all"), "Network matrix must be " + ending);
+    elseif numel(X) < 1e6
+        assert(all(X * X' >= 0, "all"), "Similarity must be " + ending)
+    else
+        warning("Not checking similarity matrix for negative values because " + ...
+            "of large data size. Ensure that similarity matrix is " + ending)
+    end
+end
+
 if Args.method == "loyvain"
+    % Test symmetry
     assert(isequal(size(W, 1), size(W, 2)) && all(W - W' < eps("single"), "all"), ...
         "Network matrix must be symmetric or similarity must not be ""network"".")
-
-    % Test non-negativity for spectral clustering
-    if Args.objective == "spectral"
-        if Args.similarity == "network"
-            assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
-        elseif numel(X) < 1e6
-            assert(all(X * X' >= 0, "all"), "Similarity matrix must be non-negative.")
-        else
-            warning("Not checking similarity matrix for negative values because " + ...
-                "of large data size. Ensure that similarity matrix is non-negative.")
-        end
-    end
 
     % Test initialization
     if Args.start == "custom"

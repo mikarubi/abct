@@ -4,9 +4,9 @@ function Args = step1_proc_loyvain(Args)
 [Args.n, Args.t] = size(Args.X);
 if Args.similarity == "network"
     Args.W = Args.X;
-    Args.X = [];
+    Args.X = 0;
 else
-    Args.W = [];
+    Args.W = 0;
 end
 
 % Process custom initial module assignment

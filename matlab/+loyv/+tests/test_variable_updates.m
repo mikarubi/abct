@@ -1,4 +1,4 @@
-function test_variable_updates(Args, W, M, My, Vx, Vy, Vals)
+function test_variable_updates(Args, W, M, My, Vals)
 %#ok<*NASGU> Test accuracy of variable update rules after an update
 
 % Unpack arguments
@@ -20,8 +20,10 @@ switch Args.method
         end
         Cii = diag(Smn * MM');                  % within-module weight sum
         if Args.objective == "spectral"
-            Sm = sum(Smn, 2);                   % degree of module
+            S = sum(Smn, 1);                    % degree of node
+            D = sum(Smn, 2);                    % degree of module
         end
+        Wii = Args.Wii;                         % within-node weight sum
 
     case "coloyvain"
         ny = length(My);
@@ -30,21 +32,17 @@ switch Args.method
         Smn = MMy * W';                         % strength node to module of Wxy
         Cii = diag(MM * Smn');                  % within-module weight sum
         if Args.objective == "cospectral"
-            Tmn = MM * Vx;                      % strength node to module of Wxx
-            Dii = diag(Tmn * MM');              % within-module weight sum of X
-            Eii = diag(MMy * Vy * MMy');        % within-module weight sum of Y
+            S = sum(W, 2)';
+            D = sum(MM * W, 2);
+            Dy = sum(MMy * W', 2);
         end
 end
 
 switch Args.objective
-    case "kmeans"
-        Cii_nrm = Cii ./ N;
-    case "spectral"
-        Cii_nrm = Cii ./ Sm;
-    case "cokmeans"
-        Cii_nrm = Cii ./ sqrt(N .* Ny);
-    case "cospectral"
-        Cii_nrm = Cii ./ sqrt(Dii .* Eii);
+    case "kmeans";      Cii_nrm = Cii ./ N;
+    case "spectral";    Cii_nrm = Cii ./ D;
+    case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
+    case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
 end
 
 for name = reshape(string(fieldnames(Vals)), 1, [])
