@@ -25,12 +25,16 @@ function V = gradients(W, k, weight, p, varargin)
 %       V: Gradient matrix (size n x k).
 %
 %   Methodological notes:
-%       Weighted gradients are the eigenvectors of common-neighbors
+%       Weighted gradients are eigenvectors of common-neighbors
 %       matrices. These gradients are approximately equivalent to the
 %       output of standard diffusion-map embedding of neuroimaging
-%       co-activity data. Binary gradients are the modules of common-
-%       neighbors matrices, estimated using the Loyvain algorithm. Note
-%       that the order of binary gradients is generally arbitrary. 
+%       co-activity data.
+% 
+%       Binary gradients are modules of common-neighbors matrices,
+%       estimated using the Loyvain algorithm. Detection of these gradients
+%       is equivalent to detection of eigenvectors of common-neighbors
+%       matrices with binary constraints. Unlike eigenvectors, the order of
+%       binary gradients will, in general, be arbitrary. 
 %
 %   See also:
 %       CONEIGHBORS, LOYVAIN.
