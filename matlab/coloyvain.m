@@ -39,7 +39,7 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 %       co-clustering of the cross-similarity matrix.
 %
 %   See also:
-%       LOYVAIN, CCA.
+%       LOYVAIN, CANONCOV.
 
 %% Parse, process, and test arguments
 
