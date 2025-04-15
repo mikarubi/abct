@@ -49,14 +49,15 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %       Weighted canonical correlation or covariance analysis is computed via
 %       singular value decomposition of cross-covariance matrix.
 %
-%       Binary canonical covariance analysis (respectively canonical correlation
-%       analysis) is computed via Loyvain k-means (respectively Loyvain spectral)
-%       co-clustering of cross-covariance matrix. This analysis produces binary
-%       orthogonal canonical coefficients but not canonical components.
+%       Binary canonical covariance analysis is computed via co-Loyvain
+%       k-means clustering of cross-covariance matrix. This analysis
+%       produces binary orthogonal canonical coefficients.
 %
-%       Hybrid canonical correlation analysis is computed via Loyvain k-means
-%       co-clustering of whitened cross-covariance matrix. This analysis produces
-%       orthogonal canonical components but not binary canonical coefficients.
+%       Binary canonical covariance analysis is computed via co-Loyvain
+%       k-means clustering of _whitened_ cross-covariance matrix. This
+%       analysis produces binary orthogonal canonical coefficients for 
+%       the whitened matrix. However, the output coefficients after
+%       dewhitening will, in general, not be binary.
 %
 %       First-mode removal is performed via generalized degree correction, and
 %       converts k-means co-clustering into k-modularity co-maximization.

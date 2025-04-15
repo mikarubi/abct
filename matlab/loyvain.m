@@ -70,23 +70,23 @@ function [M, Q] = loyvain(W, k, objective, similarity, varargin)
 %
 %   Methodological notes:
 %       Loyvain is a unification of:
-%           Lloyd's algorithm for k-means clustering and
-%           Louvain algorithm for modularity maximization.
+%       Lloyd's algorithm for k-means clustering and
+%       Louvain algorithm for modularity maximization.
 %
-%       Note 1. K-modularity maximization is exactly equivalent to
-%       normalized modularity maximization and approximately equivalent
-%       to k-means clustering after first-mode removal.
+%       K-modularity maximization is exactly equivalent to normalized
+%       modularity maximization and approximately equivalent to k-means
+%       clustering after first-mode removal.
 %       * When the input is a network matrix, first-mode
 %         removal is implemented via degree correction.
 %       * When the input is a data matrix, first-mode removal
 %         is implemented via global-signal regression.
 %
-%       Note 2. For "network" similarity, k-modularity is rescaled by:
+%       For "network" similarity, k-modularity is rescaled by:
 %           (average module size) / (absolute sum of all weights)
 %       This rescaling aligns k-modularity within the range of the
 %       modularity, but has no effect on the optimization algorithm.
 %
-%       Note 3. The Loyvain algorithm is not guaranteed to converge if
+%       The Loyvain algorithm is not guaranteed to converge if
 %       all swaps are accepted at each iteration (NumBatches = 1).
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
