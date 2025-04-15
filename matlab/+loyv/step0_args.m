@@ -27,15 +27,14 @@ else
     error("Start must be either ""greedy"", ""balanced"", " + ...
         """random"", or a numeric vector (loyvain only).");
 end
-
 if Args.method == "coloyvain"
     assert(Args.k > 0, "k must be positive for co-Loyvain.")
     if Args.similarity == "network"
         assert(isequal(Args.X, 0) && isequal(Args.Y, 0), ...
-            "X and Y can only be arguments if similarity is not ""network"".")
+            "X and Y inputs are incompatible with ""network"" similarity.")
     else
         assert(isequal(Args.W, 0), ...
-            "W can only be an argument if similarity is ""network"".")
+            "W input is only compatible with ""network"" similarity.")
         assert(size(Args.X, 1) == size(Args.Y, 1), ...
             "X and Y must have the same number of data points.")
     end

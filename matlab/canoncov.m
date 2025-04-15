@@ -108,7 +108,7 @@ else
 end
 
 % Set up problem
-if cca % && (type ~= "binary")
+if cca
     % inv_Sx is named so because it is immediately inverted
     [Ux, inv_Sx, Vx] = svd(X, "econ", "vector");
     rankx = nnz(inv_Sx > length(X) * eps(max(inv_Sx)));
@@ -157,7 +157,7 @@ else
 end
 
 % Recover coefficients
-if cca && (type ~= "binary")
+if cca
     A = Vx * diag(inv_Sx) * Vx' * A;
     B = Vy * diag(inv_Sy) * Vy' * B;
 end

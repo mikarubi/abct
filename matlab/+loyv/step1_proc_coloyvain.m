@@ -41,7 +41,7 @@ end
 if ismember(Args.similarity, ["cosim", "corr"])
     X = X ./ vecnorm(X, 2, 1);
 elseif ismember(Args.similarity, ["dot", "cov"])
-    X = X / size(X, 1);
+    X = X / sqrt(size(X, 1));
 end
 
 end
