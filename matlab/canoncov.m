@@ -22,8 +22,6 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %       type: Weighted or binary canonical analysis.
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
-%           "hybrid": Hybrid canonical analysis
-%                     (canonical correlation analysis only).
 %
 %       cca: Canonical correlation analysis (logical scalar).
 %           0: Canonical covariance analysis (default).
@@ -44,7 +42,7 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %       V: Canonical components of Y (size s x k).
 %       R: Canonical covariances or correlations (size k x k).
 %          If type is "weighted", R denotes the actual covariances or
-%          correlations. If type is "binary" or "hybrid", R denotes the
+%          correlations. If type is "binary", R denotes the
 %          normalized covariances or correlations.
 %
 %   Methodological notes:
@@ -71,7 +69,7 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
-    type (1, 1) string {mustBeMember(type, ["weighted", "binary", "hybrid"])} = "weighted"
+    type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
     cca (1, 1) logical = false
     moderm (1, 1) logical = false
 end
@@ -84,18 +82,12 @@ end
 [s_, q] = size(Y);
 assert(s == s_, "X and Y must have the same number of data points.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
-assert(type ~= "hybrid" || cca, ...
-    "Hybrid analysis is only compatible with canonical correlation.")
 
 % Initial processing
 if type == "weighted"
     if ~isempty(varargin)
         warning("Ignoring Name=Value arguments for weighted analysis.")
     end
-elseif (type == "hybrid") || (~cca)
-    objective = "kmeans";
-else
-    objective = "spectral";
 end
 
 % First-mode removal or centering
@@ -109,32 +101,8 @@ end
 
 % Set up problem
 if cca
-    % inv_Sx is named so because it is immediately inverted
-    [Ux, inv_Sx, Vx] = svd(X, "econ", "vector");
-    rankx = nnz(inv_Sx > length(X) * eps(max(inv_Sx)));
-    if rankx < length(inv_Sx)
-        warning("X is not full rank.")
-        if type == "weighted"
-            inv_Sx = inv_Sx(1:rankx);
-            Ux = Ux(:, 1:rankx);
-            Vx = Vx(:, 1:rankx);
-        end
-    end
-    inv_Sx(1:rankx) = 1 ./ inv_Sx(1:rankx);
-
-    % inv_Sy is named so because it is immediately inverted
-    [Uy, inv_Sy, Vy] = svd(Y, "econ", "vector");
-    ranky = nnz(inv_Sy > length(Y) * eps(max(inv_Sy)));
-    if ranky < length(inv_Sy)
-        warning("Y is not full rank.")
-        if type == "weighted"
-            inv_Sy = inv_Sy(1:ranky);
-            Uy = Uy(:, 1:ranky);
-            Vy = Vy(:, 1:ranky);
-        end
-    end
-    inv_Sy(1:ranky) = 1 ./ inv_Sy(1:ranky);
-
+    [Ux, Sx, Vx] = svdsketch(X);
+    [Uy, Sy, Vy] = svdsketch(Y);
     Z = Vx * Ux' * Uy * Vy';
 else
     Z = X' * Y;
@@ -145,8 +113,8 @@ if type == "weighted"
     [A, R, B] = svds(Z, k);
     R = diag(R);
 else
-    numbatches = min(32, min(p, q));
-    [Mx, My, ~, R] = coloyvain(Z, k, "numbatches", numbatches, varargin{:});
+    [Mx, My, ~, R] = coloyvain(Z, k, "kmeans", "network", ...
+        "numbatches", min(32, min(p, q)), varargin{:});
     [R, ix] = sort(R, "descend");
     A = zeros(p, k);
     B = zeros(q, k);
@@ -158,8 +126,8 @@ end
 
 % Recover coefficients
 if cca
-    A = Vx * diag(inv_Sx) * Vx' * A;
-    B = Vy * diag(inv_Sy) * Vy' * B;
+    A = Vx / Sx * Vx' * A;
+    B = Vy / Sy * Vy' * B;
 end
 
 U = X * A;
