@@ -142,14 +142,14 @@ for v = 1:Args.maxiter
                 case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
                 case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
             end
-            % % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
-            % % Vals = struct();
+            % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
+            % Vals = struct();
             % for name = ["N" "M" "MM" "LinIdx" "G" "D" "Smn" "Cii" "Cii_nrm"]
             %     if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
             %     Vals.(name) = val;
             % end
             % loyv.tests.test_variable_updates(Args, W, M, My, Vals)
-            % % % END UNCOMMENT TO TEST VARIABLE UPDATES
+            % % END UNCOMMENT TO TEST VARIABLE UPDATES
         end
     end
     if max_delta_Q < Args.tolerance

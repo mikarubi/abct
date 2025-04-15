@@ -12,7 +12,7 @@ function [M, Q] = loyvain(W, k, objective, similarity, varargin)
 %       OR
 %
 %       X:  Data matrix of size n x t, where
-%           n is the number of data points, and
+%           n is the number of data points and
 %           t is the number of features.
 %
 %       k: Number of modules (positive integer or 0).
@@ -24,12 +24,12 @@ function [M, Q] = loyvain(W, k, objective, similarity, varargin)
 %           "spectral": Spectral clustering objective (normalized cut).
 %
 %       similarity: Type of similarity.
-%         The first option assumes that X is a network matrix.
+%         The first option assumes that the first input is W, a network matrix.
 %           "network": Network connectivity (default).
-%               X is a symmetric network matrix. The network must
+%               W is a symmetric network matrix. The network must
 %               be non-negative for k-modularity and spectral
 %               objectives. No additional similarity is computed.
-%         The other options assume that X is a data matrix.
+%         The other options assume that the first input is X, a data matrix.
 %           "corr": Pearson correlation coefficient.
 %               A magnitude-normalized dot product of mean-centered vectors.
 %           "cosim": Cosine similarity.

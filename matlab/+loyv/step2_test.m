@@ -4,15 +4,15 @@ function step2_test(X, W, n, k, Args)
 assert(k >= 1, "Specify number of modules or starting module assignment.")
 assert(k <= n, "Number of modules must be not exceed number of nodes or data points.")
 assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes or data points.")
-assert(all(isfinite(X), "all"), "Data matrix becomes non-finite after processing, aborting.")
+assert(all(isfinite(X), "all"), "Data matrix has non-finite elements after processing.")
 
 % Test non-negativity for spectral clustering
 if ismember(Args.objective, ["spectral", "cospectral"])
-    ending = "non-negative if objective is ""spectral"".";
+    ending = "non-negative for ""spectral"" objective.";
     if Args.similarity == "network"
         assert(all(W >= 0, "all"), "Network matrix must be " + ending);
     elseif numel(X) < 1e6
-        assert(all(X * X' >= 0, "all"), "Similarity must be " + ending)
+        assert(all(X * X' >= 0, "all"), "Similarity matrix must be " + ending)
     else
         warning("Not checking similarity matrix for negative values because " + ...
             "of large data size. Ensure that similarity matrix is " + ending)

@@ -21,23 +21,13 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 %       k: Number of modules (positive integer).
 %
 %       objective: Clustering objective.
-%           "kmodularity": K-modularity (default).
-%           "kmeans": K-means clustering objective.
-%           "spectral": Modified spectral clustering objective.
+%           See LOYVAIN for all options.
 %
 %       similarity: Type of similarity.
-%           "corr": Pearson correlation coefficient (default).
-%               A magnitude-normalized dot product of mean-centered vectors.
-%           "cosim": Cosine similarity.
-%               A normalized dot product.
-%           "cov":  Covariance.
-%               A dot product of mean-centered vectors.
-%           "dot": Dot product.
-%               A sum of an elementwise vector product.
+%           See LOYVAIN for all options.
 %
-%       Name=[Value] Arguments:
-%
-%           See LOYVAIN for all Name=Value options.
+%       Name=[Value] Arguments.
+%           See LOYVAIN for all Name=Value arguments.
 %
 %   Outputs:
 %       Mx: Vector of module assignments for X (length p).
@@ -52,22 +42,23 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 %       LOYVAIN, CCA.
 
 %% Parse, process, and test arguments
+
 n_args = length(varargin);
-n_num_args = find(cellfun(@(x) ischar(x) || isstring(x), varargin), 1, "first") - 1;
-switch n_num_args
+n_args_num = find(cellfun(@(x) ischar(x) || isstring(x), varargin), 1, "first") - 1;
+switch n_args_num
     case 2
-        [W, k] = deal(varargin{1:n_num_args});
+        [W, k] = deal(varargin{1:n_args_num});
         [X, Y] = deal(0);
     case 3
-        [X, Y, k] = deal(varargin{1:n_num_args});
+        [X, Y, k] = deal(varargin{1:n_args_num});
         W = 0;
     otherwise
         error("Wrong number of input arguments.")
 end
-varargin = varargin(n_num_args+1:end);
-if n_args >= n_num_args + 1
+varargin = varargin(n_args_num+1:end);
+if n_args >= n_args_num + 1
     varargin = [varargin(2:end), {"objective"}, varargin(1)];
-    if n_args >= n_num_args + 2
+    if n_args >= n_args_num + 2
         varargin = [varargin(2:end), {"similarity"}, varargin(1)];
     end
 end
