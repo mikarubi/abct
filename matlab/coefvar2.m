@@ -25,10 +25,9 @@ function [CV2, CV2_nrm] = coefvar2(W)
 %       DEGREES.
 
 arguments
-    W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
+    W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal, mustBeNonnegative}
 end
 
-assert(all(W >= 0, "all"), "Network matrix must be non-negative.");
 n = size(W, 1);
 CV2 = var(W, 1, 2) ./ mean(W, 2).^2;
 CV2_nrm = 1 - CV2 / (n - 1);
