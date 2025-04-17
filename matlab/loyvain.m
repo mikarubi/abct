@@ -1,4 +1,4 @@
-function [M, Q] = loyvain(W, k, objective, similarity, varargin)
+function [M, Q] = loyvain(varargin)
 % LOYVAIN K-modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(W, k)
@@ -96,9 +96,8 @@ function [M, Q] = loyvain(W, k, objective, similarity, varargin)
 %% Parse, process, and test arguments
 
 % Parse arguments
-Args = loyv.step0_args("method", "loyvain", "W", W, "X", W, "k", k, ...
-    "objective", objective, "similarity", similarity, varargin{:});
-clear W k objective similarity
+Args = loyv.step0_args("loyvain", varargin{:});
+clear varargin
 
 % Process all other arguments
 Args = loyv.step1_proc_loyvain(Args);
@@ -108,7 +107,7 @@ loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args);
 
 %% Run algorithm
 
-Q = - inf;
+Q = -inf;
 for i = 1:Args.replicates
     Args.replicate_i = i;
     if Args.start == "custom"

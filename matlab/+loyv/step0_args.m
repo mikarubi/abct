@@ -1,5 +1,37 @@
-function Args = step0_args(Args)
+function Args = step0_args(method, varargin)
 % Loyvain arguments initialization
+
+n_args = length(varargin);
+assert(n_args >= 2, "Wrong number of input arguments.");
+switch method
+    case "loyvain"
+        n_args_num = 2;
+        [W, k] = deal(varargin{1:n_args_num});
+        X = W;
+        Y = 0;
+    case "coloyvain"
+        n_args_num = 2 + (n_args > 2 && isnumeric(varargin{3}));
+        if n_args_num == 2
+            [W, k] = deal(varargin{1:n_args_num});
+            [X, Y] = deal(0);
+        elseif n_args_num == 3
+            [X, Y, k] = deal(varargin{1:n_args_num});
+            W = 0;
+        end
+end
+varargin = varargin(n_args_num+1:end);
+if n_args >= n_args_num + 1
+    varargin = [varargin(2:end), {"objective"}, varargin(1)];
+    if n_args >= n_args_num + 2
+        varargin = [varargin(2:end), {"similarity"}, varargin(1)];
+    end
+end
+
+Args = parse_args("method", method, "W", W, "X", X, "Y", Y, "k", k, varargin{:});
+
+end
+
+function Args = parse_args(Args)
 
 arguments
     Args.method (1, 1) string {mustBeMember(Args.method, ["loyvain", "coloyvain"])}
