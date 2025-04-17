@@ -43,29 +43,9 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 
 %% Parse, process, and test arguments
 
-n_args = length(varargin);
-n_args_num = find(cellfun(@(x) ischar(x) || isstring(x), varargin), 1, "first") - 1;
-switch n_args_num
-    case 2
-        [W, k] = deal(varargin{1:n_args_num});
-        [X, Y] = deal(0);
-    case 3
-        [X, Y, k] = deal(varargin{1:n_args_num});
-        W = 0;
-    otherwise
-        error("Wrong number of input arguments.")
-end
-varargin = varargin(n_args_num+1:end);
-if n_args >= n_args_num + 1
-    varargin = [varargin(2:end), {"objective"}, varargin(1)];
-    if n_args >= n_args_num + 2
-        varargin = [varargin(2:end), {"similarity"}, varargin(1)];
-    end
-end
-
 % Parse arguments
-Args = loyv.step0_args("method", "coloyvain", "W", W, "X", X, "Y", Y, "k", k, varargin{:});
-clear W X Y k objective similarity
+Args = loyv.step0_args("coloyvain", varargin{:});
+clear varargin
 
 % Process initial arguments
 Args = loyv.step1_proc_coloyvain(Args);

@@ -8,6 +8,10 @@ classdef test_options < matlab.unittest.TestCase
                 + newline + ...
                 "     updates of objective and variable values.   ***.")
             pause(1)
+            W = rand(32, 24);
+            k = 5;
+            loyvain(W * W', k);
+            coloyvain(W, k);
         end
     end
 
