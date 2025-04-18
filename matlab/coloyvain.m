@@ -2,8 +2,8 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 % COLOYVAIN K-modularity, k-means, or spectral co-clustering
 %
 %   [Mx, My, R] = coloyvain(W, k)
-%   [Mx, My, R] = coloyvain(X, Y, k)
-%   [Mx, My, R] = coloyvain(_, objective, similarity)
+%   [Mx, My, R] = coloyvain(W, k, objective)
+%   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
 %   [Mx, My, R] = coloyvain(_, objective, similarity, Name=Value)
 %
 %   Inputs:
