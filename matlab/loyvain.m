@@ -2,8 +2,8 @@ function [M, Q] = loyvain(varargin)
 % LOYVAIN K-modularity, k-means, or spectral clustering
 %
 %   [M, Q] = loyvain(W, k)
-%   [M, Q] = loyvain(X, k)
-%   [M, Q] = loyvain(_, objective, similarity)
+%   [M, Q] = loyvain(W, k, objective)
+%   [M, Q] = loyvain(X, k, objective, similarity)
 %   [M, Q] = loyvain(_, objective, similarity, Name=Value)
 %
 %   Inputs:
