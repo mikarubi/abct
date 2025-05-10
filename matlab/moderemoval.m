@@ -5,8 +5,9 @@ function X = moderemoval(X, type)
 %   X1 = moderemoval(X, type)
 %
 %   Inputs:
-%       X: Network matrix of size n x n, or data matrix of size n x t.
-%          n is the number of nodes or data points, and t is the number of features.
+%       X:  Network matrix of size n x n, or data matrix of size n x p.
+%           n is the number of nodes or data points and
+%           p is the number of features.
 %
 %       type: Type of mode removal.
 %           "degree": Degree correction (default).

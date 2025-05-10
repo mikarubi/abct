@@ -1,10 +1,10 @@
-function V = gradients(W, k, weight, p, varargin)
+function V = gradients(W, k, weight, thr, varargin)
 % GRADIENTS Low-dimensional representation of common-neighbor matrices
 %
 %   V = gradients(W, k)
 %   V = gradients(W, k, weight)
-%   V = gradients(W, k, weight, p)
-%   V = gradients(W, k, weight, p, Name=Value)
+%   V = gradients(W, k, weight, thr)
+%   V = gradients(W, k, weight, thr, Name=Value)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
@@ -15,8 +15,9 @@ function V = gradients(W, k, weight, p, varargin)
 %           "weighted": Weighted gradient (default).
 %           "binary": Binary gradient.
 %
-%       p: Fraction to define neighbors as the top-p connections.
-%           Set p = [] for default value. See CONEIGHBORS for details.
+%       thr: Threshold to define top neighbors.
+%           Set thr = [] for default value.
+%           See CONEIGHBORS for details.
 %
 %       Name=[Value] Arguments (binary gradients only):
 %           See LOYVAIN for all Name=Value options.
@@ -43,17 +44,17 @@ arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     weight (1, 1) string {mustBeMember(weight, ["weighted", "binary"])} = "weighted"
-    p = []
+    thr = []
 end
 arguments (Repeating)
     varargin
 end
 
 % Get common-neighbors matrix
-if isempty(p)
+if isempty(thr)
     B = coneighbors(W);
 else
-    B = coneighbors(W, p);
+    B = coneighbors(W, thr);
 end
 
 % Get gradients

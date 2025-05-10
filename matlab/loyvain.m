@@ -11,9 +11,9 @@ function [M, Q] = loyvain(varargin)
 %
 %       OR
 %
-%       X:  Data matrix of size n x t, where
+%       X:  Data matrix of size n x p, where
 %           n is the number of data points and
-%           t is the number of features.
+%           p is the number of features.
 %
 %       k: Number of modules (positive integer or 0).
 %           Set to 0 to infer number from initial module assignment.
