@@ -1,7 +1,7 @@
 function Args = step1_proc_loyvain(Args)
 % Loyvain arguments processing
 
-[Args.n, Args.t] = size(Args.X);
+[Args.n, Args.p] = size(Args.X);
 if Args.similarity == "network"
     Args.W = Args.X;
     Args.X = 0;
@@ -38,7 +38,7 @@ end
 if ismember(Args.similarity, ["cosim", "corr"])
     Args.X = Args.X ./ vecnorm(Args.X, 2, 2);
 elseif ismember(Args.similarity, ["dot", "cov"])
-    Args.X = Args.X / sqrt(Args.t);
+    Args.X = Args.X / sqrt(Args.p);
 end
 
 % Compute self-connection weights

@@ -10,12 +10,12 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 %
 %       W: Bipartite network matrix of size p x q.
 %
-%       X: Data matrix of size s x p, where
-%          s is the number of data points and
+%       X: Data matrix of size n x p, where
+%          n is the number of data points and
 %          p is the number of features.
 %
-%       Y: Data matrix of size s x q, where
-%          s is the number of data points and
+%       Y: Data matrix of size n x q, where
+%          n is the number of data points and
 %          q is the number of features.
 %
 %       k: Number of modules (positive integer).

@@ -9,12 +9,12 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, Name=Value)
 %
 %   Inputs:
-%       X: Data matrix of size s x p, where
-%          s is the number of data points and
+%       X: Data matrix of size n x p, where
+%          n is the number of data points and
 %          p is the number of features.
 %
-%       Y: Data matrix of size s x q, where
-%          s is the number of data points and
+%       Y: Data matrix of size n x q, where
+%          n is the number of data points and
 %          q is the number of features.
 %
 %       k: Number of canonical components (positive integer).
@@ -38,8 +38,8 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %   Outputs:
 %       A: Canonical coefficients of X (size p x k).
 %       B: Canonical coefficients of Y (size q x k).
-%       U: Canonical components of X (size s x k).
-%       V: Canonical components of Y (size s x k).
+%       U: Canonical components of X (size n x k).
+%       V: Canonical components of Y (size n x k).
 %       R: Canonical covariances or correlations (size k x k).
 %          If type is "weighted", R denotes the actual covariances or
 %          correlations. If type is "binary", R denotes the
@@ -79,9 +79,9 @@ arguments (Repeating)
 end
 
 % Basic checks
-[s,  p] = size(X);
-[s_, q] = size(Y);
-assert(s == s_, "X and Y must have the same number of data points.")
+[n,  p] = size(X);
+[n_, q] = size(Y);
+assert(n == n_, "X and Y must have the same number of data points.")
 assert(k <= min(p, q), "k must not exceed number of features in X or Y.")
 
 % Initial processing
