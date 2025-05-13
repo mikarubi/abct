@@ -7,4 +7,7 @@ name = "abct"
 version = "1.0"
 description = "Python implementation of the abct"
 requires-python = ">=3.10"
-dependencies = ["numpy", "scipy", "pydantic"]
+dependencies = ["numpy", "scipy", "pydantic", "pre-commit"]
+
+[tool.setuptools]
+packages = ["abctpy", "abctpy.loyv", "abctpy.docs"]

@@ -1,5 +1,6 @@
-from typing import Literal, ArrayLike
-from pydantic import validate_call
+from typing import Literal
+from numpy.typing import ArrayLike
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 
@@ -34,7 +35,7 @@ def step0_args(method: str, *args, **kwargs) -> dict:
     return parse_args(method=method, W=W, X=X, Y=Y, k=k, **kwargs)
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def parse_args(
     method: Literal["loyvain", "coloyvain"],
     W: ArrayLike = 0,

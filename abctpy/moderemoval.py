@@ -1,13 +1,12 @@
 from typing import Literal
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from scipy import sparse
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def moderemoval(
     X: ArrayLike, type: Literal["degree", "global", "rankone", "soft"] = "degree"
 ) -> np.ndarray:
@@ -70,4 +69,5 @@ def moderemoval(
             return V @ np.diag(D) @ V.T
 
 
-moderemoval.__doc__ = get_docstring.from_matlab("moderemoval.m")
+with open("abctpy/docs/moderemoval", "r") as f:
+    moderemoval.__doc__ = f.read()

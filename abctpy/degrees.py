@@ -1,13 +1,12 @@
 from typing import Literal
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from .moderemoval import moderemoval
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def degrees(
     W: ArrayLike, type: Literal["first", "second", "residual"] = "first"
 ) -> np.ndarray:
@@ -23,4 +22,5 @@ def degrees(
             return np.sum(W_residual, axis=1)
 
 
-degrees.__doc__ = get_docstring.from_matlab("degrees.m")
+with open("abctpy/docs/degrees", "r") as f:
+    degrees.__doc__ = f.read()

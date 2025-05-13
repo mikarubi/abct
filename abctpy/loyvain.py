@@ -1,12 +1,11 @@
 from typing import Tuple
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from . import loyv
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
     ## Parse, process, and test arguments
@@ -46,4 +45,5 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
     return M, Q
 
 
-loyvain.__doc__ = get_docstring.from_matlab("loyvain.m")
+with open("abctpy/docs/loyvain", "r") as f:
+    loyvain.__doc__ = f.read()

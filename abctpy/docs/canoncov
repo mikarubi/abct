@@ -1,0 +1,65 @@
+ CANONCOV Canonical covariance analysis (aka partial least squares)
+          Canonical correlation analysis.
+
+   A, B, U, V, R = canoncov(X, Y, k)
+   A, B, U, V, R = canoncov(X, Y, k, type)
+   A, B, U, V, R = canoncov(X, Y, k, type, corr)
+   A, B, U, V, R = canoncov(X, Y, k, type, corr, moderm)
+   A, B, U, V, R = canoncov(X, Y, k, type, corr, moderm, Name=Value)
+
+   Inputs:
+       X: Data matrix of size n x p, where
+          n is the number of data points and
+          p is the number of features.
+
+       Y: Data matrix of size n x q, where
+          n is the number of data points and
+          q is the number of features.
+
+       k: Number of canonical components (positive integer).
+
+       type: Weighted or binary canonical analysis.
+           "weighted": Weighted canonical analysis (default).
+           "binary": Binary canonical analysis.
+
+       corr: Canonical correlation analysis (logical scalar).
+           0: Canonical covariance analysis (default).
+           1: Canonical correlation analysis.
+
+       moderm: First-mode removal (logical scalar).
+           0: No first-mode removal (default).
+           1: First-mode removal via degree correction.
+
+       Name=Value Arguments
+           (binary canonical analysis only):
+           See LOYVAIN for all Name=Value options.
+
+   Outputs:
+       A: Canonical coefficients of X (size p x k).
+       B: Canonical coefficients of Y (size q x k).
+       U: Canonical components of X (size n x k).
+       V: Canonical components of Y (size n x k).
+       R: Canonical covariances or correlations (size k x k).
+          If type is "weighted", R denotes the actual covariances or
+          correlations. If type is "binary", R denotes the
+          normalized covariances or correlations.
+
+   Methodological notes:
+       Weighted canonical correlation or covariance analysis is computed via
+       singular value decomposition of cross-covariance matrix.
+
+       Binary canonical covariance analysis is computed via co-Loyvain
+       k-means clustering of cross-covariance matrix. This analysis
+       produces binary orthogonal canonical coefficients.
+
+       Binary canonical covariance analysis is computed via co-Loyvain
+       k-means clustering of _whitened_ cross-covariance matrix. This
+       analysis produces binary orthogonal canonical coefficients for 
+       the whitened matrix. However, the output coefficients after
+       dewhitening will, in general, not be binary.
+
+       First-mode removal is performed via generalized degree correction, and
+       converts k-means co-clustering into k-modularity co-maximization.
+
+   See also:
+       COLOYVAIN, LOYVAIN, MODEREMOVAL.

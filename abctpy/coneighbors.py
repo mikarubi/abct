@@ -1,11 +1,10 @@
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def coneighbors(W: ArrayLike, thr: float = 0.1) -> np.ndarray:
 
     W = np.asarray(W)
@@ -17,4 +16,5 @@ def coneighbors(W: ArrayLike, thr: float = 0.1) -> np.ndarray:
     return A @ A.T
 
 
-coneighbors.__doc__ = get_docstring.from_matlab("coneighbors.m")
+with open("abctpy/docs/coneighbors", "r") as f:
+    coneighbors.__doc__ = f.read()
