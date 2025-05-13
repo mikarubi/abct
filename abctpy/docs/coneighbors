@@ -1,0 +1,23 @@
+ CONEIGHBORS Common-neighbors matrix of network matrix
+
+   B = coneighbors(W)
+   B = coneighbors(W, thr)
+
+   Inputs:
+
+       W: Network matrix of size n x n.
+
+       thr: Threshold to define top neighbors.
+           0 < thr < 1 (default is 0.1).
+
+   Outputs:
+       B: Common-neighbors matrix (size n x n).
+
+   Methodological notes:
+       Integer-valued common-neighbors matrices denote the number of
+       common top-l neighbors between all pairs of nodes. These matrices
+       are approximately equivalent to the kernel matrices used in
+       standard diffusion-map embedding of neuroimaging co-activity data.
+
+   See also:
+       GRADIENTS.

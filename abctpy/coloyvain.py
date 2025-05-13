@@ -1,13 +1,12 @@
 import warnings
 from typing import Tuple
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from . import loyv
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarray]:
 
     ## Parse, process, and test arguments
@@ -88,4 +87,5 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
     return Mx, My, R, R_all
 
 
-coloyvain.__doc__ = get_docstring.from_matlab("coloyvain.m")
+with open("abctpy/docs/coloyvain", "r") as f:
+    coloyvain.__doc__ = f.read()

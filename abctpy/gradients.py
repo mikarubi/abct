@@ -1,8 +1,7 @@
 import warnings
 from typing import Literal, Optional
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from scipy import sparse
@@ -10,7 +9,7 @@ from .coneighbors import coneighbors
 from .loyvain import loyvain
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def gradients(
     W: ArrayLike,
     k: int,
@@ -41,4 +40,5 @@ def gradients(
             return V
 
 
-gradients.__doc__ = get_docstring.from_matlab("gradients.m")
+with open("abctpy/docs/gradients", "r") as f:
+    gradients.__doc__ = f.read()

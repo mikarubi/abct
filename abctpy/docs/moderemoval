@@ -1,0 +1,27 @@
+ MODEREMOVAL Mode removal from network or timeseries data
+
+   X1 = moderemoval(X)
+   X1 = moderemoval(X, type)
+
+   Inputs:
+       X:  Network matrix of size n x n, or data matrix of size n x p.
+           n is the number of nodes or data points and
+           p is the number of features.
+
+       type: Type of mode removal.
+           "degree": Degree correction (default).
+           "global": Global signal regression.
+           "rankone": Subtraction of rank-one approximation.
+           "soft": Soft removal of primary modes.
+
+   Outputs:
+       X1: Network or timeseries matrix after mode removal.
+
+   Methodological notes:
+       Degree correction, global signal regression, and subtraction of
+       rank-one approximation all produce approximatley equivalent
+       results. The "soft" mode removal makes the network sparse by using
+       cubic interpolation to "despike" an initial eigenspectrum peak.
+
+   See also:
+       DEGREES, GRADIENTS.

@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+    - id: sync-docstrings
+      name: Sync docstrings
+      entry: ./sync_docstrings
+      language: python
+      stages: [commit]

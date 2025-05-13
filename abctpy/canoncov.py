@@ -1,8 +1,7 @@
 import warnings
 from typing import Literal, Tuple
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 from scipy import linalg, sparse
@@ -10,7 +9,7 @@ from .moderemoval import moderemoval
 from .coloyvain import coloyvain
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def canoncov(
     X: ArrayLike,
     Y: ArrayLike,
@@ -81,4 +80,5 @@ def canoncov(
     return A, B, U, V, R
 
 
-canoncov.__doc__ = get_docstring.from_matlab("canoncov.m")
+with open("abctpy/docs/canoncov", "r") as f:
+    canoncov.__doc__ = f.read()

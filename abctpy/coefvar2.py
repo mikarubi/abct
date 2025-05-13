@@ -1,12 +1,11 @@
 from typing import Tuple
 from numpy.typing import ArrayLike
-from pydantic import validate_call
-from .utils import get_docstring
+from pydantic import validate_call, ConfigDict
 
 import numpy as np
 
 
-@validate_call
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def coefvar2(
     W: ArrayLike,
 ) -> Tuple[np.ndarray, np.ndarray]:
@@ -19,4 +18,5 @@ def coefvar2(
     return CV2, CV2_nrm
 
 
-coefvar2.__doc__ = get_docstring.from_matlab("coefvar2.m")
+with open("abctpy/docs/coefvar2", "r") as f:
+    coefvar2.__doc__ = f.read()
