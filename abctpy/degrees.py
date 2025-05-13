@@ -1,0 +1,26 @@
+from typing import Literal
+from numpy.typing import ArrayLike
+from pydantic import validate_call
+from .utils import get_docstring
+
+import numpy as np
+from .moderemoval import moderemoval
+
+
+@validate_call
+def degrees(
+    W: ArrayLike, type: Literal["first", "second", "residual"] = "first"
+) -> np.ndarray:
+
+    W = np.asarray(W)
+    match type:
+        case "first":
+            return np.sum(W, axis=1)
+        case "second":
+            return np.sum(W**2, axis=1)
+        case "residual":
+            W_residual = moderemoval(W, "rankone")
+            return np.sum(W_residual, axis=1)
+
+
+degrees.__doc__ = get_docstring.from_matlab("degrees.m")
