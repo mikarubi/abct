@@ -116,8 +116,12 @@ for i = 1:Args.replicates
         % initialize
         M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args);
     end
-    [M1, Q1] = loyv.step4_run(Args, Args.W, M0);    % run
-    if (Q1 - Q) > Args.tolerance                    % test for increase
+
+    % run algorithm
+    [M1, Q1] = loyv.step4_run(Args, Args.W, M0);
+
+    % test for increase
+    if (Q1 - Q) > Args.tolerance
         if ismember(Args.display, ["replicate", "iteration"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
         end

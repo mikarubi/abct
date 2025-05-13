@@ -1,0 +1,49 @@
+from typing import Tuple
+from pydantic import validate_call
+from .utils import get_docstring
+
+import numpy as np
+from . import loyv
+
+
+@validate_call
+def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
+
+    ## Parse, process, and test arguments
+
+    # Parse arguments
+    Args = loyv.step0_args("loyvain", *args, **kwargs)
+
+    # Process all other arguments
+    Args = loyv.step1_proc_loyvain(Args)
+
+    # Test arguments
+    loyv.step2_test(Args.X, Args.W, Args.n, Args.k, Args)
+
+    ## Run algorithm
+
+    Q = -np.inf
+    for i in range(Args.replicates):
+        Args.replicate_i = i
+        if Args.start == "custom":
+            M0 = Args.M0
+        else:
+            # initialize
+            M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args)
+
+        # run algorithm
+        M1, Q1 = loyv.step4_run(Args, Args.W, M0)
+
+        # test for increase
+        if (Q1 - Q) > Args.tolerance:
+            if Args.display in ["replicate", "iteration"]:
+                print(
+                    f"Replicate: {i:4d}.    Objective: {Q1:4.4f}.    Δ: {Q1 - Q:4.4f}."
+                )
+            Q = Q1
+            M = M1
+
+    return M, Q
+
+
+loyvain.__doc__ = get_docstring.from_matlab("loyvain.m")

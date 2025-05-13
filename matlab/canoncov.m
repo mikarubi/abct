@@ -1,12 +1,12 @@
-function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
+function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, varargin)
 % CANONCOV Canonical covariance analysis (aka partial least squares)
 %          Canonical correlation analysis.
 %
 %   [A, B, U, V, R] = canoncov(X, Y, k)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, Name=Value)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size n x p, where
@@ -23,7 +23,7 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, cca, moderm, varargin)
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
 %
-%       cca: Canonical correlation analysis (logical scalar).
+%       corr: Canonical correlation analysis (logical scalar).
 %           0: Canonical covariance analysis (default).
 %           1: Canonical correlation analysis.
 %
@@ -71,7 +71,7 @@ arguments
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
-    cca (1, 1) logical = false
+    corr (1, 1) logical = false
     moderm (1, 1) logical = false
 end
 arguments (Repeating)
@@ -101,7 +101,7 @@ else
 end
 
 % Set up problem
-if cca
+if corr
     [Ux, Sx, Vx] = svdsketch(X);
     [Uy, Sy, Vy] = svdsketch(Y);
     Z = Vx * Ux' * Uy * Vy';
@@ -126,7 +126,7 @@ else
 end
 
 % Recover coefficients
-if cca
+if corr
     A = Vx / Sx * Vx' * A;
     B = Vy / Sy * Vy' * B;
 end

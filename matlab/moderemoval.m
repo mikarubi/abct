@@ -33,23 +33,27 @@ arguments
 end
 
 switch type
-    case "degree"       % Degree correction
+    % Degree correction
+    case "degree"
         assert(all(X >= 0, "all"), ...
             "Invalid degree correction: Matrix must be non-negative.")
         So = sum(X, 2);
         Si = sum(X, 1);
         X = X - So * Si / sum(So);
 
-    case "global"       % Global signal regression
+    % Global signal regression
+    case "global"
         G = mean(X, 1);
         X = X - (X * G') * G / (G * G');
         % (X - (X * G') * G / (G * G')) * G' = 0    % verification
 
-    case "rankone"      % Subtraction of rank-one approximation
+    % Subtraction of rank-one approximation
+    case "rankone"
         [U, S, V] = svds(X, 1);
         X = X - U * S * V';
 
-    case "soft"         % Soft removal of primary modes
+    % Soft removal of primary modes
+    case "soft"
         assert(isequal(size(X, 1), size(X, 2)) && all(X - X' < eps("single"), "all"), ...
             "Invalid soft mode removal: Network matrix must be symmetric.")
         [V, D] = eig(X, "vector");
