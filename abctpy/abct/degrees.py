@@ -22,5 +22,5 @@ def degrees(
             return np.sum(W_residual, axis=1)
 
 
-with open("abctpy/docs/degrees", "r") as f:
+with open("abct/docs/degrees", "r") as f:
     degrees.__doc__ = f.read()

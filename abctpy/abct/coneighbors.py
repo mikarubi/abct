@@ -16,5 +16,5 @@ def coneighbors(W: ArrayLike, thr: float = 0.1) -> np.ndarray:
     return A @ A.T
 
 
-with open("abctpy/docs/coneighbors", "r") as f:
+with open("abct/docs/coneighbors", "r") as f:
     coneighbors.__doc__ = f.read()

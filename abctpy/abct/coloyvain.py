@@ -87,5 +87,5 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
     return Mx, My, R, R_all
 
 
-with open("abctpy/docs/coloyvain", "r") as f:
+with open("abct/docs/coloyvain", "r") as f:
     coloyvain.__doc__ = f.read()

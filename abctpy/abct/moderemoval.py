@@ -69,5 +69,5 @@ def moderemoval(
             return V @ np.diag(D) @ V.T
 
 
-with open("abctpy/docs/moderemoval", "r") as f:
+with open("abct/docs/moderemoval", "r") as f:
     moderemoval.__doc__ = f.read()

@@ -40,5 +40,5 @@ def gradients(
             return V
 
 
-with open("abctpy/docs/gradients", "r") as f:
+with open("abct/docs/gradients", "r") as f:
     gradients.__doc__ = f.read()

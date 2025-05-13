@@ -5,4 +5,4 @@ repos:
       name: Sync docstrings
       entry: ./sync_docstrings
       language: python
-      stages: [commit]
+      stages: [pre-commit]

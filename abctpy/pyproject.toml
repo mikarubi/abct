@@ -10,4 +10,4 @@ requires-python = ">=3.10"
 dependencies = ["numpy", "scipy", "pydantic", "pre-commit"]
 
 [tool.setuptools]
-packages = ["abctpy", "abctpy.loyv", "abctpy.docs"]
+packages = ["abct", "abct.loyv", "abct.docs"]

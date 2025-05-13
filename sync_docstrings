@@ -3,8 +3,8 @@
 import os
 import glob
 
-dir_matlab = "./matlab"
-dir_docs = "./abctpy/docs"
+dir_matlab = "./abctmat"
+dir_docs = "./abctpy/abct/docs"
 
 for filename_mat in glob.glob(f"{dir_matlab}/*m"):
     with open(filename_mat, "r") as f:
