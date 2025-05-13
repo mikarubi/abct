@@ -18,5 +18,5 @@ def coefvar2(
     return CV2, CV2_nrm
 
 
-with open("abctpy/docs/coefvar2", "r") as f:
+with open("abct/docs/coefvar2", "r") as f:
     coefvar2.__doc__ = f.read()

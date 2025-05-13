@@ -45,5 +45,5 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
     return M, Q
 
 
-with open("abctpy/docs/loyvain", "r") as f:
+with open("abct/docs/loyvain", "r") as f:
     loyvain.__doc__ = f.read()

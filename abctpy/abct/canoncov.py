@@ -80,5 +80,5 @@ def canoncov(
     return A, B, U, V, R
 
 
-with open("abctpy/docs/canoncov", "r") as f:
+with open("abct/docs/canoncov", "r") as f:
     canoncov.__doc__ = f.read()
