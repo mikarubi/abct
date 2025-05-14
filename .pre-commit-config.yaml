@@ -3,6 +3,6 @@ repos:
     hooks:
     - id: sync-docstrings
       name: Sync docstrings
-      entry: ./sync_docstrings
+      entry: ./abctpy/sync_docstrings
       language: python
       stages: [pre-commit]
