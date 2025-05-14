@@ -1,7 +1,7 @@
 from typing import Tuple
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-
+from importlib import resources
 import numpy as np
 
 
@@ -18,5 +18,4 @@ def coefvar2(
     return CV2, CV2_nrm
 
 
-with open("abct/docs/coefvar2", "r") as f:
-    coefvar2.__doc__ = f.read()
+coefvar2.__doc__ = resources.read_text("abct.docs", "coefvar2")

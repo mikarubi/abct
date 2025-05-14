@@ -1,2 +1,4 @@
 *asv
+*.egg-info
 __pycache__
+build

@@ -1,6 +1,7 @@
 from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
+from importlib import resources
 
 import numpy as np
 from scipy import sparse
@@ -69,5 +70,4 @@ def moderemoval(
             return V @ np.diag(D) @ V.T
 
 
-with open("abct/docs/moderemoval", "r") as f:
-    moderemoval.__doc__ = f.read()
+moderemoval.__doc__ = resources.read_text("abct.docs", "moderemoval")

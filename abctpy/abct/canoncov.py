@@ -2,6 +2,7 @@ import warnings
 from typing import Literal, Tuple
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
+from importlib import resources
 
 import numpy as np
 from scipy import linalg, sparse
@@ -80,5 +81,4 @@ def canoncov(
     return A, B, U, V, R
 
 
-with open("abct/docs/canoncov", "r") as f:
-    canoncov.__doc__ = f.read()
+canoncov.__doc__ = resources.read_text("abct.docs", "canoncov")

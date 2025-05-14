@@ -1,6 +1,6 @@
 from typing import Tuple
 from pydantic import validate_call, ConfigDict
-
+from importlib import resources
 import numpy as np
 from . import loyv
 
@@ -45,5 +45,4 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
     return M, Q
 
 
-with open("abct/docs/loyvain", "r") as f:
-    loyvain.__doc__ = f.read()
+loyvain.__doc__ = resources.read_text("abct.docs", "loyvain")

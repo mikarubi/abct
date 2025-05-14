@@ -1,6 +1,7 @@
 import warnings
 from typing import Tuple
 from pydantic import validate_call, ConfigDict
+from importlib import resources
 
 import numpy as np
 from . import loyv
@@ -87,5 +88,4 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
     return Mx, My, R, R_all
 
 
-with open("abct/docs/coloyvain", "r") as f:
-    coloyvain.__doc__ = f.read()
+coloyvain.__doc__ = resources.read_text("abct.docs", "coloyvain")

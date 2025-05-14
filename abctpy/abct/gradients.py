@@ -2,7 +2,7 @@ import warnings
 from typing import Literal, Optional
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-
+from importlib import resources
 import numpy as np
 from scipy import sparse
 from .coneighbors import coneighbors
@@ -40,5 +40,4 @@ def gradients(
             return V
 
 
-with open("abct/docs/gradients", "r") as f:
-    gradients.__doc__ = f.read()
+gradients.__doc__ = resources.read_text("abct.docs", "gradients")
