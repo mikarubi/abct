@@ -11,6 +11,7 @@ def coneighbors(W: ArrayLike, thr: float = 0.1) -> np.ndarray:
 
     # Create binary matrix of top neighbors
     A = W > np.quantile(W, 1 - thr, axis=1, keepdims=True)
+    A = A.astype(W.dtype)
 
     # Compute common neighbors matrix
     return A @ A.T
