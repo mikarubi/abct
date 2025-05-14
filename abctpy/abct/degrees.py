@@ -1,7 +1,7 @@
 from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-
+from importlib import resources
 import numpy as np
 from .moderemoval import moderemoval
 
@@ -22,5 +22,4 @@ def degrees(
             return np.sum(W_residual, axis=1)
 
 
-with open("abct/docs/degrees", "r") as f:
-    degrees.__doc__ = f.read()
+degrees.__doc__ = resources.read_text("abct.docs", "degrees")

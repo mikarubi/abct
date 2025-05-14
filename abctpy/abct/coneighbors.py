@@ -1,6 +1,6 @@
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-
+from importlib import resources
 import numpy as np
 
 
@@ -16,5 +16,4 @@ def coneighbors(W: ArrayLike, thr: float = 0.1) -> np.ndarray:
     return A @ A.T
 
 
-with open("abct/docs/coneighbors", "r") as f:
-    coneighbors.__doc__ = f.read()
+coneighbors.__doc__ = resources.read_text("abct.docs", "coneighbors")
