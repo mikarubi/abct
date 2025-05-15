@@ -1,23 +1,19 @@
-from types import SimpleNamespace
-
 import abct
 import numpy as np
 
 def step1_proc_loyvain(Args):
     # Loyvain arguments processing
 
-    Args = SimpleNamespace(**Args)
-
     Args.n, Args.p = Args.X.shape
     if Args.similarity == "network":
         Args.W = Args.X
-        Args.X = 0
+        Args.X = np.array([0])
     else:
-        Args.W = 0
+        Args.W = np.array([0])
 
     # Process custom initial module assignment
-    if isinstance(Args.start, (int, float, np.ndarray)):
-        Args.M0 = Args.start
+    if isinstance(Args.start, np.ndarray):
+        Args.M0 = np.ravel(Args.start)
         if Args.k == 0:
             Args.k = np.max(Args.M0)
         Args.start = "custom"
@@ -43,9 +39,9 @@ def step1_proc_loyvain(Args):
 
     # Compute self-connection weights
     if Args.similarity == "network":
-        Args.Wii = np.diag(Args.W).T
+        Args.Wii = np.diag(Args.W)[np.newaxis]
     else:
-        Args.Wii = np.sum(Args.X**2, axis=1).T
+        Args.Wii = np.sum(Args.X**2, axis=1)[np.newaxis]
 
     # Precompute kmeans++ variables
     Args.Dist = np.array([])
