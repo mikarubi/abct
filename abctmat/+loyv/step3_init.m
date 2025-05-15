@@ -21,8 +21,9 @@ if ismember(Args.start, ["greedy", "balanced"])
         elseif Args.start == "balanced"
             sampleProbability = (minDist / sum(minDist));
         end
-        P = [0 cumsum(sampleProbability)]; P(end) = 1;
-        Idx(j) = find(rand < P, 1) - 1;         % sample new centroid
+        P = [0 cumsum(sampleProbability)];
+        P(end) = 1;
+        Idx(j) = find(rand < P, 1) - 1;         % sample next centroid
     end
     if (Args.similarity == "network") || (Args.method == "coloyvain")
         % use precomputed distance

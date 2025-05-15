@@ -41,9 +41,9 @@ def step0_args(method: str, *args, **kwargs) -> dict:
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def parse_args(
     method: Literal["loyvain", "coloyvain"],
-    W: ArrayLike = [0],
-    X: ArrayLike = [0],
-    Y: ArrayLike = [0],
+    W: ArrayLike = None,
+    X: ArrayLike = None,
+    Y: ArrayLike = None,
     k: int = 0,
     objective: Literal["kmodularity", "kmeans", "spectral"] = "kmodularity",
     similarity: Literal["network", "corr", "cosim", "cov", "dot"] = "network",
@@ -71,10 +71,10 @@ def parse_args(
         if k <= 0:
             raise ValueError("k must be positive for co-Loyvain.")
         if similarity == "network":
-            if not (np.array_equal(X, [0]) and np.array_equal(Y, [0])):
+            if not (np.array_equal(X, None) and np.array_equal(Y, None)):
                 raise ValueError('X and Y inputs are incompatible with "network" similarity.')
         else:
-            if not np.array_equal(W, [0]):
+            if not np.array_equal(W, None):
                 raise ValueError('W input is only compatible with "network" similarity.')
             if X.shape[0] != Y.shape[0]:
                 raise ValueError("X and Y must have the same number of data points.")

@@ -49,8 +49,7 @@ else
 end
 
 % Precompute kmeans++ variables
-Args.Dist = [];
-Args.normX = [];
+[Args.Dist, Args.normX] = deal(0);
 if ismember(Args.start, ["greedy", "balanced"])
     if Args.similarity == "network"
         Args.Dist = Args.W ./ vecnorm(Args.W, 2, 2);

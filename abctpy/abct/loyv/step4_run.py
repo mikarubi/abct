@@ -8,7 +8,6 @@ def step4_run(Args, W, M, My):
     # Unpack arguments
     k = Args.k
     n = len(M)
-    # LinIdx = M + k * np.arange(n)  # two-dimensional indices of M
 
     MM = np.zeros((k, n))
     MM[M, np.arange(n)] = 1  # two-dimensional representation
@@ -25,19 +24,19 @@ def step4_run(Args, W, M, My):
             if Args.objective == "spectral":
                 S = np.sum(Smn, axis=0, keepdims=True)  # degree of node
                 D = np.sum(Smn, axis=1, keepdims=True)  # degree of module
-            Wii = Args.Wii  # within-node weight sum
+            Wii = Args.Wii[np.newaxis, :]  # within-node weight sum
 
         case "coloyvain":
             ny = len(My)
             MMy = np.zeros((k, ny))
             MMy[My, np.arange(ny)] = 1  # two-dimensional representation
-            Ny = np.sum(MMy, axis=1)
+            Ny = np.sum(MMy, axis=1, keepdims=True)  # number of nodes in module
             Smn = MMy @ W.T  # strength node to module of Wxy
             Cii = np.diag(MM @ Smn.T)[:, np.newaxis]  # within-module weight sum
             if Args.objective == "cospectral":
-                S = np.sum(W, axis=1)
-                D = np.sum(MM @ W, axis=1)
-                Dy = np.sum(MMy @ W.T, axis=1)
+                S = np.sum(W, axis=1, keepdims=True)
+                D = np.sum(MM @ W, axis=1, keepdims=True)
+                Dy = np.sum(MMy @ W.T, axis=1, keepdims=True)
 
     match Args.objective:
         case "kmeans":      Cii_nrm = Cii / N
@@ -52,8 +51,9 @@ def step4_run(Args, W, M, My):
         max_delta_Q = 0  # maximal increase over all batches
         idx = np.random.permutation(n)
         pts = np.round(np.linspace(0, n, Args.numbatches + 1)).astype(int)
-        Batches = [idx[pts[i]:pts[i + 1]] for i in range(len(pts) - 1)]
-        for U in Batches:
+        Batches = [np.array(idx[pts[i]:pts[i+1]]) for i in range(len(pts) - 1)]
+        for u in range(Args.numbatches):
+            U = Batches[u]  # indices of nodes in batch
             MU = M[U]  # module assignments of nodes in batch
 
             match Args.objective:
@@ -64,11 +64,11 @@ def step4_run(Args, W, M, My):
                     delta_QU = (((2 * Smn[:, U] + Wii[:, U]) - Cii_nrm * S[:, U]) / (D + S[:, U]) -
                                 ((2 * Smn[MU, U] - Wii[:, U]) - Cii_nrm[MU].T * S[:, U]) / (D[MU].T - S[:, U]))
                 case "cokmeans":
-                    delta_QU = (((Cii + Smn[:, U]) / np.sqrt((N + 1) * Ny) - Cii_nrm + 
-                                 (Cii[MU] - Smn[MU, U]) / np.sqrt((N[MU] - 1) * Ny[MU]) - Cii_nrm[MU]))
+                    delta_QU = ((Cii + Smn[:, U]) / np.sqrt((N + 1) * Ny) - Cii_nrm + 
+                                (Cii[MU].T - Smn[MU, U]) / np.sqrt((N[MU].T - 1) * Ny[MU].T) - Cii_nrm[MU].T)
                 case "cospectral":
-                    delta_QU = (((Cii + Smn[:, U]) / np.sqrt((D + S[U]) * Dy) - Cii_nrm + 
-                                 (Cii[MU] - Smn[MU, U]) / np.sqrt((D[MU] - S[U]) * Dy[MU]) - Cii_nrm[MU]))
+                    delta_QU = ((Cii + Smn[:, U]) / np.sqrt((D + S[:, U]) * Dy) - Cii_nrm + 
+                                (Cii[MU].T - Smn[MU, U]) / np.sqrt((D[MU].T - S[:, U]) * Dy[MU].T) - Cii_nrm[MU].T)
 
             delta_QU[:, (N[MU] == 1).ravel()] = -np.inf  # no change allowed if one-node cluster
             delta_QU[MU, np.arange(len(U))] = 0  # no change if node stays in own module
@@ -104,23 +104,24 @@ def step4_run(Args, W, M, My):
                 M[I] = MI_new
                 MM[:, I] = MMI_new
 
-                if Args.method == "loyvain":
-                    # Update G and Smn
-                    if Args.similarity == "network":
-                        delta_Smn = delta_MMI @ W[I]
-                    else:
-                        delta_G = delta_MMI @ X[I]  # change in centroid
-                        G = G + delta_G  # update centroids
-                        delta_Smn = delta_G @ X.T  # change in degree of module to node
-                    Smn = Smn + delta_Smn  # update degree of module to node
-                    Cii = np.diag(Smn @ MM.T)[:, np.newaxis]  # within-module weight sum
-                elif Args.method == "coloyvain":
-                    Cii = np.diag(MM @ Smn.T)[:, np.newaxis]  # within-module weight sum
-                    if Args.objective == "cospectral":
-                        delta_Smn = delta_MMI @ W[I]
+                match Args.method:
+                    case "loyvain":
+                        # Update G and Smn
+                        if Args.similarity == "network":
+                            delta_Smn = delta_MMI @ W[I]
+                        else:
+                            delta_G = delta_MMI @ X[I]  # change in centroid
+                            G = G + delta_G  # update centroids
+                            delta_Smn = delta_G @ X.T  # change in degree of module to node
+                        Smn = Smn + delta_Smn  # update degree of module to node
+                        Cii = np.diag(Smn @ MM.T)[:, np.newaxis]  # within-module weight sum
+                    case "coloyvain":
+                        Cii = np.diag(MM @ Smn.T)[:, np.newaxis]  # within-module weight sum
+                        if Args.objective == "cospectral":
+                            delta_Smn = delta_MMI @ W[I]
 
                 if Args.objective in ["spectral", "cospectral"]:
-                    D = D + np.sum(delta_Smn, axis=1)
+                    D = D + np.sum(delta_Smn, axis=1, keepdims=True)
 
                 match Args.objective:
                     case "kmeans":      Cii_nrm = Cii / N
