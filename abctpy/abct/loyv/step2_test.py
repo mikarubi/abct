@@ -3,7 +3,6 @@ from types import SimpleNamespace
 
 import numpy as np
 
-
 def step2_test(X, W, n, k, Args):
     # Loyvain arguments tests
 

@@ -2,9 +2,9 @@ from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from importlib import resources
-import numpy as np
-from .moderemoval import moderemoval
 
+import abct
+import numpy as np
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def degrees(
@@ -18,7 +18,7 @@ def degrees(
         case "second":
             return np.sum(W**2, axis=1)
         case "residual":
-            W_residual = moderemoval(W, "rankone")
+            W_residual = abct.moderemoval(W, "rankone")
             return np.sum(W_residual, axis=1)
 
 

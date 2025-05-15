@@ -48,7 +48,7 @@ function [M, Q] = loyvain(varargin)
 %               Initial-module-assignment vector of length n.
 %
 %           NumBatches=[Number of batches].
-%               Positive integer (default is 2).
+%               Positive integer (default is 10).
 %
 %           MaxIter=[Maximum number of algorithm iterations].
 %               Positive integer (default is 1000).

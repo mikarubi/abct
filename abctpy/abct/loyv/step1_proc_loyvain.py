@@ -1,8 +1,7 @@
 from types import SimpleNamespace
 
+import abct
 import numpy as np
-from ..moderemoval import moderemoval
-
 
 def step1_proc_loyvain(Args):
     # Loyvain arguments processing
@@ -27,9 +26,9 @@ def step1_proc_loyvain(Args):
     if Args.objective == "kmodularity":
         if Args.similarity == "network":
             Args.W = Args.W * (Args.n / Args.k) / np.sum(np.abs(Args.W))
-            Args.W = moderemoval(Args.W, "degree")
+            Args.W = abct.moderemoval(Args.W, "degree")
         else:
-            Args.X = moderemoval(Args.X, "global")
+            Args.X = abct.moderemoval(Args.X, "global")
         Args.objective = "kmeans"
 
     # Center to mean 0 for covariance and correlation

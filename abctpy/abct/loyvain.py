@@ -1,9 +1,9 @@
 from typing import Tuple
 from pydantic import validate_call, ConfigDict
 from importlib import resources
-import numpy as np
-from . import loyv
 
+import numpy as np
+from abct import loyv
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:

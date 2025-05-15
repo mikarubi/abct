@@ -2,7 +2,6 @@ from types import SimpleNamespace
 
 import numpy as np
 
-
 def step3_init(X, normX, Dist, n, Args):
     # Loyvain partition initialization
 
