@@ -4,11 +4,9 @@ from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from importlib import resources
 
+import abct
 import numpy as np
 from scipy import linalg, sparse
-from .moderemoval import moderemoval
-from .coloyvain import coloyvain
-
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def canoncov(
@@ -39,8 +37,8 @@ def canoncov(
 
     # First-mode removal or centering
     if moderm:  # Degree correction automatically centers data
-        X = moderemoval(X, "degree")
-        Y = moderemoval(Y, "degree")
+        X = abct.moderemoval(X, "degree")
+        Y = abct.moderemoval(Y, "degree")
     else:
         X = X - np.mean(X, axis=0, keepdims=True)
         Y = Y - np.mean(Y, axis=0, keepdims=True)
@@ -59,7 +57,7 @@ def canoncov(
         R = np.diag(R)
         B = B.T
     else:
-        Mx, My, _, R = coloyvain(
+        Mx, My, _, R = abct.coloyvain(
             Z, k, "kmeans", "network", numbatches=min(32, min(p, q)), **kwargs
         )
         ix = np.argsort(R)[::-1]

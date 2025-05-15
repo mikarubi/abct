@@ -3,7 +3,6 @@ import warnings
 
 import numpy as np
 
-
 def step4_run(Args, W, M, My):
     # Loyvain main algorithm
 
