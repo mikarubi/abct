@@ -7,13 +7,13 @@ def step1_proc_loyvain(Args):
     Args.n, Args.p = Args.X.shape
     if Args.similarity == "network":
         Args.W = Args.X
-        Args.X = np.array([0])
+        Args.X = np.array(None)
     else:
-        Args.W = np.array([0])
+        Args.W = np.array(None)
 
     # Process custom initial module assignment
     if isinstance(Args.start, np.ndarray):
-        Args.M0 = np.ravel(Args.start)
+        Args.M0 = np.ravel(Args.start).astype(int)
         if Args.k == 0:
             Args.k = np.max(Args.M0)
         Args.start = "custom"
@@ -39,18 +39,17 @@ def step1_proc_loyvain(Args):
 
     # Compute self-connection weights
     if Args.similarity == "network":
-        Args.Wii = np.diag(Args.W)[np.newaxis]
+        Args.Wii = np.diag(Args.W)
     else:
-        Args.Wii = np.sum(Args.X**2, axis=1)[np.newaxis]
+        Args.Wii = np.sum(Args.X**2, axis=1)
 
     # Precompute kmeans++ variables
-    Args.Dist = np.array([])
-    Args.normX = np.array([])
+    Args.Dist, Args.normX = [0], [0]
     if Args.start in ["greedy", "balanced"]:
         if Args.similarity == "network":
             Args.Dist = Args.W / np.linalg.norm(Args.W, axis=1, keepdims=True)
             Args.Dist = 1 - Args.Dist @ Args.Dist.T
         else:
-            Args.normX = np.linalg.norm(Args.X, axis=1)
+            Args.normX = np.linalg.norm(Args.X, axis=1, keepdims=True)
 
     return Args

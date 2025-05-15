@@ -62,7 +62,7 @@ def moderemoval(
                 rmsk = np.sqrt(rk[0] / (n - k))
                 y[k] = (rms0 - rmsk) / rms0
                 # Detect knee of optimal fit and break
-                if k > 0 and (y[k] - x[k]) < (y[k - 1] - x[k - 1]):
+                if k > 0 and (y[k] - x[k]) < (y[k-1] - x[k-1]):
                     break
 
             # Apply the optimal fit
