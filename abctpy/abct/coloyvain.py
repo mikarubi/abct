@@ -4,8 +4,7 @@ from pydantic import validate_call, ConfigDict
 from importlib import resources
 
 import numpy as np
-from . import loyv
-
+from abct import loyv
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarray]:
