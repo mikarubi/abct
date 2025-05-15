@@ -1,12 +1,8 @@
-from types import SimpleNamespace
-
 import abct
 import numpy as np
 
 def step1_proc_coloyvain(Args):
     # co-Loyvain arguments processing
-
-    Args = SimpleNamespace(**Args)
 
     if Args.similarity != "network":
         Args.X = proc(Args.X, Args)
@@ -35,7 +31,7 @@ def step1_proc_coloyvain(Args):
         Args.DistX = 1 - (Args.DistX @ Args.DistX.T)
         Args.DistY = 1 - (Args.DistY.T @ Args.DistY)
     else:
-        Args.DistX, Args.DistY = 0, 0
+        Args.DistX, Args.DistY = [0], [0]
 
     return Args
 

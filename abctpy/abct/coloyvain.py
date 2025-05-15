@@ -62,23 +62,17 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
             My0 = My1
             Mx1 = loyv.step4_run(Args, Args.W, Mx1, My1)  # optimize Mx
             My1, R1, R1_all = loyv.step4_run(Args, Args.W.T, My1, Mx1)  # optimize My
-            if np.array_equal(
-                My0, My1
-            ):  # if identical, neither Mx1 nor My1 will change
+            if np.array_equal(My0, My1):  # if identical, neither Mx1 nor My1 will change
                 break
             if Args.display == "iteration":
-                print(
-                    f"Replicate: {Args.replicate_i:4d}.    Iteration: {v:4d}.    Objective: {R1:4.4f}."
-                )
+                print(f"Replicate: {Args.replicate_i:4d}.    Iteration: {v:4d}.    Objective: {R1:4.4f}.")
             if v == Args.maxiter - 1:
                 warnings.warn(f"Algorithm did not converge after {v + 1} iterations.")
 
         # check if replicate has improved on previous result
         if (R1 - R) > Args.tolerance:  # test for increase
             if Args.display in ["replicate", "iteration"]:
-                print(
-                    f"Replicate: {i:4d}.    Objective: {R1:4.4f}.    Δ: {R1 - R:4.4f}."
-                )
+                print(f"Replicate: {i:4d}.    Objective: {R1:4.4f}.    Δ: {R1 - R:4.4f}.")
             R = R1
             Mx = Mx1
             My = My1
