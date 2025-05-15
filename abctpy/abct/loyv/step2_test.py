@@ -31,10 +31,10 @@ def step2_test(X, W, n, k, Args):
 
     if Args.method == "loyvain":
         # Test symmetry
-        if not (W.shape[0] == W.shape[1] and np.allclose(W, W.T, atol=np.finfo(np.float32).eps)):
+        if not ((W.shape[0] == W.shape[1]) and np.allclose(W, W.T)):
             raise ValueError('Network matrix must be symmetric or similarity must not be "network".')
 
         # Test initialization
         if Args.start == "custom":
-            if not (len(Args.M0) == n and np.array_equal(np.unique(Args.M0), np.arange(k))):
+            if not ((len(Args.M0) == n) and np.array_equal(np.unique(Args.M0), np.arange(k))):
                 raise ValueError(f"Initial module assignment must have length {n} and contain integers {0} to {k-1}.")

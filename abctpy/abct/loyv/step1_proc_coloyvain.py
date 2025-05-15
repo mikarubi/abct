@@ -18,12 +18,9 @@ def step1_proc_coloyvain(Args):
         Args.W = abct.moderemoval(Args.W, "degree")
 
     match Args.objective:
-        case "kmodularity":
-            Args.objective = "cokmeans"
-        case "kmeans":
-            Args.objective = "cokmeans"
-        case "spectral":
-            Args.objective = "cospectral"
+        case "kmodularity": Args.objective = "cokmeans"
+        case "kmeans":      Args.objective = "cokmeans"
+        case "spectral":    Args.objective = "cospectral"
 
     if Args.start in ["greedy", "balanced"]:
         Args.DistX = Args.W / np.linalg.norm(Args.W, axis=1, keepdims=True)

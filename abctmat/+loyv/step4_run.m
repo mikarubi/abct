@@ -48,8 +48,8 @@ end
 if (k == 1) || (k == n)
     Args.maxiter = 0;                           % skip loop if trivial partition
 end
-for v = 1:Args.maxiter
 
+for v = 1:Args.maxiter
     max_delta_Q = 0;                            % maximal increase over all batches
     Batches = mat2cell(randperm(n), 1, diff(round(0:n/Args.numbatches:n)));
     for u = 1:Args.numbatches
