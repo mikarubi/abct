@@ -11,7 +11,7 @@ def step2_test(X, W, n, k, Args):
         raise ValueError("Number of modules must not exceed number of nodes or data points.")
     if Args.numbatches > n:
         raise ValueError("Number of batches must not exceed number of nodes or data points.")
-    if not np.all(np.isfinite(X)):
+    if not (np.array_equal(X, None) or np.all(np.isfinite(X))):
         raise ValueError("Data matrix has non-finite elements after processing.")
 
     # Test non-negativity for spectral clustering

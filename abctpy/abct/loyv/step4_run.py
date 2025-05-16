@@ -2,7 +2,7 @@ import warnings
 
 import numpy as np
 
-def step4_run(Args, W, M, My):
+def step4_run(Args, W, M, My=None):
     # Loyvain main algorithm
 
     # Unpack arguments
@@ -56,19 +56,21 @@ def step4_run(Args, W, M, My):
             U = Batches[u]  # indices of nodes in batch
             MU = M[U]  # module assignments of nodes in batch
 
-            match Args.objective:
-                case "kmeans":
-                    delta_QU = (((2 * Smn[:, U] + Wii[:, U]) - Cii_nrm) / (N + 1) -
-                               ((2 * Smn[MU, U] - Wii[:, U]) - Cii_nrm[MU].T) / (N[MU].T - 1))
-                case "spectral":
-                    delta_QU = (((2 * Smn[:, U] + Wii[:, U]) - Cii_nrm * S[:, U]) / (D + S[:, U]) -
-                                ((2 * Smn[MU, U] - Wii[:, U]) - Cii_nrm[MU].T * S[:, U]) / (D[MU].T - S[:, U]))
-                case "cokmeans":
-                    delta_QU = ((Cii + Smn[:, U]) / np.sqrt((N + 1) * Ny) - Cii_nrm + 
-                                (Cii[MU].T - Smn[MU, U]) / np.sqrt((N[MU].T - 1) * Ny[MU].T) - Cii_nrm[MU].T)
-                case "cospectral":
-                    delta_QU = ((Cii + Smn[:, U]) / np.sqrt((D + S[:, U]) * Dy) - Cii_nrm + 
-                                (Cii[MU].T - Smn[MU, U]) / np.sqrt((D[MU].T - S[:, U]) * Dy[MU].T) - Cii_nrm[MU].T)
+            # Calculate change in modularity
+            with np.errstate(divide="ignore", invalid="ignore"):
+                match Args.objective:
+                    case "kmeans":
+                        delta_QU = (((2 * Smn[:, U] + Wii[:, U]) - Cii_nrm) / (N + 1) -
+                                ((2 * Smn[MU, U] - Wii[:, U]) - Cii_nrm[MU].T) / (N[MU].T - 1))
+                    case "spectral":
+                        delta_QU = (((2 * Smn[:, U] + Wii[:, U]) - Cii_nrm * S[:, U]) / (D + S[:, U]) -
+                                    ((2 * Smn[MU, U] - Wii[:, U]) - Cii_nrm[MU].T * S[:, U]) / (D[MU].T - S[:, U]))
+                    case "cokmeans":
+                        delta_QU = ((Cii + Smn[:, U]) / np.sqrt((N + 1) * Ny) - Cii_nrm + 
+                                    (Cii[MU].T - Smn[MU, U]) / np.sqrt((N[MU].T - 1) * Ny[MU].T) - Cii_nrm[MU].T)
+                    case "cospectral":
+                        delta_QU = ((Cii + Smn[:, U]) / np.sqrt((D + S[:, U]) * Dy) - Cii_nrm + 
+                                    (Cii[MU].T - Smn[MU, U]) / np.sqrt((D[MU].T - S[:, U]) * Dy[MU].T) - Cii_nrm[MU].T)
 
             delta_QU[:, (N[MU] == 1).ravel()] = -np.inf  # no change allowed if one-node cluster
             delta_QU[MU, np.arange(len(U))] = 0  # no change if node stays in own module
@@ -85,12 +87,10 @@ def step4_run(Args, W, M, My):
 
                 # get delta modules and ensure non-empty modules
                 n_i = len(I)
-                MMI = np.zeros((k, n_i))
-                MMI[M[I], np.arange(n_i)] = 1
                 while True:
                     MMI_new = np.zeros((k, n_i))
                     MMI_new[MI_new, np.arange(n_i)] = 1
-                    delta_MMI = MMI_new - MMI
+                    delta_MMI = MMI_new - MM[:, I]
                     N_new = N + np.sum(delta_MMI, axis=1, keepdims=True)
                     if np.all(N_new):
                         break
