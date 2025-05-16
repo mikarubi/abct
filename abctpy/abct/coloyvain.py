@@ -49,7 +49,7 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
         Mx1 = np.zeros_like(Mx0)
         My1 = np.zeros_like(My0)
         for h in range(Args.k):
-            ix, iy = np.unravel_index(np.argmax(C0_nrm), C0_nrm.shape)
+            ix, iy = np.unravel_index(np.nanargmax(C0_nrm), C0_nrm.shape)
             Mx1[Mx0 == ix] = h
             My1[My0 == iy] = h
             C0_nrm[ix, :] = np.nan
@@ -76,7 +76,7 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
             My = My1
             R_all = R1_all
 
-    return Mx, My, R, R_all
+    return Mx, My, R, R_all.ravel()
 
 
 coloyvain.__doc__ = resources.read_text("abct.docs", "coloyvain")
