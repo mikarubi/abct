@@ -31,9 +31,11 @@ def gradients(
             if kwargs:
                 warnings.warn("Ignoring Name=Value arguments for weighted gradients.")
             _, V = sparse.linalg.eigs(B, k=k + 1)
+            assert not np.any(np.imag(V)), "Weighted gradients should be real-valued"
+            V = np.real(V)
             return V[:, 1:]  # Remove first eigenvector
         case "binary":
-            M = abct.loyvain(B, k, "kmodularity", "network", **kwargs)
+            M = abct.loyvain(B, k, "kmodularity", "network", **kwargs)[0]
             V = np.zeros((len(M), k))
             V[np.arange(len(M)), M] = 1
             return V
