@@ -57,9 +57,7 @@ def canoncov(
         R = np.diag(R)
         B = B.T
     else:
-        Mx, My, _, R = abct.coloyvain(
-            Z, k, "kmeans", "network", numbatches=min(32, min(p, q)), **kwargs
-        )
+        Mx, My, _, R = abct.coloyvain(Z, k, "kmeans", "network", numbatches=min(32, min(p, q)), **kwargs)
         ix = np.argsort(R)[::-1]
         R = R[ix]
         A = np.zeros((p, k))

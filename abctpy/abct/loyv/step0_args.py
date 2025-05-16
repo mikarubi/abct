@@ -16,15 +16,15 @@ def step0_args(method: str, *args, **kwargs) -> dict:
             n_args_num = 2
             W, k = args[:n_args_num]
             X = W
-            Y = [0]
+            Y = np.array(None)
         case "coloyvain":
             n_args_num = 2 + (n_args > 2 and (not isinstance(args[2], str)))
             if n_args_num == 2:
                 W, k = args[:n_args_num]
-                X, Y = [0], [0]
+                X, Y = np.array(None), np.array(None)
             elif n_args_num == 3:
                 X, Y, k = args[:n_args_num]
-                W = [0]
+                W = np.array(None)
     args = args[n_args_num:]
     if n_args >= n_args_num + 1:
         kwargs["objective"] = args[0]
