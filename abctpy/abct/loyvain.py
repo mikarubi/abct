@@ -29,7 +29,7 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
             M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args)
 
         # run algorithm
-        M1, Q1 = loyv.step4_run(Args, Args.W, M0)
+        M1, Q1, _ = loyv.step4_run(Args, Args.W, M0)
 
         # test for increase
         if (Q1 - Q) > Args.tolerance:
