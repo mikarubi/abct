@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "abct"
-version = "1.0"
+version = "1.0.0"
 description = "Python implementation of the abct"
 requires-python = ">=3.10"
 dependencies = ["numpy", "scipy", "pydantic", "pre-commit"]
