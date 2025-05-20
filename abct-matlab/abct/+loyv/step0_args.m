@@ -45,7 +45,7 @@ arguments
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
     Args.start (1, :) = "greedy"
     Args.numbatches (1, 1) double {mustBeInteger, mustBePositive} = 10
-    Args.maxiter (1, 1) {mustBeInteger, mustBePositive} = 1000
+    Args.maxiter (1, 1) {mustBeInteger, mustBeNonnegative} = 1000
     Args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
     Args.tolerance (1, 1) double {mustBePositive} = 1e-10
     Args.display (1, 1) string {mustBeMember(Args.display, ...
