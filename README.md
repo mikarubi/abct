@@ -1,53 +1,51 @@
 # abct
 
-analytical brain connectivity toolbox
+Analytical brain connectivity toolbox in MATLAB and Pythong
 
-## Overview
+## MATLAB
 
-- MATLAB implementation (requires MATLAB ≥R2020)
-- Python implementation (requires Python ≥3.10)
+### Dependencies
+- MATLAB ≥R2020
 
-## Installation
+### Installation
 
-#### Simple MATLAB Installation
+#### Simple
 - Just add `./abct-matlab/abct` to your MATLAB path.
 
-#### Package Installation
+#### Package
 - Run the following command in MATLAB:
   ```matlab
-  run ./abct-matlab/matpackage
+  mpminstall("./abct-matlab/abct")      % direct installation
+  % OR %
+  run("./abct-matlab/matpackage")       % script installation
   ```
 
-### Python Installation
+### Usage
+
+```matlab
+help `functionname`
+```
+
+## Python
+
+### Dependencies
+- Python ≥3.10
+- numpy
+- scipy
+- pydantic
+
+### Installation
 
 ```bash
 pip install abct
 ```
 
-## Dependencies
+### Usage
 
-### Python Dependencies
-- numpy
-- scipy
-- pydantic
-
-### MATLAB Dependencies
-- N/A
-
-## Usage
-
-### Python Usage
-
-```python
+```ipython
 import abct
 
-# Your abct analysis code here
-```
-
-### MATLAB Usage
-
-```matlab
-% Your abct analysis code here
+`functionname?`
 ```
 
 ## Contact
