@@ -16,14 +16,12 @@ Analytical brain connectivity toolbox in MATLAB and Pythong
 - Run the following command in MATLAB:
   ```matlab
   mpminstall("./abct-matlab/abct")      % direct installation
-  % OR %
-  run("./abct-matlab/matpackage")       % script installation
   ```
 
 ### Usage
 
 ```matlab
-help `functionname`
+help functionname
 ```
 
 ## Python
@@ -45,7 +43,7 @@ pip install abct
 ```ipython
 import abct
 
-`functionname?`
+functionname?
 ```
 
 ## Contact
