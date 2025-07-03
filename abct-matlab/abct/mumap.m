@@ -59,6 +59,9 @@ if isempty(U)
     U = U ./ vecnorm(U, 2, 2);
 end
 
+alpha = Args.alpha;
+beta = Args.beta;
+gamma = Args.gamma;
 if Args.GPU
     A = gpuArray(A);
     K = gpuArray(K);
@@ -109,7 +112,7 @@ switch Args.solver
         problem.M = obliquefactory(n, m, "rows", Args.GPU);
 
         % Get the modularity matrix
-        problem.costgrad = @(U) costgrad(U, A, K, Args);
+        problem.costgrad = @(U) costgrad(U, A, K, M, alpha, beta, gamma);
 
         % checkgradient(problem);
         opts = struct(tolgradnorm=Args.Tol, maxiter=Args.MaxIter, verbosity=2*Args.Verbose);
