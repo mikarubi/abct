@@ -92,6 +92,8 @@ if isempty(U)
     U = U ./ vecnorm(U, 2, 2);
 end
 
+clear A Am K_nrm X M
+
 %% Initialize GPU arrays
 
 alpha = Args.alpha;
