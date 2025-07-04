@@ -1,4 +1,9 @@
 function [M1, Q1] = louvains(A, gamma, M0)
+arguments
+    A (:, :) {mustBeFinite, mustBeReal}
+    gamma (1, 1) double {mustBePositive} = 1
+    M0 (:, 1) {mustBePositive, mustBeInteger} = []
+end
 
 n = length(A);                                                  % number of nodes
 if ~exist('gamma','var') || isempty(gamma)
