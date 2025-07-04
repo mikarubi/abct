@@ -31,6 +31,8 @@ switch Args.solver
             "Manopt functions not found. Call importmanopt to setup.")
 end
 
+%%
+
 m = 3;
 n = size(X, 1);
 
@@ -46,30 +48,48 @@ else
 end
 A(1:n+1:end) = 0;
 
-% Get module structure and partition matrix
+% Module structure
 [Args.Partition, Args.Q] = louvains(A, Args.gamma);
-M = sparse(1:n, Args.Partition, 1);
 
-% Get normalized degrees vector
-K = sum(A, 2);
+%% Precompute gradient matrices
+
+% Normalized degrees vector
+K_nrm = sqrt(Args.gamma / sum(A, "all")) * sum(A, 2);
+
+% Modules and normalized modules
+M = sparse(1:n, Args.Partition, 1);
+N = sum(M);
+M_nrm = (M./N);
+
+% Module adjacency and modularity matrices
+g = Args.gamma * mean(A, "all");     % mean(K)^2 / sum(K);
+Am = A * M;
+% Bm == ((A - g) .* (~(M * M'))) * M
+%    == ((A - g) * M - ((A - g) .* (M * M')) * M
+%    -> then simplify (A - g) .* (M * M')
+Bm = ((Am - M .* Am) - full(g * N - g .* (M .* N)));
+
+%%
+
+M_bin = M; clear M;
+M_bin = logical(M_bin);
+alpha = Args.alpha;
+beta = Args.beta;
+if Args.GPU
+    U = gpuArray(U);
+    A = gpuArray(A);
+    K_nrm = gpuArray(K_nrm);
+    M_bin = gpuArray(M_bin);
+    M_nrm = gpuArray(M_nrm);
+    Bm = gpuArray(Bm);
+    alpha = gpuArray(Args.alpha);
+    beta = gpuArray(Args.beta);
+end
 
 if isempty(U)
     [U, ~] = eigs(double(A), m+1);
     U = U(:, 2:end);
     U = U ./ vecnorm(U, 2, 2);
-end
-
-alpha = Args.alpha;
-beta = Args.beta;
-gamma = Args.gamma;
-if Args.GPU
-    A = gpuArray(A);
-    K = gpuArray(K);
-    U = gpuArray(U);
-    M = gpuArray(M);
-    alpha = gpuArray(Args.alpha);
-    beta = gpuArray(Args.beta);
-    gamma = gpuArray(Args.gamma);
 end
 
 switch Args.solver
@@ -89,7 +109,7 @@ switch Args.solver
         ave_grad2 = zeros(size(U));   % 2nd‑moment estimates
         CostHistory = nan(1, Args.MaxIter);
         for t = 1:Args.MaxIter
-            [cost, grad] = costgrad(U, A, K, M, alpha, beta, gamma);
+            [cost, grad] = costgrad(U, A, K_nrm, M_bin, M_nrm, Bm, alpha, beta);
 
             [U, ave_grad, ave_grad2] = adamupdate(U, grad, ave_grad, ave_grad2, t, Args.LearnRate);
             grad_norm = norm(grad, "fro");
@@ -112,9 +132,9 @@ switch Args.solver
         problem.M = obliquefactory(n, m, "rows", Args.GPU);
 
         % Get the modularity matrix
-        problem.costgrad = @(U) costgrad(U, A, K, M, alpha, beta, gamma);
-
+        problem.costgrad = @(U) costgrad(U, A, K_nrm, M_bin, M_nrm, Bm, alpha, beta);
         % checkgradient(problem);
+
         opts = struct(tolgradnorm=Args.Tol, maxiter=Args.MaxIter, verbosity=2*Args.Verbose);
         [U, ~, info] = trustregions(problem, U, opts);
         CostHistory = info.cost;
@@ -122,40 +142,28 @@ end
 
 end
 
-function [Cost, RGrad] = costgrad(U, A, K, M, alpha, beta, gamma)
+function [Cost, RGrad] = costgrad(U, A, K_nrm, M_bin, M_nrm, Bm, alpha, beta)
 
 %% Compute mean-field between-module cost and gradient
 
-% Bm == (A - g * ones(n)) * M
-g = gamma * mean(A, "all");     % mean(K)^2 / sum(K);
-N = sum(M);
-
-Am = A * M;
-% Bm == ((A - g) .* (~(M * M'))) * M
-%    == ((A - g) * M - ((A - g) .* (M * M')) * M
-%    -> then simplify (A - g) .* (M * M')
-Bm = ((Am - M .* Am) - full(g * N - g .* (M .* N)));
-
 % UUm == ((U * U') .* (~(M * M'))) * Mn
-Mn = (M./N);
-UUm = U * (U' * Mn);
-UUm = UUm - M .* UUm;           % exclude self-modules, as above.
+UUm = U * (U' * M_nrm);
+UUm(M_bin) = 0;           % exclude self-modules, as above.
 
 Numm = beta * alpha * ((1 - UUm).^(2 * beta - 1));
 Denm =        alpha * ((1 - UUm).^(2 * beta));
 Cost = - sum(Bm .* ((1 - Denm) ./ (1 + Denm)), "all");
 
 G    = -4 * Bm .* (Numm ./ (1 + Denm).^2);   % n × k
-EGrad  = G * (Mn' * U) + Mn * (G' * U);
+EGrad  = G * (M_nrm' * U) + M_nrm * (G' * U);
 
 %% Compute full within-module cost and gradient
 
-k = size(M, 2);
-gk = gamma / sum(K);
+k = size(M_bin, 2);
 for i = 1:k
-    I = logical(M(:, i));
-    Ki = K(I);
-    Bi = A(I, I) - gk * (Ki * Ki');
+    I = M_bin(:, i);
+    Ki_nrm = K_nrm(I);
+    Bi = A(I, I) - (Ki_nrm * Ki_nrm');
 
     Ui = U(I, :);
     UUi = Ui * Ui';
