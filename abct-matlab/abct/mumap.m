@@ -54,7 +54,7 @@ A(1:n+1:end) = 0;
 %% Precompute gradient matrices
 
 % Normalized degrees vector
-K_nrm = sqrt(Args.gamma / sum(A, "all")) * sum(A, 2);
+K_nrm = sqrt(Args.gamma / full(sum(A, "all"))) * full(sum(A, 2));
 
 % Modules and normalized modules
 M = sparse(1:n, Args.Partition, 1);
@@ -72,7 +72,7 @@ Bm = ((Am - M .* Am) - full(g * N - g .* (M .* N)));
 %%
 
 M_bin = M; clear M;
-M_bin = logical(M_bin);
+M_bin = full(logical(M_bin));
 alpha = Args.alpha;
 beta = Args.beta;
 if Args.GPU
