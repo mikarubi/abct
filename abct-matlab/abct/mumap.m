@@ -19,16 +19,16 @@ arguments
 end
 
 if Args.GPU
-    assert(license("test", "parallel_computing_toolbox") && gpuDeviceCount, ...
-        "GPU use require the Parallel Computing Toolbox and a valid GPU.")
+    assert(license("test", "distrib_computing_toolbox") && gpuDeviceCount, ...
+        "GPU use requires Parallel Computing Toolbox and active GPU.")
 end
 switch Args.solver
     case "adam"
         assert(license("test", "neural_network_toolbox"), ...
-            "Adam solver requires the Deep Learning Toolbox.")
+            "Adam solver requires Deep Learning Toolbox.")
     case "trustregions"
         assert((exist("obliquefactory", "file") && exist("trustregions", "file")), ...
-            "Manopt trustregions function not found. Call importmanopt to setup.")
+            "Manopt functions not found. Call importmanopt to setup.")
 end
 
 m = 3;
