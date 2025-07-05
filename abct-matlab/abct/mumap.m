@@ -48,7 +48,9 @@ end
 A(1:n+1:end) = 0;
 
 % Module structure
-[Args.Partition, Args.Q] = louvains(A, Args.gamma);
+if isempty(Args.Partition)
+    [Args.Partition, Args.Q] = louvains(A, Args.gamma);
+end
 
 %% Precompute gradient matrices
 
@@ -127,8 +129,8 @@ switch Args.Solver
         end
         fp.head();
 
-        ave_grad  = zeros(size(U));   % 1st‑moment estimates
-        ave_grad2 = zeros(size(U));   % 2nd‑moment estimates
+        ave_grad  = zeros(size(U));   % 1stmoment estimates
+        ave_grad2 = zeros(size(U));   % 2ndmoment estimates
         CostHistory = nan(1, Args.MaxIter);
         for t = 1:Args.MaxIter
             [cost, grad] = costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta);
@@ -181,7 +183,7 @@ Numm = beta * alpha * ((1 - UUm).^(2 * beta - 1));
 Denm =        alpha * ((1 - UUm).^(2 * beta));
 Cost = - sum(Bm .* ((1 - Denm) ./ (1 + Denm)), "all");
 
-G = - 4 * Bm .* (Numm ./ (1 + Denm).^2);   % n × k
+G = - 4 * Bm .* (Numm ./ (1 + Denm).^2);   % n  k
 EGrad = G * (M_nrm' * U) + M_nrm * (G' * U);
 
 %% Compute full within-module cost and gradient
