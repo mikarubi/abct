@@ -49,7 +49,7 @@ A(1:n+1:end) = 0;
 
 % Module structure
 if isempty(Args.Partition)
-    [Args.Partition, Args.Q] = louvains(A, Args.gamma);
+    [Args.Partition, Args.Q] = louvains(A, gamma=Args.gamma);
 end
 
 %% Precompute gradient matrices
@@ -129,8 +129,8 @@ switch Args.Solver
         end
         fp.head();
 
-        ave_grad  = zeros(size(U));   % 1stmoment estimates
-        ave_grad2 = zeros(size(U));   % 2ndmoment estimates
+        ave_grad  = zeros(size(U));   % 1st-moment estimates
+        ave_grad2 = zeros(size(U));   % 2nd-moment estimates
         CostHistory = nan(1, Args.MaxIter);
         for t = 1:Args.MaxIter
             [cost, grad] = costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta);
@@ -181,9 +181,9 @@ end
 
 Numm = beta * alpha * ((1 - UUm).^(2 * beta - 1));
 Denm =        alpha * ((1 - UUm).^(2 * beta));
-Cost = - sum(Bm .* ((1 - Denm) ./ (1 + Denm)), "all");
+Cost = - sum(Bm ./ (1 + Denm), "all");
 
-G = - 4 * Bm .* (Numm ./ (1 + Denm).^2);   % n  k
+G = - 2 * Bm .* (Numm ./ (1 + Denm).^2);   % n x k
 EGrad = G * (M_nrm' * U) + M_nrm * (G' * U);
 
 %% Compute full within-module cost and gradient
@@ -200,8 +200,8 @@ for i = 1:k
     UUi = Ui * Ui';
     Numi = beta * alpha * ((1 - UUi).^(2 * beta - 1));
     Deni =        alpha * ((1 - UUi).^(2 * beta));
-    Cost = Cost - sum(Bi .* ((1 - Deni) ./ (1 + Deni)), "all");
-    EGrad(I, :) = EGrad(I, :) - (8 * Bi .* (Numi ./ (1 + Deni).^2)) * Ui;
+    Cost = Cost - sum(Bi ./ (1 + Deni), "all");
+    EGrad(I, :) = EGrad(I, :) - (4 * Bi .* (Numi ./ (1 + Deni).^2)) * Ui;
 end
 
 % Orthogonal projection of H in R^(nxm) to the tangent space at X.
@@ -227,4 +227,3 @@ RGrad = EGrad - U .* U_dot_EGrad;
 % end
 
 end
-
