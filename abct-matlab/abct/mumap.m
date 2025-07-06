@@ -179,8 +179,10 @@ for i = 1:k
     UUm(I, i) = 0;          % exclude self-modules
 end
 
-Numm = beta * alpha * ((1 - UUm).^(2 * beta - 1));
-Denm =        alpha * ((1 - UUm).^(2 * beta));
+Dm = (1 - UUm);
+Numm = beta * alpha * (Dm.^(2 * beta - 1));
+% Denm =        alpha * ((1 - UUm).^(2 * beta));
+Denm = Numm .* Dm / beta;
 Cost = - sum(Bm ./ (1 + Denm), "all");
 
 G = - 2 * Bm .* (Numm ./ (1 + Denm).^2);   % n x k
@@ -197,9 +199,10 @@ for i = 1:k
 
     I = Ic{i};
     Ui = U(I, :);
-    UUi = Ui * Ui';
-    Numi = beta * alpha * ((1 - UUi).^(2 * beta - 1));
-    Deni =        alpha * ((1 - UUi).^(2 * beta));
+    Di = 1 - (Ui * Ui');
+    Numi = beta * alpha * (Di.^(2 * beta - 1));
+    % Deni =      alpha * (Di.^(2 * beta));
+    Deni = Numi .* Di / beta;
     Cost = Cost - sum(Bi ./ (1 + Deni), "all");
     EGrad(I, :) = EGrad(I, :) - (4 * Bi .* (Numi ./ (1 + Deni).^2)) * Ui;
 end
