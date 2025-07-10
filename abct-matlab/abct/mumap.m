@@ -9,7 +9,7 @@ arguments
     Args.alpha (1, 1) {mustBePositive} = 1
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
-    Args.Solver (1, 1) string {mustBeMember(...
+    Args.Solver (1, 1) string {mustBeMember( ...
         Args.Solver, ["adam", "trustregions"])} = "trustregions"
     Args.Partition (:, 1) {mustBePositive, mustBeInteger} = []
     Args.MaxIter (1, 1) {mustBePositive, mustBeInteger} = 1e4
@@ -164,6 +164,9 @@ switch Args.Solver
         [U, ~, info] = trustregions(problem, U, opts);
         CostHistory = info.cost;
 end
+
+% Gather from GPU (if applicable)
+U = gather(U);
 
 end
 
