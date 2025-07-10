@@ -32,7 +32,7 @@ Theta = pi * (-p:2:p-2).'/p;
 V = [cos(Theta) sin(Theta)];
 
 % Sparse meridians have few strong correlations to other points
-alpha = 2*pi/p;         % degree band (1/p in either direction)
+alpha = 12*pi/p;         % degree band (6/p in either direction)
 D = zeros(p, 1);
 for i = 1:p
     Vi = V(i, :) .* ones(size(U3, 1), 1);
