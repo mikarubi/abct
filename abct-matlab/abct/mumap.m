@@ -9,7 +9,8 @@ arguments
     Args.alpha (1, 1) {mustBePositive} = 1
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
-    Args.Solver (1, 1) string {mustBeMember(Args.Solver, ["adam", "trustregions"])} = "adam"
+    Args.Solver (1, 1) string {mustBeMember(...
+        Args.Solver, ["adam", "trustregions"])} = "trustregions"
     Args.Partition (:, 1) {mustBePositive, mustBeInteger} = []
     Args.MaxIter (1, 1) {mustBePositive, mustBeInteger} = 1e4
     Args.LearnRate (1, 1) {mustBePositive} = 1e-3
