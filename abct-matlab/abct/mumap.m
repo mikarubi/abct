@@ -6,7 +6,7 @@ arguments
     U (:, :) {mustBeFinite, mustBeReal} = []
     Args.d (1, 1) {mustBePositive, mustBeInteger} = 3
     Args.kappa (1, 1) {mustBePositive, mustBeInteger} = 10
-    Args.alpha (1, 1) {mustBePositive} = 2
+    Args.alpha (1, 1) {mustBePositive} = 1
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
     Args.Solver (1, 1) string {mustBeMember(Args.Solver, ["adam", "trustregions"])} = "adam"
