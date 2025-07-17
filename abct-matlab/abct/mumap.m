@@ -90,8 +90,11 @@ end
 %% Initialize output
 
 if isempty(U)
-    [U, ~] = eigs(double(A), Args.d+1);
-    U = U(:, 2:end);
+    % [U, ~] = eigs(double(A), Args.d+1);
+    % U = U(:, 2:end);
+    % U = U ./ vecnorm(U, 2, 2);
+    [U, ~] = svds(M, Args.d);
+    U = U + eps;        % Guard empty rows
     U = U ./ vecnorm(U, 2, 2);
 end
 
