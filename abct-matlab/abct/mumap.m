@@ -10,7 +10,7 @@ arguments
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
     Args.Start (1, 1) string {mustBeMember( ...
-        Args.Start, ["greedy", "spectral", "simple"])} = "greedy"
+        Args.Start, ["greedy", "spectral", "spectral_knn"])} = "greedy"
     Args.Solver (1, 1) string {mustBeMember( ...
         Args.Solver, ["adam", "trustregions"])} = "trustregions"
     Args.Partition (:, 1) {mustBePositive, mustBeInteger} = []
