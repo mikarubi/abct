@@ -28,5 +28,7 @@ arguments
     thr (1, 1) double {mustBeInRange(thr, 0, 1)} = 0.1
 end
 
+n = length(W);
+W(1:n+1:end) = -inf;
 A = W > quantile(W, (1-thr), 2);
 B = A * A';
