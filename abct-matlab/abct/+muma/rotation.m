@@ -6,12 +6,7 @@ U3 = U3 ./ vecnorm(U3, 2, 2);
 %% Rotate data to empty poles
 
 % Unit Fibonacci sphere
-p = 144;                        % Fibonacci number
-I = (0:p-1).' + 0.5;
-golden_ratio = (1 + sqrt(5))/2;
-Phi = acos(1 - 2*I/p);
-Theta = 2*pi*I / golden_ratio;
-V = [cos(Theta).*sin(Phi), sin(Theta).*sin(Phi), cos(Phi)];
+V = muma.fsphere(144);          % Fibonacci number
 
 % Poles have minimal (maximal correlations to all other points)
 D = zeros(1, p);
