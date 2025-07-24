@@ -9,6 +9,8 @@ arguments
     Args.alpha (1, 1) {mustBePositive} = 2
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
+    Args.Start (1, 1) string {mustBeMember( ...
+        Args.Start, ["greedy", "spectral", "simple"])} = "greedy"
     Args.Solver (1, 1) string {mustBeMember( ...
         Args.Solver, ["adam", "trustregions"])} = "trustregions"
     Args.Partition (:, 1) {mustBePositive, mustBeInteger} = []
@@ -90,41 +92,35 @@ end
 %% Initialize output
 
 if isempty(U)
-    % [U, ~] = eigs(double(A), Args.d+1);
-    % U = U(:, 2:end);
-    % U = U ./ vecnorm(U, 2, 2);
-    %
-    % [U, ~] = svds(M, Args.d);
-    % U = U + eps;        % Guard empty rows
-    % U = U ./ vecnorm(U, 2, 2);
-    Amm = M' * Am;                              % module connectivity
-    Amm(1:k+1:end) = nan;
-    Km = zeros(1, k);                           % degree to placed modules
-    Um = zeros(k, Args.d);                      % module locations
-    if Args.d == 3      % Fibonacci maximin initialization
-        Vm = muma.fsphere(k);                   % Fibonacci sphere
-        [~, ux] = max(sum(Amm, 2, "omitnan"));  % initial module index
-        [~, vx] = max(sum(Vm * Vm', 2));        % initial location index
-        for i = 1:k
-            Um(ux, :) = Vm(vx, :);              % assign location
-            Vm(vx, :) = nan;                    % remove point from consideration
-            Km = Km + Amm(ux, :);               % add module connectivity (with self-nan's)
-            [~, ux] = min(Km);                  % least connected module (excluding existing)
-            [~, vx] = min(Vm * mean(Um)');      % furthest location
-        end
-    else                % simple maximin initialization
-        [~, ux] = maxk(sum(Amm, 2, "omitnan"), 3);  % initial module index
-        Um(ux, :) = eye(3);
-        Km = Km + sum(Amm(ux, :), 1);           % add module connectivity (with self-nan's)
-        for i = 4:k
-            [~, ux] = min(Km);                  % least connected module (excluding existing)
-            vm = - mean(Um);
-            vm = vm / vecnorm(vm);
-            Um(ux, :) = vm;                     % assign location
-            Km = Km + Amm(ux, :);               % add module connectivity (with self-nan's)
-        end
+    switch Args.Start
+        case "spectral_knn"                         % spectral on knn matrix
+            [U, ~] = eigs(double(A), Args.d+1);
+            U = U(:, 2:end);
+            U = U ./ vecnorm(U, 2, 2);
+        case "spectral"                             % spectral on modules
+            Amm = full(M' * Am);
+            Kmm = sum(Amm, 2);
+            Bmm = Amm - Kmm * Kmm' / sum(Amm, "all");
+            [Um, ~] = eigs(Bmm, Args.d);
+            Um = Um ./ vecnorm(Um, 2, 2);
+            U = Um(Args.Partition, :);
+        case "greedy"                               % spherical maximin
+            Amm = full(M' * Am);                    % module connectivity
+            Amm(1:k+1:end) = nan;                   % ignore self-connections
+            Kmm_ = zeros(k, 1);                     % degree to placed modules
+            Um = zeros(k, Args.d);                  % module locations
+            Vm = muma.fsphere(k);                   % Fibonacci sphere
+            [~, ux] = max(sum(Amm, 2, "omitnan"));  % initial module index
+            [~, vx] = max(sum(Vm * Vm', 2));        % initial location index
+            for i = 1:k
+                Um(ux, :) = Vm(vx, :);              % assign location
+                Vm(vx, :) = nan;                    % remove point from consideration
+                Kmm_ = Kmm_ + Amm(:, ux);           % add module connectivity (with self-nan's)
+                [~, ux] = min(Kmm_);                % least connected module (nan's in Kmm mask set modules)
+                [~, vx] = min(Vm * mean(Um)');      % furthest location (nan's in Vm mask used locations)
+            end
+            U = Um(Args.Partition, :);
     end
-    U = Um(Args.Partition, :);
 end
 
 clear A Am K_nrm X M
