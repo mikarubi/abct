@@ -6,7 +6,7 @@ arguments
     U (:, :) {mustBeFinite, mustBeReal} = []
     Args.d (1, 1) {mustBePositive, mustBeInteger} = 3
     Args.kappa (1, 1) {mustBePositive, mustBeInteger} = 10
-    Args.alpha (1, 1) {mustBePositive} = 1
+    Args.alpha (1, 1) {mustBePositive} = 2
     Args.beta (1, 1) {mustBePositive} = 1/2
     Args.gamma (1, 1) {mustBePositive} = 1
     Args.Solver (1, 1) string {mustBeMember( ...
@@ -221,19 +221,16 @@ end
 U_dot_EGrad = sum(U .* EGrad, 2);
 RGrad = EGrad - U .* U_dot_EGrad;
 
-%% Compare to full gradient
+end
 
-% if 1
-%     UU = U * U';
-%     Num = beta * alpha * ((1 - UU).^(2 * beta - 1));
-%     Den =        alpha * ((1 - UU).^(2 * beta));
-%     D   =  - (8 * (A - gk * (K * K')) .* (Num ./ (1 + Den).^2)) * U;
-%
-%     global myvar
-%     myvar = myvar + 1;
-%     figure(100), axis square; hold on;
-%     f = @(x, y) corr(x(:), y(:));
-%     plot(myvar, f(EGrad, D), '.k')
-% end
+function [Cost, RGrad] = costgrad_full(U, B, alpha, beta)
+%% Compare full cost and gradient
+D = 1 - (U * U');
+Num = beta * alpha * (D.^(2 * beta - 1));
+Den1 =   1 + alpha * (D.^(2 * beta));
+Cost =  - sum(B ./ Den1, "all");
+EGrad = - (4 * B .* (Num ./ Den1.^2)) * U;
+U_dot_EGrad = sum(U .* EGrad, 2);
+RGrad = EGrad - U .* U_dot_EGrad;
 
 end
