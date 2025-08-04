@@ -1,0 +1,77 @@
+---
+title: First-mode removal
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+import plotly.express as px
+import plotly.subplots as sp
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+
+# Downsampled activity for fast computation
+activity = data["activity"]
+coactivity = activity.T @ activity
+```
+
+### Compute variants of first-mode removal
+
+```{python}
+## Connectivity first-mode removal
+connectivity = data["connectivity"]
+idx = ~np.eye(len(connectivity), dtype=bool) 
+
+conn = dict()
+conn["Degree-corrected"] = abct.moderemoval(connectivity, "degree")[idx]
+conn["First-mode-removed"] = abct.moderemoval(connectivity, "rankone")[idx]
+
+# Regress global signal and normalize to unit norm
+activity_gsr = abct.moderemoval(activity.T, "global").T
+activity_gsr = activity_gsr / np.linalg.norm(activity_gsr, axis=0, keepdims=True)
+coactivity_gsr = activity_gsr.T @ activity_gsr
+
+coact = dict()
+coact["Degree-corrected"] = abct.moderemoval(coactivity, "degree")[idx]
+coact["Global-signal-regressed"] = coactivity_gsr[idx]
+```
+
+### Visualize connectivity first-mode removal
+
+```{python}
+# Create a scatter plot of degree-corrected and rank-one corrected connectivity
+r = np.corrcoef(conn["First-mode-removed"], conn["Degree-corrected"])[0, 1]
+fig = px.scatter(
+    x=conn["First-mode-removed"],
+    y=conn["Degree-corrected"],
+    labels={"x": "Link weights after first-mode removal", "y": "Link weights after degree correction"},
+    title=f"Connectivity (r = {r:.3f})",
+    width=600, height=600,
+)
+fig.update_layout(title_x=0.5).show()
+```
+
+### Visualize co-activity first-mode removal
+
+```{python}
+# Create a scatter plot of degree-corrected and global-signal regressed coactivity
+r = np.corrcoef(coact["Global-signal-regressed"], coact["Degree-corrected"])[0, 1]
+fig = px.scatter(
+    x=coact["Global-signal-regressed"],
+    y=coact["Degree-corrected"],
+    labels={"x": "Link weights after global-signal regression", "y": "Link weights after degree correction"},
+    title=f"Co-activity (r = {r:.3f})",
+    width=600, height=600,
+)
+fig.update_layout(title_x=0.5).show()
+```
+

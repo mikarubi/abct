@@ -1,0 +1,45 @@
+---
+title: Soft-mode removal
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+import plotly.express as px
+import plotly.subplots as sp
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+connectivity = data["connectivity"]
+activity = data["activity"]
+distance = data["distance"]
+coactivity = activity.T @ activity
+
+k = 5           # Number of components 
+repl = 100      # Number of replicates
+```
+
+### Soft mode removal
+
+```{python}
+n = len(connectivity)
+ix = np.eye(n, dtype=bool)
+
+D = distance**(-1)
+D[ix] = 0
+
+D1 = abct.moderemoval(D, "soft")
+
+print(np.corrcoef(connectivity[~ix], D[~ix])[0, 1])
+
+print(np.corrcoef(connectivity[~ix], D1[~ix])[0, 1])
+```
+
