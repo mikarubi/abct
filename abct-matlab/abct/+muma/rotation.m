@@ -5,8 +5,8 @@ U3 = U3 ./ vecnorm(U3, 2, 2);
 
 %% Rotate data to empty poles
 
-% Unit Fibonacci sphere
-V = muma.fsphere(144);          % Fibonacci number
+p = 144;                    % Fibonacci number
+V = muma.fsphere(p);        % Unit Fibonacci sphere
 
 % Poles have minimal (maximal correlations to all other points)
 D = zeros(1, p);
