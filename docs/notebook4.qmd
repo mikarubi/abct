@@ -1,0 +1,38 @@
+---
+title: Canonical covariance analysis
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+import plotly.express as px
+import plotly.subplots as sp
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+connectivity = data["connectivity"]
+activity = data["activity"]
+coactivity = activity.T @ activity
+
+k = 5           # Number of components 
+repl = 100      # Number of replicates
+```
+
+### Canonical covariance analysis
+
+```{python}
+# Weighted variant
+A, B, U, V, R = abct.canoncov(connectivity, coactivity, k, "weighted")
+
+# Binary variant
+A_bin, B_bin, U_bin, V_bin, R_bin = abct.canoncov(connectivity, coactivity, k, "binary", 0, 0, replicates=repl)
+```
+

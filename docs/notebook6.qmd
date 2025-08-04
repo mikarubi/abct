@@ -1,0 +1,35 @@
+---
+title: Degree and second degree
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+import plotly.express as px
+import plotly.subplots as sp
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+connectivity = data["connectivity"]
+activity = data["activity"]
+coactivity = activity.T @ activity
+
+k = 5           # Number of components 
+repl = 100      # Number of replicates
+```
+
+### First and second degrees
+
+```{python}
+d1 = abct.degrees(connectivity, "first")
+d2 = abct.degrees(connectivity, "second")
+```
+
