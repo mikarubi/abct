@@ -1,0 +1,114 @@
+---
+title: Clustering
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+from sklearn import cluster
+from nilearn import plotting
+from utils import get_plot_data
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+
+# Downsampled activity for fast computation
+connectivity = data["connectivity"]
+activity = data["activity"]
+coactivity = activity.T @ activity
+
+# Clustering hyperparameters
+k = 15                  # number of clusters
+repl = 5                # number of replicates
+
+# Regress global signal and normalize to unit norm
+activity_gsr = abct.moderemoval(activity.T, "global").T
+activity_gsr = activity_gsr / np.linalg.norm(activity_gsr, axis=0, keepdims=True)
+coactivity_gsr = activity_gsr.T @ activity_gsr
+```
+
+### Set up functions
+
+```{python}
+def kmeans_stats(X, M):
+    distance = 0.0
+    similarity = 0.0
+    for u in range(k):
+        I = (M == u)                        # cluster indices
+        ni = I.sum()                        # cluster size
+        Xi = X[:, I]                        # cluster timeseries
+        xi = Xi.mean(1, keepdims=1)         # cluster centroid
+        distance += ((Xi - xi) ** 2).sum()  # distance
+        similarity += (Xi.T @ Xi).sum() / ni
+
+    return (distance, similarity)
+
+def spectral_stats(C, M):
+    similarity = 0.0
+    for u in range(k):
+        I = (M == u)                        # cluster indices
+        similarity += C[np.ix_(I, I)].sum() / C[I].sum()
+
+    return similarity
+```
+
+### Lloyd k-means
+
+```{python}
+Mk0 = cluster.KMeans(n_clusters=k, n_init=repl).fit(activity_gsr.T).labels_
+print(f"Similarity (Lloyd): {kmeans_stats(activity_gsr, Mk0)[1]}")
+```
+
+### Loyvain k-means
+
+```{python}
+Mk1 = abct.loyvain(coactivity, k, "kmodularity", replicates=repl)[0]
+print(f"Similarity (Loyvain): {kmeans_stats(activity_gsr, Mk1)[1]}")
+```
+
+### Shi-Malik spectral clustering
+
+```{python}
+Ms0 = cluster.SpectralClustering(n_clusters=k, affinity='precomputed', n_init=repl).fit(connectivity).labels_
+print(f"Similarity (Shi-Malik): {spectral_stats(connectivity, Ms0)}")
+```
+
+### Loyvain spectral clustering
+
+```{python}
+Ms1 = abct.loyvain(connectivity, k, "spectral", replicates=repl)[0]
+print(f"Similarity (Loyvain): {spectral_stats(connectivity, Ms1)}")
+```
+
+### Visualize clusters
+
+```{python}
+gii_left, gii_right, cii, n_hemi = get_plot_data()
+parc = data["parc_data"].ravel() - 1
+mask = ~np.isnan(parc)
+results = np.full(mask.shape, np.nan)
+results[mask] = Ms1[parc[mask].astype(int)]
+```
+
+```{python}
+plotting.plot_surf(
+    surf_mesh=gii_left,
+    surf_map=results[:n_hemi],
+    cmap = "Set1"
+).show()
+
+plotting.plot_surf(
+    surf_mesh=gii_right,
+    surf_map=results[n_hemi:],
+    cmap = "Set1"
+).show()
+```
+

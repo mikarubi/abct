@@ -1,0 +1,78 @@
+---
+title: Matrix visualization
+jupyter: python3
+---
+
+
+
+### Set up and get data
+
+```{python}
+## Import modules
+import os
+import abct
+import numpy as np
+from scipy import io
+import plotly.express as px
+import plotly.subplots as sp
+from utils import get_cmap
+
+## Unpack data
+data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+ord_conn = data["order_conn"].flatten() - 1
+ord_coact = data["order_coact"].flatten() - 1
+cmap_conn = get_cmap(data["cmap_yellowheat"])
+cmap_coact = get_cmap(data["cmap_gouldian"])
+```
+
+### Compute connectivity and co-activity matrices
+
+```{python}
+## Compute connectivity matrices
+connectivity = data["connectivity"]
+
+conn = dict()
+conn["Original"] = connectivity
+conn["Degree-corrected"] = abct.moderemoval(connectivity, "degree")
+conn["Co-neighbor"] = abct.coneighbors(connectivity)
+
+## Compute co-activity matrices
+activity = data["activity"]
+coactivity = activity.T @ activity
+
+coact = dict()
+coact["Original"] = coactivity
+coact["Degree-corrected"] = abct.moderemoval(coactivity, "degree")
+coact["Co-neighbor"] = abct.coneighbors(coactivity)
+```
+
+### Visualize connectivity matrices
+
+```{python}
+zmin = (0, -0.005, 0)
+zmax = (0.01, 0.005, 36)
+for i, name in enumerate(conn):
+    fig = px.imshow(
+        conn[name][np.ix_(ord_conn, ord_conn)], 
+        title=f"{name} connectivity matrix",
+        color_continuous_scale=cmap_conn,
+        zmin=zmin[i], zmax=zmax[i],
+        width=600, height=600)
+    fig.update_layout(title_x=0.5).show()
+```
+
+### Visualize co-activity matrices
+
+```{python}
+zmin = (0, -0.2, 0)
+zmax = (1, 0.2, 36)
+for i, name in enumerate(coact):
+    fig = px.imshow(
+        coact[name][np.ix_(ord_coact, ord_coact)], 
+        title=f"{name} co-activity matrix",
+        color_continuous_scale=cmap_coact,
+        zmin=zmin[i], zmax=zmax[i],
+        width=600, height=600)
+    fig.update_layout(title_x=0.5).show()
+```
+
