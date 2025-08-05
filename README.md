@@ -1,6 +1,6 @@
 # abct
 
-Analytical brain connectivity toolbox in MATLAB and Python
+abc-tool in MATLAB and Python
 
 ## MATLAB
 
