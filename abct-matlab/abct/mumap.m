@@ -6,8 +6,8 @@ arguments
     U (:, :) {mustBeFinite, mustBeReal} = []
     Args.d (1, 1) {mustBePositive, mustBeInteger} = 3
     Args.kappa (1, 1) {mustBePositive, mustBeInteger} = 10
-    Args.alpha (1, 1) {mustBePositive} = 2
-    Args.beta (1, 1) {mustBePositive} = 1/2
+    Args.alpha (1, 1) {mustBePositive} = 1
+    Args.beta (1, 1) {mustBePositive} = 1
     Args.gamma (1, 1) {mustBePositive} = 1
     Args.Start (1, 1) string {mustBeMember( ...
         Args.Start, ["greedy", "spectral", "spectral_knn"])} = "greedy"
@@ -211,13 +211,13 @@ for i = 1:k
     UUm(I, i) = 0;          % exclude self-modules
 end
 
-Dm = (1 - UUm);
-Numm = beta * alpha * (Dm.^(2 * beta - 1));
-% Denm =        alpha * ((1 - UUm).^(2 * beta));
-Denm = Numm .* Dm / beta;
-Cost = - sum(Bm ./ (1 + Denm), "all");
+Dm = 2 * (1 - UUm);
+Numm = beta * alpha * (Dm.^(beta - 1));
+% Denm =  1 + alpha * (Dm.^(beta));
+Denm = 1 + Numm .* Dm / beta;
+Cost = - sum(Bm ./ Denm, "all");
 
-G = - 2 * Bm .* (Numm ./ (1 + Denm).^2);   % n x k
+G = - 2 * Bm .* Numm ./ (Denm.^2);   % n x k
 EGrad = G * (M_nrm' * U) + M_nrm * (G' * U);
 
 %% Compute full within-module cost and gradient
@@ -231,12 +231,12 @@ for i = 1:k
 
     I = Ic{i};
     Ui = U(I, :);
-    Di = 1 - (Ui * Ui');
-    Numi = beta * alpha * (Di.^(2 * beta - 1));
-    % Deni =      alpha * (Di.^(2 * beta));
-    Deni = Numi .* Di / beta;
-    Cost = Cost - sum(Bi ./ (1 + Deni), "all");
-    EGrad(I, :) = EGrad(I, :) - (4 * Bi .* (Numi ./ (1 + Deni).^2)) * Ui;
+    Di = 2 * (1 - (Ui * Ui'));
+    Numi = beta * alpha * (Di.^(beta - 1));
+    % Deni =  1 + alpha * (Di.^(beta));
+    Deni = 1 + Numi .* Di / beta;
+    Cost = Cost - sum(Bi ./ Deni, "all");
+    EGrad(I, :) = EGrad(I, :) - (4 * Bi .* Numi ./ (Deni.^2)) * Ui;
 end
 
 % Orthogonal projection of H in R^(nxm) to the tangent space at X.
@@ -250,11 +250,11 @@ end
 
 function [Cost, RGrad] = costgrad_full(U, B, alpha, beta)
 %% Compare full cost and gradient
-D = 1 - (U * U');
-Num = beta * alpha * (D.^(2 * beta - 1));
-Den1 =   1 + alpha * (D.^(2 * beta));
+D = 2 * (1 - (U * U'));
+Num = beta * alpha * (D.^(beta - 1));
+Den1 =   1 + alpha * (D.^(beta));
 Cost =  - sum(B ./ Den1, "all");
-EGrad = - (4 * B .* (Num ./ Den1.^2)) * U;
+EGrad = - (4 * B .* Num ./ (Den1.^2)) * U;
 U_dot_EGrad = sum(U .* EGrad, 2);
 RGrad = EGrad - U .* U_dot_EGrad;
 
