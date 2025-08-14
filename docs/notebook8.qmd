@@ -1,5 +1,5 @@
 ---
-title: Soft-mode removal
+title: Shrinkage
 jupyter: python3
 ---
 
@@ -27,7 +27,7 @@ k = 5           # Number of components
 repl = 100      # Number of replicates
 ```
 
-### Soft mode removal
+### Shrinkage of structural networks
 
 ```{python}
 n = len(connectivity)
@@ -36,7 +36,7 @@ ix = np.eye(n, dtype=bool)
 D = distance**(-1)
 D[ix] = 0
 
-D1 = abct.moderemoval(D, "soft")
+D1 = abct.residualn(D, "soft")
 
 print(np.corrcoef(connectivity[~ix], D[~ix])[0, 1])
 
