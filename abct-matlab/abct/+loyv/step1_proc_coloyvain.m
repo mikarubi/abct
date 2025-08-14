@@ -9,10 +9,10 @@ if Args.similarity ~= "network"
 end
 [Args.px, Args.py] = size(Args.W);
 
-% Remove first mode for kmodularity
+% Global residualization for kmodularity
 if Args.objective == "kmodularity"
     Args.W = Args.W * (sqrt(Args.px*Args.py)/Args.k) / sum(abs(Args.W), "all");
-    Args.W = moderemoval(Args.W, "degree");
+    Args.W = residualn(Args.W, "degree");
 end
 switch Args.objective
     case "kmodularity"; Args.objective = "cokmeans";

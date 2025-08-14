@@ -10,7 +10,7 @@ function S = degrees(W, type)
 %       type: Degree type
 %           "first": (First) degree (default).
 %           "second": Second degree.
-%           "residual": Degree after first-mode removal.
+%           "residual": Degree after global residualization.
 %
 %   Outputs:
 %       S: Degree vector (size n).
@@ -21,11 +21,12 @@ function S = degrees(W, type)
 %       Together, the first and second degrees are exactly or approximately
 %       equivalent to several measures of network communication and control.
 %
-%       The residual degree is the degree after first-mode removal and can be
-%       approximately equivalent to the primary gradient in co-activity networks.
+%       The residual degree is the degree after first-component removal
+%       and can be approximately equivalent to the primary co-activity 
+%       gradient in co-activity networks.
 %
 %   See also:
-%       MODEREMOVAL, COEFVAR2.
+%       RESIDUALN, COEFVAR2.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
@@ -38,6 +39,6 @@ switch type
     case "second"
         S = sum(W.^2, 2);
     case "residual"
-        W = moderemoval(W, "rankone");
+        W = residualn(W, "rankone");
         S = sum(W, 2);
 end

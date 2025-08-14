@@ -75,11 +75,9 @@ function [M, Q] = loyvain(varargin)
 %
 %       K-modularity maximization is exactly equivalent to normalized
 %       modularity maximization and approximately equivalent to k-means
-%       clustering after first-mode removal.
-%       * When the input is a network matrix, first-mode
-%         removal is implemented via degree correction.
-%       * When the input is a data matrix, first-mode removal
-%         is implemented via global-signal regression.
+%       clustering with global residualization. Global residualization is
+%       implemented as degree correction for network matrices and
+%       global-signal regression for data matrices.
 %
 %       For "network" similarity, k-modularity is rescaled by:
 %           (average module size) / (absolute sum of all weights)
@@ -91,7 +89,7 @@ function [M, Q] = loyvain(varargin)
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
-%       COLOYVAIN, CANONCOV, GRADIENTS, MODEREMOVAL.
+%       COLOYVAIN, CANONCOV, GRADIENTS, RESIDUALN.
 
 %% Parse, process, and test arguments
 

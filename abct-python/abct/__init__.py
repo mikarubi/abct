@@ -9,7 +9,7 @@ from abct.coneighbors import coneighbors
 from abct.degrees import degrees
 from abct.gradients import gradients
 from abct.loyvain import loyvain
-from abct.moderemoval import moderemoval
+from abct.residualn import residualn
 
 __all__ = [
     "canoncov",
@@ -19,5 +19,5 @@ __all__ = [
     "degrees",
     "gradients",
     "loyvain",
-    "moderemoval",
+    "residualn",
 ]

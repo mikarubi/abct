@@ -8,7 +8,8 @@ import numpy as np
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def degrees(
-    W: ArrayLike, type: Literal["first", "second", "residual"] = "first"
+    W: ArrayLike,
+    type: Literal["first", "second", "residual"] = "first"
 ) -> np.ndarray:
 
     W = np.asarray(W)
@@ -18,7 +19,7 @@ def degrees(
         case "second":
             return np.sum(W**2, axis=1)
         case "residual":
-            W_residual = abct.moderemoval(W, "rankone")
+            W_residual = abct.residualn(W, "rankone")
             return np.sum(W_residual, axis=1)
 
 

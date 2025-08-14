@@ -1,12 +1,12 @@
-function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, varargin)
+function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid, varargin)
 % CANONCOV Canonical covariance analysis (aka partial least squares)
 %          Canonical correlation analysis.
 %
 %   [A, B, U, V, R] = canoncov(X, Y, k)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type, corr)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, Name=Value)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size n x p, where
@@ -27,9 +27,9 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, varargin)
 %           0: Canonical covariance analysis (default).
 %           1: Canonical correlation analysis.
 %
-%       moderm: First-mode removal (logical scalar).
-%           0: No first-mode removal (default).
-%           1: First-mode removal via degree correction.
+%       resid: Global residualization (logical scalar).
+%           0: No global residualization (default).
+%           1: Global residualization via degree correction.
 %
 %       Name=[Value] Arguments
 %           (binary canonical analysis only):
@@ -59,11 +59,12 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, moderm, varargin)
 %       the whitened matrix. However, the output coefficients after
 %       dewhitening will, in general, not be binary.
 %
-%       First-mode removal is performed via generalized degree correction, and
-%       converts k-means co-clustering into k-modularity co-maximization.
+%       Global residualization is implemented via generalized degree
+%       correction, and converts k-means co-clustering into k-modularity
+%       co-maximization.
 %
 %   See also:
-%       COLOYVAIN, LOYVAIN, MODEREMOVAL.
+%       COLOYVAIN, LOYVAIN, RESIDUALN.
 
 % Parse inputs and test arguments
 arguments
@@ -72,7 +73,7 @@ arguments
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
     corr (1, 1) logical = false
-    moderm (1, 1) logical = false
+    resid (1, 1) logical = false
 end
 arguments (Repeating)
     varargin
@@ -91,10 +92,10 @@ if type == "weighted"
     end
 end
 
-% First-mode removal or centering
-if moderm       % Degree correction automatically centers data
-    X = moderemoval(X, "degree");
-    Y = moderemoval(Y, "degree");
+% Global residualization or centering
+if resid       % Degree correction automatically centers data
+    X = residualn(X, "degree");
+    Y = residualn(Y, "degree");
 else
     X = X - mean(X, 1);
     Y = Y - mean(Y, 1);

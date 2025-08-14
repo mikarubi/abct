@@ -18,13 +18,13 @@ if isnumeric(Args.start)
     Args.start = "custom";
 end
 
-% Remove first mode for kmodularity
+% Global residualization for kmodularity
 if Args.objective == "kmodularity"
     if Args.similarity == "network"
         Args.W = Args.W * (Args.n/Args.k) / sum(abs(Args.W), "all");
-        Args.W = moderemoval(Args.W, "degree");
+        Args.W = residualn(Args.W, "degree");
     else
-        Args.X = moderemoval(Args.X, "global");
+        Args.X = residualn(Args.X, "global");
     end
     Args.objective = "kmeans";
 end

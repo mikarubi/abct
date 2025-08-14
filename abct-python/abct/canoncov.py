@@ -15,7 +15,7 @@ def canoncov(
     k: int,
     type: Literal["weighted", "binary"] = "weighted",
     corr: bool = False,
-    moderm: bool = False,
+    resid: bool = False,
     **kwargs,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
@@ -35,10 +35,10 @@ def canoncov(
         if kwargs:
             warnings.warn("Ignoring Name=Value arguments for weighted analysis.")
 
-    # First-mode removal or centering
-    if moderm:  # Degree correction automatically centers data
-        X = abct.moderemoval(X, "degree")
-        Y = abct.moderemoval(Y, "degree")
+    # Global residualization or centering
+    if resid:  # Degree correction automatically centers data
+        X = abct.residualn(X, "degree")
+        Y = abct.residualn(Y, "degree")
     else:
         X = X - np.mean(X, axis=0, keepdims=True)
         Y = Y - np.mean(Y, axis=0, keepdims=True)
