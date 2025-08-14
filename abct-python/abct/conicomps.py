@@ -9,7 +9,7 @@ import numpy as np
 from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def gradients(
+def conicomps(
     W: ArrayLike,
     k: int,
     weight: Literal["weighted", "binary"] = "weighted",
@@ -25,13 +25,13 @@ def gradients(
     else:
         B = abct.coneighbors(W, thr)
 
-    # Get gradients
+    # Get components
     match weight:
         case "weighted":
             if kwargs:
-                warnings.warn("Ignoring Name=Value arguments for weighted gradients.")
+                warnings.warn("Ignoring Name=Value arguments for weighted components.")
             _, V = sparse.linalg.eigs(B, k=k + 1)
-            assert not np.any(np.imag(V)), "Weighted gradients should be real-valued"
+            assert not np.any(np.imag(V)), "Weighted components should be real-valued"
             V = np.real(V)
             return V[:, 1:]  # Remove first eigenvector
         case "binary":
@@ -41,4 +41,4 @@ def gradients(
             return V
 
 
-gradients.__doc__ = resources.read_text("abct.docs", "gradients")
+conicomps.__doc__ = resources.read_text("abct.docs", "conicomps")
