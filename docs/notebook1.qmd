@@ -33,7 +33,7 @@ connectivity = data["connectivity"]
 
 conn = dict()
 conn["Original"] = connectivity
-conn["Degree-corrected"] = abct.moderemoval(connectivity, "degree")
+conn["Degree-corrected"] = abct.residualn(connectivity, "degree")
 conn["Co-neighbor"] = abct.coneighbors(connectivity)
 
 ## Compute co-activity matrices
@@ -42,7 +42,7 @@ coactivity = activity.T @ activity
 
 coact = dict()
 coact["Original"] = coactivity
-coact["Degree-corrected"] = abct.moderemoval(coactivity, "degree")
+coact["Degree-corrected"] = abct.residualn(coactivity, "degree")
 coact["Co-neighbor"] = abct.coneighbors(coactivity)
 ```
 
