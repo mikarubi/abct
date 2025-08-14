@@ -30,7 +30,7 @@ k = 15                  # number of clusters
 repl = 5                # number of replicates
 
 # Regress global signal and normalize to unit norm
-activity_gsr = abct.moderemoval(activity.T, "global").T
+activity_gsr = abct.residualn(activity.T, "global").T
 activity_gsr = activity_gsr / np.linalg.norm(activity_gsr, axis=0, keepdims=True)
 coactivity_gsr = activity_gsr.T @ activity_gsr
 ```

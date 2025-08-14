@@ -18,13 +18,13 @@ def step1_proc_loyvain(Args):
             Args.k = np.max(Args.M0)
         Args.start = "custom"
 
-    # Remove first mode for kmodularity
+    # Global residualization for kmodularity
     if Args.objective == "kmodularity":
         if Args.similarity == "network":
             Args.W = Args.W * (Args.n / Args.k) / np.sum(np.abs(Args.W))
-            Args.W = abct.moderemoval(Args.W, "degree")
+            Args.W = abct.residualn(Args.W, "degree")
         else:
-            Args.X = abct.moderemoval(Args.X, "global")
+            Args.X = abct.residualn(Args.X, "global")
         Args.objective = "kmeans"
 
     # Center to mean 0 for covariance and correlation

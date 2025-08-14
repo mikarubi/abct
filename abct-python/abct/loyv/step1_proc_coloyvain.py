@@ -12,10 +12,10 @@ def step1_proc_coloyvain(Args):
 
     Args.px, Args.py = Args.W.shape
 
-    # Remove first mode for kmodularity
+    # Global residualization for kmodularity
     if Args.objective == "kmodularity":
         Args.W = Args.W * (np.sqrt(Args.px * Args.py) / Args.k) / np.sum(np.abs(Args.W))
-        Args.W = abct.moderemoval(Args.W, "degree")
+        Args.W = abct.residualn(Args.W, "degree")
 
     match Args.objective:
         case "kmodularity": Args.objective = "cokmeans"
