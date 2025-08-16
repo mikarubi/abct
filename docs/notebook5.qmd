@@ -30,10 +30,10 @@ repl = 100      # Number of replicates
 
 ```{python}
 # Weighted gradients
-V = abct.conicomps(coactivity, k)
+V = abct.kneicomps(coactivity, k)
 
 # Binary gradients
-V_bin = abct.conicomps(coactivity, k, "binary")
+V_bin = abct.kneicomps(coactivity, k, "binary")
 ```
 
 ### Residual degree

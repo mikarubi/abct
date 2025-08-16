@@ -22,7 +22,7 @@ arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
 end
 
-assert(isequal(size(X, 1), size(X, 2)) && all(X - X' < eps("single"), "all"), ...
+assert(isequal(size(X, 1), size(X, 2)) && all(abs(X - X') < eps("single"), "all"), ...
     "Invalid shrinkage: Network matrix must be symmetric.")
 [V, D] = eig(X, "vector");
 [~, ix] = sort(D, "descend");
