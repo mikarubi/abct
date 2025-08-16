@@ -1,10 +1,10 @@
-function V = conicomps(W, k, weight, thr, varargin)
-% CONICOMPS Components of common-neighbor matrices
+function V = kneicomps(W, k, weight, thr, varargin)
+% KNEICOMPS Components of neighbor matrices
 %
-%   V = conicomps(W, k)
-%   V = conicomps(W, k, weight)
-%   V = conicomps(W, k, weight, thr)
-%   V = conicomps(W, k, weight, thr, Name=Value)
+%   V = kneicomps(W, k)
+%   V = kneicomps(W, k, weight)
+%   V = kneicomps(W, k, weight, thr)
+%   V = kneicomps(W, k, weight, thr, Name=Value)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
@@ -17,7 +17,7 @@ function V = conicomps(W, k, weight, thr, varargin)
 %
 %       thr: Threshold to define top neighbors.
 %           Set thr = [] for default value.
-%           See CONEIGHBORS for details.
+%           See KNEIGHBORS for details.
 %
 %       Name=[Value] Arguments (binary components only):
 %           See LOYVAIN for all Name=Value options.
@@ -37,7 +37,7 @@ function V = conicomps(W, k, weight, thr, varargin)
 %       The order of binary components will, in general, be arbitrary.
 %
 %   See also:
-%       CONEIGHBORS, LOYVAIN.
+%       KNEIGHBORS, LOYVAIN.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
@@ -51,9 +51,9 @@ end
 
 % Get common-neighbors matrix
 if isempty(thr)
-    B = coneighbors(W);
+    B = kneighbors(W);
 else
-    B = coneighbors(W, thr);
+    B = kneighbors(W, thr);
 end
 
 % Get components

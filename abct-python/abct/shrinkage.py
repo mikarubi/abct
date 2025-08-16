@@ -4,8 +4,6 @@ from pydantic import validate_call, ConfigDict
 from importlib import resources
 
 import numpy as np
-from scipy import sparse
-
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def shrinkage(X: ArrayLike) -> np.ndarray:
