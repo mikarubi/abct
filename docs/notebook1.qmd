@@ -34,7 +34,7 @@ connectivity = data["connectivity"]
 conn = dict()
 conn["Original"] = connectivity
 conn["Degree-corrected"] = abct.residualn(connectivity, "degree")
-conn["Co-neighbor"] = abct.coneighbors(connectivity)
+conn["Co-neighbor"] = abct.kneighbors(connectivity)
 
 ## Compute co-activity matrices
 activity = data["activity"]
@@ -43,7 +43,7 @@ coactivity = activity.T @ activity
 coact = dict()
 coact["Original"] = coactivity
 coact["Degree-corrected"] = abct.residualn(coactivity, "degree")
-coact["Co-neighbor"] = abct.coneighbors(coactivity)
+coact["Co-neighbor"] = abct.kneighbors(coactivity)
 ```
 
 ### Visualize connectivity matrices

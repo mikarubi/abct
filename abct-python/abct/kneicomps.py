@@ -9,7 +9,7 @@ import numpy as np
 from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def conicomps(
+def kneicomps(
     W: ArrayLike,
     k: int,
     weight: Literal["weighted", "binary"] = "weighted",
@@ -19,11 +19,11 @@ def conicomps(
 
     W = np.asarray(W)
 
-    # Get common-neighbors matrix
+    # Get neighbors matrix
     if thr is None:
-        B = abct.coneighbors(W)
+        B = abct.kneighbors(W)
     else:
-        B = abct.coneighbors(W, thr)
+        B = abct.kneighbors(W, thr)
 
     # Get components
     match weight:
@@ -41,4 +41,4 @@ def conicomps(
             return V
 
 
-conicomps.__doc__ = resources.read_text("abct.docs", "conicomps")
+kneicomps.__doc__ = resources.read_text("abct.docs", "kneicomps")

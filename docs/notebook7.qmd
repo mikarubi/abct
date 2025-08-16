@@ -29,8 +29,8 @@ repl = 100      # Number of replicates
 ### First and second degrees
 
 ```{python}
-WB = abct.coneighbors(connectivity)
-CB = abct.coneighbors(coactivity)
+WB = abct.kneighbors(connectivity)
+CB = abct.kneighbors(coactivity)
 ```
 
 ```{python}
