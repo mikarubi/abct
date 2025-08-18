@@ -4,7 +4,7 @@ function step2_test(Args)
 assert(Args.d < Args.n, "Embedding dimension must be less than number of nodes or data points.")
 
 % Test partition
-assert((length(Args.partition) == Args.n) && isequal(unique(Args.partition), 1:Args.k), ...
+assert((length(Args.partition) == Args.n) && isequal(unique(Args.partition), (1:Args.k)'), ...
     "Initial module partition must have length %d and contain integers 1 to %d.", Args.n, Args.k)
 
 % Test initial embedding
