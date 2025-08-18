@@ -1,5 +1,5 @@
 function M0 = step3_init(X, normX, Dist, n, Args)
-% Loyvain partition initialization
+% Loyvain output initialization
 
 % Unpack arguments
 k = Args.k;

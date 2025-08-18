@@ -1,261 +1,105 @@
-function [U, CostHistory, Args] = mumap(X, U, Args)
-% MUMAP
+function [U, CostHistory] = mumap(varargin)
+% MUMAP m-umap low-dimensional embedding
+%
+%   [U, CostHistory] = mumap(X);
+%   [U, CostHistory] = mumap(X, Name=Value);
+%
+%   Inputs:
+%       X:  Data matrix of size n x p, where
+%           n is the number of data points and
+%           p is the number of features.
+%
+%       Name=[Value] Arguments:
+%           d=[Embedding dimension].
+%               Positive integer (default is 3).
+%
+%           kappa=[Number of nearest neighbors].
+%               Positive integer (default is 30).
+%
+%           alpha=[Inverse amplitude of long-range attraction].
+%               Positive scalar >= 1 (default is 1).
+%               Larger alpha implies weaker long-range attraction.
+%
+%           beta=[Slope of long-range attraction].
+%               Positive scalar <= 1 (default is 1).
+%               Larger beta implies faster decay of attraction.
+%
+%           gamma=[Modularity resolution parameter].
+%               Positive scalar (default is 1).
+%
+%           Similarity=[Type of similarity].
+%               "network": Network connectivity (default).
+%               "corr": Pearson correlation coefficient.
+%               "cosim": Cosine similarity.
+%
+%           Method=[Method of nearest-neighbor search].
+%               "direct": Direct computation of similarity matrix.
+%               "indirect": knnsearch (MATLAB) or pynndescent (Python).
+%
+%           Replicates=[Number of modularity replicates].
+%               Positive integer (default is 10).
+%
+%           FinalTune=[Modularity final tuning].
+%               Logical scalar (default is true).
+%
+%           Partition=[Module partition].
+%               Integer vector: module partition of length n (default is []).
+%
+%           Start=[Initial embedding method].
+%               "greedy": Spherical maximin initialization (default).
+%               "spectral": Spectral initialization.
+%               "spectral_nn": Spectral initialization on full (n x n) matrix.
+%               Numeric matrix: Initial embedding of size n x d, where:
+%                   n is the number of data points and
+%                   d is the embedding dimension.
+%
+%           Solver=[Optimization solver].
+%               "trustregions": Manopt trust-regions method (default).
+%               "adam": Adam (Adaptive Moment Estimation) optimizer.
+%
+%           MaxIter=[Maximum number of iterations].
+%               Positive integer (default is 10000).
+%
+%           LearnRate=[Optimizer learning rate].
+%               Positive scalar (default is 0.001).
+%
+%           Tol=[Solution tolerance].
+%               Positive scalar (default is 1e-6).
+%
+%           GPU=[Use GPU].
+%               Logical (default is false).
+%
+%           Cache=[Cache gradient matrices].
+%               Logical (default is false).
+%
+%           Verbose=[Verbose output].
+%               Logical (default is true).
+%
+%   Outputs:
+%       U:  Embedding matrix of size n x d.
+%       CostHistory: Cost history during optimization.
+%
+%   Methodological notes:
+%       m-umap is a first-order approximation of the true parametric
+%       loss of UMAP, with spherical constraints. It is simultaneously
+%       equivalent to the modularity, and to spring layout methods with
+%       Cauchy components and spherical constraints.
+%
+%   Optional dependencies:
+%       MATLAB: 
+%           Statistics and Machine Learning Toolbox (if method="indirect")
+%           Deep Learning Toolbox (if solver="adam")
+%           Manopt (if solver="trustregions")
+%       Python: 
+%           PyNNDescent (if method="indirect")
+%           PyTorch (if solver="adam")
+%           PyManopt (if solver="trustregions")
 
-arguments
-    X (:, :) {mustBeFinite, mustBeReal}
-    U (:, :) {mustBeFinite, mustBeReal} = []
-    Args.d (1, 1) {mustBePositive, mustBeInteger} = 3
-    Args.kappa (1, 1) {mustBePositive, mustBeInteger} = 10
-    Args.alpha (1, 1) {mustBePositive} = 1
-    Args.beta (1, 1) {mustBePositive} = 1
-    Args.gamma (1, 1) {mustBePositive} = 1
-    Args.Start (1, 1) string {mustBeMember( ...
-        Args.Start, ["greedy", "spectral", "spectral_knn"])} = "greedy"
-    Args.Solver (1, 1) string {mustBeMember( ...
-        Args.Solver, ["adam", "trustregions"])} = "trustregions"
-    Args.Partition (:, 1) {mustBePositive, mustBeInteger} = []
-    Args.MaxIter (1, 1) {mustBePositive, mustBeInteger} = 1e4
-    Args.LearnRate (1, 1) {mustBePositive} = 1e-3
-    Args.Tol (1, 1) {mustBePositive} = 1e-6
-    Args.GPU (1, 1) logical = false
-    Args.Cache (1, 1) logical = false
-    Args.Verbose (1, 1) logical = true
-end
-
-if Args.GPU
-    assert(license("test", "distrib_computing_toolbox") && gpuDeviceCount, ...
-        "GPU use requires Parallel Computing Toolbox and active GPU.")
-end
-switch Args.Solver
-    case "adam"
-        assert(license("test", "neural_network_toolbox"), ...
-            "Adam solver requires Deep Learning Toolbox.")
-    case "trustregions"
-        assert((exist("obliquefactory", "file") && exist("trustregions", "file")), ...
-            "Manopt functions not found. Call importmanopt to setup.")
-end
-
-%%
-
-n = size(X, 1);
-if issparse(X)
-    A = X;
-else
-    % Generate a common neighbors matrix
-    Col = knnsearch(X, X, K=Args.kappa+1, Distance="correlation");
-    Col = reshape(Col, [], 1);
-    Row = (1:n).';
-    Row = reshape(Row(:, ones(1,Args.kappa+1)), [], 1);
-    A = sparse([Row; Col], [Col; Row], true);
-end
-A(1:n+1:end) = 0;
-
-% Module structure
-if isempty(Args.Partition)
-    [Args.Partition, Args.Q] = louvains(A, gamma=Args.gamma);
-end
-
-%% Precompute gradient matrices
-
-% Normalized degrees vector
-K_nrm = sqrt(Args.gamma / full(sum(A, "all"))) * full(sum(A, 2));
-
-% Modules and normalized modules
-M = sparse(1:n, Args.Partition, 1);
-N = sum(M);
-M_nrm = M./N;
-
-% Module adjacency and modularity matrices
-g = Args.gamma * mean(A, "all");     % mean(K)^2 / sum(K);
-Am = A * M;
-% Bm == ((A - g) .* (~(M * M'))) * M
-%    == ((A - g) * M - ((A - g) .* (M * M')) * M
-%    -> then simplify (A - g) .* (M * M')
-Bm = full((Am - M .* Am) - (g * N - g .* (M .* N)));
-
-k = max(Args.Partition);
-Ic = cell(k, 1);
-Bc = cell(k, 1);
-Ac = cell(k, 1);
-Kc_nrm = cell(k, 1);
-for i = 1:k
-    I = find(Args.Partition == i);
-    Ic{i} = I;
-    if Args.Cache
-        Bc{i} = full(A(I, I)) - (K_nrm(I) * K_nrm(I)');
-    else
-        Ac{i} = A(I, I);
-        Kc_nrm{i} = K_nrm(I);
-    end
-end
-
-%% Initialize output
-
-if isempty(U)
-    switch Args.Start
-        case "spectral_knn"                         % spectral on knn matrix
-            [U, ~] = eigs(double(A), Args.d+1);
-            U = U(:, 2:end);
-            U = U ./ vecnorm(U, 2, 2);
-        case "spectral"                             % spectral on modules
-            Amm = full(M' * Am);
-            Kmm = sum(Amm, 2);
-            Bmm = Amm - Kmm * Kmm' / sum(Amm, "all");
-            [Um, ~] = eigs(Bmm, Args.d);
-            Um = Um ./ vecnorm(Um, 2, 2);
-            U = Um(Args.Partition, :);
-        case "greedy"                               % spherical maximin
-            Amm = full(M' * Am);                    % module connectivity
-            Amm(1:k+1:end) = nan;                   % ignore self-connections
-            Kmm_ = zeros(k, 1);                     % degree to placed modules
-            Um = zeros(k, Args.d);                  % module locations
-            Vm = muma.fsphere(k);                   % Fibonacci sphere
-            [~, ux] = max(sum(Amm, 2, "omitnan"));  % initial module index
-            [~, vx] = max(sum(Vm * Vm', 2));        % initial location index
-            for i = 1:k
-                Um(ux, :) = Vm(vx, :);              % assign location
-                Vm(vx, :) = nan;                    % remove point from consideration
-                Kmm_ = Kmm_ + Amm(:, ux);           % add module connectivity (with self-nan's)
-                [~, ux] = min(Kmm_);                % least connected module (nan's in Kmm mask set modules)
-                [~, vx] = min(Vm * mean(Um)');      % furthest location (nan's in Vm mask used locations)
-            end
-            U = Um(Args.Partition, :);
-    end
-end
-
-clear A Am K_nrm X M
-
-%% Initialize GPU arrays
-
-alpha = Args.alpha;
-beta = Args.beta;
-if Args.GPU
-    for i = 1:k
-        Ic{i} = gpuArray(Ic{i});
-        Bc{i} = gpuArray(Bc{i});
-        Ac{i} = gpuArray(Ac{i});
-        Kc_nrm{i} = gpuArray(Kc_nrm{i});
-    end
-    U = gpuArray(U);
-    M_nrm = gpuArray(M_nrm);
-    Bm = gpuArray(Bm);
-    alpha = gpuArray(alpha);
-    beta = gpuArray(beta);
-end
-
-%% Run solvers
-
-switch Args.Solver
-    case "adam"
-        if Args.Verbose
-            fp.head = @() fprintf("%5s %24s %12s\n", "iter", "cost val", "grad. norm");
-            fp.iter = @(t, cost, grad_norm) fprintf("%5d %+.16e %12e\n", t, cost, grad_norm);
-            fp.stop_cost = @() fprintf("Cost tolerance reached; tol = %g.\n", Args.Tol);
-            fp.stop_grad = @() fprintf("Gradient norm tolerance reached; tol = %g.\n", Args.Tol);
-            fp.stop_iter = @() fprintf("Max iter exceeded; maxiter = %g.", Args.MaxIter);
-        else
-            fp = struct(head = @()[], iter = @(a,b,c)[], stop_cost = @()[], stop_grad = @()[], stop_iter = @()[]);
-        end
-        fp.head();
-
-        ave_grad  = zeros(size(U));   % 1st-moment estimates
-        ave_grad2 = zeros(size(U));   % 2nd-moment estimates
-        CostHistory = nan(1, Args.MaxIter);
-        for t = 1:Args.MaxIter
-            [cost, grad] = costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta);
-
-            [U, ave_grad, ave_grad2] = adamupdate(U, grad, ave_grad, ave_grad2, t, Args.LearnRate);
-            grad_norm = norm(grad, "fro");
-            U = U ./ vecnorm(U,2,2);
-            CostHistory(t) = cost;
-
-            fp.iter(t, cost, grad_norm);
-            if (t > 1) && (abs(cost - CostHistory(t-1)) < Args.Tol)
-                fp.stop_cost(); break;
-            elseif grad_norm < Args.Tol
-                fp.stop_grad(); break;
-            elseif t == Args.MaxIter
-                fp.stop_iter(); break;
-            end
-        end
-        CostHistory = CostHistory(~isnan(CostHistory));
-
-    case "trustregions"
-        % Create the problem structure.
-        problem.M = obliquefactory(n, Args.d, "rows", Args.GPU);
-
-        % Get the modularity matrix
-        problem.costgrad = @(U) costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta);
-        % checkgradient(problem);
-
-        opts = struct(tolgradnorm=Args.Tol, maxiter=Args.MaxIter, verbosity=2*Args.Verbose);
-        [U, ~, info] = trustregions(problem, U, opts);
-        CostHistory = info.cost;
-end
-
-% Gather from GPU (if applicable)
-U = gather(U);
+Args = muma.step0_args(varargin{:});
+Args = muma.step1_proc(Args);
+muma.step2_test(Args);
+U = muma.step3_init(Args);
+[U, CostHistory] = muma.step4_run(U, Args);
 
 end
 
-function [Cost, RGrad] = costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta)
-
-k = length(Ic);
-
-%% Compute mean-field between-module cost and gradient
-
-% UUm == ((U * U') .* (~(M * M'))) * Mn
-UUm = U * (U' * M_nrm);
-for i = 1:k
-    I = Ic{i};
-    UUm(I, i) = 0;          % exclude self-modules
-end
-
-Dm = 2 * (1 - UUm);
-Numm = beta * alpha * (Dm.^(beta - 1));
-% Denm =  1 + alpha * (Dm.^(beta));
-Denm = 1 + Numm .* Dm / beta;
-Cost = - sum(Bm ./ Denm, "all");
-
-G = - 2 * Bm .* Numm ./ (Denm.^2);   % n x k
-EGrad = G * (M_nrm' * U) + M_nrm * (G' * U);
-
-%% Compute full within-module cost and gradient
-
-for i = 1:k
-    if ~isempty(Bc{i})
-        Bi = Bc{i};
-    else
-        Bi = full(Ac{i}) - (Kc_nrm{i} * Kc_nrm{i}');
-    end
-
-    I = Ic{i};
-    Ui = U(I, :);
-    Di = 2 * (1 - (Ui * Ui'));
-    Numi = beta * alpha * (Di.^(beta - 1));
-    % Deni =  1 + alpha * (Di.^(beta));
-    Deni = 1 + Numi .* Di / beta;
-    Cost = Cost - sum(Bi ./ Deni, "all");
-    EGrad(I, :) = EGrad(I, :) - (4 * Bi .* Numi ./ (Deni.^2)) * Ui;
-end
-
-% Orthogonal projection of H in R^(nxm) to the tangent space at X.
-% Compute the inner product between each column/row of H with the
-% corresponding column/row of X. Remove from H the components that are
-% parallel to X, by row/col.
-U_dot_EGrad = sum(U .* EGrad, 2);
-RGrad = EGrad - U .* U_dot_EGrad;
-
-end
-
-function [Cost, RGrad] = costgrad_full(U, B, alpha, beta)
-%% Compare full cost and gradient
-D = 2 * (1 - (U * U'));
-Num = beta * alpha * (D.^(beta - 1));
-Den1 =   1 + alpha * (D.^(beta));
-Cost =  - sum(B ./ Den1, "all");
-EGrad = - (4 * B .* Num ./ (Den1.^2)) * U;
-U_dot_EGrad = sum(U .* EGrad, 2);
-RGrad = EGrad - U .* U_dot_EGrad;
-
-end

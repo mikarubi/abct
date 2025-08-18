@@ -45,7 +45,7 @@ function [M, Q] = loyvain(varargin)
 %               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
 %               "balanced": Standard kmeans++ initialization.
 %               "random": Uniformly random initialization.
-%               Initial-module-assignment vector of length n.
+%               Numeric vector: Initial module assignment vector of length n.
 %
 %           NumBatches=[Number of batches].
 %               Positive integer (default is 10).
