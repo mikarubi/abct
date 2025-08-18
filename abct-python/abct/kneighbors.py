@@ -11,7 +11,7 @@ from scipy import sparse
 def kneighbors(
     X: ArrayLike,
     type: Literal["common", "nearest"] = "common",
-    k: float = 10,
+    kappa: float = 10,
     similarity: Literal["network", "corr", "cosim"] = "network",
     method: Literal["direct", "indirect"] = "direct",
     **kwargs,
@@ -19,20 +19,20 @@ def kneighbors(
 
     n = X.shape[0]
 
-    if k < 1:
-        k = np.clip(np.round(n * k), 1, n-1)
+    if kappa < 1:
+        kappa = np.clip(np.round(n * kappa), 1, n-1)
     else:
-        assert k < n, "k must be less than number of nodes or data points."
-        assert np.isclose(k, np.round(k)), "k > 1 must be an integer."
-    k = int(k)
+        assert kappa < n, "kappa must be less than number of nodes or data points."
+        assert np.isclose(kappa, np.round(kappa)), "kappa > 1 must be an integer."
+    kappa = int(kappa)
 
-    Row = np.tile(np.r_[:n][:, None], (1, k+1))
+    Row = np.tile(np.r_[:n][:, None], (1, kappa+1))
     if similarity == "network":
         W = X.copy()
         assert(W.shape[0] == W.shape[1] and np.allclose(W, W.T),
             "Network matrix must be symmetric or similarity must not be ""network"".")
         np.fill_diagonal(W, np.inf)
-        Col = np.argpartition(W, -(k+1), axis=1)[:, -(k+1):].ravel()
+        Col = np.argpartition(W, -(kappa+1), axis=1)[:, -(kappa+1):].ravel()
     else:
         match method:
             case "direct":
@@ -47,19 +47,19 @@ def kneighbors(
                 b = int(np.ceil(n**2 / 1e8))
                 b = np.clip(b, 1, n)
                 Ix = np.floor(np.linspace(0, n, b+1)).astype(int)
-                Col = np.zeros((n, k+1), dtype=int)
+                Col = np.zeros((n, kappa+1), dtype=int)
                 for i in range(b):
                     Ixi = np.r_[Ix[i]:Ix[i+1]]
-                    Col[Ixi] = np.argpartition(X[Ixi, :] @ X.T, -(k+1), axis=1)[:, -(k+1):]
+                    Col[Ixi] = np.argpartition(X[Ixi, :] @ X.T, -(kappa+1), axis=1)[:, -(kappa+1):]
 
             case "indirect":
                 match similarity:
                     case "corr": knnsim = "correlation"
                     case "cosim": knnsim = "cosine"
-                knn_search_index = pynndescent.NNDescent(X, n_neighbors=k+1, metric=knnsim, **kwargs)
+                knn_search_index = pynndescent.NNDescent(X, n_neighbors=kappa+1, metric=knnsim, **kwargs)
                 Col, _ = knn_search_index.neighbor_graph
 
-    A = sparse.csr_matrix((np.ones(n*(k+1)), (Row.ravel(), Col.ravel())), shape=(n, n))
+    A = sparse.csr_matrix((np.ones(n*(kappa+1)), (Row.ravel(), Col.ravel())), shape=(n, n))
     A.setdiag(0)
 
     match type:
