@@ -1,14 +1,50 @@
-function [M, Q] = louvains(A, Args)
+function [M, Q] = louvains(W, Args)
+% LOUVAINS Efficient Louvain/Leiden modularity
+%          maximization of sparse networks.
+%
+%   [M, Q] = louvains(W)
+%   [M, Q] = louvains(W, Name=Value)
+%
+%   Inputs:
+%       W:  Network matrix of size n x n.
+%
+%       Name=[Value] Arguments:
+%           Gamma=[Resolution parameter].
+%               Positive scalar (default is 1).
+%
+%           Start=[Initial module assignments].
+%               Vector of length n (default is 1:n).
+%
+%           Replicates=[Number of replicates].
+%               Positive integer (default is 10).
+%
+%           FinalTune=[Final tuning of optimized assignment].
+%               Logical (default is false).
+%
+%           Tolerance=[Convergence tolerance].
+%               Positive scalar (default is 1e-10).
+%
+%           Display=[Display progress].
+%               "none": no display (default).
+%               "replicate": display progress at each replicate.
+%
+%   Outputs:
+%       M: Vector of module assignments (length n).
+%       Q: Value of maximized modularity.
+%
+%   See also:
+%       MUMAP.
+
 arguments
-    A (:, :) double {mustBeNonnegativeSymmetric}
+    W (:, :) double {mustBeNonnegativeSymmetric}
     Args.gamma (1, 1) {mustBePositive} = 1
-    Args.start (:, 1) {mustBePositive, mustBeInteger} = (1:length(A)).'
+    Args.start (:, 1) {mustBePositive, mustBeInteger} = (1:length(W)).'
     Args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
-    Args.tolerance (1, 1) double {mustBePositive} = 1e-10
     Args.finaltune (1, 1) logical = false
+    Args.tolerance (1, 1) double {mustBePositive} = 1e-10
     Args.display (1, 1) string {mustBeMember(Args.display, ["none", "replicate"])} = "none"
 end
-if any(diag(A))
+if any(diag(W))
     warning("Input matrix has a non-empty diagonal. Louvains may be slow.")
 end
 
@@ -17,16 +53,16 @@ for i = 1:Args.replicates
     Args.replicate_i = i;
 
     % run algorithm
-    [M1, Q1] = louvains_run(A, Args);
+    [M1, Q1] = louvains_run(W, Args);
     if Args.finaltune
         Args1 = Args;
         Args1.start = M1;
-        [M1, Q1] = louvains_run(A, Args1);
+        [M1, Q1] = louvains_run(W, Args1);
     end
 
     % test for increase
     if (Q1 - Q) > Args.tolerance
-        if ismember(Args.display, ["replicate", "iteration"])
+        if ismember(Args.display, ["replicate"])
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
         end
         Q = Q1;
@@ -35,15 +71,16 @@ for i = 1:Args.replicates
 end
 
 end
-function mustBeNonnegativeSymmetric(A)
-assert(issymmetric(A) && all(nonzeros(A) >= 0), ...
+
+function mustBeNonnegativeSymmetric(W)
+assert(issymmetric(W) && all(nonzeros(W) >= 0), ...
     "Matrix must be nonnegative and symmetric.");
 end
 
-function [M1, Q1] = louvains_run(A, Args)
+function [M1, Q1] = louvains_run(W, Args)
 
-n = length(A);                                                  % number of nodes
-s = sum(A, "all");                                              % sum of all edges
+n = length(W);                                                  % number of nodes
+s = sum(W, "all");                                              % sum of all edges
 gamma_s = Args.gamma / s;                                       % normalization constant
 
 [~, ~, M] = unique(Args.start);                                 % initial community structure
@@ -52,10 +89,10 @@ M1 = M;                                                         % global communi
 Q0 = -inf;
 first_pass = true;
 while 1
-    J = arrayfun(@(i) find(A(:, i)), 1:n, uniformoutput=false); % neighbors
-    K_nrm = sqrt(gamma_s) * full(sum(A, 2));                    % degree
-    Km_nrm = accumarray(M, K_nrm, [max(M), 1]);                 % module degree
-    Bd = full(diag(A)) - (K_nrm.^2);                            % self modularities
+    J = arrayfun(@(i) find(W(:, i)), 1:n, UniformOutput=false); % neighbors
+    S_nrm = sqrt(gamma_s) * full(sum(W, 2));                    % degree
+    Sm_nrm = accumarray(M, S_nrm, [max(M), 1]);                 % module degree
+    Bd = full(diag(W)) - (S_nrm.^2);                            % self modularities
     Q1 = sum(Bd) / s;                                           % total modularity
     if Q1 - Q0 <= Args.tolerance
         break;
@@ -85,8 +122,8 @@ while 1
                 else
                     V0 = [setdiff(M(Ji), u); u];                % setdiff self-modules because Bd can be > 0
                 end
-                Ami = accumarray(M(Ji), A(Ji, i), [max(V0), 1]);
-                dQ = full(Ami(V0)) - K_nrm(i) * Km_nrm(V0);
+                Ami = accumarray(M(Ji), W(Ji, i), [max(V0), 1]);
+                dQ = full(Ami(V0)) - S_nrm(i) * Sm_nrm(V0);
                 dQ = dQ - dQ(end) + Bd(i);
                 dQ(end) = 0;                                    % set self-module to 0 as escape
 
@@ -94,8 +131,8 @@ while 1
                 v = V0(idx);                                    % convert to actual module representation
                 if max_dQ > Args.tolerance                      % if maximal increase is positive
                     M(i) = v;                                   % reassign module
-                    Km_nrm(v) = Km_nrm(v) + K_nrm(i);
-                    Km_nrm(u) = Km_nrm(u) - K_nrm(i);
+                    Sm_nrm(v) = Sm_nrm(v) + S_nrm(i);
+                    Sm_nrm(u) = Sm_nrm(u) - S_nrm(i);
 
                     flag = true;                                % If we move the node to a different community, we add
                     Pi = Ji(M(Ji) ~= v).';                      % to the rear of the queue all neighbours of the node
@@ -119,8 +156,8 @@ while 1
     end
 
     L = sparse(1:n, M, 1);                                      % new module assignments
-    A = full(L.' * A * L);                                      % node-to-module strength
-    n = length(A);                                              % number of nodes
+    W = full(L.' * W * L);                                      % node-to-module strength
+    n = length(W);                                              % number of nodes
     M = (1:n).';                                                % initial modules
 end
 
