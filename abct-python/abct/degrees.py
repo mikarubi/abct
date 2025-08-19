@@ -23,4 +23,4 @@ def degrees(
             return np.sum(W_residual, axis=1)
 
 
-degrees.__doc__ = resources.read_text("abct.docs", "degrees")
+degrees.__doc__ = resources.read_text("abct.docstrings", "degrees")

@@ -18,4 +18,4 @@ def coefvar2(
     return CV2, CV2_nrm
 
 
-coefvar2.__doc__ = resources.read_text("abct.docs", "coefvar2")
+coefvar2.__doc__ = resources.read_text("abct.docstrings", "coefvar2")

@@ -45,4 +45,4 @@ def shrinkage(X: ArrayLike) -> np.ndarray:
     return V @ np.diag(D) @ V.T
 
 
-shrinkage.__doc__ = resources.read_text("abct.docs", "shrinkage")
+shrinkage.__doc__ = resources.read_text("abct.docstrings", "shrinkage")

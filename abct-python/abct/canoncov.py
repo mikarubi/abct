@@ -77,4 +77,4 @@ def canoncov(
     return A, B, U, V, R
 
 
-canoncov.__doc__ = resources.read_text("abct.docs", "canoncov")
+canoncov.__doc__ = resources.read_text("abct.docstrings", "canoncov")
