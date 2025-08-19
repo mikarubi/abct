@@ -35,4 +35,4 @@ def residualn(
             return X - U @ np.diag(S) @ VT
 
 
-residualn.__doc__ = resources.read_text("abct.docs", "residualn")
+residualn.__doc__ = resources.read_text("abct.docstrings", "residualn")

@@ -70,4 +70,4 @@ def kneighbors(
 
     return B
 
-kneighbors.__doc__ = resources.read_text("abct.docs", "kneighbors")
+kneighbors.__doc__ = resources.read_text("abct.docstrings", "kneighbors")

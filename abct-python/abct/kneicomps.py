@@ -41,4 +41,4 @@ def kneicomps(
             return V
 
 
-kneicomps.__doc__ = resources.read_text("abct.docs", "kneicomps")
+kneicomps.__doc__ = resources.read_text("abct.docstrings", "kneicomps")
