@@ -5,14 +5,14 @@ abc-tool in MATLAB and Python
 ## MATLAB
 
 ### Dependencies
-- MATLAB ≥R2020b
+- MATLAB ≥R2024a
 
 ### Installation
 
 #### Simple
 - Just add `./abct-matlab/abct` to your MATLAB path.
 
-#### Package (≥R2024b only)
+#### Package
 - Run the following command in MATLAB:
   ```matlab
   mpminstall("./abct-matlab/abct")
