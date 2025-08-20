@@ -1,0 +1,35 @@
+ LOUVAINS Efficient Louvain/Leiden modularity
+          maximization of sparse networks.
+
+   M, Q = louvains(W)
+   M, Q = louvains(W, Name=Value)
+
+   Inputs:
+       W:  Network matrix of size n x n.
+
+       Name=Value Arguments:
+           Gamma=Resolution parameter.
+               Positive scalar (default is 1).
+
+           Start=Initial module assignments.
+               Vector of length n (default is 1:n).
+
+           Replicates=Number of replicates.
+               Positive integer (default is 10).
+
+           FinalTune=Final tuning of optimized assignment.
+               Logical (default is false).
+
+           Tolerance=Convergence tolerance.
+               Positive scalar (default is 1e-10).
+
+           Display=Display progress.
+               "none": no display (default).
+               "replicate": display progress at each replicate.
+
+   Outputs:
+       M: Vector of module assignments (length n).
+       Q: Value of maximized modularity.
+
+   See also:
+       MUMAP.
