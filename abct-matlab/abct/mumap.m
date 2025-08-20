@@ -95,9 +95,12 @@ function [U, CostHistory] = mumap(varargin)
 %           PyTorch (if solver="adam")
 %           PyManopt (if solver="trustregions")
 
+% Parse, process, and test arguments
 Args = muma.step0_args(varargin{:});
 Args = muma.step1_proc(Args);
 muma.step2_test(Args);
+
+% Initialize and run algorithm
 U = muma.step3_init(Args);
 [U, CostHistory] = muma.step4_run(U, Args);
 
