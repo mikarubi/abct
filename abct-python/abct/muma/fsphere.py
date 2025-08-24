@@ -6,7 +6,10 @@ def fsphere(p):
     golden_ratio = (1 + np.sqrt(5))/2
     Phi = np.acos(1 - 2*I/p)
     Theta = 2*np.pi*I / golden_ratio
-    V = np.hstack([np.cos(Theta)*np.sin(Phi), np.sin(Theta)*np.sin(Phi), np.cos(Phi)])
+    V = np.column_stack([
+            np.cos(Theta)*np.sin(Phi),
+            np.sin(Theta)*np.sin(Phi),
+            np.cos(Phi)])
 
     return V
     
