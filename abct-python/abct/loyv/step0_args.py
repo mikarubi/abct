@@ -59,15 +59,9 @@ def parse_args(
     X = np.asarray(X)
     Y = np.asarray(Y)
 
-    if start in ["greedy", "balanced", "random"]:
-        pass
-    elif method == "loyvain":
-        start = np.asarray(start)
-        pass
-    else:
-        raise ValueError('Start must be either "greedy", "balanced", "random", or a numeric vector (loyvain only).')
-
     if method == "coloyvain":
+        if isinstance(start, np.ndarray):
+            raise ValueError("Start cannot be a numeric vector for co-Loyvain.")
         if k <= 0:
             raise ValueError("k must be positive for co-Loyvain.")
         if similarity == "network":
