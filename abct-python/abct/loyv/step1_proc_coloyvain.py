@@ -43,6 +43,6 @@ def proc(X, Args):
     if Args.similarity in ["cosim", "corr"]:
         X = X / np.linalg.norm(X, axis=0, keepdims=True)
     elif Args.similarity in ["dot", "cov"]:
-        X = X / np.sqrt(X.shape[0])
+        X = X / np.sqrt(len(X))
 
     return X

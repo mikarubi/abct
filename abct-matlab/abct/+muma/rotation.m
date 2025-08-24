@@ -1,6 +1,7 @@
 function [U3, R] = rotation(U3)
 
 % ensure spherical geometry
+n = size(U3, 1);
 U3 = U3 ./ vecnorm(U3, 2, 2);
 
 %% Rotate data to empty poles
@@ -9,10 +10,7 @@ p = 144;                    % Fibonacci number
 V = muma.fsphere(p);        % Unit Fibonacci sphere
 
 % Poles have minimal (maximal correlations to all other points)
-D = zeros(1, p);
-for i = 1:p
-    D(i) = max((U3 * V(i, :).') .* [-1 1], [], "all");
-end
+D = max(abs(U3 * V'), [], 1);
 [~, idx] = min(D);
 
 % Rotate data so that v becomes [0, 0, 1]
@@ -30,8 +28,7 @@ V = [cos(Theta) sin(Theta)];
 alpha = 12*pi/p;         % degree band (6/p in either direction)
 D = zeros(p, 1);
 for i = 1:p
-    Vi = V(i, :) .* ones(size(U3, 1), 1);
-    Vi(:, 3) = U3(:, 3);
+    Vi = [V(i*ones(n, 1), :), U3(:, 3)];
     Vi = Vi ./ vecnorm(Vi, 2, 2);
     % Number of points within the angle boundary
     D(i) = mean(sum(U3 .* Vi, 2) > cos(alpha));
@@ -80,11 +77,11 @@ else
         -x(2)  x(1)   0 ];
 
     % Rodrigues formula
-    R = eye(3) + Q + Q*Q * ((1 - cos_theta)/(sin_theta^2));
+    R = eye(3) + Q + Q * Q * ((1 - cos_theta)/(sin_theta^2));
 end
 
 % Check that rotation matrix is valid and rotation is correct
-assert((norm(eye(3) - R' * R) < epss) && (norm(1 - det(R)) < epss))
+assert((norm(eye(3) - R' * R) < epss) && (abs(1 - det(R)) < epss))
 assert(norm(e - v * R) < epss)
 
 end

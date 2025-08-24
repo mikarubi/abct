@@ -17,7 +17,7 @@ def kneighbors(
     **kwargs,
 ) -> sparse.csr_matrix:
 
-    n = X.shape[0]
+    n = len(X)
 
     if kappa < 1:
         kappa = np.clip(np.round(n * kappa), 1, n-1)
