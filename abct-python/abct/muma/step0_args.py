@@ -1,0 +1,43 @@
+from typing import Literal
+from numpy.typing import ArrayLike
+from pydantic import validate_call, ConfigDict
+from types import SimpleNamespace
+
+import numpy as np
+
+def step0_args(X: ArrayLike, **kwargs) -> SimpleNamespace:
+    # m-umap arguments initialization
+
+    Args = parse_args(X=X, **kwargs)
+
+    return SimpleNamespace(**Args)
+
+@validate_call(config=ConfigDict(arbitrary_types_allowed=True))
+def parse_args(
+    X: ArrayLike,
+    d: int = 3,
+    kappa: int = 30,
+    alpha: float = 1.0,
+    beta: float = 1.0,
+    gamma: float = 1.0,
+    similarity: Literal["network", "corr", "cosim"] = "network",
+    method: Literal["direct", "indirect"] = "direct",
+    replicates: int = 10,
+    finaltune: bool = True,
+    partition: ArrayLike = None,
+    start: ArrayLike | Literal["greedy", "spectral", "spectral_nn"] = "greedy",
+    solver: Literal["adam", "trustregions"] = "trustregions",
+    maxiter: int = 10000,
+    learnrate: float = 1e-3,
+    tol: float = 1e-6,
+    gpu: bool = False,
+    cache: bool = False,
+    verbose: bool = True,
+) -> dict:
+
+    X = np.asarray(X)
+    if similarity == "network":
+        if (X.shape[0] != X.shape[1]) or not np.allclose(X, X.T):
+            raise ValueError('Network matrix must be symmetric or similarity must not be "network".')
+
+    return {key: value for key, value in locals().items()}

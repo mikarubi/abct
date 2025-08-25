@@ -62,7 +62,7 @@ for i = 1:Args.replicates
 
     % test for increase
     if (Q1 - Q) > Args.tolerance
-        if ismember(Args.display, ["replicate"])
+        if Args.display == "replicate"
             fprintf("Replicate: %4d.    Objective: %4.4f.    \x0394: %4.4f.\n", i, Q1, Q1 - Q);
         end
         Q = Q1;

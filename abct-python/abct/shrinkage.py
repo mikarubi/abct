@@ -10,7 +10,7 @@ def shrinkage(X: ArrayLike) -> np.ndarray:
 
     X = np.asarray(X)
 
-    if not (X.shape[0] == X.shape[1] and np.allclose(X, X.T)):
+    if not ((X.shape[0] == X.shape[1]) and np.allclose(X, X.T)):
         raise ValueError("Network matrix must be symmetric.")
 
     # Compute eigendecomposition
