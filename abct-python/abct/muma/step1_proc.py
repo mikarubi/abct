@@ -27,7 +27,7 @@ def step1_proc(Args):
     else:
         Args.partition = np.unique_inverse(Args.partition).inverse_indices
 
-    Args.k = np.max(Args.partition)
+    Args.k = np.max(Args.partition) + 1
     Args.M = np.zeros((Args.n, Args.k))
     Args.M[np.r_[:Args.n], Args.partition] = 1
     Args.Am = Args.A @ Args.M

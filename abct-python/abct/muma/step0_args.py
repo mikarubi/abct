@@ -3,6 +3,7 @@ from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from types import SimpleNamespace
 
+import torch
 import numpy as np
 
 def step0_args(X: ArrayLike, **kwargs) -> SimpleNamespace:
@@ -39,5 +40,8 @@ def parse_args(
     if similarity == "network":
         if (X.shape[0] != X.shape[1]) or not np.allclose(X, X.T):
             raise ValueError('Network matrix must be symmetric or similarity must not be "network".')
+
+    if gpu and not torch.cuda.is_available():
+        raise ValueError("GPU must be available or gpu must be False.")
 
     return {key: value for key, value in locals().items()}

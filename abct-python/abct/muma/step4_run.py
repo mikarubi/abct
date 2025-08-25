@@ -6,15 +6,13 @@ def step4_run(U, Args):
     # m-umap main algorithm
 
     ## Initialize GPU arrays
-    if Args.gpu and torch.cuda.is_available():
-        device = torch.device("cuda")
-    else:
-        device = torch.device("cpu")
+    device = "cuda" if Args.gpu else "cpu"
 
     U = torch.as_tensor(U, device=device).contiguous().requires_grad_(True)
     A = torch.as_tensor(Args.A, device=device)
     M = torch.as_tensor(Args.M, device=device)
     Am = torch.as_tensor(Args.Am, device=device)
+    partition = torch.as_tensor(Args.partition, device=device)
     k = Args.k
     gamma = Args.gamma
     alpha = Args.alpha
@@ -26,7 +24,7 @@ def step4_run(U, Args):
     K_nrm = torch.sqrt(gamma / A.sum()) * A.sum(1)
 
     # Modules and normalized modules
-    N = M.sum()
+    N = M.sum(0, keepdim=True)
     M_nrm = M / N
 
     # Module adjacency and modularity matrices
@@ -41,7 +39,7 @@ def step4_run(U, Args):
     Ac = [None] * k
     Kc_nrm = [None] * k
     for i in range(k):
-        I = torch.where(Args.partition == i)[0]
+        I = torch.where(partition == i)[0]
         Ic[i] = I
         if Args.cache:
             Bc[i] = A[torch.ix_(I, I)] - (K_nrm[I] * K_nrm[I].T)
@@ -71,13 +69,14 @@ def step4_run(U, Args):
                 cost.backward()
                 optimizer.step()
 
-                grad_norm = U.norm()
+                grad_norm = U.grad.norm().detach().cpu().numpy()
                 with torch.no_grad():
-                    U = U / U.norm(1, keepdim=True)
+                    U = U.div_(U.norm(dim=1, keepdim=True))
 
-                CostHistory[t] = cost
-                fp["iter"](t, cost, grad_norm)
-                if t and (abs(cost - CostHistory[t-1]) < Args.tol):
+                cval = cost.detach().cpu().numpy()
+                CostHistory[t] = cval
+                fp["iter"](t, cval, grad_norm)
+                if t and (abs(cval - CostHistory[t-1]) < Args.tol):
                     fp["stop_cost"]()
                     break
                 elif grad_norm < Args.tol:
@@ -92,14 +91,14 @@ def step4_run(U, Args):
 
         case "trustregions":
             # Create the problem structure.
-            manifold = pymanopt.manifolds.Oblique(Args.d, Args.n)
-            fx_ucost = lambda U: fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta)
+            manifold = pymanopt.manifolds.Oblique(Args.d, Args.n)   # transposed to normalize rows
+            fx_ucost = lambda U: fx_cost(U.T, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta)
             problem = pymanopt.Problem(manifold, cost=pymanopt.function.pytorch(manifold)(fx_ucost))
             optimizer = pymanopt.optimizers.TrustRegions()
             result = optimizer.run(problem)
 
-            U = result.point.detach().cpu().numpy()
-            CostHistory = result.history.detach().cpu().numpy()
+            U = result.point.detach().cpu().numpy().T               # transposed back
+            CostHistory = np.array([h["cost"] for h in result.history if "cost" in h], dtype=float)
 
     return U, CostHistory
 
@@ -116,17 +115,17 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
 
     Dm = 2 * (1 - UUm)
     Numm = beta * alpha * (Dm ** (beta - 1))
-    np.fill_diagonal(Numm, 0)
+    torch.fill_diagonal_(Numm, 0)
     if beta >= 1:                # fast update
         Denm = 1 + Numm * Dm / beta
     else:                        # avoid NaN
         Denm =  1 + alpha * (Dm ** beta)
 
-    Cost = - np.sum(Bm / Denm)
+    Cost = - torch.sum(Bm / Denm)
 
     ## Compute full within-module cost and gradient
     for i in range(k):
-        if Bc[i]:
+        if Bc[i] is not None:
             Bi = Bc[i]
         else:
             Bi = Ac[i] - (Kc_nrm[i] * Kc_nrm[i].T)
@@ -136,13 +135,13 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
         ni = len(Ui)   # number of nodes in module i
         Di = 2 * (1 - (Ui @ Ui.T))
         Numi = beta * alpha * (Di ** (beta - 1))
-        np.fill_diagonal(Numi, 0)
+        torch.fill_diagonal_(Numi, 0)
         if beta >= 1:            # fast update
             Deni = 1 + Numi * Di / beta
         else:                    # avoid NaN
             Deni =  1 + alpha * (Di ** beta)
 
-        Cost -= np.sum(Bi / Deni)
+        Cost -= torch.sum(Bi / Deni)
 
     return Cost
 
@@ -150,9 +149,9 @@ def fx_cost_full(U, B, alpha, beta):
     ## Compare full cost and gradient
     D = 2 * (1 - (U @ U.T))
     Num = beta * alpha * (D ** (beta - 1))
-    np.fill_diagonal(Num, 0)
+    torch.fill_diagonal_(Num, 0)
     Den1 =   1 + alpha * (D ** beta)
-    Cost =  - np.sum(B / Den1)
+    Cost =  - torch.sum(B / Den1)
 
     return Cost
 
