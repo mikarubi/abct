@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import sparse
 from abct import muma
 
 def step3_init(Args):
@@ -13,14 +14,14 @@ def step3_init(Args):
             U = Args.U
             U = U / np.linalg.norm(U, axis=1, keepdims=True)
         case "spectral_nn":                         # spectral on knn matrix
-            U, _ = np.linalg.eigs(A, Args.d+1)
+            _, U = sparse.linalg.eigs(A, Args.d+1)
             U = U[:, 1:]
             U = U / np.linalg.norm(U, axis=1, keepdims=True)
         case "spectral":                            # spectral on modules
             Amm = M.T @ Am
             Kmm = np.sum(Amm, axis=1, keepdims=True)
             Bmm = Amm - Kmm * Kmm.T / np.sum(Amm)
-            Um, _ = np.linalg.eigs(Bmm, Args.d)
+            _, Um = sparse.linalg.eigs(Bmm, Args.d)
             Um = Um / np.linalg.norm(Um, axis=1, keepdims=True)
             U = Um[Args.partition]
         case "greedy":                              # spherical maximin
@@ -36,7 +37,7 @@ def step3_init(Args):
                 Vm[vx] = np.nan                     # remove point from consideration
                 Kmm_ = Kmm_ + Amm[:, ux]            # add module connectivity (with self-nan's)
                 ux = np.nanargmin(Kmm_)             # least connected module (nan's in Kmm mask set modules)
-                vx = np.nanargmin(Vm * np.mean(Um, axis=0, keepdims=True).T)  # furthest location (nan's in Vm mask used locations)
+                vx = np.nanargmin(Vm @ np.mean(Um, axis=0, keepdims=True).T)  # furthest location (nan's in Vm mask used locations)
             U = Um[Args.partition]
 
     return U
