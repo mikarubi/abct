@@ -29,7 +29,7 @@ def kneighbors(
     Row = np.tile(np.r_[:n][:, None], (1, kappa+1))
     if similarity == "network":
         W = X.copy()
-        assert(W.shape[0] == W.shape[1] and np.allclose(W, W.T),
+        assert((W.shape[0] == W.shape[1]) and np.allclose(W, W.T),
             "Network matrix must be symmetric or similarity must not be ""network"".")
         np.fill_diagonal(W, np.inf)
         Col = np.argpartition(W, -(kappa+1), axis=1)[:, -(kappa+1):].ravel()
