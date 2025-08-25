@@ -7,7 +7,7 @@ def step2_test(Args):
         raise ValueError("Embedding dimension must be less than number of nodes or data points.")
 
     # Test partition
-    if (len(Args.partition) != Args.n) or (np.unique(Args.partition) != np.r_[:Args.k]):
+    if (len(Args.partition) != Args.n) or not np.array_equal(np.unique(Args.partition), np.r_[:Args.k]):
         raise ValueError("Initial module partition must have length %d and contain integers 0 to %d." % (Args.n, Args.k - 1))
 
     # Test initial embedding
