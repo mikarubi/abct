@@ -7,7 +7,7 @@ name = "abct"
 version = "2025.08"
 description = "Python implementation of the abct"
 requires-python = ">=3.10"
-dependencies = ["numpy", "scipy", "pydantic>=2.0", "pynndescent"]
+dependencies = ["numpy>=2.0", "scipy", "pydantic>=2.0", "pynndescent", "pymanopt", "igraph"]
 
 [tool.setuptools]
 packages = ["abct", "abct.loyv", "abct.docstrings"]
