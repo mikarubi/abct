@@ -22,10 +22,15 @@ end
 
 % Module structure
 if isempty(Args.partition)
+    switch Args.verbose
+        case true; display = "replicate";
+        case false; display = "none";
+    end
     Args.partition = louvains(Args.A, ...
         gamma=Args.gamma, ...
         replicates=Args.replicates, ...
-        finaltune=Args.finaltune);
+        finaltune=Args.finaltune, ...
+        display=display);
 else
     [~, ~, Args.partition] = unique(Args.partition);
 end

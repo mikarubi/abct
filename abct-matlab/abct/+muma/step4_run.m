@@ -128,7 +128,7 @@ end
 
 Dm = 2 * (1 - UUm);
 Numm = beta * alpha * (Dm.^(beta - 1));
-Numm(1:k+1:end) = 0;
+% Numm(1:k+1:end) = 0;      % don't need / matrix is non-square
 if beta >= 1                % fast update
     Denm = 1 + Numm .* Dm / beta;
 else                        % avoid NaN

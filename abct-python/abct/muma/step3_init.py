@@ -27,14 +27,16 @@ def step3_init(Args):
         case "greedy":                              # spherical maximin
             Amm = M.T @ Am                          # module connectivity
             np.fill_diagonal(Amm, np.nan)           # ignore self-connections
-            Kmm_ = np.zeros((k, 1))                 # degree to placed modules
+            Kmm_ = np.zeros(k)                      # degree to placed modules
             Um = np.zeros((k, Args.d))              # module locations
             Vm = muma.fsphere(k)                    # Fibonacci sphere
-            ux = np.nanargmax(np.sum(Amm, axis=1))  # initial module index
-            vx = np.nanargmax(np.sum(Vm @ Vm.T, axis=1)) # initial location index
+            ux = np.argmax(np.nansum(Amm, axis=1))  # initial module index
+            vx = np.argmax(np.nansum(Vm @ Vm.T, axis=1)) # initial location index
             for i in range(k):
                 Um[ux] = Vm[vx]                     # assign location
                 Vm[vx] = np.nan                     # remove point from consideration
+                if i == k-1:
+                    break
                 Kmm_ = Kmm_ + Amm[:, ux]            # add module connectivity (with self-nan's)
                 ux = np.nanargmin(Kmm_)             # least connected module (nan's in Kmm mask set modules)
                 vx = np.nanargmin(Vm @ np.mean(Um, axis=0, keepdims=True).T)  # furthest location (nan's in Vm mask used locations)

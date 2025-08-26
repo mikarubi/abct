@@ -85,14 +85,15 @@ function [U, CostHistory] = mumap(varargin)
 %       equivalent to the modularity, and to spring layout methods with
 %       Cauchy components and spherical constraints.
 %
-%   Optional dependencies:
+%   Dependencies:
 %       MATLAB: 
 %           Statistics and Machine Learning Toolbox (if method="indirect")
 %           Deep Learning Toolbox (if solver="adam")
 %           Manopt (if solver="trustregions")
 %       Python: 
+%           igraph
+%           PyTorch
 %           PyNNDescent (if method="indirect")
-%           PyTorch (if solver="adam")
 %           PyManopt (if solver="trustregions")
 
 % Parse, process, and test arguments

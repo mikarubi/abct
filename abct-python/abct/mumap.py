@@ -2,18 +2,18 @@ from typing import Tuple
 from importlib import resources
 
 import numpy as np
-from abct import loyv
+from abct import muma
 
 def mumap(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
     # Parse, process, and test arguments
-    Args = mumap.step0_args(*args, **kwargs)
-    Args = mumap.step1_proc(Args)
-    mumap.step2_test(Args)
+    Args = muma.step0_args(*args, **kwargs)
+    Args = muma.step1_proc(Args)
+    muma.step2_test(Args)
 
     # Initialize and run algorithm
-    U = mumap.step3_init(Args)
-    U, CostHistory = mumap.step4_run(U, Args)
+    U = muma.step3_init(Args)
+    U, CostHistory = muma.step4_run(U, Args)
 
     return U, CostHistory
 

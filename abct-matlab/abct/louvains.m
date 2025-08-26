@@ -1,14 +1,14 @@
 function [M, Q] = louvains(W, Args)
-% LOUVAINS Efficient Louvain/Leiden modularity
-%          maximization of sparse networks.
+% LOUVAINS Louvain or Leiden modularity maximization.
 %
-%   [M, Q] = louvains(W)
-%   [M, Q] = louvains(W, Name=Value)
+%   [M, Q] = louvains(W, Name=Value)        % MATLAB
+%   [M, Q] = leiden(W, Name=Value)          % Python
 %
 %   Inputs:
 %       W:  Network matrix of size n x n.
 %
 %       Name=[Value] Arguments:
+%
 %           Gamma=[Resolution parameter].
 %               Positive scalar (default is 1).
 %
@@ -33,7 +33,7 @@ function [M, Q] = louvains(W, Args)
 %       Q: Value of maximized modularity.
 %
 %   See also:
-%       MUMAP.
+%       MUMAP, LOYVAIN.
 
 arguments
     W (:, :) double {mustBeNonnegativeSymmetric}

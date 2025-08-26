@@ -81,8 +81,7 @@ end
 
 Row = repmat((1:n).', 1, kappa+1);
 if similarity == "network"
-    assert(isequal(size(W, 1), size(W, 2)) && all(abs(W - W') < eps("single"), "all"), ...
-        "Network matrix must be symmetric or similarity must not be ""network"".")
+    assert(isequal(size(W, 1), size(W, 2)), "Network matrix must be square.")
     W(1:n+1:end) = inf;
     [~, Col] = maxk(W, kappa+1, 2);
 else
