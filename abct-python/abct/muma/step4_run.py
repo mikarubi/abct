@@ -1,6 +1,7 @@
 import torch
 import pymanopt
 import numpy as np
+from scipy import sparse
 
 def step4_run(U, Args):
     # m-umap main algorithm
@@ -9,10 +10,14 @@ def step4_run(U, Args):
     device = "cuda" if Args.gpu else "cpu"
 
     U = torch.as_tensor(U, device=device).contiguous().requires_grad_(True)
-    A = torch.as_tensor(Args.A, device=device)
-    M = torch.as_tensor(Args.M, device=device)
-    Am = torch.as_tensor(Args.Am, device=device)
-    partition = torch.as_tensor(Args.partition, device=device)
+    # A = torch.as_tensor(Args.A, device=device)
+    # M = torch.as_tensor(Args.M, device=device)
+    # Am = torch.as_tensor(Args.Am, device=device)
+    # partition = torch.as_tensor(Args.partition, device=device)
+    A = Args.A
+    M = Args.M
+    Am = Args.Am
+    partition = Args.partition
     k = Args.k
     gamma = Args.gamma
     alpha = Args.alpha
@@ -21,10 +26,10 @@ def step4_run(U, Args):
     ## Precompute gradient matrices
 
     # Normalized degrees vector
-    K_nrm = torch.sqrt(gamma / A.sum()) * A.sum(1)
+    K_nrm = np.sqrt(gamma / A.sum()) * A.sum(1)
 
     # Modules and normalized modules
-    N = M.sum(0, keepdim=True)
+    N = M.sum(0, keepdims=True)
     M_nrm = M / N
 
     # Module adjacency and modularity matrices
@@ -39,13 +44,29 @@ def step4_run(U, Args):
     Ac = [None] * k
     Kc_nrm = [None] * k
     for i in range(k):
-        I = torch.where(partition == i)[0]
+        I = np.where(partition == i)[0]
         Ic[i] = I
         if Args.cache:
-            Bc[i] = A[torch.ix_(I, I)] - (K_nrm[I] * K_nrm[I].T)
+            Bc[i] = A[np.ix_(I, I)] - (K_nrm[I] * K_nrm[I].T)
         else:
-            Ac[i] = A[torch.ix_(I, I)]
+            Ac[i] = A[np.ix_(I, I)]
             Kc_nrm[i] = K_nrm[I]
+
+    as_sparse_tensor = lambda x: torch.sparse_csr_tensor(x.indptr, x.indices, x.data, device=device)
+
+    # Convert to PyTorch tensors
+    A = as_sparse_tensor(A)
+    M = torch.as_tensor(M, device=device)
+    Am = torch.as_tensor(Am, device=device)
+    partition = torch.as_tensor(partition, device=device)
+    K_nrm = torch.as_tensor(K_nrm, device=device)
+    N = torch.as_tensor(N, device=device)
+    M_nrm = torch.as_tensor(M_nrm, device=device)
+    Bm = torch.as_tensor(Bm, device=device)
+    Ic = [torch.as_tensor(ic, device=device) for ic in Ic]
+    Bc = [torch.as_tensor(bc, device=device) for bc in Bc]
+    Ac = [as_sparse_tensor(ac) for ac in Ac]
+    Kc_nrm = [torch.as_tensor(kc_nrm, device=device) for kc_nrm in Kc_nrm]
 
     ## Run solvers
 
@@ -115,7 +136,7 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
 
     Dm = 2 * (1 - UUm)
     Numm = beta * alpha * (Dm ** (beta - 1))
-    torch.fill_diagonal_(Numm, 0)
+    # Numm.fill_diagonal_(0)     # don't need / matrix is non-square
     if beta >= 1:                # fast update
         Denm = 1 + Numm * Dm / beta
     else:                        # avoid NaN
@@ -135,7 +156,7 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
         ni = len(Ui)   # number of nodes in module i
         Di = 2 * (1 - (Ui @ Ui.T))
         Numi = beta * alpha * (Di ** (beta - 1))
-        torch.fill_diagonal_(Numi, 0)
+        Numi.fill_diagonal_(0)
         if beta >= 1:            # fast update
             Deni = 1 + Numi * Di / beta
         else:                    # avoid NaN
@@ -149,7 +170,7 @@ def fx_cost_full(U, B, alpha, beta):
     ## Compare full cost and gradient
     D = 2 * (1 - (U @ U.T))
     Num = beta * alpha * (D ** (beta - 1))
-    torch.fill_diagonal_(Num, 0)
+    Num.fill_diagonal_(0)
     Den1 =   1 + alpha * (D ** beta)
     Cost =  - torch.sum(B / Den1)
 
