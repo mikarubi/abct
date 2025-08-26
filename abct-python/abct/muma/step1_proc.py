@@ -19,10 +19,11 @@ def step1_proc(Args):
 
     # Module structure
     if Args.partition is None:
-        Args.partition = abct.louvains(Args.A,
+        Args.partition = abct.leiden(Args.A,
             gamma=Args.gamma,
             replicates=Args.replicates,
-            finaltune=Args.finaltune
+            finaltune=Args.finaltune,
+            display="replicate" if Args.verbose else "none"
         )
     else:
         Args.partition = np.unique_inverse(Args.partition).inverse_indices

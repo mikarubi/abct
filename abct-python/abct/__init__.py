@@ -8,6 +8,7 @@ from abct.coloyvain import coloyvain
 from abct.degrees import degrees
 from abct.kneicomps import kneicomps
 from abct.kneighbors import kneighbors
+from abct.leiden import leiden
 from abct.loyvain import loyvain
 from abct.mumap import mumap
 from abct.residualn import residualn
@@ -20,6 +21,7 @@ __all__ = [
     "degrees",
     "kneicomps",
     "kneighbors",
+    "leiden",
     "loyvain",
     "mumap",
     "residualn",
