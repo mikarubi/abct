@@ -24,7 +24,7 @@ def step1_proc(Args):
             replicates=Args.replicates,
             finaltune=Args.finaltune,
             display="replicate" if Args.verbose else "none"
-        )
+        )[0]
     else:
         Args.partition = np.unique_inverse(Args.partition).inverse_indices
 
