@@ -2,7 +2,7 @@ from typing import Tuple
 from importlib import resources
 
 import numpy as np
-from abct import loyv
+from . import loyv
 
 def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
