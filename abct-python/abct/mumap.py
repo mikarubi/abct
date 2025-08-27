@@ -2,7 +2,7 @@ from typing import Tuple
 from importlib import resources
 
 import numpy as np
-from abct import muma
+from . import muma
 
 def mumap(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
