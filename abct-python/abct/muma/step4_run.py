@@ -1,7 +1,6 @@
 import torch
 import pymanopt
 import numpy as np
-from scipy import sparse
 
 def step4_run(U, Args):
     # m-umap main algorithm
@@ -9,19 +8,13 @@ def step4_run(U, Args):
     ## Initialize GPU arrays
     device = "cuda" if Args.gpu else "cpu"
 
-    U = torch.as_tensor(U, device=device).contiguous().requires_grad_(True)
-    # A = torch.as_tensor(Args.A, device=device)
-    # M = torch.as_tensor(Args.M, device=device)
-    # Am = torch.as_tensor(Args.Am, device=device)
-    # partition = torch.as_tensor(Args.partition, device=device)
-    A = Args.A
-    M = Args.M
-    Am = Args.Am
-    partition = Args.partition
     k = Args.k
     gamma = Args.gamma
     alpha = Args.alpha
     beta = Args.beta
+    A = Args.A
+    M = Args.M
+    Am = Args.Am
 
     ## Precompute gradient matrices
 
@@ -44,7 +37,7 @@ def step4_run(U, Args):
     Ac = [None] * k
     Kc_nrm = [None] * k
     for i in range(k):
-        I = np.where(partition == i)[0]
+        I = np.where(Args.partition == i)[0]
         Ic[i] = I
         if Args.cache:
             Bc[i] = A[np.ix_(I, I)] - (K_nrm[I] * K_nrm[I].T)
@@ -52,21 +45,18 @@ def step4_run(U, Args):
             Ac[i] = A[np.ix_(I, I)]
             Kc_nrm[i] = K_nrm[I]
 
-    as_sparse_tensor = lambda x: torch.sparse_csr_tensor(x.indptr, x.indices, x.data, device=device)
+    ## Initialize Torch tensors
 
-    # Convert to PyTorch tensors
-    A = as_sparse_tensor(A)
-    M = torch.as_tensor(M, device=device)
-    Am = torch.as_tensor(Am, device=device)
-    partition = torch.as_tensor(partition, device=device)
-    K_nrm = torch.as_tensor(K_nrm, device=device)
-    N = torch.as_tensor(N, device=device)
+    U = torch.as_tensor(U, device=device).contiguous().requires_grad_(True)
     M_nrm = torch.as_tensor(M_nrm, device=device)
     Bm = torch.as_tensor(Bm, device=device)
-    Ic = [torch.as_tensor(ic, device=device) for ic in Ic]
-    Bc = [torch.as_tensor(bc, device=device) for bc in Bc]
-    Ac = [as_sparse_tensor(ac) for ac in Ac]
-    Kc_nrm = [torch.as_tensor(kc_nrm, device=device) for kc_nrm in Kc_nrm]
+    alpha = torch.as_tensor(alpha, device=device)
+    beta = torch.as_tensor(beta, device=device)
+    for i in range(k):
+        Ic[i] = torch.as_tensor(Ic[i], device=device)
+        Bc[i] = torch.as_tensor(Bc[i], device=device)
+        Ac[i] = torch.sparse_csr_tensor(Ac[i].indptr, Ac[i].indices, Ac[i].values, device=device)
+        Kc_nrm[i] = torch.as_tensor(Kc_nrm[i], device=device)
 
     ## Run solvers
 
@@ -88,11 +78,14 @@ def step4_run(U, Args):
                 cost = fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta)
                 optimizer.zero_grad()
                 cost.backward()
+                with torch.no_grad():  # Get Riemannian gradient
+                    U_dot_EGrad = (U * U.grad).sum(dim=1, keepdim=True)
+                    U.grad -= U * U_dot_EGrad
                 optimizer.step()
 
                 grad_norm = U.grad.norm().detach().cpu().numpy()
                 with torch.no_grad():
-                    U = U.div_(U.norm(dim=1, keepdim=True))
+                    U /= U.norm(dim=1, keepdim=True)
 
                 cval = cost.detach().cpu().numpy()
                 CostHistory[t] = cval
@@ -136,7 +129,6 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
 
     Dm = 2 * (1 - UUm)
     Numm = beta * alpha * (Dm ** (beta - 1))
-    # Numm.fill_diagonal_(0)     # don't need / matrix is non-square
     if beta >= 1:                # fast update
         Denm = 1 + Numm * Dm / beta
     else:                        # avoid NaN
@@ -156,7 +148,7 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
         ni = len(Ui)   # number of nodes in module i
         Di = 2 * (1 - (Ui @ Ui.T))
         Numi = beta * alpha * (Di ** (beta - 1))
-        Numi.fill_diagonal_(0)
+        torch.fill_diagonal_(Numi, 0)
         if beta >= 1:            # fast update
             Deni = 1 + Numi * Di / beta
         else:                    # avoid NaN
@@ -170,7 +162,7 @@ def fx_cost_full(U, B, alpha, beta):
     ## Compare full cost and gradient
     D = 2 * (1 - (U @ U.T))
     Num = beta * alpha * (D ** (beta - 1))
-    Num.fill_diagonal_(0)
+    torch.fill_diagonal_(Num, 0)
     Den1 =   1 + alpha * (D ** beta)
     Cost =  - torch.sum(B / Den1)
 
