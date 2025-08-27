@@ -43,17 +43,17 @@ end
 %% Initialize GPU arrays
 
 if Args.gpu
+    U = gpuArray(U);
+    M_nrm = gpuArray(M_nrm);
+    Bm = gpuArray(Bm);
+    alpha = gpuArray(alpha);
+    beta = gpuArray(beta);
     for i = 1:k
         Ic{i} = gpuArray(Ic{i});
         Bc{i} = gpuArray(Bc{i});
         Ac{i} = gpuArray(Ac{i});
         Kc_nrm{i} = gpuArray(Kc_nrm{i});
     end
-    U = gpuArray(U);
-    M_nrm = gpuArray(M_nrm);
-    Bm = gpuArray(Bm);
-    alpha = gpuArray(alpha);
-    beta = gpuArray(beta);
 end
 
 %% Run solvers
@@ -128,7 +128,6 @@ end
 
 Dm = 2 * (1 - UUm);
 Numm = beta * alpha * (Dm.^(beta - 1));
-% Numm(1:k+1:end) = 0;      % don't need / matrix is non-square
 if beta >= 1                % fast update
     Denm = 1 + Numm .* Dm / beta;
 else                        % avoid NaN
