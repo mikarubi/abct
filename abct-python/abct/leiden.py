@@ -1,8 +1,6 @@
 from typing import Literal
-from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from importlib import resources
-from scipy.sparse import spmatrix
 
 import numpy as np
 import igraph as ig
@@ -17,7 +15,6 @@ def leiden(
     tolerance: float = 1e-10,
     display: Literal["none", "replicate"] = "none",
 ):
-
     G = ig.Graph.Weighted_Adjacency(W, mode="undirected", attr="weight")
     Q = -np.inf
     for i in range(replicates):
