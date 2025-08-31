@@ -10,22 +10,22 @@ function [M, Q] = louvains(W, Args)
 %
 %       Name=[Value] Arguments:
 %
-%           Gamma=[Resolution parameter].
+%           gamma=[Resolution parameter].
 %               Positive scalar (default is 1).
 %
-%           Start=[Initial module assignments].
+%           start=[Initial module assignments].
 %               Vector of length n (default is 1:n).
 %
-%           Replicates=[Number of replicates].
+%           replicates=[Number of replicates].
 %               Positive integer (default is 10).
 %
-%           FinalTune=[Final tuning of optimized assignment].
+%           finaltune=[Final tuning of optimized assignment].
 %               Logical (default is false).
 %
-%           Tolerance=[Convergence tolerance].
+%           tolerance=[Convergence tolerance].
 %               Positive scalar (default is 1e-10).
 %
-%           Display=[Display progress].
+%           display=[Display progress].
 %               "none": no display (default).
 %               "replicate": display progress at each replicate.
 %

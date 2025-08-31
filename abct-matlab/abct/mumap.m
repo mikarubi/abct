@@ -5,6 +5,10 @@ function [U, CostHistory] = mumap(varargin)
 %   [U, CostHistory] = mumap(X, Name=Value);
 %
 %   Inputs:
+%       W:  Network matrix of size n x n.
+%
+%       OR
+%
 %       X:  Data matrix of size n x p, where
 %           n is the number of data points and
 %           p is the number of features.
@@ -27,25 +31,25 @@ function [U, CostHistory] = mumap(varargin)
 %           gamma=[Modularity resolution parameter].
 %               Positive scalar (default is 1).
 %
-%           Similarity=[Type of similarity].
+%           similarity=[Type of similarity].
 %               "network": Network connectivity (default).
 %               "corr": Pearson correlation coefficient.
 %               "cosim": Cosine similarity.
 %
-%           Method=[Method of nearest-neighbor search].
+%           method=[Method of nearest-neighbor search].
 %               "direct": Direct computation of similarity matrix.
 %               "indirect": knnsearch (MATLAB) or pynndescent (Python).
 %
-%           Replicates=[Number of modularity replicates].
+%           replicates=[Number of modularity replicates].
 %               Positive integer (default is 10).
 %
-%           FinalTune=[Modularity final tuning].
+%           finaltune=[Modularity final tuning].
 %               Logical scalar (default is true).
 %
-%           Partition=[Module partition].
+%           partition=[Module partition].
 %               Integer vector: module partition of length n (default is []).
 %
-%           Start=[Initial embedding method].
+%           start=[Initial embedding method].
 %               "greedy": Spherical maximin initialization (default).
 %               "spectral": Spectral initialization.
 %               "spectral_nn": Spectral initialization on full (n x n) matrix.
@@ -53,26 +57,26 @@ function [U, CostHistory] = mumap(varargin)
 %                   n is the number of data points and
 %                   d is the embedding dimension.
 %
-%           Solver=[Optimization solver].
+%           solver=[Optimization solver].
 %               "trustregions": Manopt trust-regions method (default).
 %               "adam": Adam (Adaptive Moment Estimation) optimizer.
 %
-%           MaxIter=[Maximum number of iterations].
+%           maxiter=[Maximum number of iterations].
 %               Positive integer (default is 10000).
 %
-%           LearnRate=[Optimizer learning rate].
+%           learnrate=[Optimizer learning rate].
 %               Positive scalar (default is 0.001).
 %
-%           Tol=[Solution tolerance].
+%           tolerance=[Solution tolerance].
 %               Positive scalar (default is 1e-6).
 %
-%           GPU=[Use GPU].
+%           gpu=[Use GPU].
 %               Logical (default is false).
 %
-%           Cache=[Cache gradient matrices].
+%           cache=[Cache gradient matrices].
 %               Logical (default is false).
 %
-%           Verbose=[Verbose output].
+%           verbose=[Verbose output].
 %               Logical (default is true).
 %
 %   Outputs:
