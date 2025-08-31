@@ -11,9 +11,7 @@ function B = kneighbors(W, type, kappa, similarity, method, varargin)
 %   Inputs:
 %
 %       W: Network matrix of size n x n.
-%
 %       OR
-%
 %       X: Data matrix of size n x p, where
 %           n is the number of data points and
 %           p is the number of features.

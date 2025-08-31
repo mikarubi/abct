@@ -1,6 +1,7 @@
 import warnings
 from typing import Literal, Optional
 from numpy.typing import ArrayLike
+from scipy.sparse import sparray
 from pydantic import validate_call, ConfigDict
 from importlib import resources
 
@@ -10,20 +11,27 @@ from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def kneicomps(
-    W: ArrayLike,
+    W: ArrayLike | sparray,
     k: int,
     weight: Literal["weighted", "binary"] = "weighted",
-    thr: Optional[float] = None,
     **kwargs,
 ) -> np.ndarray:
 
     W = np.asarray(W)
 
+    # Default kneighbors arguments
+    args = {
+        "type": "common",
+        "kappa": 0.1,
+        "similarity": "network",
+        "method": "direct",
+    }
+    # Update arguments with kwargs
+    args.update(kwargs)
+    kwargs = {key: kwargs[key] for key in set(kwargs.keys()) - set(args.keys())}
+
     # Get neighbors matrix
-    if thr is None:
-        B = abct.kneighbors(W)
-    else:
-        B = abct.kneighbors(W, thr)
+    B = abct.kneighbors(W, args["type"], args["kappa"], args["similarity"], args["method"])
 
     # Get components
     match weight:

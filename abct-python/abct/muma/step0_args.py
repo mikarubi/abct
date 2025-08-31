@@ -1,5 +1,6 @@
 from typing import Literal
 from numpy.typing import ArrayLike
+from scipy.sparse import sparray as SparseArray
 from pydantic import validate_call, ConfigDict
 from types import SimpleNamespace
 
@@ -15,7 +16,7 @@ def step0_args(X: ArrayLike, **kwargs) -> SimpleNamespace:
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def parse_args(
-    X: ArrayLike,
+    X: ArrayLike | SparseArray,
     d: int = 3,
     kappa: int = 30,
     alpha: float = 1.0,
@@ -30,7 +31,7 @@ def parse_args(
     solver: Literal["adam", "trustregions"] = "trustregions",
     maxiter: int = 10000,
     learnrate: float = 1e-3,
-    tol: float = 1e-6,
+    tolerance: float = 1e-6,
     gpu: bool = False,
     cache: bool = False,
     verbose: bool = True,

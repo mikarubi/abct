@@ -20,7 +20,7 @@ arguments
         Args.solver, ["adam", "trustregions"])} = "trustregions"
     Args.maxiter (1, 1) {mustBePositive, mustBeInteger} = 1e4
     Args.learnrate (1, 1) {mustBePositive} = 1e-3
-    Args.tol (1, 1) {mustBePositive} = 1e-6
+    Args.tolerance (1, 1) {mustBePositive} = 1e-6
     Args.gpu (1, 1) logical = false
     Args.cache (1, 1) logical = false
     Args.verbose (1, 1) logical = true

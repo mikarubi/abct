@@ -8,9 +8,7 @@ function [M, Q] = loyvain(varargin)
 %
 %   Inputs:
 %       W:  Network matrix of size n x n.
-%
 %       OR
-%
 %       X:  Data matrix of size n x p, where
 %           n is the number of data points and
 %           p is the number of features.
@@ -41,25 +39,25 @@ function [M, Q] = loyvain(varargin)
 %
 %       Name=[Value] Arguments:
 %
-%           Start=[Initial module assignments].
+%           start=[Initial module assignments].
 %               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
 %               "balanced": Standard kmeans++ initialization.
 %               "random": Uniformly random initialization.
 %               Numeric vector: Initial module assignment vector of length n.
 %
-%           NumBatches=[Number of batches].
+%           numbatches=[Number of batches].
 %               Positive integer (default is 10).
 %
-%           MaxIter=[Maximum number of algorithm iterations].
+%           maxiter=[Maximum number of algorithm iterations].
 %               Positive integer (default is 1000).
 %
-%           Replicates=[Number of replicates].
+%           replicates=[Number of replicates].
 %               Positive integer (default is 10).
 %
-%           Tolerance=[Convergence tolerance].
+%           tolerance=[Convergence tolerance].
 %               Positive scalar (default is 1e-10).
 %
-%           Display=[Display progress].
+%           display=[Display progress].
 %               "none": no display (default).
 %               "replicate": display progress at each replicate.
 %               "iteration": display progress at each iteration.

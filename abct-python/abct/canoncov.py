@@ -40,8 +40,8 @@ def canoncov(
         X = abct.residualn(X, "degree")
         Y = abct.residualn(Y, "degree")
     else:
-        X = X - np.mean(X, axis=0, keepdims=True)
-        Y = Y - np.mean(Y, axis=0, keepdims=True)
+        X -= np.mean(X, axis=0, keepdims=True)
+        Y -= np.mean(Y, axis=0, keepdims=True)
 
     # Set up problem
     if corr:

@@ -1,5 +1,6 @@
 from typing import Literal
 from numpy.typing import ArrayLike
+from scipy.sparse import sparray
 from pydantic import validate_call, ConfigDict
 from importlib import resources
 
@@ -9,7 +10,7 @@ from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def kneighbors(
-    X: ArrayLike,
+    X: ArrayLike | sparray,
     type: Literal["common", "nearest"] = "common",
     kappa: float = 10,
     similarity: Literal["network", "corr", "cosim"] = "network",

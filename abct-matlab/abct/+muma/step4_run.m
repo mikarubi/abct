@@ -63,8 +63,8 @@ switch Args.solver
         if Args.verbose
             fp.head = @() fprintf("%5s %24s %12s\n", "iter", "cost val", "grad. norm");
             fp.iter = @(t, cost, grad_norm) fprintf("%5d %+.16e %12e\n", t, cost, grad_norm);
-            fp.stop_cost = @() fprintf("Cost tolerance reached; tol = %g.\n", Args.tol);
-            fp.stop_grad = @() fprintf("Gradient norm tolerance reached; tol = %g.\n", Args.tol);
+            fp.stop_cost = @() fprintf("Cost tolerance reached; tolerance = %g.\n", Args.tolerance);
+            fp.stop_grad = @() fprintf("Gradient norm tolerance reached; tolerance = %g.\n", Args.tolerance);
             fp.stop_iter = @() fprintf("Max iter exceeded; maxiter = %g.", Args.maxiter);
         else
             fp = struct(head = @()[], iter = @(a,b,c)[], stop_cost = @()[], stop_grad = @()[], stop_iter = @()[]);
@@ -83,9 +83,9 @@ switch Args.solver
             CostHistory(t) = cost;
 
             fp.iter(t, cost, grad_norm);
-            if (t > 1) && (abs(cost - CostHistory(t-1)) < Args.tol)
+            if (t > 1) && (abs(cost - CostHistory(t-1)) < Args.tolerance)
                 fp.stop_cost(); break;
-            elseif grad_norm < Args.tol
+            elseif grad_norm < Args.tolerance
                 fp.stop_grad(); break;
             elseif t == Args.maxiter
                 fp.stop_iter(); break;
@@ -101,7 +101,7 @@ switch Args.solver
         problem.costgrad = @(U) costgrad(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta);
         % checkgradient(problem);
 
-        opts = struct(tolgradnorm=Args.tol, maxiter=Args.maxiter, verbosity=2*Args.verbose);
+        opts = struct(tolgradnorm=Args.tolerance, maxiter=Args.maxiter, verbosity=2*Args.verbose);
         [U, ~, info] = trustregions(problem, U, opts);
         CostHistory = info.cost;
 end

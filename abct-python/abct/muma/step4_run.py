@@ -66,8 +66,8 @@ def step4_run(U, Args):
             fp = {
                 "head": lambda: print("%5s %24s %12s" % ("iter", "cost val", "grad. norm")) if vb else None,
                 "iter": lambda t, cost, grad_norm: print("%5d %+.16e %12e" % (t, cost, grad_norm)) if vb else None,
-                "stop_cost": lambda: print("Cost tolerance reached; tol = %g." % Args.tol) if vb else None,
-                "stop_grad": lambda: print("Gradient norm tolerance reached; tol = %g." % Args.tol) if vb else None,
+                "stop_cost": lambda: print("Cost tolerance reached; tolerance = %g." % Args.tolerance) if vb else None,
+                "stop_grad": lambda: print("Gradient norm tolerance reached; tolerance = %g." % Args.tolerance) if vb else None,
                 "stop_iter": lambda: print("Max iter exceeded; maxiter = %g." % Args.maxiter) if vb else None
             }
             fp["head"]()
@@ -90,10 +90,10 @@ def step4_run(U, Args):
                 cval = cost.detach().cpu().numpy()
                 CostHistory[t] = cval
                 fp["iter"](t, cval, grad_norm)
-                if t and (abs(cval - CostHistory[t-1]) < Args.tol):
+                if t and (abs(cval - CostHistory[t-1]) < Args.tolerance):
                     fp["stop_cost"]()
                     break
-                elif grad_norm < Args.tol:
+                elif grad_norm < Args.tolerance:
                     fp["stop_grad"]()
                     break
                 elif t == Args.maxiter - 1:
