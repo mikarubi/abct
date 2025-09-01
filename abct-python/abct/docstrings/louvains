@@ -1,29 +1,30 @@
- LOUVAINS Efficient Louvain/Leiden modularity
-          maximization of sparse networks.
+ LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB).
+ LEIDEN igraph Leiden modularity maximization (Python).
 
-   M, Q = louvains(W)
-   M, Q = louvains(W, Name=Value)
+   M, Q = louvains(W, Name=Value)        % MATLAB
+   M, Q = leiden(W, Name=Value)          # Python
 
    Inputs:
        W:  Network matrix of size n x n.
 
        Name=Value Arguments:
-           Gamma=Resolution parameter.
+
+           gamma=Resolution parameter.
                Positive scalar (default is 1).
 
-           Start=Initial module assignments.
+           start=Initial module assignments.
                Vector of length n (default is 1:n).
 
-           Replicates=Number of replicates.
+           replicates=Number of replicates.
                Positive integer (default is 10).
 
-           FinalTune=Final tuning of optimized assignment.
+           finaltune=Final tuning of optimized assignment.
                Logical (default is false).
 
-           Tolerance=Convergence tolerance.
+           tolerance=Convergence tolerance.
                Positive scalar (default is 1e-10).
 
-           Display=Display progress.
+           display=Display progress.
                "none": no display (default).
                "replicate": display progress at each replicate.
 
@@ -32,4 +33,4 @@
        Q: Value of maximized modularity.
 
    See also:
-       MUMAP.
+       MUMAP, LOYVAIN.
