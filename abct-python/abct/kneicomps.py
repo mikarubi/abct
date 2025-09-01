@@ -43,7 +43,7 @@ def kneicomps(
             V = np.real(V)
             return V[:, 1:]  # Remove first eigenvector
         case "binary":
-            M = abct.loyvain(B, k, "kmodularity", "network", **kwargs)[0]
+            M = abct.loyvain(B.todense(), k, "kmodularity", "network", **kwargs)[0]
             V = np.zeros((len(M), k))
             V[np.arange(len(M)), M] = 1
             return V
