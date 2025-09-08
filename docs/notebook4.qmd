@@ -3,36 +3,107 @@ title: Canonical covariance analysis
 jupyter: python3
 ---
 
-
-
-### Set up and get data
+### Set up and load data
 
 ```{python}
+
 ## Import modules
-import os
 import abct
 import numpy as np
-from scipy import io
 import plotly.express as px
-import plotly.subplots as sp
+from scipy import io
+from nilearn import plotting
 
-## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
-connectivity = data["connectivity"]
-activity = data["activity"]
-coactivity = activity.T @ activity
+## Load data
+data = io.loadmat("./data/hcp_data.mat")
 
-k = 5           # Number of components 
-repl = 100      # Number of replicates
 ```
 
-### Canonical covariance analysis
+### Run canonical covariance analysis
 
 ```{python}
-# Weighted variant
-A, B, U, V, R = abct.canoncov(connectivity, coactivity, k, "weighted")
 
-# Binary variant
-A_bin, B_bin, U_bin, V_bin, R_bin = abct.canoncov(connectivity, coactivity, k, "binary", 0, 0, replicates=repl)
+# Unpack data
+W = data["W"]
+C = data["X"].T @ data["X"]
+k = 5
+
+# Weighted variant (with degree correction by default)
+A_wei, B_wei, U_wei, V_wei, R_wei = abct.canoncov(W, C, k, "weighted")
+
+# Binary variant (with degree correction by default)
+A_bin, B_bin, U_bin, V_bin, R_bin = abct.canoncov(W, C, k, "binary")
+
 ```
 
+### Visualize scatter of canonical covariances
+
+```{python}
+
+parc = data["parc"].ravel() - 1
+n_hemi = len(parc) // 2
+
+gii_left = "./data/S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii"
+ccas = {"Binary structural canonical coefficient": (A_bin[:, 0], "hot"),
+        "Binary structural canonical component": (U_bin[:, 0], "inferno"),
+        "Binary functional canonical coefficient": (B_bin[:, 0], "hot"),
+        "Binary functional canonical component": (V_bin[:, 0], "viridis")}
+
+for i, (name, vals_cmap) in enumerate(ccas.items()):
+    vals, cmap = vals_cmap
+    plotting.plot_surf(
+        surf_mesh=gii_left,
+        surf_map=vals[parc][:n_hemi],
+        view = "lateral",
+        title = name,
+        cmap = cmap,
+    )
+
+```
+
+### Visualize scatters of canonical components
+
+```{python}
+
+# Standard canonical covariance analysis
+fig = px.scatter(
+    x=np.r_[:k],
+    y=R_wei,
+    labels={"x": "Canonical components", "y": "Canonical covariances"},
+    title=f"Standard canonical covariance analysis",
+    width=600, height=600,
+)
+fig.update_layout(title_x=0.5).show()
+
+# Binary canonical covariance analysis
+fig = px.scatter(
+    x=np.r_[:k],
+    y=R_bin,
+    labels={"x": "Canonical components", "y": "Canonical covariances"},
+    title=f"Binary canonical covariance analysis",
+    width=600, height=600,
+)
+fig.update_layout(title_x=0.5).show()
+```
+```{python}
+
+# Scatter plot of structural canonical components
+rs = np.corrcoef(U_wei[:, 0], U_bin[:, 0])[0, 1]
+rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
+fig = px.scatter(
+    x=U_wei[:, 0],
+    y=U_bin[:, 0],
+    labels={"x": "Weighted canonical component 1", "y": "Binary canonical component 1"},
+    title=f"Canonical components (structural = {rs:.3f}, functional = {rf:.3f})",
+    width=600, height=600,
+)
+
+# Scatter plot of correlation canonical components
+fig = fig.add_scatter(
+    x=V_wei[:, 0],
+    y=V_bin[:, 0],
+    mode="markers",
+)
+fig.update_layout(title_x=0.5, showlegend=False).show()
+
+```

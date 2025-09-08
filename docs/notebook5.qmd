@@ -1,13 +1,12 @@
 ---
-title: Canonical covariance analysis
+title: Co-activity gradients
 jupyter: python3
 ---
-
-
 
 ### Set up and get data
 
 ```{python}
+
 ## Import modules
 import os
 import abct
@@ -17,28 +16,32 @@ import plotly.express as px
 import plotly.subplots as sp
 
 ## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
-connectivity = data["connectivity"]
-activity = data["activity"]
-coactivity = activity.T @ activity
+dir_data = os.path.join(".", "data") + "/"
+data = io.loadmat(dir_data + "hcp_data.mat")
+W = data["connectivity"]
+X = data["activity"]
+C = X.T @ X
 
 k = 5           # Number of components 
 repl = 100      # Number of replicates
+
 ```
 
 ### Co-activity gradients
 
 ```{python}
+
 # Weighted gradients
-V = abct.kneicomps(coactivity, k)
+V = abct.kneicomps(C, k, "weighted")
 
 # Binary gradients
-V_bin = abct.kneicomps(coactivity, k, "binary")
+V_bin = abct.kneicomps(C, k, "binary")
+
 ```
 
 ### Residual degree
 
 ```{python}
-d_ = abct.degrees(coactivity, "residual")
+d_ = abct.degrees(C, "residual")
 ```
 

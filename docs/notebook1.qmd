@@ -1,78 +1,78 @@
 ---
-title: Matrix visualization
+title: Network visualization
 jupyter: python3
 ---
 
-
-
-### Set up and get data
+### Set up and load data
 
 ```{python}
+
 ## Import modules
-import os
 import abct
 import numpy as np
-from scipy import io
 import plotly.express as px
-import plotly.subplots as sp
-from utils import get_cmap
+from scipy import io
 
-## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
-ord_conn = data["order_conn"].flatten() - 1
-ord_coact = data["order_coact"].flatten() - 1
-cmap_conn = get_cmap(data["cmap_yellowheat"])
-cmap_coact = get_cmap(data["cmap_gouldian"])
+## Load data
+data = io.loadmat("./data/hcp_data.mat")
+
 ```
 
-### Compute connectivity and co-activity matrices
+### Get structural and correlation networks
 
 ```{python}
-## Compute connectivity matrices
-connectivity = data["connectivity"]
 
-conn = dict()
-conn["Original"] = connectivity
-conn["Degree-corrected"] = abct.residualn(connectivity, "degree")
-conn["Co-neighbor"] = abct.kneighbors(connectivity)
+## Get structural networks
+W = data["W"]
 
-## Compute co-activity matrices
-activity = data["activity"]
-coactivity = activity.T @ activity
+WD = dict()
+WD["Original"] = W
+WD["Degree-corrected"] = abct.residualn(W, "degree")
+WD["Co-neighbor"] = abct.kneighbors(W, "common", kappa=0.1).todense()
 
-coact = dict()
-coact["Original"] = coactivity
-coact["Degree-corrected"] = abct.residualn(coactivity, "degree")
-coact["Co-neighbor"] = abct.kneighbors(coactivity)
+## Get correlation networks
+X = data["X"]
+C = X.T @ X
+
+CD = dict()
+CD["Original"] = C
+CD["Degree-corrected"] = abct.residualn(C, "degree")
+CD["Co-neighbor"] = abct.kneighbors(C, "common", kappa=0.1).todense()
+
 ```
 
-### Visualize connectivity matrices
+### Visualize structural networks
 
 ```{python}
+
+ordw = data["ordw"].flatten() - 1
 zmin = (0, -0.005, 0)
 zmax = (0.01, 0.005, 36)
-for i, name in enumerate(conn):
+for i, name in enumerate(WD):
     fig = px.imshow(
-        conn[name][np.ix_(ord_conn, ord_conn)], 
-        title=f"{name} connectivity matrix",
-        color_continuous_scale=cmap_conn,
+        WD[name][np.ix_(ordw, ordw)], 
+        title=f"{name} structural network",
+        color_continuous_scale="inferno",
         zmin=zmin[i], zmax=zmax[i],
         width=600, height=600)
     fig.update_layout(title_x=0.5).show()
+
 ```
 
-### Visualize co-activity matrices
+### Visualize correlation networks
 
 ```{python}
+
+ordc = data["ordc"].flatten() - 1
 zmin = (0, -0.2, 0)
 zmax = (1, 0.2, 36)
-for i, name in enumerate(coact):
+for i, name in enumerate(CD):
     fig = px.imshow(
-        coact[name][np.ix_(ord_coact, ord_coact)], 
-        title=f"{name} co-activity matrix",
-        color_continuous_scale=cmap_coact,
+        CD[name][np.ix_(ordc, ordc)], 
+        title=f"{name} correlation network",
+        color_continuous_scale="viridis",
         zmin=zmin[i], zmax=zmax[i],
         width=600, height=600)
     fig.update_layout(title_x=0.5).show()
-```
 
+```

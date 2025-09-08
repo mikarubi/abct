@@ -3,112 +3,131 @@ title: Clustering
 jupyter: python3
 ---
 
-
-
-### Set up and get data
+### Set up and load data
 
 ```{python}
+
 ## Import modules
-import os
 import abct
+import time
 import numpy as np
-from scipy import io
+import plotly.express as px
 from sklearn import cluster
-from nilearn import plotting
-from utils import get_plot_data
+from scipy import io
 
-## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
+## Load data
+data = io.loadmat("./data/hcp_data.mat")
 
-# Downsampled activity for fast computation
-connectivity = data["connectivity"]
-activity = data["activity"]
-coactivity = activity.T @ activity
-
-# Clustering hyperparameters
-k = 15                  # number of clusters
-repl = 5                # number of replicates
-
-# Regress global signal and normalize to unit norm
-activity_gsr = abct.residualn(activity.T, "global").T
-activity_gsr = activity_gsr / np.linalg.norm(activity_gsr, axis=0, keepdims=True)
-coactivity_gsr = activity_gsr.T @ activity_gsr
 ```
 
-### Set up functions
+### Set up data and functions
 
 ```{python}
-def kmeans_stats(X, M):
-    distance = 0.0
+
+# Get data
+W = data["W"]
+X = data["X"]
+C = X.T @ X
+
+# Get residual correlation networks
+Xg = abct.residualn(X.T, "global").T
+Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
+Cg = Xg.T @ Xg
+
+# Define clustering hyperparameters
+K = np.r_[5:30:5]          # number of clusters
+repl = 10                  # number of replicates
+
+def kmeans_similarity(X, M):
+    # distance = 0.0
     similarity = 0.0
     for u in range(k):
         I = (M == u)                        # cluster indices
         ni = I.sum()                        # cluster size
         Xi = X[:, I]                        # cluster timeseries
         xi = Xi.mean(1, keepdims=1)         # cluster centroid
-        distance += ((Xi - xi) ** 2).sum()  # distance
+        # distance += ((Xi - xi) ** 2).sum()  # distance
         similarity += (Xi.T @ Xi).sum() / ni
 
-    return (distance, similarity)
+    return similarity
 
-def spectral_stats(C, M):
+def spectral_similarity(C, M):
     similarity = 0.0
     for u in range(k):
         I = (M == u)                        # cluster indices
         similarity += C[np.ix_(I, I)].sum() / C[I].sum()
 
     return similarity
+
 ```
 
-### Lloyd k-means
+### Run standard k-means and spectral clustering
 
 ```{python}
-Mk0 = cluster.KMeans(n_clusters=k, n_init=repl).fit(activity_gsr.T).labels_
-print(f"Similarity (Lloyd): {kmeans_stats(activity_gsr, Mk0)[1]}")
+
+start_time = time.time()
+print("Running standard k-means and spectral clustering.")
+
+kmeans_lloyd_similarity = np.zeros(len(K))
+spectral_shimalik_similarity = np.zeros(len(K))
+for i, k in enumerate(K):
+    print(f"Number of clusters: {k}")
+    M_kmeans_sklearn = cluster.KMeans(n_clusters=k, n_init=repl).fit(Xg.T).labels_
+    M_spectral_sklearn = cluster.SpectralClustering(n_clusters=k, affinity='precomputed', n_init=repl).fit(C).labels_
+    kmeans_lloyd_similarity[i] = kmeans_similarity(Xg, M_kmeans_sklearn)
+    spectral_shimalik_similarity[i] = spectral_similarity(C, M_spectral_sklearn)
+
+print(f"Time elapsed: {time.time() - start_time} seconds.")
+
 ```
 
-### Loyvain k-means
+### Run Loyvain k-means and spectral clustering
 
 ```{python}
-Mk1 = abct.loyvain(coactivity, k, "kmodularity", replicates=repl)[0]
-print(f"Similarity (Loyvain): {kmeans_stats(activity_gsr, Mk1)[1]}")
+
+start_time = time.time()
+print("Running Loyvain k-means and spectral clustering.")
+
+kmeans_loyvain_similarity = np.zeros(len(K))
+spectral_loyvain_similarity = np.zeros(len(K))
+for i, k in enumerate(K):
+    print(f"Number of clusters: {k}")
+    M_kmodularity_loyvain = abct.loyvain(C, k, "kmodularity", replicates=repl)[0]
+    M_spectral_loyvain = abct.loyvain(C, k, "spectral", replicates=repl)[0]
+    kmeans_loyvain_similarity[i] = kmeans_similarity(Xg, M_kmodularity_loyvain)
+    spectral_loyvain_similarity[i] = spectral_similarity(C, M_spectral_loyvain)
+
+print(f"Time elapsed: {time.time() - start_time} seconds.")
+
 ```
 
-### Shi-Malik spectral clustering
+
+### Scatter plots of clustering similarities
 
 ```{python}
-Ms0 = cluster.SpectralClustering(n_clusters=k, affinity='precomputed', n_init=repl).fit(connectivity).labels_
-print(f"Similarity (Shi-Malik): {spectral_stats(connectivity, Ms0)}")
+
+# Scatter plot of Lloyd and Loyvain k-means
+fig = px.scatter(
+    x=kmeans_lloyd_similarity,
+    y=kmeans_loyvain_similarity,
+    labels={"x": "Lloyd k-means", "y": "Loyvain k-means"},
+    title=f"K-means similarity",
+    width=600, height=600,
+)
+# Add diagonal line
+fig.add_shape(type="line", x0=55, y0=55, x1=115, y1=115)
+fig.update_layout(title_x=0.5).show()
+
+# Scatter plot of Lloyd and Loyvain spectral
+fig = px.scatter(
+    x=spectral_shimalik_similarity,
+    y=spectral_loyvain_similarity,
+    labels={"x": "Shi-Malik spectral", "y": "Loyvain spectral"},
+    title=f"Spectral similarity",
+    width=600, height=600,
+)
+# Add diagonal line
+fig.add_shape(type="line", x0=1.1, y0=1.1, x1=1.25, y1=1.25)
+fig.update_layout(title_x=0.5).show()
+
 ```
-
-### Loyvain spectral clustering
-
-```{python}
-Ms1 = abct.loyvain(connectivity, k, "spectral", replicates=repl)[0]
-print(f"Similarity (Loyvain): {spectral_stats(connectivity, Ms1)}")
-```
-
-### Visualize clusters
-
-```{python}
-gii_left, gii_right, cii, n_hemi = get_plot_data()
-parc = data["parc_data"].ravel() - 1
-mask = ~np.isnan(parc)
-results = np.full(mask.shape, np.nan)
-results[mask] = Ms1[parc[mask].astype(int)]
-```
-
-```{python}
-plotting.plot_surf(
-    surf_mesh=gii_left,
-    surf_map=results[:n_hemi],
-    cmap = "Set1"
-).show()
-
-plotting.plot_surf(
-    surf_mesh=gii_right,
-    surf_map=results[n_hemi:],
-    cmap = "Set1"
-).show()
-```
-
