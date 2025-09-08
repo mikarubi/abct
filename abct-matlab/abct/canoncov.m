@@ -1,12 +1,12 @@
-function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid, varargin)
+function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 % CANONCOV Canonical covariance analysis (aka partial least squares)
 %          Canonical correlation analysis.
 %
 %   [A, B, U, V, R] = canoncov(X, Y, k)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid)
-%   [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid, Name=Value)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, resid)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr)
+%   [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, Name=Value)
 %
 %   Inputs:
 %       X: Data matrix of size n x p, where
@@ -23,13 +23,13 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, corr, resid, varargin)
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
 %
+%       resid: Global residualization (logical scalar).
+%           0: No global residualization.
+%           1: Global residualization via degree correction (default).
+%
 %       corr: Canonical correlation analysis (logical scalar).
 %           0: Canonical covariance analysis (default).
 %           1: Canonical correlation analysis.
-%
-%       resid: Global residualization (logical scalar).
-%           0: No global residualization (default).
-%           1: Global residualization via degree correction.
 %
 %       Name=[Value] Arguments
 %           (binary canonical analysis only):
@@ -72,8 +72,8 @@ arguments
     Y (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
     k (1, 1) double {mustBeInteger, mustBePositive}
     type (1, 1) string {mustBeMember(type, ["weighted", "binary"])} = "weighted"
+    resid (1, 1) logical = true
     corr (1, 1) logical = false
-    resid (1, 1) logical = false
 end
 arguments (Repeating)
     varargin
