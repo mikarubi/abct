@@ -57,7 +57,7 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
 
         # fixed point iteration until convergence
         for v in range(Args.maxiter):
-            My0 = My1
+            My0 = My1.copy()
             Mx1,  _,      _ = loyv.step4_run(Args, Args.W, Mx1, My1)  # optimize Mx
             My1, R1, R1_all = loyv.step4_run(Args, Args.W.T, My1, Mx1)  # optimize My
             if np.array_equal(My0, My1):  # if identical, neither Mx1 nor My1 will change

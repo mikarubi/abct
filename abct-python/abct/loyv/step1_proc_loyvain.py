@@ -15,7 +15,7 @@ def step1_proc_loyvain(Args):
     if isinstance(Args.start, np.ndarray):
         Args.M0 = np.ravel(Args.start).astype(int)
         if Args.k == 0:
-            Args.k = np.max(Args.M0)
+            Args.k = np.max(Args.M0) + 1
         Args.start = "custom"
 
     # Global residualization for kmodularity

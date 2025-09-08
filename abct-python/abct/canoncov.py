@@ -14,8 +14,8 @@ def canoncov(
     Y: ArrayLike,
     k: int,
     type: Literal["weighted", "binary"] = "weighted",
+    resid: bool = True,
     corr: bool = False,
-    resid: bool = False,
     **kwargs,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
 
@@ -54,12 +54,15 @@ def canoncov(
     # Solve problem
     if type == "weighted":
         A, R, B = sparse.linalg.svds(Z, k=k)
-        R = np.diag(R)
         B = B.T
     else:
         Mx, My, _, R = abct.coloyvain(Z, k, "kmeans", "network", numbatches=min(32, min(p, q)), **kwargs)
-        ix = np.argsort(R)[::-1]
-        R = R[ix]
+    ix = np.argsort(R)[::-1]
+    R = R[ix]
+    if type == "weighted":
+        A = A[:, ix]
+        B = B[:, ix]
+    else:
         A = np.zeros((p, k))
         B = np.zeros((q, k))
         for h in range(k):
