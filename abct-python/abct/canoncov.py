@@ -45,10 +45,14 @@ def canoncov(
 
     # Set up problem
     if corr:
-        Ux, Sx, VxT = linalg.svd(X, full_matrices=False)
-        Uy, Sy, VyT = linalg.svd(Y, full_matrices=False)
-        Vx = VxT.T
-        Vy = VyT.T
+        def truncate(U, S, Vt):
+            tol = np.finfo(S.dtype).eps ** (0.25) # matches MATLAB default
+            ix = np.where((1 - np.cumsum(S**2)/np.sum(S**2)) > tol)[0]
+            return U[:, ix], S[ix], Vt[ix, :]
+        Ux, Sx, Vx = truncate(linalg.svd(X, full_matrices=False))
+        Uy, Sy, Vy = truncate(linalg.svd(Y, full_matrices=False))
+        Vx = Vx.T
+        Vy = Vy.T
         Z = Vx @ Ux.T @ Uy @ Vy.T
     else:
         Z = X.T @ Y
@@ -73,8 +77,6 @@ def canoncov(
 
     # Recover coefficients
     if corr:
-        Sx[Sx < (1e-12 * Sx.max())] = np.inf    # avoid division by zero
-        Sy[Sy < (1e-12 * Sy.max())] = np.inf    # avoid division by zero
         A = (Vx / Sx) @ Vx.T @ A
         B = (Vy / Sy) @ Vy.T @ B
 
