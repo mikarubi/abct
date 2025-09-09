@@ -47,7 +47,9 @@ def canoncov(
     if corr:
         Ux, Sx, VxT = linalg.svd(X, full_matrices=False)
         Uy, Sy, VyT = linalg.svd(Y, full_matrices=False)
-        Z = VxT.T @ Ux.T @ Uy @ VyT
+        Vx = VxT.T
+        Vy = VyT.T
+        Z = Vx @ Ux.T @ Uy @ Vy.T
     else:
         Z = X.T @ Y
 
@@ -71,8 +73,10 @@ def canoncov(
 
     # Recover coefficients
     if corr:
-        A = np.linalg.lstsq(VxT, Sx.T)[0].T @ VxT @ A
-        B = np.linalg.lstsq(VyT, Sy.T)[0].T @ VyT @ B
+        Sx[Sx < (1e-12 * Sx.max())] = np.inf    # avoid division by zero
+        Sy[Sy < (1e-12 * Sy.max())] = np.inf    # avoid division by zero
+        A = (Vx / Sx) @ Vx.T @ A
+        B = (Vy / Sy) @ Vy.T @ B
 
     U = X @ A
     V = Y @ B
