@@ -1,0 +1,66 @@
+---
+title: Degree and second degree
+jupyter: python3
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from scipy import sparse
+from nctpy import utils, metrics
+from bct import mean_first_passage_time
+from noteutils import W, fig_scatter, fig_surf
+
+```
+
+### Degrees and measures of communication and control
+
+```{python}
+
+# Measures
+s = "discrete"
+D = {
+    "Degree": abct.degree(W, "first"),
+    "Second degree": abct.degree(W, "second"),
+    "Eigenvector centrality": sparse.linalg.eigs(W, k=1)[1].real.ravel(),
+    "Diffusion efficiency": 1/mean_first_passage_time(W).mean(0),
+    "Communicability centrality": np.diag(sparse.linalg.expm(W)),
+    "Average control": metrics.ave_control(utils.matrix_normalization(W, s), s),
+    "Modal control": metrics.modal_control(W)
+    }
+
+D["Eigenvector centrality"] *= np.sign(np.sum(D["Eigenvector centrality"] * D["Degree"]))
+
+```
+
+### Show maps and scatter of first and second degree
+
+```{python}
+
+for i, name in enumerate(["Degree", "Second degree"]):
+    Vals = D[name]
+    fig_surf(Vals, name, "inferno")
+
+```
+
+### Show scatter plots of measures of communication and control
+
+```{python}
+
+Pairs = [["Degree", "Second degree"],
+         ["Degree", "Eigenvector centrality"],
+         ["Degree", "Diffusion efficiency"],
+         ["Second degree", "Communicability centrality"],
+         ["Second degree", "Average control"],
+         ["Second degree", "Modal control"]]
+
+for i, pair in enumerate(Pairs):
+    name1, name2 = pair
+    r = np.corrcoef(D[name1], D[name2])[0, 1]
+    fig = fig_scatter(D[name1], D[name2], name1, name2, f"r = {r:.3f}").show()
+
+```

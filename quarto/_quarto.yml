@@ -1,0 +1,11 @@
+project:                          # Project-level configuration
+  type: website                   # Project type
+  output-dir: ../docs             # Output directory
+
+website:                          # Website-level configuration
+  title: abct notebooks           # The title displayed in the website header and tab
+
+format:                           # Output format configuration
+  html:                           # Use HTML as the output format
+    code-fold: true               # Allow code blocks to be folded/collapsed by default
+    code-tools: true              # Enable code tools (e.g., copy, expand) for code blocks

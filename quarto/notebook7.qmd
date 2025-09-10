@@ -1,0 +1,85 @@
+---
+title: Squared coefficient of variation
+jupyter: python3
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from noteutils import W, C, fig_scatter, fig_surf
+
+```
+
+### Set up data and functions
+
+```{python}
+
+# Get co-neighbor matrices
+Wn = abct.kneighbor(W, "common", kappa=0.1).toarray()
+Cn = abct.kneighbor(C, "common", kappa=0.1).toarray()
+
+# Get squared coefficient of variation
+WV = abct.dispersion(Wn, "coefvar2")
+CV = abct.dispersion(Cn, "coefvar2")
+
+# Get participation coefficients
+K = np.arange(5, 30, 5)    # number of clusters
+repl = 10                  # number of replicates
+
+### Run Loyvain k-modularity
+WP = [None] * len(K)
+CP = [None] * len(K)
+for i, k in enumerate(K):
+    print(f"Number of clusters: {k}")
+    Mw = abct.loyvain(Wn, k, "kmodularity", replicates=repl)[0]
+    Mc = abct.loyvain(Cn, k, "kmodularity", replicates=repl)[0]
+    WP[i] = abct.dispersion(Wn, "kpartcoef", Mw)
+    CP[i] = abct.dispersion(Cn, "kpartcoef", Mc)
+
+```
+
+### Show maps of CV2
+```{python}
+
+cv2s = {"Structural - (Squared coefficient of variation)": (- WV, "inferno"),
+        "Correlation - (Squared coefficient of variation)": (- CV, "viridis")}
+
+for i, (name, vals_cmap) in enumerate(cv2s.items()):
+    vals, cmap = vals_cmap
+    fig_surf(vals, name, cmap)
+
+```
+
+### Scatter plots of CV2 and participation coefficient
+
+```{python}
+
+normalize = lambda x: (x - x.min()) / (x.max() - x.min())
+
+for i in range(len(K)):
+    if i == 0:
+        fig = fig_scatter(- np.log10(1 - WP[i]), normalize(- WV))
+    else:
+        fig.add_scatter(x = - np.log10(1 - WP[i]), y = normalize(- WV), mode="markers")
+
+r = np.corrcoef(WV, np.array(WP))[0][1:]
+fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
+                  yaxis_title="rescaled - (Squared coefficient of variation)",
+                  title=f"Structural network: r ~ {-np.mean(r):.3f}").show()
+
+for i in range(len(K)):
+    if i == 0:
+        fig = fig_scatter(- np.log10(1 - CP[i]), normalize(- CV))
+    else:
+        fig.add_scatter(x = - np.log10(1 - CP[i]), y = normalize(- CV), mode="markers")
+
+r = np.corrcoef(CV, np.array(CP))[0][1:]
+fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
+                  yaxis_title="rescaled - (Squared coefficient of variation)",
+                  title=f"Correlation network: r ~ {-np.mean(r):.3f}").show()
+
+```
