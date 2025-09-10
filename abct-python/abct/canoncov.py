@@ -2,7 +2,7 @@ import warnings
 from typing import Literal, Tuple
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import abct
 import numpy as np
@@ -86,4 +86,4 @@ def canoncov(
     return A, B, U, V, R
 
 
-canoncov.__doc__ = resources.read_text("abct.docstrings", "canoncov")
+canoncov.__doc__ = files("abct").joinpath("docstrings", "canoncov.md")

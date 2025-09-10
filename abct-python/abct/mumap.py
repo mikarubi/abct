@@ -1,5 +1,5 @@
 from typing import Tuple
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 from . import muma
@@ -17,4 +17,4 @@ def mumap(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
     return U, CostHistory
 
-mumap.__doc__ = resources.read_text("abct.docstrings", "mumap")
+mumap.__doc__ = files("abct").joinpath("docstrings", "mumap.md")

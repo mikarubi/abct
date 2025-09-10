@@ -1,7 +1,7 @@
 from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 
@@ -45,4 +45,4 @@ def shrinkage(X: ArrayLike) -> np.ndarray:
     return V @ np.diag(D) @ V.T
 
 
-shrinkage.__doc__ = resources.read_text("abct.docstrings", "shrinkage")
+shrinkage.__doc__ = files("abct").joinpath("docstrings", "shrinkage.md").read_text()
