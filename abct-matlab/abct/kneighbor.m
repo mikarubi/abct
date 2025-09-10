@@ -1,12 +1,12 @@
-function B = kneighbors(W, type, kappa, similarity, method, varargin)
-% KNEIGHBORS Common-neighbor or symmetric kappa-nearest-neighbor matrix
+function B = kneighbor(W, type, kappa, similarity, method, varargin)
+% KNEIGHBOR Common-neighbor or symmetric kappa-nearest-neighbor matrix
 %
-%   B = kneighbors(W)
-%   B = kneighbors(W, type)
-%   B = kneighbors(W, type, kappa)
-%   B = kneighbors(X, type, kappa, similarity)
-%   B = kneighbors(X, type, kappa, similarity, method)
-%   B = kneighbors(X, type, kappa, similarity, method, Name=Value)
+%   B = kneighbor(W)
+%   B = kneighbor(W, type)
+%   B = kneighbor(W, type, kappa)
+%   B = kneighbor(X, type, kappa, similarity)
+%   B = kneighbor(X, type, kappa, similarity, method)
+%   B = kneighbor(X, type, kappa, similarity, method, Name=Value)
 %
 %   Inputs:
 %
@@ -55,7 +55,7 @@ function B = kneighbors(W, type, kappa, similarity, method, varargin)
 %       blocks. It is generally faster than indirect computation.
 %
 %   See also:
-%       KNEICOMPS, MUMAP.
+%       KNEICOMP, MUMAP.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

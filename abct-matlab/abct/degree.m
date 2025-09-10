@@ -1,8 +1,8 @@
-function S = degrees(W, type)
-% DEGREES Degree of network matrix
+function S = degree(W, type)
+% DEGREE Degree of network matrix
 %
-%   S = degrees(W)
-%   S = degrees(W, type)
+%   S = degree(W)
+%   S = degree(W, type)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
@@ -16,9 +16,9 @@ function S = degrees(W, type)
 %       S: Degree vector (size n).
 %
 %   Methodological notes:
-%       The first-degree degree is the sum of connection weights. The
+%       The first-degree degree is the sum of connection weights. The.
 %       second-degree degree is the sum of squared connection weights.
-%       Together, the first and second degrees are exactly or approximately
+%       Together, the first and second degree are exactly or approximately
 %       equivalent to several measures of network communication and control.
 %
 %       The residual degree is the degree after first-component removal
@@ -26,7 +26,8 @@ function S = degrees(W, type)
 %       gradient in co-activity networks.
 %
 %   See also:
-%       RESIDUALN, COEFVAR2.
+%       RESIDUALN, DISPERSION.
+%       DEGREE2.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

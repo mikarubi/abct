@@ -7,7 +7,7 @@ import abct
 import numpy as np
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def degrees(
+def degree(
     W: ArrayLike,
     type: Literal["first", "second", "residual"] = "first"
 ) -> np.ndarray:
@@ -23,4 +23,4 @@ def degrees(
             return np.sum(W_residual, axis=1)
 
 
-degrees.__doc__ = resources.read_text("abct.docstrings", "degrees")
+degree.__doc__ = resources.read_text("abct.docstrings", "degree")

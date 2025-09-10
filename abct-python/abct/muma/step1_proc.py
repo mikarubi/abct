@@ -15,7 +15,7 @@ def step1_proc(Args):
         np.fill_diagonal(Args.A, 0)
     else:
         # Generate a nearest-neighbor matrix
-        Args.A = abct.kneighbors(Args.X, "nearest", Args.kappa, Args.similarity, Args.method)
+        Args.A = abct.kneighbor(Args.X, "nearest", Args.kappa, Args.similarity, Args.method)
 
     # Module structure
     if Args.partition is None:

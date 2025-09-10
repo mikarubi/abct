@@ -9,7 +9,7 @@ import pynndescent
 from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def kneighbors(
+def kneighbor(
     X: ArrayLike | sparray,
     type: Literal["common", "nearest"] = "common",
     kappa: float = 10,
@@ -70,4 +70,4 @@ def kneighbors(
 
     return B
 
-kneighbors.__doc__ = resources.read_text("abct.docstrings", "kneighbors")
+kneighbor.__doc__ = resources.read_text("abct.docstrings", "kneighbor")

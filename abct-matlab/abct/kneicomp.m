@@ -1,10 +1,10 @@
-function V = kneicomps(W, k, weight, varargin)
-% KNEICOMPS Components of neighbor matrices
+function V = kneicomp(W, k, weight, varargin)
+% KNEICOMP Components of neighbor matrices
 %
-%   V = kneicomps(W, k)
-%   V = kneicomps(X, k)
-%   V = kneicomps(_, k, weight)
-%   V = kneicomps(_, k, weight, Name=Value)
+%   V = kneicomp(W, k)
+%   V = kneicomp(X, k)
+%   V = kneicomp(_, k, weight)
+%   V = kneicomp(_, k, weight, Name=Value)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
@@ -20,8 +20,8 @@ function V = kneicomps(W, k, weight, varargin)
 %           "binary": Binary components.
 %
 %       Name=[Value] Arguments:
-%           KNEIGHBORS: type, kappa, similarity, method
-%               (see KNEIGHBORS for details).
+%           KNEIGHBOR: type, kappa, similarity, method
+%               (see KNEIGHBOR for details).
 %           LOYVAIN: All Name=Value arguments
 %               (binary components only, see LOYVAIN for details).
 %
@@ -39,7 +39,7 @@ function V = kneicomps(W, k, weight, varargin)
 %       The order of binary components will, in general, be arbitrary.
 %
 %   See also:
-%       KNEIGHBORS, LOYVAIN.
+%       KNEIGHBOR, LOYVAIN.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
@@ -53,7 +53,7 @@ end
 % structured arguments
 Args = struct(varargin{:});
 
-% Default kneighbors arguments
+% Default kneighbor arguments
 args = struct(type="common", kappa=0.1, similarity="network", method="direct");
 % Update arguments with Args
 for name = reshape(string(fieldnames(args)), 1, [])
@@ -65,7 +65,7 @@ end
 varargin = namedargs2cell(Args);
 
 % Get a k-neighbors matrix
-B = kneighbors(W, args.type, args.kappa, args.similarity, args.method);
+B = kneighbor(W, args.type, args.kappa, args.similarity, args.method);
 
 % Get components
 switch weight

@@ -11,7 +11,7 @@ Am = Args.Am;
 
 %% Precompute gradient matrices
 
-% Normalized degrees vector
+% Normalized degree vector
 K_nrm = sqrt(gamma / full(sum(A, "all"))) * full(sum(A, 2));
 
 % Modules and normalized modules
