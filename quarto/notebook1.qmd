@@ -1,0 +1,70 @@
+---
+title: Visualization and residualization
+jupyter: python3
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from noteutils import W, X, C, ordw, ordc, not_eye, fig_scatter, fig_imshow
+
+```
+
+### Get structural and correlation networks
+
+```{python}
+
+WD = dict()
+WD["Original"] = W
+WD["Degree-corrected"] = abct.residualn(W, "degree")
+WD["Rank-one subtracted"] = abct.residualn(W, "rankone")
+WD["Co-neighbor"] = abct.kneighbor(W, "common", kappa=0.1).toarray()
+WD["Nearest-neighbor"] = abct.kneighbor(W, "nearest", kappa=0.1).toarray()
+
+CD = dict()
+Xg = abct.residualn(X.T, "global").T
+Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
+CD["Original"] = C
+CD["Degree-corrected"] = abct.residualn(C, "degree")
+CD["Global-signal regressed"] = Xg.T @ Xg
+CD["Co-neighbor"] = abct.kneighbor(C, "common", kappa=0.1).toarray()
+CD["Nearest-neighbor"] = abct.kneighbor(C, "nearest", kappa=0.1).toarray()
+
+```
+
+### Visualize structural and correlation networks
+
+```{python}
+
+for i, name in enumerate(WD):
+    Wi = WD[name][np.ix_(ordw, ordw)]
+    fig_imshow(Wi, f"{name} structural network", "inferno").show()
+
+for i, name in enumerate(CD):
+    Ci = CD[name][np.ix_(ordc, ordc)]
+    fig_imshow(Ci, f"{name} correlation network", "viridis").show()
+
+```
+
+### Visualize residual structural and correlation networks
+
+```{python}
+
+# Scatter plot of degree-corrected and rank-one subtracted structural networks
+x, y = WD["Rank-one subtracted"][not_eye], WD["Degree-corrected"][not_eye]
+fig_scatter(x, y, 
+            "Network weights after first-component removal",
+            "Network weights after degree correction",
+            f"Structural networks (r = {np.corrcoef(x, y)[0, 1]:.3f})").show()
+
+x, y = CD["Global-signal regressed"][not_eye], CD["Degree-corrected"][not_eye]
+fig_scatter(x, y, 
+            "Network weights after degree correction",
+            "Network weights after global-signal regression",
+            f"Correlation networks (r = {np.corrcoef(x, y)[0, 1]:.3f})").show()
+
+```

@@ -1,0 +1,56 @@
+---
+title: Shrinkage
+jupyter: python3
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from noteutils import W, Distance, ordw, not_eye, fig_scatter, fig_imshow
+
+```
+
+### Visualize structural networks
+
+```{python}
+
+## Get structural networks
+WD = dict()
+WD["Original"] = W
+WD["Proximity"] = Distance**(-1)
+np.fill_diagonal(WD["Proximity"], 0)
+WD["Shrunken proximity"] = abct.shrinkage(WD["Proximity"])
+
+for i, name in enumerate(WD):
+    fig = fig_imshow(WD[name][np.ix_(ordw, ordw)], 
+                    f"{name} structural network", "inferno", 
+                    pmin=-0, pmax=-0.01).show() # negatives define absolute values
+
+```
+
+### Scatter plots of connectivity and proximity networks
+
+```{python}
+
+# Scatter plot of structural and proximity networks
+x, y = WD["Original"][not_eye], WD["Proximity"][not_eye]
+r = np.corrcoef(x, y)[0, 1]
+fig = fig_scatter(x, y,
+                  "Network weights of structural network",
+                  "Network weights of proximity network",
+                 f"Structural and proximity networks (r = {r:.3f})").show()
+
+# Scatter plot of structural and shrunken proximity networks
+x, y = WD["Original"][not_eye], WD["Shrunken proximity"][not_eye]
+r = np.corrcoef(x, y)[0, 1]
+fig = fig_scatter(x, y,
+                  "Network weights of structural network",
+                  "Network weights of shrunken proximity network",
+                 f"Structural and shrunken proximity networks (r = {r:.3f})").show()
+
+```
+

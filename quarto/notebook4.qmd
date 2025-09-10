@@ -1,0 +1,88 @@
+---
+title: Canonical covariance analysis
+jupyter: python3
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from noteutils import W, C, fig_scatter, fig_surf
+
+```
+
+### Run canonical covariance analysis
+
+```{python}
+
+# Number of canonical components
+k = 5
+
+# Weighted variant (with degree correction by default)
+np.random.seed(1)
+A_wei, B_wei, U_wei, V_wei, R_wei = abct.canoncov(W, C, k, "weighted")
+A_wei = - A_wei
+B_wei = - B_wei
+U_wei = - U_wei
+V_wei = - V_wei
+
+# Binary variant (with degree correction by default)
+A_bin, B_bin, U_bin, V_bin, R_bin = abct.canoncov(W, C, k, "binary")
+
+```
+
+### Show maps of weighted and binary canonical coefficients and components
+
+```{python}
+
+ccas = {"Weighted structural canonical coefficient": (A_wei[:, 0], "inferno"),
+        "Weighted structural canonical component": (U_wei[:, 0], "inferno"),
+        "Weighted functional canonical coefficient": (B_wei[:, 0], "viridis"),
+        "Weighted functional canonical component": (V_wei[:, 0], "viridis"),
+        "Binary structural canonical coefficient": (A_bin[:, 0], "inferno"),
+        "Binary structural canonical component": (U_bin[:, 0], "inferno"),
+        "Binary functional canonical coefficient": (B_bin[:, 0], "viridis"),
+        "Binary functional canonical component": (V_bin[:, 0], "viridis")}
+
+for i, (name, vals_cmap) in enumerate(ccas.items()):
+    vals, cmap = vals_cmap
+    fig_surf(vals, name, cmap)
+
+```
+
+### Visualize scatters of canonical covariances
+
+```{python}
+
+fig_scatter(np.arange(k), R_wei, 
+            "Canonical components", 
+            "Canonical covariances", 
+            "Weighted canonical covariance analysis").show()
+
+fig_scatter(np.arange(k), R_bin, 
+            "Canonical components", 
+            "Canonical covariances", 
+            "Binary canonical covariance analysis").show()
+
+```
+
+### Visualize scatters of canonical components
+```{python}
+
+# Scatter plot of structural canonical components
+rs = np.corrcoef(U_wei[:, 0], U_bin[:, 0])[0, 1]
+fig_scatter(U_wei[:, 0], U_bin[:, 0],
+                  "Weighted canonical components",
+                  "Binary canonical components",
+                  f"Structural canonical components (r = {rs:.3f})").show()
+
+rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
+fig_scatter(V_wei[:, 0], V_bin[:, 0],
+                  "Weighted canonical components",
+                  "Binary canonical components",
+                  f"Functional canonical components (r = {rf:.3f})").show()
+
+```
