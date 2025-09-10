@@ -65,6 +65,7 @@ def spectral_similarity(C, M):
 
 ```{python}
 
+np.random.seed(1)
 start_time = time.time()
 print("Running standard k-means and spectral clustering.")
 
@@ -85,6 +86,7 @@ print(f"Time elapsed: {time.time() - start_time} seconds.")
 
 ```{python}
 
+np.random.seed(1)
 start_time = time.time()
 print("Running Loyvain k-means and spectral clustering.")
 

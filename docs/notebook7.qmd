@@ -3,38 +3,85 @@ title: Squared coefficient of variation
 jupyter: python3
 ---
 
-
-
-### Set up and get data
+### Set up and load data
 
 ```{python}
+
 ## Import modules
-import os
+import bct
 import abct
 import numpy as np
-from scipy import io
 import plotly.express as px
-import plotly.subplots as sp
+from scipy import io
 
-## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
-connectivity = data["connectivity"]
-activity = data["activity"]
-coactivity = activity.T @ activity
+## Load data
+data = io.loadmat("./data/hcp_data.mat")
 
-k = 5           # Number of components 
-repl = 100      # Number of replicates
 ```
 
-### First and second degrees
+### Set up data and functions
 
 ```{python}
-WB = abct.kneighbors(connectivity)
-CB = abct.kneighbors(coactivity)
+
+# Get data
+Wn = abct.kneighbors(data["W"], "common", kappa=0.1).toarray()
+Cn = abct.kneighbors(data["X"].T @ data["X"], "common", kappa=0.1).toarray()
+
+# Get squared coefficient of variation
+WV = abct.coefvar2(Wn)[1]
+CV = abct.coefvar2(Cn)[1]
+
+# Get participation coefficients
+K = np.r_[5:30:5]          # number of clusters
+repl = 10                  # number of replicates
+
+### Run Loyvain k-modularity
+np.random.seed(1)
+WP = [None] * len(K)
+CP = [None] * len(K)
+for i, k in enumerate(K):
+    print(f"Number of clusters: {k}")
+    Mw = abct.loyvain(Wn, k, "kmodularity", replicates=repl)[0]
+    Mc = abct.loyvain(Cn, k, "kmodularity", replicates=repl)[0]
+    WP[i] = bct.participation_coef(Wn, Mw)
+    CP[i] = bct.participation_coef(Cn, Mc)
+
 ```
 
+### Scatter plots of CV2 and participation coefficient
+
 ```{python}
-WCV2 = abct.coefvar2(WB)
-CCV2 = abct.coefvar2(CB)
+
+fig = px.scatter(
+    labels={"x": "Participation coefficient", "y": "- (Coefficient of variation)^2"},
+    width=600, 
+    height=600,
+    log_x=True,
+)
+
+for i in range(len(K)):
+    fig.add_scatter(
+        x = 1 - WP[i],
+        y = - WV,
+        mode="markers",
+    )
+fig.update_layout(title_x=0.5, showlegend=False).show()
+
+
+fig = px.scatter(
+    labels={"x": "Participation coefficient", "y": "- (Coefficient of variation)^2"},
+    width=600, 
+    height=600,
+    log_x=True,
+)
+
+for i in range(len(K)):
+    fig.add_scatter(
+        x = 1 - CP[i],
+        y = - CV,
+        mode="markers",
+    )
+fig.update_layout(title_x=0.5, showlegend=False).show()
+
 ```
 
