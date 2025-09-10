@@ -24,12 +24,12 @@ data = io.loadmat("./data/hcp_data.mat")
 ```{python}
 
 # Get data
-Wn = abct.kneighbors(data["W"], "common", kappa=0.1).toarray()
-Cn = abct.kneighbors(data["X"].T @ data["X"], "common", kappa=0.1).toarray()
+Wn = abct.kneighbor(data["W"], "common", kappa=0.1).toarray()
+Cn = abct.kneighbor(data["X"].T @ data["X"], "common", kappa=0.1).toarray()
 
 # Get squared coefficient of variation
-WV = abct.coefvar2(Wn)[1]
-CV = abct.coefvar2(Cn)[1]
+WV = abct.dispersion(Wn)[1]
+CV = abct.dispersion(Cn)[1]
 
 # Get participation coefficients
 K = np.r_[5:30:5]          # number of clusters

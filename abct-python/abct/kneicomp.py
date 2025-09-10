@@ -10,7 +10,7 @@ import numpy as np
 from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def kneicomps(
+def kneicomp(
     W: ArrayLike | sparray,
     k: int,
     weight: Literal["weighted", "binary"] = "weighted",
@@ -19,7 +19,7 @@ def kneicomps(
 
     W = np.asarray(W)
 
-    # Default kneighbors arguments
+    # Default kneighbor arguments
     args = {
         "type": "common",
         "kappa": 0.1,
@@ -31,7 +31,7 @@ def kneicomps(
     kwargs = {key: kwargs[key] for key in set(kwargs.keys()) - set(args.keys())}
 
     # Get neighbors matrix
-    B = abct.kneighbors(W, args["type"], args["kappa"], args["similarity"], args["method"])
+    B = abct.kneighbor(W, args["type"], args["kappa"], args["similarity"], args["method"])
 
     # Get components
     match weight:
@@ -49,4 +49,4 @@ def kneicomps(
             return V
 
 
-kneicomps.__doc__ = resources.read_text("abct.docstrings", "kneicomps")
+kneicomp.__doc__ = resources.read_text("abct.docstrings", "kneicomp")

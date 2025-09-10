@@ -3,11 +3,11 @@ all abct functions
 """
 
 from abct.canoncov import canoncov
-from abct.coefvar2 import coefvar2
+from abct.dispersion import dispersion
 from abct.coloyvain import coloyvain
-from abct.degrees import degrees
-from abct.kneicomps import kneicomps
-from abct.kneighbors import kneighbors
+from abct.degree import degree
+from abct.kneicomp import kneicomp
+from abct.kneighbor import kneighbor
 from abct.leiden import leiden
 from abct.loyvain import loyvain
 from abct.mumap import mumap
@@ -16,11 +16,11 @@ from abct.shrinkage import shrinkage
 
 __all__ = [
     "canoncov",
-    "coefvar2",
+    "dispersion",
     "coloyvain",
-    "degrees",
-    "kneicomps",
-    "kneighbors",
+    "degree",
+    "kneicomp",
+    "kneighbor",
     "leiden",
     "loyvain",
     "mumap",

@@ -6,7 +6,7 @@ from importlib import resources
 import numpy as np
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
-def coefvar2(
+def dispersion(
     W: ArrayLike,
 ) -> Tuple[np.ndarray, np.ndarray]:
 
@@ -18,4 +18,4 @@ def coefvar2(
     return CV2, CV2_nrm
 
 
-coefvar2.__doc__ = resources.read_text("abct.docstrings", "coefvar2")
+dispersion.__doc__ = resources.read_text("abct.docstrings", "dispersion")

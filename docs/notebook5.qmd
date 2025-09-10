@@ -27,24 +27,24 @@ data = io.loadmat("./data/hcp_data.mat")
 W = data["W"]
 C = data["X"].T @ data["X"]
 
-# Define co-activity gradient parameters (see kneighbors)
+# Define co-activity gradient parameters (see kneighbor)
 k = 5
 kwargs = {"type":"common", "kappa":0.1, "similarity":"network"}
 np.random.seed(1)   # Set random seed
 
 # Weighted gradients
-V_wei = abct.kneicomps(C, k, "weighted", **kwargs)
+V_wei = abct.kneicomp(C, k, "weighted", **kwargs)
 V_wei = V_wei[:, [0, 1, 3]]
 
 # Binary gradients
-V_bin = abct.kneicomps(C, k, "binary", **kwargs)
+V_bin = abct.kneicomp(C, k, "binary", **kwargs)
 V_bin = V_bin[:, [1, 2, 3]]
 
 # Flip sign of weighted gradients to match binary gradients
 V_wei *= np.sign(np.sum(V_wei * V_bin, 0))
 
 # Residual degree
-D_wei = abct.degrees(C, "residual")
+D_wei = abct.degree(C, "residual")
 
 ```
 

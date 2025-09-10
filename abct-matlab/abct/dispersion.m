@@ -1,7 +1,7 @@
-function [CV2, CV2_nrm] = coefvar2(W)
-% COEFVAR2 Squared coefficient of variation.
+function [CV2, CV2_nrm] = dispersion(W)
+% DISPERSION Squared coefficient of variation.
 %
-%   [CV2, CV2_nrm] = coefvar2(W)
+%   [CV2, CV2_nrm] = dispersion(W)
 %
 %   Inputs:
 %       W: Network matrix of size n x n.
@@ -22,7 +22,7 @@ function [CV2, CV2_nrm] = coefvar2(W)
 %       networks, including correlation and common-neighbor networks.
 %
 %   See also:
-%       DEGREES.
+%       DEGREE.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal, mustBeNonnegative}

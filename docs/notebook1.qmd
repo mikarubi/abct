@@ -28,7 +28,7 @@ W = data["W"]
 WD = dict()
 WD["Original"] = W
 WD["Degree-corrected"] = abct.residualn(W, "degree")
-WD["Co-neighbor"] = abct.kneighbors(W, "common", kappa=0.1).todense()
+WD["Co-neighbor"] = abct.kneighbor(W, "common", kappa=0.1).todense()
 
 ## Get correlation networks
 X = data["X"]
@@ -37,7 +37,7 @@ C = X.T @ X
 CD = dict()
 CD["Original"] = C
 CD["Degree-corrected"] = abct.residualn(C, "degree")
-CD["Co-neighbor"] = abct.kneighbors(C, "common", kappa=0.1).todense()
+CD["Co-neighbor"] = abct.kneighbor(C, "common", kappa=0.1).todense()
 
 ```
 
