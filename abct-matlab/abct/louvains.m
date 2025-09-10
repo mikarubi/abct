@@ -1,6 +1,6 @@
 function [M, Q] = louvains(W, Args)
-% LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB).
-% LEIDEN igraph Leiden modularity maximization (Python).
+% LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB)
+% LEIDEN igraph Leiden modularity maximization (Python)
 %
 %   [M, Q] = louvains(W, Name=Value)        % MATLAB
 %   [M, Q] = leiden(W, Name=Value)          # Python

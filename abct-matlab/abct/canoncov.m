@@ -1,6 +1,6 @@
 function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 % CANONCOV Canonical covariance analysis (aka partial least squares)
-%          Canonical correlation analysis.
+%          Canonical correlation analysis
 %
 %   [A, B, U, V, R] = canoncov(X, Y, k)
 %   [A, B, U, V, R] = canoncov(X, Y, k, type)

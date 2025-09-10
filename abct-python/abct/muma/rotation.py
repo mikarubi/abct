@@ -26,7 +26,7 @@ def rotation(U3: ArrayLike) -> tuple[np.ndarray, np.ndarray]:
     ## Rotate data to sparse anti-prime meridian
 
     # Unit circle
-    Theta = np.pi * np.r_[-p:p:2]/p
+    Theta = np.pi * np.arange(-p, p, 2)/p
     V = np.column_stack((np.cos(Theta), np.sin(Theta)))
 
     # Sparse meridians have few strong correlations to other points
