@@ -49,4 +49,4 @@ def kneicomp(
             return V
 
 
-kneicomp.__doc__ = files("abct").joinpath("docstrings", "kneicomp.md")
+kneicomp.__doc__ = files("abct").joinpath("docstrings", "kneicomp.md").read_text()
