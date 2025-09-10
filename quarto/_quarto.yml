@@ -3,9 +3,20 @@ project:                          # Project-level configuration
   output-dir: ../docs             # Output directory
 
 website:                          # Website-level configuration
-  title: abct notebooks           # The title displayed in the website header and tab
+  title: abct documentation       # The title displayed in the website header and tab
+  site-url: https://mikarubi.github.io/abct/
+  search: true                    # site-wide search index
+  sidebar:
+    contents: auto
+  page-navigation: true
 
-format:                           # Output format configuration
-  html:                           # Use HTML as the output format
-    code-fold: true               # Allow code blocks to be folded/collapsed by default
-    code-tools: true              # Enable code tools (e.g., copy, expand) for code blocks
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: true
+
+execute:
+  freeze: auto
+  cache: true
