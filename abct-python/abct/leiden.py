@@ -45,4 +45,4 @@ def leiden(
 
     return M, Q
 
-leiden.__doc__ = files("abct").joinpath("docstrings", "louvains.md")
+leiden.__doc__ = files("abct").joinpath("docstrings", "louvains.md").read_text()

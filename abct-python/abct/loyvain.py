@@ -43,4 +43,4 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
     return M, Q
 
 
-loyvain.__doc__ = files("abct").joinpath("docstrings", "loyvain.md")
+loyvain.__doc__ = files("abct").joinpath("docstrings", "loyvain.md").read_text()

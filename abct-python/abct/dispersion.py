@@ -18,4 +18,4 @@ def dispersion(
     return CV2, CV2_nrm
 
 
-dispersion.__doc__ = files("abct").joinpath("docstrings", "dispersion.md")
+dispersion.__doc__ = files("abct").joinpath("docstrings", "dispersion.md").read_text()

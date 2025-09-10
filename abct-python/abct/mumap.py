@@ -17,4 +17,4 @@ def mumap(*args, **kwargs) -> Tuple[np.ndarray, float]:
 
     return U, CostHistory
 
-mumap.__doc__ = files("abct").joinpath("docstrings", "mumap.md")
+mumap.__doc__ = files("abct").joinpath("docstrings", "mumap.md").read_text()
