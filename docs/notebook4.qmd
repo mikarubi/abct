@@ -78,7 +78,7 @@ for i, (name, vals_cmap) in enumerate(ccas.items()):
 
 # Weighted canonical covariance analysis
 fig = px.scatter(
-    x=np.r_[:k],
+    x=np.arange(k),
     y=R_wei,
     labels={"x": "Canonical components", "y": "Canonical covariances"},
     title=f"Weighted canonical covariance analysis",
@@ -88,7 +88,7 @@ fig.update_layout(title_x=0.5).show()
 
 # Binary canonical covariance analysis
 fig = px.scatter(
-    x=np.r_[:k],
+    x=np.arange(k),
     y=R_bin,
     labels={"x": "Canonical components", "y": "Canonical covariances"},
     title=f"Binary canonical covariance analysis",

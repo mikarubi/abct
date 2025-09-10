@@ -32,7 +32,7 @@ WV = abct.dispersion(Wn)[1]
 CV = abct.dispersion(Cn)[1]
 
 # Get participation coefficients
-K = np.r_[5:30:5]          # number of clusters
+K = np.arange(5, 30, 5)    # number of clusters
 repl = 10                  # number of replicates
 
 ### Run Loyvain k-modularity

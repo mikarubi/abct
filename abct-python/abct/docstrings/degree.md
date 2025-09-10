@@ -12,7 +12,7 @@
            "residual": Degree after global residualization.
 
    Outputs:
-       S: Degree vector (size n).
+       S: Degree vector (length n).
 
    Methodological notes:
        The first-degree degree is the sum of connection weights. The

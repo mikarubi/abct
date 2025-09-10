@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from importlib.resources import files
@@ -8,14 +8,31 @@ import numpy as np
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def dispersion(
     W: ArrayLike,
-) -> Tuple[np.ndarray, np.ndarray]:
+    type: Literal["coefvar2", "kpartcoef"] = "coefvar2",
+    M: ArrayLike = [],
+) -> np.ndarray:
 
     W = np.asarray(W)
+    M = np.asarray(M)
 
-    CV2 = np.var(W, axis=1) / (np.mean(W, axis=1) ** 2)
-    CV2_nrm = 1 - CV2 / (len(W) - 1)
+    match type:
+        case "coefvar2":
+            D = np.var(W, axis=1) / (np.mean(W, axis=1) ** 2)
+        case "kpartcoef":
+            # Basic checks
+            n, n_ = W.shape
+            n__ = M.size
+            if n != n_ or n != n__:
+                raise ValueError("W must be a square matrix and M must have the same length as W.")
 
-    return CV2, CV2_nrm
+            k = np.max(M) + 1
+            MM = np.zeros((n, k))
+            MM[np.arange(n), M] = 1
+            kSnm = (W @ MM) / MM.sum(0, keepdims=True)
+            P = kSnm / kSnm.sum(1, keepdims=True)
+            D = 1 - (P**2).sum(1)
+
+    return D
 
 
 dispersion.__doc__ = files("abct").joinpath("docstrings", "dispersion.md").read_text()

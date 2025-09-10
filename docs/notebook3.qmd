@@ -35,8 +35,8 @@ Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
 Cg = Xg.T @ Xg
 
 # Define clustering hyperparameters
-K = np.r_[5:30:5]          # number of clusters
-repl = 10                  # number of replicates
+K = np.arange(5, 30, 5)     # number of clusters
+repl = 10                   # number of replicates
 
 def kmeans_similarity(X, M):
     # distance = 0.0
