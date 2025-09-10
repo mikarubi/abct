@@ -13,6 +13,7 @@ import time
 import numpy as np
 import plotly.express as px
 from sklearn import cluster
+from nilearn import plotting
 from scipy import io
 
 ## Load data
@@ -90,6 +91,7 @@ np.random.seed(1)
 start_time = time.time()
 print("Running Loyvain k-means and spectral clustering.")
 
+MKmod = [None] * len(K)
 kmeans_loyvain_similarity = np.zeros(len(K))
 spectral_loyvain_similarity = np.zeros(len(K))
 for i, k in enumerate(K):
@@ -98,42 +100,61 @@ for i, k in enumerate(K):
     M_spectral_loyvain = abct.loyvain(C, k, "spectral", replicates=repl)[0]
     kmeans_loyvain_similarity[i] = kmeans_similarity(Xg, M_kmodularity_loyvain)
     spectral_loyvain_similarity[i] = spectral_similarity(C, M_spectral_loyvain)
+    MKmod[i] = M_kmodularity_loyvain
 
 print(f"Time elapsed: {time.time() - start_time} seconds.")
 
 ```
 
+## Visualize clustering results
+
+```{python}
+
+parc = data["parc"].ravel() - 1
+n_hemi = len(parc) // 2
+
+gii_left = "./data/S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii"
+for i, Mi in enumerate(MKmod):
+    plotting.plot_surf(
+        surf_mesh=gii_left,
+        surf_map=Mi[parc][:n_hemi],
+        view="lateral",
+        title=f"Loyvain correlation networks: {K[i]} modules",
+        cmap="tab20b",
+    )
+
+```
 
 ### Scatter plots of clustering similarities
 
 ```{python}
 
-# Scatter plot of Lloyd and Loyvain k-means
-fig = px.scatter(x=kmeans_lloyd_similarity, y=kmeans_loyvain_similarity)
-# Add diagonal line
-fig.add_shape(type="line", x0=55, y0=55, x1=115, y1=115)
-fig.update_layout(
-    xaxis_title="Lloyd k-means similarity",
-    yaxis_title="Loyvain k-means similarity",
-    title=f"K-means similarity",
-    title_x=0.5,
-    width=600,
-    height=600,
-)
-fig.show()
+for h in range(2):
+    match h:
+        case 0:
+            x=kmeans_lloyd_similarity
+            y=kmeans_loyvain_similarity
+            xlab="Lloyd k-means similarity"
+            ylab="Loyvain k-means similarity"
+            tlab="K-means similarity"
+        case 1:
+            x=spectral_shimalik_similarity
+            y=spectral_loyvain_similarity
+            xlab="Lloyd spectral similarity"
+            ylab="Loyvain spectral similarity"
+            tlab="Spectral similarity"
 
-# Scatter plot of Lloyd and Loyvain spectral
-fig = px.scatter(x=spectral_shimalik_similarity, y=spectral_loyvain_similarity)
-# Add diagonal line
-fig.add_shape(type="line", x0=1.1, y0=1.1, x1=1.25, y1=1.25)
-fig.update_layout(
-    xaxis_title="Lloyd spectral similarity",
-    yaxis_title="Loyvain spectral similarity",
-    title=f"Spectral similarity",
-    title_x=0.5,
-    width=600,
-    height=600,
-)
-fig.show()
+    # Scatter plots of clustering similarities
+    fig = px.scatter(x=x, y=y)
+    fig.add_shape(type="line", x0=np.min([x, y]), y0=np.min([x, y]), x1=np.max([x, y]), y1=np.max([x, y]))
+    fig.update_layout(
+        xaxis_title=xlab,
+        yaxis_title=ylab,
+        title=f"{tlab}",
+        title_x=0.5,
+        width=600,
+        height=600,
+    )
+    fig.show()
 
 ```

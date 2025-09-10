@@ -11,6 +11,7 @@ jupyter: python3
 import abct
 import numpy as np
 import plotly.express as px
+from nilearn import plotting
 from scipy import io
 
 ## Load data
@@ -47,6 +48,28 @@ for i, k in enumerate(K):
 
 ```
 
+### Show maps of CV2
+```{python}
+
+parc = data["parc"].ravel() - 1
+n_hemi = len(parc) // 2
+
+gii_left = "./data/S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii"
+cv2s = {"Structural - (Squared coefficient of variation)": (- WV, "inferno"),
+        "Correlation - (Squared coefficient of variation)": (- CV, "viridis")}
+
+for i, (name, vals_cmap) in enumerate(cv2s.items()):
+    vals, cmap = vals_cmap
+    plotting.plot_surf(
+        surf_mesh=gii_left,
+        surf_map=vals[parc][:n_hemi],
+        view = "lateral",
+        title = f"{name}",
+        cmap = cmap,
+    )
+
+```
+
 ### Scatter plots of CV2 and participation coefficient
 
 ```{python}
@@ -63,7 +86,7 @@ for i in range(len(K)):
     )
 fig.update_layout(
     xaxis_title="log-rescaled k-participation coefficient",
-    yaxis_title="rescaled (- (Coefficient of variation)^2)",
+    yaxis_title="rescaled - (Squared coefficient of variation)",
     title = f"Structural network: r ~ {-np.mean(np.corrcoef(WV, np.array(WP))[0][1:]):.3f}",
     title_x=0.5,
     width=600,
@@ -81,7 +104,7 @@ for i in range(len(K)):
     )
 fig.update_layout(
     xaxis_title="log-rescaled k-participation coefficient",
-    yaxis_title="rescaled (- (Coefficient of variation)^2)",
+    yaxis_title="rescaled - (Squared coefficient of variation)",
     title = f"Correlation network: r ~ {-np.mean(np.corrcoef(CV, np.array(CP))[0][1:]):.3f}",
     title_x=0.5,
     width=600,

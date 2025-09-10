@@ -76,29 +76,26 @@ for i, (name, vals_cmap) in enumerate(ccas.items()):
 
 ```{python}
 
-# Weighted canonical covariance analysis
-fig = px.scatter(x=np.arange(k), y=R_wei)
-fig.update_layout(
-    xaxis_title="Canonical components",
-    yaxis_title="Canonical covariances",
-    title=f"Weighted canonical covariance analysis",
-    title_x=0.5,
-    width=600,
-    height=600,
-)
-fig.show()
+for h in range(2):
+    match h:
+        case 0:
+            R = R_wei
+            tlab = "Weighted canonical covariance analysis"
+        case 1:
+            R = R_bin
+            tlab = "Binary canonical covariance analysis"
 
-# Binary canonical covariance analysis
-fig = px.scatter(x=np.arange(k), y=R_bin)
-fig.update_layout(
-    xaxis_title="Canonical components",
-    yaxis_title="Canonical covariances",
-    title=f"Binary canonical covariance analysis",
-    title_x=0.5,
-    width=600,
-    height=600,
-)
-fig.show()
+    # Scatter plots of canonical covariances
+    fig = px.scatter(x=np.arange(k), y=R)
+    fig.update_layout(
+        xaxis_title="Canonical components",
+        yaxis_title="Canonical covariances",
+        title=f"{tlab}",
+        title_x=0.5,
+        width=600,
+        height=600,
+    )
+    fig.show()
 
 ```
 
@@ -108,23 +105,20 @@ fig.show()
 # Scatter plot of structural canonical components
 rs = np.corrcoef(U_wei[:, 0], U_bin[:, 0])[0, 1]
 rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
-fig = px.scatter()
 
+fig = px.scatter()
 fig.add_scatter(
     x=U_wei[:, 0],
     y=U_bin[:, 0],
     mode="markers",
     name="Structural canonical components",
 )
-
-# Scatter plot of correlation canonical components
 fig.add_scatter(
     x=V_wei[:, 0],
     y=V_bin[:, 0],
     mode="markers",
     name="Functional canonical components",
 )
-
 fig.update_layout(
     xaxis_title="Weighted canonical components",
     yaxis_title="Binary canonical components",

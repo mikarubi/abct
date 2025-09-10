@@ -78,6 +78,7 @@ for i, (name, Vals_cmap) in enumerate(comps.items()):
 
 ```{python}
 
+# Map of residual degree
 plotting.plot_surf(
     surf_mesh=gii_left,
     surf_map=D_wei[parc][:n_hemi],
@@ -88,7 +89,7 @@ plotting.plot_surf(
     vmax=np.percentile(D_wei[parc][:n_hemi], 95),
 )
 
-# Scatter plot of residual degree and weighted co-activity gradient
+# Scatter of residual degree and weighted co-activity gradient
 fig = px.scatter(x=D_wei, y=V_wei[:, 0])
 fig.update_layout(
     xaxis_title="Residual degree",

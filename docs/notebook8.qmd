@@ -3,43 +3,83 @@ title: Shrinkage
 jupyter: python3
 ---
 
-
-
-### Set up and get data
+### Set up and load data
 
 ```{python}
+
 ## Import modules
-import os
 import abct
 import numpy as np
-from scipy import io
 import plotly.express as px
-import plotly.subplots as sp
+from scipy import io
 
-## Unpack data
-data = io.loadmat(os.path.join(".", "data", "hcp_data.mat"))
-connectivity = data["connectivity"]
-activity = data["activity"]
-distance = data["distance"]
-coactivity = activity.T @ activity
+## Load data
+data = io.loadmat("./data/hcp_data.mat")
 
-k = 5           # Number of components 
-repl = 100      # Number of replicates
 ```
 
-### Shrinkage of structural networks
+### Visualize structural networks
 
 ```{python}
-n = len(connectivity)
-ix = np.eye(n, dtype=bool)
 
-D = distance**(-1)
-D[ix] = 0
+## Get structural networks
+WD = dict()
+WD["Original"] = data["W"]
+WD["Proximity"] = data["D"]**(-1)
+np.fill_diagonal(WD["Proximity"], 0)
+WD["Shrunken proximity"] = abct.shrinkage(WD["Proximity"])
 
-D1 = abct.residualn(D, "soft")
+ordw = data["ordw"].flatten() - 1
+zmin = (0, 0, 0)
+zmax = (0.01, 0.01, 0.01)
+for i, name in enumerate(WD):
+    fig = px.imshow(
+        WD[name][np.ix_(ordw, ordw)],
+        color_continuous_scale="inferno",
+        zmin=zmin[i],
+        zmax=zmax[i],
+    )
+    fig.update_layout(
+        title=f"{name} structural network",
+        title_x=0.5,
+        width=600,
+        height=600,
+    )
+    fig.show()
 
-print(np.corrcoef(connectivity[~ix], D[~ix])[0, 1])
+```
 
-print(np.corrcoef(connectivity[~ix], D1[~ix])[0, 1])
+### Scatter plots of connectivity and proximity networks
+
+```{python}
+
+neye = ~np.eye(len(data["W"]), dtype=bool) 
+
+# Scatter plot of structural and proximity networks
+r = np.corrcoef(WD["Original"][neye], WD["Proximity"][neye])[0, 1]
+fig = px.scatter(x=WD["Original"][neye], y=WD["Proximity"][neye])
+fig.update_layout(
+    xaxis_title="Network weights of structural network",
+    yaxis_title="Network weights of proximity network",
+    title=f"Structural and proximity networks (r = {r:.3f})",
+    title_x=0.5,
+    width=600,
+    height=600,
+)
+fig.show()
+
+# Scatter plot of structural and shrunken proximity networks
+r = np.corrcoef(WD["Original"][neye], WD["Shrunken proximity"][neye])[0, 1]
+fig = px.scatter(x=WD["Original"][neye], y=WD["Shrunken proximity"][neye])
+fig.update_layout(
+    xaxis_title="Network weights of structural network",
+    yaxis_title="Network weights of shrunken proximity network",
+    title=f"Structural and shrunken proximity networks (r = {r:.3f})",
+    title_x=0.5,
+    width=600,
+    height=600,
+)
+fig.show()
+
 ```
 

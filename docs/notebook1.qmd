@@ -1,5 +1,5 @@
 ---
-title: Network visualization
+title: Visualization and residualization
 jupyter: python3
 ---
 
@@ -22,69 +22,99 @@ data = io.loadmat("./data/hcp_data.mat")
 
 ```{python}
 
-## Get structural networks
-W = data["W"]
-
-WD = dict()
-WD["Original"] = W
-WD["Degree-corrected"] = abct.residualn(W, "degree")
-WD["Co-neighbor"] = abct.kneighbor(W, "common", kappa=0.1).todense()
-
-## Get correlation networks
-X = data["X"]
-C = X.T @ X
-
-CD = dict()
-CD["Original"] = C
-CD["Degree-corrected"] = abct.residualn(C, "degree")
-CD["Co-neighbor"] = abct.kneighbor(C, "common", kappa=0.1).todense()
-
-```
-
-### Visualize structural networks
-
-```{python}
-
-ordw = data["ordw"].flatten() - 1
-zmin = (0, -0.005, 0)
-zmax = (0.01, 0.005, 36)
-for i, name in enumerate(WD):
-    fig = px.imshow(WD[name][np.ix_(ordw, ordw)])
-
-    fig.update_layout(
-        color_continuous_scale="inferno",
-        title=f"{name} structural network",
-        title_x=0.5,
-        zmin=zmin[i],
-        zmax=zmax[i],
-        width=600,
-        height=600,
-    )
-
-    fig.show()
+for h in range(2):
+    match h:
+        case 0:
+            W = data["W"]
+        case 1:
+            W = data["X"].T @ data["X"]
+            Xg = abct.residualn(data["X"].T, "global").T
+            Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
+    
+    ND = dict()
+    ND["Original"] = W
+    ND["Degree-corrected"] = abct.residualn(W, "degree")
+    match h:
+        case 0: ND["Rank-one subtracted"] = abct.residualn(W, "rankone")
+        case 1: ND["Global-signal regressed"] = Xg.T @ Xg
+    ND["Co-neighbor"] = abct.kneighbor(W, "common", kappa=0.1).toarray()
+    ND["Nearest-neighbor"] = abct.kneighbor(W, "nearest", kappa=0.1).toarray()
+    match h:
+        case 0: WD = ND.copy()
+        case 1: CD = ND.copy()
 
 ```
 
-### Visualize correlation networks
+### Visualize structural and correlation networks
 
 ```{python}
 
-ordc = data["ordc"].flatten() - 1
-zmin = (0, -0.2, 0)
-zmax = (1, 0.2, 36)
-for i, name in enumerate(CD):
-    fig = px.imshow(CD[name][np.ix_(ordc, ordc)])
+for h in range(2):
+    match h:
+        case 0:
+            ND = WD
+            ord = data["ordw"].flatten() - 1
+            cmap = "inferno"
+            zmin = (0, -0.005, -0.005, 0, 0)
+            zmax = (0.01, 0.005, 0.005, 36, 1)
+            tlab = "structural networks"
+        case 1:
+            ND = CD
+            ord = data["ordc"].flatten() - 1
+            cmap = "viridis"
+            zmin = (0, -0.2, -0.5, 0, 0)
+            zmax = (1, 0.2, 0.5, 36, 1)
+            tlab = "correlation networks"
 
+    for i, name in enumerate(ND):
+        fig = px.imshow(
+            ND[name][np.ix_(ord, ord)],
+            color_continuous_scale=cmap,
+            zmin=zmin[i],
+            zmax=zmax[i],
+        )
+        fig.update_layout(
+            title=f"{name} {tlab}",
+            title_x=0.5,
+            width=600,
+            height=600,
+        )
+        fig.show()
+
+```
+
+### Visualize residual structural and correlation networks
+
+```{python}
+
+neye = ~np.eye(len(data["W"]), dtype=bool) 
+
+# Scatter plot of degree-corrected and rank-one subtracted structural networks
+for h in range(2):
+    match h:
+        case 0:
+            x = WD["Rank-one subtracted"][neye]
+            y = WD["Degree-corrected"][neye]
+            xlab = "Network weights after first-component removal"
+            ylab = "Network weights after degree correction"
+            tlab = "Structural networks"
+        case 1:
+            x = CD["Global-signal regressed"][neye]
+            y = CD["Degree-corrected"][neye]
+            xlab = "Network weights after degree correction"
+            ylab = "Network weights after global-signal regression"
+            tlab = "Correlation networks"
+
+    r = np.corrcoef(x, y)[0, 1]
+    fig = px.scatter(x=x, y=y)
     fig.update_layout(
-        color_continuous_scale="viridis",
-        title=f"{name} correlation network",
+        xaxis_title=xlab,
+        yaxis_title=ylab,
+        title=f"{tlab} (r = {r:.3f})",
         title_x=0.5,
-        zmin=zmin[i],
-        zmax=zmax[i],
         width=600,
         height=600,
     )
-
     fig.show()
 
 ```

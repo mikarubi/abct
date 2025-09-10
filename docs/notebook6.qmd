@@ -67,7 +67,7 @@ for i, name in enumerate(["Degree", "Second degree"]):
 
 ```
 
-### Compute measures of communication and control
+### Show scatter plots of measures of communication and control
 
 ```{python}
 
