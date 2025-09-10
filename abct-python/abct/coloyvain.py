@@ -1,6 +1,6 @@
 import warnings
 from typing import Tuple
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 from abct import loyv
@@ -79,4 +79,4 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
     return Mx, My, R, R_all.ravel()
 
 
-coloyvain.__doc__ = resources.read_text("abct.docstrings", "coloyvain")
+coloyvain.__doc__ = files("abct").joinpath("docstrings", "coloyvain.md")

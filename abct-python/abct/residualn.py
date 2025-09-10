@@ -1,7 +1,7 @@
 from typing import Literal
 from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 from scipy import sparse
@@ -35,4 +35,4 @@ def residualn(
             return X - U @ np.diag(S) @ VT
 
 
-residualn.__doc__ = resources.read_text("abct.docstrings", "residualn")
+residualn.__doc__ = files("abct").joinpath("docstrings", "residualn.md")

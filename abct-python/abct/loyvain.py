@@ -1,5 +1,5 @@
 from typing import Tuple
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 from . import loyv
@@ -43,4 +43,4 @@ def loyvain(*args, **kwargs) -> Tuple[np.ndarray, float]:
     return M, Q
 
 
-loyvain.__doc__ = resources.read_text("abct.docstrings", "loyvain")
+loyvain.__doc__ = files("abct").joinpath("docstrings", "loyvain.md")

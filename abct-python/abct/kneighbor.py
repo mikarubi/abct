@@ -2,7 +2,7 @@ from typing import Literal
 from numpy.typing import ArrayLike
 from scipy.sparse import sparray
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 import pynndescent
@@ -70,4 +70,4 @@ def kneighbor(
 
     return B
 
-kneighbor.__doc__ = resources.read_text("abct.docstrings", "kneighbor")
+kneighbor.__doc__ = files("abct").joinpath("docstrings", "kneighbor.md")

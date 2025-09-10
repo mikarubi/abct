@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from numpy.typing import ArrayLike
 from scipy.sparse import sparray
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import abct
 import numpy as np
@@ -49,4 +49,4 @@ def kneicomp(
             return V
 
 
-kneicomp.__doc__ = resources.read_text("abct.docstrings", "kneicomp")
+kneicomp.__doc__ = files("abct").joinpath("docstrings", "kneicomp.md")

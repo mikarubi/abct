@@ -1,6 +1,6 @@
 from typing import Literal
 from pydantic import validate_call, ConfigDict
-from importlib import resources
+from importlib.resources import files
 
 import numpy as np
 import igraph as ig
@@ -45,4 +45,4 @@ def leiden(
 
     return M, Q
 
-leiden.__doc__ = resources.read_text("abct.docstrings", "louvains")
+leiden.__doc__ = files("abct").joinpath("docstrings", "louvains.md")
