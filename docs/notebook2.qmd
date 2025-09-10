@@ -48,25 +48,29 @@ neye = ~np.eye(len(data["W"]), dtype=bool)
 
 # Scatter plot of degree-corrected and rank-one subtracted structural networks
 r = np.corrcoef(Wr[neye], Wd[neye])[0, 1]
-fig = px.scatter(
-    x=Wr[neye],
-    y=Wd[neye],
-    labels={"x": "Network weights after first-component removal", "y": "Network weights after degree correction"},
+fig = px.scatter(x=Wr[neye], y=Wd[neye])
+fig.update_layout(
+    xaxis_title="Network weights after first-component removal",
+    yaxis_title="Network weights after degree correction",
     title=f"Structural networks (r = {r:.3f})",
-    width=600, height=600,
+    title_x=0.5,
+    width=600,
+    height=600,
 )
-fig.update_layout(title_x=0.5).show()
+fig.show()
 
 # Scatter plot of degree-corrected and global-signal regressed correlation networks
 r = np.corrcoef(Cg[neye], Cd[neye])[0, 1]
-fig = px.scatter(
-    x=Cg[neye],
-    y=Cd[neye],
-    labels={"x": "Network weights after global-signal regression", "y": "Network weights after degree correction"},
+fig = px.scatter(x=Cg[neye], y=Cd[neye])
+fig.update_layout(
+    xaxis_title="Network weights after global-signal regression",
+    yaxis_title="Network weights after degree correction",
     title=f"Correlation networks (r = {r:.3f})",
-    width=600, height=600,
+    title_x=0.5,
+    width=600,
+    height=600,
 )
-fig.update_layout(title_x=0.5).show()
+fig.show()
 
 ```
 

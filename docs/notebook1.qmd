@@ -49,13 +49,19 @@ ordw = data["ordw"].flatten() - 1
 zmin = (0, -0.005, 0)
 zmax = (0.01, 0.005, 36)
 for i, name in enumerate(WD):
-    fig = px.imshow(
-        WD[name][np.ix_(ordw, ordw)], 
-        title=f"{name} structural network",
+    fig = px.imshow(WD[name][np.ix_(ordw, ordw)])
+
+    fig.update_layout(
         color_continuous_scale="inferno",
-        zmin=zmin[i], zmax=zmax[i],
-        width=600, height=600)
-    fig.update_layout(title_x=0.5).show()
+        title=f"{name} structural network",
+        title_x=0.5,
+        zmin=zmin[i],
+        zmax=zmax[i],
+        width=600,
+        height=600,
+    )
+
+    fig.show()
 
 ```
 
@@ -67,12 +73,18 @@ ordc = data["ordc"].flatten() - 1
 zmin = (0, -0.2, 0)
 zmax = (1, 0.2, 36)
 for i, name in enumerate(CD):
-    fig = px.imshow(
-        CD[name][np.ix_(ordc, ordc)], 
-        title=f"{name} correlation network",
+    fig = px.imshow(CD[name][np.ix_(ordc, ordc)])
+
+    fig.update_layout(
         color_continuous_scale="viridis",
-        zmin=zmin[i], zmax=zmax[i],
-        width=600, height=600)
-    fig.update_layout(title_x=0.5).show()
+        title=f"{name} correlation network",
+        title_x=0.5,
+        zmin=zmin[i],
+        zmax=zmax[i],
+        width=600,
+        height=600,
+    )
+
+    fig.show()
 
 ```

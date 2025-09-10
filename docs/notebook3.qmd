@@ -109,27 +109,31 @@ print(f"Time elapsed: {time.time() - start_time} seconds.")
 ```{python}
 
 # Scatter plot of Lloyd and Loyvain k-means
-fig = px.scatter(
-    x=kmeans_lloyd_similarity,
-    y=kmeans_loyvain_similarity,
-    labels={"x": "Lloyd k-means", "y": "Loyvain k-means"},
-    title=f"K-means similarity",
-    width=600, height=600,
-)
+fig = px.scatter(x=kmeans_lloyd_similarity, y=kmeans_loyvain_similarity)
 # Add diagonal line
 fig.add_shape(type="line", x0=55, y0=55, x1=115, y1=115)
-fig.update_layout(title_x=0.5).show()
+fig.update_layout(
+    xaxis_title="Lloyd k-means similarity",
+    yaxis_title="Loyvain k-means similarity",
+    title=f"K-means similarity",
+    title_x=0.5,
+    width=600,
+    height=600,
+)
+fig.show()
 
 # Scatter plot of Lloyd and Loyvain spectral
-fig = px.scatter(
-    x=spectral_shimalik_similarity,
-    y=spectral_loyvain_similarity,
-    labels={"x": "Shi-Malik spectral", "y": "Loyvain spectral"},
-    title=f"Spectral similarity",
-    width=600, height=600,
-)
+fig = px.scatter(x=spectral_shimalik_similarity, y=spectral_loyvain_similarity)
 # Add diagonal line
 fig.add_shape(type="line", x0=1.1, y0=1.1, x1=1.25, y1=1.25)
-fig.update_layout(title_x=0.5).show()
+fig.update_layout(
+    xaxis_title="Lloyd spectral similarity",
+    yaxis_title="Loyvain spectral similarity",
+    title=f"Spectral similarity",
+    title_x=0.5,
+    width=600,
+    height=600,
+)
+fig.show()
 
 ```
