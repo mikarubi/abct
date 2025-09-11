@@ -7,18 +7,12 @@ if isnumeric(Args.start)
     Args.start = "custom";
 end
 
-Args.n = size(Args.X, 1);
-if Args.similarity == "network"
-    Args.A = Args.X;
-    Args.A(1:Args.n+1:end) = 0;
-else
-    % Generate a nearest-neighbor matrix
-    Args.A = kneighbor(Args.X, ...
-        "nearest", ...
-        Args.kappa, ...
-        Args.similarity, ...
-        Args.method);
-end
+% Generate a nearest-neighbor matrix
+Args.A = kneighbor(Args.X, ...
+    "nearest", ...
+    Args.kappa, ...
+    Args.similarity, ...
+    Args.method);
 
 % Module structure
 if isempty(Args.partition)
@@ -35,6 +29,7 @@ else
     [~, ~, Args.partition] = unique(Args.partition);
 end
 
+Args.n = size(Args.X, 1);
 Args.k = max(Args.partition);
 Args.M = full(sparse(1:Args.n, Args.partition, 1));
 Args.Am = Args.A * Args.M;

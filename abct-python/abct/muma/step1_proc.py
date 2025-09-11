@@ -9,13 +9,13 @@ def step1_proc(Args):
         Args.U = Args.start
         Args.start = "custom"
 
-    Args.n = len(Args.X)
-    if Args.similarity == "network":
-        Args.A = Args.X
-        np.fill_diagonal(Args.A, 0)
-    else:
-        # Generate a nearest-neighbor matrix
-        Args.A = abct.kneighbor(Args.X, "nearest", Args.kappa, Args.similarity, Args.method)
+    # Generate a nearest-neighbor matrix
+    Args.A = abct.kneighbor(Args.X,
+        "nearest",
+        Args.kappa,
+        Args.similarity,
+        Args.method,
+    )
 
     # Module structure
     if Args.partition is None:
@@ -23,11 +23,12 @@ def step1_proc(Args):
             gamma=Args.gamma,
             replicates=Args.replicates,
             finaltune=Args.finaltune,
-            display="replicate" if Args.verbose else "none"
+            display="replicate" if Args.verbose else "none",
         )[0]
     else:
         Args.partition = np.unique_inverse(Args.partition).inverse_indices
 
+    Args.n = len(Args.X)
     Args.k = np.max(Args.partition) + 1
     Args.M = np.zeros((Args.n, Args.k))
     Args.M[np.arange(Args.n), Args.partition] = 1

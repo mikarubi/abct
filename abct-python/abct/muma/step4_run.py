@@ -32,10 +32,10 @@ def step4_run(U, Args):
     #    -> then simplify (A - g) .* (M * M')
     Bm = (Am - M * Am) - (g * N - g * (M * N))
 
-    Ic = [None] * k
-    Bc = [None] * k
-    Ac = [None] * k
-    Kc_nrm = [None] * k
+    Ic = [[]] * k
+    Bc = [[]] * k
+    Ac = [[]] * k
+    Kc_nrm = [[]] * k
     for i in range(k):
         I = np.where(Args.partition == i)[0]
         Ic[i] = I
@@ -55,7 +55,7 @@ def step4_run(U, Args):
     for i in range(k):
         Ic[i] = torch.as_tensor(Ic[i], device=device)
         Bc[i] = torch.as_tensor(Bc[i], device=device)
-        Ac[i] = torch.sparse_csr_tensor(Ac[i].indptr, Ac[i].indices, Ac[i].values, device=device)
+        Ac[i] = torch.sparse_csr_tensor(Ac[i].indptr, Ac[i].indices, Ac[i].data, device=device)
         Kc_nrm[i] = torch.as_tensor(Kc_nrm[i], device=device)
 
     ## Run solvers
@@ -108,11 +108,11 @@ def step4_run(U, Args):
             manifold = pymanopt.manifolds.Oblique(Args.d, Args.n)   # transposed to normalize rows
             fx_ucost = lambda U: fx_cost(U.T, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta)
             problem = pymanopt.Problem(manifold, cost=pymanopt.function.pytorch(manifold)(fx_ucost))
-            optimizer = pymanopt.optimizers.TrustRegions()
+            optimizer = pymanopt.optimizers.TrustRegions(max_time=np.inf)
             result = optimizer.run(problem)
 
-            U = result.point.detach().cpu().numpy().T               # transposed back
-            CostHistory = np.array([h["cost"] for h in result.history if "cost" in h], dtype=float)
+            U = result.point.T                                      # transposed back
+            CostHistory = result.cost
 
     return U, CostHistory
 
@@ -138,17 +138,17 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
 
     ## Compute full within-module cost and gradient
     for i in range(k):
-        if Bc[i] is not None:
+        if len(Bc[i]):
             Bi = Bc[i]
         else:
-            Bi = Ac[i] - (Kc_nrm[i] * Kc_nrm[i].T)
+            Bi = Ac[i].to_dense() - (Kc_nrm[i] * Kc_nrm[i].T)
 
         I = Ic[i]
         Ui = U[I]
         ni = len(Ui)   # number of nodes in module i
         Di = 2 * (1 - (Ui @ Ui.T))
         Numi = beta * alpha * (Di ** (beta - 1))
-        torch.fill_diagonal_(Numi, 0)
+        Numi.fill_diagonal_(0)
         if beta >= 1:            # fast update
             Deni = 1 + Numi * Di / beta
         else:                    # avoid NaN
@@ -162,7 +162,7 @@ def fx_cost_full(U, B, alpha, beta):
     ## Compare full cost and gradient
     D = 2 * (1 - (U @ U.T))
     Num = beta * alpha * (D ** (beta - 1))
-    torch.fill_diagonal_(Num, 0)
+    Num.fill_diagonal_(0)
     Den1 =   1 + alpha * (D ** beta)
     Cost =  - torch.sum(B / Den1)
 

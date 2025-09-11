@@ -16,7 +16,7 @@ def kneighbor(
     similarity: Literal["network", "corr", "cosim"] = "network",
     method: Literal["direct", "indirect"] = "direct",
     **kwargs,
-) -> sparse.csr_matrix:
+) -> sparse.csr_array:
 
     n = len(X)
 
@@ -59,7 +59,7 @@ def kneighbor(
                 knn_search_index = pynndescent.NNDescent(X, n_neighbors=kappa+1, metric=knnsim, **kwargs)
                 Col, _ = knn_search_index.neighbor_graph
 
-    A = sparse.csr_matrix((np.ones(n*(kappa+1)), (Row.ravel(), Col.ravel())), shape=(n, n))
+    A = sparse.csr_array((np.ones(n*(kappa+1)), (Row.ravel(), Col.ravel())), shape=(n, n))
     A.setdiag(0)
 
     match type:

@@ -103,7 +103,7 @@ switch Args.solver
 
         opts = struct(tolgradnorm=Args.tolerance, maxiter=Args.maxiter, verbosity=2*Args.verbose);
         [U, ~, info] = trustregions(problem, U, opts);
-        CostHistory = info.cost;
+        CostHistory = [info.cost];
 end
 
 % Gather from GPU
