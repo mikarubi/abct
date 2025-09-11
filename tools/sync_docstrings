@@ -3,7 +3,7 @@
 import glob
 
 dir_matlab = "./abct-matlab/abct"
-dir_docs = "./abct-python/abct/docstrings"
+dir_docs = "./docs-code/docstrings"
 
 filenames_mat = glob.glob(f"{dir_matlab}/*m")
 filenames_mat

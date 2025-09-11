@@ -8,10 +8,23 @@ website:                          # Website-level configuration
   search: true                    # site-wide search index
   sidebar:
     contents: auto
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Installation"
+        href: installation.qmd
+      - text: "Example usage"
+        href: examples.qmd
+      - text: "Docstrings"
+        href: docstrings.qmd
   page-navigation: true
 
 format:
   html:
+    theme: cosmo
     toc: true
     toc-depth: 3
     code-fold: true
