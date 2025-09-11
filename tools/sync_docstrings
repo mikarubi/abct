@@ -24,6 +24,6 @@ for filename_mat in filenames_mat:
     # write the docstring
     filename_doc = filename_mat.\
         replace(dir_matlab, dir_docs).\
-        replace(".m", ".md")
+        replace(".m", ".qmd")
     with open(filename_doc, "w") as f:
         f.write(docstring)
