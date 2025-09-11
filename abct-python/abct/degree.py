@@ -23,4 +23,4 @@ def degree(
             return np.sum(W_residual, axis=1)
 
 
-degree.__doc__ = files("abct").joinpath("docstrings", "degree.md").read_text()
+degree.__doc__ = files("abct").joinpath("docstrings", "degree.py").read_text().replace("```", "")

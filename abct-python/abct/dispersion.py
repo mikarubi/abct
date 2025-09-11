@@ -35,4 +35,4 @@ def dispersion(
     return D
 
 
-dispersion.__doc__ = files("abct").joinpath("docstrings", "dispersion.md").read_text()
+dispersion.__doc__ = files("abct").joinpath("docstrings", "dispersion.py").read_text().replace("```", "")
