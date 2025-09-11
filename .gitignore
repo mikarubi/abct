@@ -4,4 +4,6 @@
 __pycache__
 build
 
-/.quarto/
+.quarto/
+.jupyter_cache/
+_freeze/
