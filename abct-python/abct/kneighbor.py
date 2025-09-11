@@ -70,4 +70,4 @@ def kneighbor(
 
     return B
 
-kneighbor.__doc__ = files("abct").joinpath("docstrings", "kneighbor.md").read_text()
+kneighbor.__doc__ = files("abct").joinpath("docstrings", "kneighbor.py").read_text().replace("```", "")

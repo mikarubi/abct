@@ -2,8 +2,11 @@
 
 import glob
 
-dir_matlab = "./abct-matlab/abct"
-dir_docs = "./docs-code/docstrings"
+dir_matlab = "./abct-matlab/abct/"
+dir_docs = {"python": "./abct-python/abct/docstrings/doc_",
+            "quarto": "./docs-code/docstrings/"}
+ext_docs = {"python": ".py", 
+            "quarto": ".qmd"}
 
 filenames_mat = glob.glob(f"{dir_matlab}/*m")
 filenames_mat
@@ -20,10 +23,12 @@ for filename_mat in filenames_mat:
     # get the docstring
     docstring = "".join([line[1:] for line in filetext[1:i+1]])
     docstring = docstring.replace("[", "").replace("]", "")
+    docstring = "```\n" + docstring + "\n```"
 
-    # write the docstring
-    filename_doc = filename_mat.\
-        replace(dir_matlab, dir_docs).\
-        replace(".m", ".qmd")
-    with open(filename_doc, "w") as f:
-        f.write(docstring)
+    # write docstrings
+    for typ in ["python", "quarto"]:
+        filename_doc = filename_mat.\
+            replace(dir_matlab, dir_docs[typ]).\
+            replace(".m", ext_docs[typ])
+        with open(filename_doc, "w") as f:
+            f.write(docstring)
