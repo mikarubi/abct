@@ -5,30 +5,22 @@ project:                          # Project-level configuration
 website:                          # Website-level configuration
   title: abct documentation       # The title displayed in the website header and tab
   site-url: https://mikarubi.github.io/abct/
-  search: true                    # site-wide search index
+  search: true
   sidebar:
     contents: auto
-  navbar:
     background: primary
-    search: true
-    left:
-      - text: "Home"
-        href: index.qmd
-      - text: "Installation"
-        href: installation.qmd
-      - text: "Example usage"
-        href: examples.qmd
-      - text: "Docstrings"
-        href: docstrings.qmd
+    tools:
+      - icon: github
+        href: https://github.com/mikarubi/abct
+
   page-navigation: true
 
 format:
   html:
     theme: cosmo
     toc: true
-    toc-depth: 3
-    code-fold: true
-    code-tools: true
+    code-fold: false
+    code-copy: true
 
 execute:
   freeze: auto

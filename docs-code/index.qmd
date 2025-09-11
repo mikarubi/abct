@@ -1,14 +1,6 @@
 ---
 title: abct documentation
 toc: true
-page-layout: full   # give the listing more room
-listing:
-  contents:
-    - .             # index everything under abct/quarto
-  type: grid        # or "table" if you prefer
-  sort: title       # or "date"
-  filter-ui: true   # adds a filter/search box above the listing
-  categories: true  # shows categories if pages set 'categories:' in YAML
 ---
 
 Welcome! Browse notebooks via the sidebar or the gallery below.

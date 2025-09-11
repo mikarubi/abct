@@ -28,7 +28,7 @@ def parse_args(
     finaltune: bool = True,
     partition: ArrayLike = None,
     start: ArrayLike | Literal["greedy", "spectral", "spectral_nn"] = "greedy",
-    solver: Literal["adam", "trustregions"] = "trustregions",
+    solver: Literal["adam", "trustregions"] = "adam",
     maxiter: int = 10000,
     learnrate: float = 1e-3,
     tolerance: float = 1e-6,

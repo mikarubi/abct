@@ -1,20 +1,23 @@
 from typing import Literal
+from numpy.typing import ArrayLike
 from pydantic import validate_call, ConfigDict
 from importlib.resources import files
 
 import numpy as np
 import igraph as ig
+from scipy import sparse
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
 def leiden(
     W,
-    start,
     gamma: float = 1,
+    start: ArrayLike = None,
     replicates: int = 10,
     finaltune: bool = False,
     tolerance: float = 1e-10,
     display: Literal["none", "replicate"] = "none",
 ):
+    W = sparse.csr_matrix(W) if sparse.issparse(W) else np.asarray(W)
     G = ig.Graph.Weighted_Adjacency(W, mode="undirected", attr="weight")
     Q = -np.inf
     for i in range(replicates):
@@ -43,6 +46,6 @@ def leiden(
             Q = C.modularity
             M = C.membership
 
-    return M, Q
+    return np.asarray(M), Q
 
 leiden.__doc__ = files("abct").joinpath("docstrings", "louvains.py").read_text().replace("```", "")

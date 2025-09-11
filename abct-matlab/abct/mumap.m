@@ -1,8 +1,8 @@
-function [U, CostHistory] = mumap(varargin)
+function [U, Partition, CostHistory] = mumap(varargin)
 % MUMAP m-umap low-dimensional embedding
 %
-%   [U, CostHistory] = mumap(X);
-%   [U, CostHistory] = mumap(X, Name=Value);
+%   U = mumap(X);
+%   [U, Partition, CostHistory] = mumap(X, Name=Value);
 %
 %   Inputs:
 %       W:  Network matrix of size n x n.
@@ -58,8 +58,8 @@ function [U, CostHistory] = mumap(varargin)
 %                   d is the embedding dimension.
 %
 %           solver=[Optimization solver].
-%               "trustregions": Manopt trust-regions method (default).
-%               "adam": Adam (Adaptive Moment Estimation) optimizer.
+%               "trustregions": Manopt trust-regions method (default for MATLAB).
+%               "adam": Adaptive Moment Estimation optimizer (default for Python).
 %
 %           maxiter=[Maximum number of iterations].
 %               Positive integer (default is 10000).
@@ -81,7 +81,8 @@ function [U, CostHistory] = mumap(varargin)
 %
 %   Outputs:
 %       U:  Embedding matrix of size n x d.
-%       CostHistory: Cost history during optimization.
+%       Partition: Module partition of length n.
+%       CostHistory: Cost history of optimization.
 %
 %   Methodological notes:
 %       m-umap is a first-order approximation of the true parametric
@@ -98,7 +99,7 @@ function [U, CostHistory] = mumap(varargin)
 %           igraph
 %           PyTorch
 %           PyNNDescent (if method="indirect")
-%           PyManopt (if solver="trustregions")
+%           PyManopt (if solver="trustregions") * warning: slow *
 
 % Parse, process, and test arguments
 Args = muma.step0_args(varargin{:});
@@ -108,6 +109,6 @@ muma.step2_test(Args);
 % Initialize and run algorithm
 U = muma.step3_init(Args);
 [U, CostHistory] = muma.step4_run(U, Args);
+Partition = Args.partition;
 
 end
-
