@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Measures of Dispersion – abct documentation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../examples/8_shrinkage.html" rel="next">
+<link href="../examples/6_degree.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b078c8d890d03b44fdc8771f83f9aa3e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/7_dispersion.html">Measures of Dispersion</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">abct documentation</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/1_residualn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network Transformations</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/2_loyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network Clustering</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/3_canoncov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Canonical Covariance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/4_kneicomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Co-activity Gradients</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/5_mumap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">m-umap Embeddings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/6_degree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Degree and Second Degree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/7_dispersion.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Measures of Dispersion</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/8_shrinkage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network Shrinkage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Functions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/canoncov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Canoncov</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/coloyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Coloyvain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/degree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Degree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/dispersion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dispersion</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/kneicomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kneicomp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/kneighbor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kneighbor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/louvains.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Louvains</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/loyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loyvain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/mumap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mumap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/residualn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Residualn</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/shrinkage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shrinkage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/7_dispersion.html">Measures of Dispersion</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Measures of Dispersion</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="set-up-and-load-data" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-and-load-data">Set up and load data</h3>
+<div id="716a3066" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install abct and download abct_utils.py</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install abct</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>mikarubi<span class="op">/</span>abct<span class="op">/</span>raw<span class="op">/</span>refs<span class="op">/</span>heads<span class="op">/</span>main<span class="op">/</span>docs<span class="op">-</span>code<span class="op">/</span>examples<span class="op">/</span>abct_utils.py</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Import modules</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abct</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abct_utils <span class="im">import</span> W, C, fig_scatter, fig_surf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-yellow-fg">WARNING: Ignoring invalid distribution ~vidia-cusolver-cu12 (/home/mika/anaconda3/lib/python3.11/site-packages)</span><span class="ansi-yellow-fg">
+
+</span>
+<span class="ansi-yellow-fg">WARNING: Ignoring invalid distribution ~vidia-cusolver-cu12 (/home/mika/anaconda3/lib/python3.11/site-packages)</span><span class="ansi-yellow-fg">
+
+</span>Requirement already satisfied: abct in /home/mika/anaconda3/lib/python3.11/site-packages (2025.9)
+
+Requirement already satisfied: pydantic&gt;=2.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (2.11.7)
+
+Requirement already satisfied: torch&gt;=2.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (2.8.0)
+
+Requirement already satisfied: numpy&gt;=2.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (2.2.6)
+
+Requirement already satisfied: scipy in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (1.16.2)
+
+Requirement already satisfied: pynndescent in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (0.5.13)
+
+Requirement already satisfied: pymanopt in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (2.2.1)
+
+Requirement already satisfied: igraph in /home/mika/anaconda3/lib/python3.11/site-packages (from abct) (0.11.9)
+
+Requirement already satisfied: annotated-types&gt;=0.6.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from pydantic&gt;=2.0-&gt;abct) (0.7.0)
+
+Requirement already satisfied: pydantic-core==2.33.2 in /home/mika/anaconda3/lib/python3.11/site-packages (from pydantic&gt;=2.0-&gt;abct) (2.33.2)
+
+Requirement already satisfied: typing-extensions&gt;=4.12.2 in /home/mika/anaconda3/lib/python3.11/site-packages (from pydantic&gt;=2.0-&gt;abct) (4.15.0)
+
+Requirement already satisfied: typing-inspection&gt;=0.4.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from pydantic&gt;=2.0-&gt;abct) (0.4.1)
+
+Requirement already satisfied: filelock in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (3.19.1)
+
+Requirement already satisfied: sympy&gt;=1.13.3 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (1.14.0)
+
+Requirement already satisfied: networkx in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (3.5)
+
+Requirement already satisfied: jinja2 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (3.1.6)
+
+Requirement already satisfied: fsspec in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (2025.9.0)
+
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.8.93 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.93)
+
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.8.90 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.90)
+
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.8.90 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.90)
+
+Requirement already satisfied: nvidia-cudnn-cu12==9.10.2.21 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (9.10.2.21)
+
+Requirement already satisfied: nvidia-cublas-cu12==12.8.4.1 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.4.1)
+
+Requirement already satisfied: nvidia-cufft-cu12==11.3.3.83 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (11.3.3.83)
+
+Requirement already satisfied: nvidia-curand-cu12==10.3.9.90 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (10.3.9.90)
+
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.3.90 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (11.7.3.90)
+
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.8.93 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.5.8.93)
+
+Requirement already satisfied: nvidia-cusparselt-cu12==0.7.1 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (0.7.1)
+
+Requirement already satisfied: nvidia-nccl-cu12==2.27.3 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (2.27.3)
+
+Requirement already satisfied: nvidia-nvtx-cu12==12.8.90 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.90)
+
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.8.93 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (12.8.93)
+
+Requirement already satisfied: nvidia-cufile-cu12==1.13.1.3 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (1.13.1.3)
+
+Requirement already satisfied: triton==3.4.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from torch&gt;=2.0-&gt;abct) (3.4.0)
+
+Requirement already satisfied: setuptools&gt;=40.8.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from triton==3.4.0-&gt;torch&gt;=2.0-&gt;abct) (80.9.0)
+
+Requirement already satisfied: texttable&gt;=1.6.2 in /home/mika/anaconda3/lib/python3.11/site-packages (from igraph-&gt;abct) (1.7.0)
+
+Requirement already satisfied: scikit-learn&gt;=0.18 in /home/mika/anaconda3/lib/python3.11/site-packages (from pynndescent-&gt;abct) (1.7.2)
+
+Requirement already satisfied: numba&gt;=0.51.2 in /home/mika/anaconda3/lib/python3.11/site-packages (from pynndescent-&gt;abct) (0.61.2)
+
+Requirement already satisfied: llvmlite&gt;=0.30 in /home/mika/anaconda3/lib/python3.11/site-packages (from pynndescent-&gt;abct) (0.44.0)
+
+Requirement already satisfied: joblib&gt;=0.11 in /home/mika/anaconda3/lib/python3.11/site-packages (from pynndescent-&gt;abct) (1.5.2)
+
+Requirement already satisfied: threadpoolctl&gt;=3.1.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from scikit-learn&gt;=0.18-&gt;pynndescent-&gt;abct) (3.6.0)
+
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from sympy&gt;=1.13.3-&gt;torch&gt;=2.0-&gt;abct) (1.3.0)
+
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/mika/anaconda3/lib/python3.11/site-packages (from jinja2-&gt;torch&gt;=2.0-&gt;abct) (3.0.2)
+
+<span class="ansi-yellow-fg">WARNING: Ignoring invalid distribution ~vidia-cusolver-cu12 (/home/mika/anaconda3/lib/python3.11/site-packages)</span><span class="ansi-yellow-fg">
+
+</span>
+<span class="ansi-yellow-fg">WARNING: Ignoring invalid distribution ~vidia-cusolver-cu12 (/home/mika/anaconda3/lib/python3.11/site-packages)</span><span class="ansi-yellow-fg">
+
+</span>
+--2025-09-12 16:21:21--  https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+
+Resolving github.com (github.com)... 140.82.112.3
+
+Connecting to github.com (github.com)|140.82.112.3|:443... 
+connected.
+
+HTTP request sent, awaiting response... 
+302 Found
+
+Location: https://raw.githubusercontent.com/mikarubi/abct/refs/heads/main/docs-code/examples/abct_utils.py [following]
+
+--2025-09-12 16:21:21--  https://raw.githubusercontent.com/mikarubi/abct/refs/heads/main/docs-code/examples/abct_utils.py
+
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+
+HTTP request sent, awaiting response... 
+200 OK
+
+Length: 1932 (1.9K) [text/plain]
+
+Saving to: ‘abct_utils.py.4’
+
+
+
+
+abct_utils.py.4       0%[                    ]       0  --.-KB/s               
+abct_utils.py.4     100%[===================&gt;]   1.89K  --.-KB/s    in 0s      
+
+
+
+2025-09-12 16:21:21 (16.1 MB/s) - ‘abct_utils.py.4’ saved [1932/1932]
+
+
+</pre>
+</div>
+</div>
+</div>
+</section>
+<section id="set-up-data-and-functions" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-data-and-functions">Set up data and functions</h3>
+<div id="34b59fb1" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get co-neighbor matrices</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Wn <span class="op">=</span> abct.kneighbor(W, <span class="st">"common"</span>, kappa<span class="op">=</span><span class="fl">0.1</span>).toarray()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Cn <span class="op">=</span> abct.kneighbor(C, <span class="st">"common"</span>, kappa<span class="op">=</span><span class="fl">0.1</span>).toarray()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get squared coefficient of variation</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>WV <span class="op">=</span> abct.dispersion(Wn, <span class="st">"coefvar2"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>CV <span class="op">=</span> abct.dispersion(Cn, <span class="st">"coefvar2"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Get participation coefficients</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> np.arange(<span class="dv">5</span>, <span class="dv">30</span>, <span class="dv">5</span>)    <span class="co"># number of clusters</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>repl <span class="op">=</span> <span class="dv">10</span>                  <span class="co"># number of replicates</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">### Run Loyvain k-modularity</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>WP <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="bu">len</span>(K)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>CP <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="bu">len</span>(K)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, k <span class="kw">in</span> <span class="bu">enumerate</span>(K):</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Number of clusters: </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    Mw <span class="op">=</span> abct.loyvain(Wn, k, <span class="st">"kmodularity"</span>, replicates<span class="op">=</span>repl)[<span class="dv">0</span>]</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    Mc <span class="op">=</span> abct.loyvain(Cn, k, <span class="st">"kmodularity"</span>, replicates<span class="op">=</span>repl)[<span class="dv">0</span>]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    WP[i] <span class="op">=</span> abct.dispersion(Wn, <span class="st">"kpartcoef"</span>, Mw)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    CP[i] <span class="op">=</span> abct.dispersion(Cn, <span class="st">"kpartcoef"</span>, Mc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of clusters: 5
+Number of clusters: 10
+Number of clusters: 15
+Number of clusters: 20
+Number of clusters: 25</code></pre>
+</div>
+</div>
+</section>
+<section id="show-maps-of-cv2" class="level3">
+<h3 class="anchored" data-anchor-id="show-maps-of-cv2">Show maps of CV2</h3>
+<div id="4a1d81c7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cv2s <span class="op">=</span> {<span class="st">"Structural - (Squared coefficient of variation)"</span>: (<span class="op">-</span> WV, <span class="st">"inferno"</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Correlation - (Squared coefficient of variation)"</span>: (<span class="op">-</span> CV, <span class="st">"viridis"</span>)}</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (name, vals_cmap) <span class="kw">in</span> <span class="bu">enumerate</span>(cv2s.items()):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    vals, cmap <span class="op">=</span> vals_cmap</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    fig_surf(vals, name, cmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="7_dispersion_files/figure-html/cell-4-output-1.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="7_dispersion_files/figure-html/cell-4-output-2.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="scatter-plots-of-cv2-and-participation-coefficient" class="level3">
+<h3 class="anchored" data-anchor-id="scatter-plots-of-cv2-and-participation-coefficient">Scatter plots of CV2 and participation coefficient</h3>
+<div id="9b73eae0" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>normalize <span class="op">=</span> <span class="kw">lambda</span> x: (x <span class="op">-</span> x.<span class="bu">min</span>()) <span class="op">/</span> (x.<span class="bu">max</span>() <span class="op">-</span> x.<span class="bu">min</span>())</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(K)):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> fig_scatter(<span class="op">-</span> np.log10(<span class="dv">1</span> <span class="op">-</span> WP[i]), normalize(<span class="op">-</span> WV))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        fig.add_scatter(x <span class="op">=</span> <span class="op">-</span> np.log10(<span class="dv">1</span> <span class="op">-</span> WP[i]), y <span class="op">=</span> normalize(<span class="op">-</span> WV), mode<span class="op">=</span><span class="st">"markers"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.corrcoef(WV, np.array(WP))[<span class="dv">0</span>][<span class="dv">1</span>:]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>fig.update_layout(xaxis_title<span class="op">=</span><span class="st">"log-rescaled k-participation coefficient"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                  yaxis_title<span class="op">=</span><span class="st">"rescaled - (Squared coefficient of variation)"</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                  title<span class="op">=</span><span class="ss">f"Structural network: r ~ </span><span class="sc">{</span><span class="op">-</span>np<span class="sc">.</span>mean(r)<span class="sc">:.3f}</span><span class="ss">"</span>).show()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(K)):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> fig_scatter(<span class="op">-</span> np.log10(<span class="dv">1</span> <span class="op">-</span> CP[i]), normalize(<span class="op">-</span> CV))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        fig.add_scatter(x <span class="op">=</span> <span class="op">-</span> np.log10(<span class="dv">1</span> <span class="op">-</span> CP[i]), y <span class="op">=</span> normalize(<span class="op">-</span> CV), mode<span class="op">=</span><span class="st">"markers"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.corrcoef(CV, np.array(CP))[<span class="dv">0</span>][<span class="dv">1</span>:]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>fig.update_layout(xaxis_title<span class="op">=</span><span class="st">"log-rescaled k-participation coefficient"</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                  yaxis_title<span class="op">=</span><span class="st">"rescaled - (Squared coefficient of variation)"</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                  title<span class="op">=</span><span class="ss">f"Correlation network: r ~ </span><span class="sc">{</span><span class="op">-</span>np<span class="sc">.</span>mean(r)<span class="sc">:.3f}</span><span class="ss">"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+        <script type="text/javascript">
+        window.PlotlyConfig = {MathJaxConfig: 'local'};
+        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+        </script>
+        <script type="module">import "https://cdn.plot.ly/plotly-3.0.1.min"</script>
+        
+</div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="d2d2326f-ea5f-4fcb-b550-4c799d641b93" class="plotly-graph-div" style="height:600px; width:600px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("d2d2326f-ea5f-4fcb-b550-4c799d641b93")) {                    Plotly.newPlot(                        "d2d2326f-ea5f-4fcb-b550-4c799d641b93",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"f8","bdata":"0ydgJchF3D+pTfVZZLbAP9qSaLPHBOA\u002fitHNOR3F2z9Y8opWnpjZP2XQ23b6jMg\u002fQUyyK1Egxz+Hx6duRE\u002fWPx6M1sOWQtk\u002fH2BKXuV7zz+VVKesHUfQPwab2hrnds0\u002fMXF8v3250j9KDVOqJOjSPxJm\u002f7qb5eE\u002fes9h8HQJxD+nhLZS\u002fU7QP3mCc2kL5bo\u002fIxsjl3l+wj\u002fFyw8d1XzFP0c4wx8r8bk\u002fWvxidp0+uT8t6P6vXom1P24d8LunP8c\u002f9KP3Qyb0zT8wDzR9KI3WP3lf7p2Cy9U\u002fXoWBYDFtwz+0eqHjuX\u002fdP28c2ymC7dI\u002fxm8HIXFy3T+sQm4gCJDGP8JTCkcfRtM\u002fXzD3a3XByD9LdL\u002fV8EjJPy5FMPzFct4\u002fionRsMKD2z83d9tX39TTP4Iv8T22HuE\u002f4ifW9IaW1z\u002f9jyh14fnWPzjNJIugJ+I\u002f5T+4CWXD1z\u002f32FuBeCTRPxFTxM7Tb+I\u002fBOqwjY\u002fV4j8detJQj0veP36ze5emiN8\u002fyi3OdOma4j\u002fUaM9TAyDfP8pOfVSGwds\u002fE\u002f+II6KQ3T9aiYsVeH\u002fXP0qYxqOW3M0\u002fDdp4TA220z86ZlnP6e7PP9nB5YJwJ8k\u002fKT2iZeTowj8yihieGAvHPxCfG1LiGNE\u002fqFbw++fKxT8naAdnuU\u002fMP4EyE7nbntk\u002fvitcg9DsyD8xbm7ofnXUP\u002fG4bFIhJdI\u002fQPhG7yKB0D9jKyk2tpfVP4orv3Qid9E\u002fCFOmiNpt2j+GZgVtnpvZPxvFBCIT6tY\u002fufQD7Wpr1D8dTpRAG\u002fXWP\u002fAuSCDNDNU\u002fKgS\u002f2xb50T8g87yucV3gP6GNhPw5XNQ\u002fOpyWkjLt1D9SMQu+G03UPzS\u002fPCyOJNY\u002feffSHgzT2D9cts+M\u002foPUP\u002fbPyVKWI9Y\u002fG0JrJGCN2z+qqcJ6klHWPyQa5yFEeNw\u002fbQSolFkM2z8PNDGdMG7hP2thNpv+XeA\u002fgbBNiU1n2z\u002f49apdrhzXP8XiQhes+9s\u002fIWdzI8JR0j8xlvrt6sfcP\u002fE4ho50dM4\u002fqPz\u002fYCTxzz+Vdw5cwtLTP6rZ4gMlStE\u002foEAUlns8zD88X9znDKTGPzTiGTghSMQ\u002fPpYPdJopvz8Zc3P4K6e\u002fP9pQfQNUh84\u002f0Twa3O1ZyD84lPBRj+nBP9mqZ6APOs0\u002fbGVxr1ksyz8nkPA0A1HVP5W10SGeqtE\u002fJODF3MUy0T91c8dimxHJP0\u002f0Ngeb4Mg\u002fcGymCxL1wz8fggvj3ALZP5MgFz4\u002fq9Y\u002f4RI8iJ8Z2T9VzmjLyF\u002fZPwbc71YHydY\u002fHbU4HK8j3j9\u002fngWN1SLNP\u002fYPkAhdA8Q\u002faew2Shi7yT\u002fCvjRoWEfAP4px7YPvndQ\u002fMOJc8aAlyD8u\u002f0MWOUrBP2LAhbzzO8c\u002feRNgJt94xz8aoe4+1PPLP9JCqDoWKMU\u002fsEjBd68xyT8Ei2d7G4vIPwWHV1HCL70\u002fGtKnKNFXwj+LpVUWwUzHPyj6Ci+heMc\u002fBJbYvkF\u002fyj9A\u002f1vulPbNP0o9AhNw58E\u002fsKqssdBh4D\u002ff84\u002fPL8G5PzpIFVfCL9Y\u002fBkpfxTq92j9ROye3rbvHP4jkqZBa59M\u002fuYb0SmE80z+rrix+Q5rZPwe4BPMKwsg\u002fQTQoad8IyT+67eMdFyHRP7TEaP+BXdU\u002fSAJvodZFxz\u002fc4FKJ98\u002fOP1QseTzZobM\u002fhWjGLwRJxj9jUHvatTTEP7Bu\u002fSEWJ7M\u002f\u002fQ4p2Oj10D87YWsgGIDKP5zJOTgfhM4\u002fgdHoCxEvuD9riwOrZqHOP7aWdCtnwdQ\u002fxhuGvIFx0j9yLjNgj0y+P+FmpicPT8Q\u002fR1BEvo\u002f3zT+ii2Q8JZHfP3wIbes18dw\u002ftgm5BnzZzD\u002fwaSWXklXEP5lRubcrAss\u002f5KY0f19bvz\u002f2ghakRiPDP2FguCEfYso\u002ffF7yLUTrwD+5Ex8C8c7KP4hLjbKXAMU\u002fJ28cnfJA2j8BbwNcfTvRP9yU1FCDS9s\u002fjM1y1a9J1z9SIudiUjPVP5ISMsiQrMw\u002fWhKsKK65xj+NoiF4u3rbPw3n30voDNs\u002fn4dgrwqK0z\u002fqr6h6s3HTP7er8bSLydA\u002frzah0vtV1j\u002fxsJ\u002f4vY7VP5Uu+6T1NeA\u002fqujJSSGI0T\u002fCxo1aUYnTP+LXVs3KYsI\u002fnKUzyufOzT9L9nFg7yHLP8pQeaNkXsg\u002flWYj+6xswj884VbIgyTNP5YPzkbNocY\u002fh1Zhg9RD0j8qThZRh03WPzhjeWPK0dg\u002f\u002fI2rfThF1j+T1xEaY8vhPyrk1JFVyNM\u002fYsDQ\u002f6rc2j\u002fAg4Xl7f7GP8z3NEyNitE\u002fdBBzEg6Hxz9qh8xL2wbIP9FRXFCMYN8\u002fN6VUD0Kg3T8KrqAAluDTP9tzi5k+IuE\u002fC+B9UFrt1z8JErWqLN3WP\u002fqobvvJUOI\u002fzKFY4FLM1j971s6KqvHSP9P35IwbguQ\u002fgD+\u002fXZX+4T9FpB9yC5rgP6a6zfmq8+E\u002fPYzhHU3q4z+ArmUo9A3cP+w2OIxzod0\u002fdnx2ACX63j\u002fjmwWJv8rbP\u002f5pYonGhtI\u002fer+nRnWU1D8+cyy\u002fOaLUP\u002f4WBLZQHc4\u002fhdHZ+\u002fUFxT8ngKqaOvLIP5W3eFu6FNQ\u002fJmGxeQcPyj\u002fSix8o4K3MP+j09LmiAto\u002fJ7pl3ox0yD+JQ3g\u002fi4PWP2fvTcJ3fto\u002fnNFfv+MG1T\u002f80i811wfTP4KVOJ0Js9I\u002fhAmxxMS62j854uZoP67bPyf073VPLdg\u002fjbdFXnqV2D8yERHBtfzYP4\u002f4kw8+M9Q\u002f6ICVxDkp1j8187DD00zkPxuKTXokB9k\u002fNlvGnH6K2z+DspdYj4LZP5mzKk8L9dw\u002f4w4IiI7O3T8hVBkGFDPYPxQeCoYgStg\u002fCTiqnDke4T9sJY4qrT\u002faPzyhpidfK+E\u002fyx5jrAOP2z9i2vMw7b\u002fkP1vo6RtWVOM\u002fy5tJQJQQ4D9JhTRkFqXdPzqeyGHuzeE\u002fcZehAx6T2j+rqaWJToLgP11wixucftM\u002flyf0dtj\u002f0j8laU1zv4bTPxNeOeiu28k\u002fVxGhaBi1yD\u002fRmPx7bd\u002fGPydrEweo3cY\u002frFt1e7h9zT9JY+W\u002f\u002fhvFPxSjx46jXcg\u002fU+oiME1Rxj+CyOn6egnNP5yEN\u002fs5rsk\u002fBr656BpexT\u002fsm6e2iSPaPzh3sWfcpcw\u002foiw8aB4izD+fh0sbzYbFP4sYifBzPsQ\u002fsvuKDB5cxD\u002fYl5wDJ8bWPxWY3EsRotw\u002fj1AJqNQa2j8XtxKUF6HZPzAhFOZ\u002fIdU\u002fvSFbBKIY2T\u002fYxXNTXsTSP4MP4k\u002fky9Y\u002fKfXbczczzT+mTiMrRhfVPxeulilBktE\u002fUZdFJf8Fxz9joaRHMCXYP\u002fUPwO22Ztc\u002fDrmXwmZE1z+HHovTQwrbPy+9FNHIbtk\u002fWvskqnml1j8vJaXFKoXRP7YgHzTRNcY\u002fjAobxCsqyD9i6kc0Sz7WP9WB10LCPMU\u002fgiIk5op+1T8ki0sQM5vXP4dLfWUORNQ\u002fqiyKvgKK2T+Hubq25TzNP21kYswMjNw\u002fg5v6NcNg3j\u002f9b573WqnRP6TdV6USm9A\u002fHSNWgQPo0T\u002fDO4KO0iXgPxLyP4zl2Ng\u002frii7p4\u002fq2D9v\u002fo1t2YraP8ueLUFYLdI\u002f7fO9\u002fEaixj83dYUCp07JP1KxoH4LTss\u002fHgSg8U5gzD8ghBLANCfKPzWPWFqLmc0\u002fB76QDoi2xz8lkT\u002ftJxLPPypN8hhyPNE\u002fRlKSZg9dwT9PXoe+Yd3RP3+7Sxp4CtM\u002fCXjiLeT43T8F+V6CQxfOP+0oep3z2MY\u002fZ04rdaG6zj\u002f7ofwT7N\u002fhP7Zun9b6r+E\u002fwdDAa0zozj\u002fh26z\u002f48PJP4sw1+3PE8g\u002fZvBXbfGTzT+n4xJOHtzYP9QucQ2rANk\u002fx3AfPLb41D\u002fyx4beV9TQPxxSzDuPAMY\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"n9OXYQPX5T8xkIZfC77cP5BGN4yuWuo\u002fGN5j7DyY4z\u002fQ1qeoJOTkP12U4jb2Ktk\u002fFUq3KAGz0z9BtwTU5HLkPyPhaElzguY\u002fy5sZGWU35D80JXPu3nXoP\u002fq+PxUhguU\u002fBPwzDrrJ6T+C+yo5hRrmP9wqWk\u002fqye0\u002fVLQDKQIF4j8T2egTxzjnP47SXDQ8RMU\u002fu6ATcYgn3z+IkPpuGRTcPyA9wveSuNA\u002f4knCcn5svD8ef8Rq83nUP8Shs5MyUdE\u002fgmeubrCl4j+2nB9mlzfrP82ekEMY4uQ\u002fmBNHzaOJ4T8UQtC\u002fdFLsP7MaFrfM3+U\u002f2A7mkqTk6j90lbOTEdLaP5z\u002fkEpwPuc\u002frj6QUoGX3T+TDMuFT6vePzsMTfeMquU\u002fKqUGq+Be6D9V9E1ClOvlPzsdIXLKrOk\u002fwQn0qrw46D\u002f3sRaUsILpP4YizF9fTe0\u002fLcCsLi3H6T\u002fqyx3fkUHnP1gCfvb36uw\u002fJcZtm\u002fbj7T9KtjpGjQDsP+JdnhkIsew\u002f\u002fbcTZffm7D+6zO\u002fRrSjrPzp9VdIhQOk\u002fmZ5zdleG6T99tqp6EvLnPzl\u002fK8ziQeM\u002fGedhgeC44T\u002fhC\u002fZ2yNvnP+WqMe1J1d8\u002fw4kRUmOa2D8vRyEy2jfgP1zQwAC6qOc\u002fr1w3z5ZU2T+xflu4kPTkP5cDtdSW6u0\u002fDZmCEDLF3D9WHa7eeCjjP873yaJfu+g\u002fwmMaaOpq5z8+VbmG74bmP6dXWuIyB+Y\u002fK1levmlS6j9tB\u002fPww13nP\u002f465DOQWuI\u002fDu0TyIjX6T\u002f8RU40cy7rP2M\u002fX8431eg\u002fsQ2aiFsM4j8ASDLCSeTqP0FP3eg5ees\u002fGKLZ1wPQ6T9wKppavNLrP3pCckurRek\u002fj3KByj\u002fC5z9MBn+vlFrlPzG8tnkFleM\u002fThtBoKbK5D93UWKmqR\u002fjP+Xb2HsbruY\u002fe6jjAqMq4j9ojoNpk7DnP5dCMo4YXeg\u002fvH+ztb3c6z+tEYlTpDTpPxqSBbHQ5uc\u002fSGO0FOds5D+y2mW1xw7qPxe39\u002fI2Vug\u002fQ5v+9RcX6T9NOAq5ShboP0v6h7u2W9s\u002fmyh8rt871z8cVLXNtG\u002fOPyThG9pbxMU\u002fd8l8qFsF1D8DlVe0HsG5P4BZzXSNnts\u002fCK2v72lWyz8cgrpVtCXYP3aSpagNQdY\u002f5WqKwhmU1T9J4ACyKzHnP5VxXYad898\u002fHqPdcDT63T+Oi7AMEkvMP1TOvcotScg\u002fts2Tifilxz81WuH9xd3oPz8A7yxNjek\u002fB3jUTRr\u002f5T8sqA106\u002fTmPxBqGB53L+M\u002fPYAsohHC5j8fe3233kfdPxISZydOAuQ\u002fEuL5cY0ezz94gLn03fnfP1belYVt9d4\u002fecgLwpTHyD+ULLSsoEXlPxy9mCg+y+Q\u002f71VxnRSi5D\u002fNrvEUzZ\u002foP0HfLZQhn+Y\u002fZJK4gf3h4T+eNeYZGkzjP4o+N11gE8c\u002fTTtzHZCW1D\u002fVTZmn5cngP\u002fnO56BuGd0\u002f95D1zk3m4j+loMqX1IbiP586SRor9t0\u002fwC2bPpgi6z9\u002fHKJAqjHTPzIK8coD6ug\u002faDD\u002fnaR07T\u002fislpe4HHfP+8JxYIdWtw\u002ffCXMq\u002ffp4j+wy8cYZpDpP2SEBGbKXuE\u002fgUzBKHvm4T9IeADCM+foP+DrycFTetw\u002f0zy2jp580D+VekIvA5\u002fTP7Zu7+PfB9Q\u002fZt2NyHS04T9JWcb6gmXUP1vW3CVmc9M\u002fish0XzqD2j+FOUZ6ctveP49KyVAS7eA\u002fAAAAAAAAAAAp9dwsp4niPy7nLtr7RuU\u002f8jRn8d+G4z9wr9Y19qbKP0lhDqqr8MU\u002fvK703MbC3T81mgtvM+TjPxdsI\u002fgIU+g\u002fpqMGldPg4T\u002fxIhKCN4nZP4HPc1aBqM8\u002fiIF\u002fG0en1D990E04W7XlP2vMx66Ll+Y\u002fKlbNQvTg4D9VK21\u002fkmzjPzkzc06CWd0\u002fGKbyJTnR6T9xLQ5YA3jbP39c52ovYeo\u002f1Pz0VPEb5z84lgYMrf7mP96YU17Ysdg\u002fAzyPEC1Yxz+O1YmStczlPx7HVxYix+c\u002f2mVhmSY65D9pRNDPRFjmP3rTEPmUluI\u002fjDEx4DQX6D8vF9lPVRTmP4vRvtJFq+4\u002faqSGgTcz4D9to+n9BLrjP5Uf9e\u002fzZLU\u002fVSoUbfxF2D+9Wd14kc7TP4ZP+S1iAs8\u002f8AekEQuquD+Ap2fLfl\u002fQP1vINRNAicg\u002fJQqdV6iI4D+lrTcitfXpP4mVrU0afOU\u002fgYM5wJds5T8eKP02H8\u002ftP8872LKAqOU\u002ft\u002fvB\u002fGBT6T8nGQrkOHLXP3x04qW97uM\u002f8yiwys+u2j\u002fJLMJG9TXaP6ycr5BHpuU\u002fjaBzMTN46T\u002fFMZdyRBrjP40IUQjscuk\u002ff5Y83TgY5z9YwBvR8dTnP1W3gQZktew\u002fMTVDUAWd6D8SPiPNz2TmP0S8v7uI7+8\u002fZV0RqW7F7z8phNswN3frP1K6iO5R8+w\u002fAAAAAAAA8D9CVOOTZEDsPxnRyjeJ6eo\u002fqKFBg92F6j+Fr1KsuMrnP+\u002fwNaXkZeI\u002fsi00I4yx4T\u002f\u002fMxcYkBLlP4GZsEje3uE\u002fZrB6vovx1j+KncNEeXngPz0881haROg\u002fJNFZHwnA3D+vsJoqayTkP7ZOcme1+O4\u002fQ6RjOryg2z\u002fwPpJC1r3iP6q4x5Ryxuc\u002fs+QtcS7q5T8DTB1cESvkP9tkC2gCO+Y\u002f8Cd18o5k6j8\u002fLTFE8B7lP1XhTil5JeE\u002fkJU6Ul6T5j8M1W0MKHPpP0eecAJeCeY\u002fvwkTHsVE5z8hUNF02EzsP91MMdP5Cuo\u002frc8WjSYG6D\u002fdFQ1sjNboP7D\u002fEIDAu+c\u002f78cjsh0d6z\u002f4fUVa7LvkPy44VXsMTOM\u002fovWsNiDs5z\u002fGe+iyhPnhP\u002fHBQYH81+U\u002fOvoeMrNw4T8p7K9iryLqP3o3P9Pgz+g\u002fYJHDmkFt6j9LyAjrHVXpPxZ2PWl5JOc\u002f7JUBySyB6D8hM8PRIV7sPxm0UrjkkOg\u002f1vVIJP565z9aMkrVBIznP8UMpVKMOtk\u002fBI2T+doC0j+jglZTuzzEP\u002fZJ\u002fTtdY8Q\u002fDtcmMGMy2T9WzcgcqM+xP4PvWc+o2c8\u002f301tmuo0wj+ZS5XnZtHYP5LDaPnY49M\u002fuvB2ra4XwT8zPAHKX8vmP4wrGF7P3Ng\u002f7FMr1jUH0z9Z1+4dG5vBP2Bhs4reWbA\u002fm1zPHL1msT\u002fW+9FBMbLmP7RS1X8yR+o\u002f2pce0fvF6D+MXQA5vfXnP2iHBrrh4eM\u002fA5+c8Dp76D96Pg4k\u002f0vgP+4hFpp8keY\u002fx5ftgFgb2z9ANR8nUZjjP7nKgM3DeN8\u002f1petaA38yz\u002fvJHMCKlDmPyCO46XlFuY\u002f97LlCK9O5z+zGuL\u002fSeXmP4iZsWyKgec\u002fAtea29R64j+7ELIt+lfcP+Oq4skN08g\u002fLj9ztz11zj8njh9dWD3gP4CmjFfpNsQ\u002fTpkJf75Y4j9EfIQdxWjiP\u002f\u002f8tL+PUOA\u002fmjC2JKOK6j+g5cM7YUXSPw5QmuCZaek\u002fQIf7k0GI7T8v+3ZFF6vgP1qSf9oRYOA\u002f0jfWh9mm4T9LnnpxkX7rPy3jQG6I7eM\u002f6YYko2u95T\u002fEHB+ziZrsP1v1z3C4EuE\u002f9TiNhkvKxT\u002fb4HE9+uDRPwPWY7ECx9A\u002flYRlo7f\u002f1j9y5VpoNQbTP0ip9dTMJNI\u002feXuoM+fiyD8O7TbVnQLiP73TyQ2RDuE\u002foBa2DI4Uqz8BllBknu\u002fiP50yLFEBXeI\u002feh5h7acW6D8BEiLYfu\u002fYPxuBRL+4asQ\u002fMyUEd4me3j8SqtUN9NHkP01fLa5PSe0\u002f9RCbIR2j3D8Z4gPZ0mLSPzHAShQissw\u002fUFLEtb+W0z9FAXDgnM7nP0qKGx51Guc\u002fyM50bmZF5j\u002fHqTGytovmP8a\u002fjBRbOtw\u002f"},"yaxis":"y","type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"tTy1uvY04D\u002fBhB+kj2PgP4lO0hx03OI\u002fqU7SQVLl3j8NXYVhGhTgP5xkwMRBu90\u002fNbNDwmqy3D91egATY7jiPxqN99Egr+M\u002fBBA98Trf4D\u002fSvZ0ASHTiPxKLReq1ouE\u002fXdgj6pRE4z+YKhKxTCzjP8GO4z\u002fJtOU\u002f9AYHaxdO4T+pBBvYdFnjPwhD05gxfNs\u002fGGP0oKqd4D+m2vf\u002fpT\u002ffPz5vRAL699w\u002fcc1TJQd22j+ten82nBveP9GAbD8Du9k\u002fbQYI1G8j4T8c4Bbhn8fjP2LnPkBg0OE\u002fOtgmH\u002fiW4T87XT7RWs\u002flP0c6s6uYl+I\u002f0uNM2Sjx4z9\u002ftOeB6onePxeBmbRbCOM\u002fx2DSJLCC3z\u002f1GRWfBhTgPwe5FlfvweI\u002fwPMae4we5D8+\u002fcs030vjP6mO6z6QreM\u002fhTJuNpoi5D\u002fYpdZFNL\u002fkP7yR8dvCr+Q\u002fKw5fLSn84z9yAKd\u002fmaHhP8RhMwMUG+U\u002fRhGxJtJz6D+tq\u002f3zw\u002fLkPxiwy\u002ffZAOc\u002fpvh7HxAE5z9WUxryi5rmP8ga7GrXROQ\u002fCt77Ovfw4z\u002f0G1GICjjkP7vch1SeuOA\u002frX945QEr4T9y5IpqPhvjP6Eo5JKApuA\u002feqdEwoPD3j+Vh+v2WwbhP8Ha7rUU3eM\u002fWqHnag9h3j8m19Dij7TiP0Yy7ec6iuY\u002flPXm3ZkV3z+6ic0nfpHgP5+e04NiIOU\u002f2XZkWAGm4j8yGutSj4DiPwcjxKMJo+I\u002fhLWj\u002fMAo5D+ygXRivijjP8Ew8z414+A\u002fGDCvr1IQ5T9rSU7vua\u002flP1Xh1B15z+M\u002fLFDS0duh4T9Uij6NuFrmPzPu6TMSceU\u002fnyT\u002fsAeK5j9gxHhYb8PlP2KSgsvrW+U\u002ffBVujPGu4z\u002ffLZc82HjiP6ZZjnXjjuE\u002fE1nfpvKX4j90SCMZ0bzhP+Tv47V48eI\u002fxmdWU4Wi4D\u002fKGctdu5jkP1otDIFjkuQ\u002f4GnDqTT25j8OushB\u002fKPlP6B0DZ72eOI\u002f+z95i8MZ4z+9DgcTMELmP\u002fW7kXgkJuI\u002ffCxE3jHS4j+Gz\u002fAE19HiP3LLd0U3qt0\u002fzYp5SUx\u002f3D8KEOsUZFPZP10hC4FSPNg\u002f3EypcVMd2z99OvOCDw3XPzowzcwIk9w\u002fPcRG\u002f6LZ2D8CNmUdhlHcPyYOFZNpuds\u002foGdQcXS52z8WKoaLfQzkP2GNKbsYAOA\u002fgm4e2p574D8wAwg3KibZP3GeIXfYoNg\u002ft8uJ+P6b2D+B0HcfU5TkP6sKMnrK3+U\u002fhB9HiAO64T\u002frLLaKrETiP3iYEv13HOA\u002fLDnoJAav4D8bgFG3s8veP36BL6lY5eE\u002fVCQYUBFv2D8U6521SE7gP9vljz6\u002fS94\u002fl3ZftsUd2j8LnxzAwyTiP+XJnQlGP+M\u002f5xkXblpl4z\u002fxBNkH3DvlP9\u002f0m7IYK+M\u002fCl+5yQbq4j\u002f4lFGreMjhP2ZeoZsQets\u002fKFWJx5tE3j\u002fK+WWSbQPiP2byIjRxPOA\u002f0gQKPAtQ4z9cKuZQyhvjP+aJhzwtqeA\u002f6ybJA1qT4z\u002f69jB2ctTdP\u002fv2hh8KkuU\u002fT+qxmDeA5z+k2n0F3ebgP2N8SgcpRt4\u002f+vSOMhu84T+W\u002fGTy+ALmP8Oo6m9YSOI\u002ff7rGDHyg4T97tRnMiL\u002fjPysFq5eu0Nw\u002fylU4JmDR2z9ASZX2e2nbPxSpFUGA3d0\u002fWx+DCKyc4T8rvVe02+3dPzVsrniiXt0\u002fm6\u002fCGJ9G3T+Reih5JAngP2VhoZ3+VeA\u002fp4wFoyl92D\u002fO4fLpiZPgP5NT\u002fS5z\u002f+A\u002f\u002fcCdbjdh4T+bnl43CBrZP7a+\u002fmGdRdg\u002f1qC2xWTV3j\u002flxv5JCZfiPyOV9xz2oeQ\u002f5LPFZVKh4D+mtejEeK7cPyRs2GJz3tg\u002fkWrwSdjL2z\u002fglYGwGajiP1c0S18gJOQ\u002fDg3J5AVH4D\u002fkAUF8CwDiP4Lie9EWJOA\u002fD2ksAyUx5D+fde+obmfZP7wFiASwDuU\u002fwWdHGPzj4j8abc5tjjThPwdAPn0kUdY\u002fBfhGlKXY0j\u002fmZr2qgMLiP18QluxlHeM\u002fZ3XPaJty4D89DKRIBfDgP7QK9ujEXOA\u002fUtxZVV2Q4T\u002fqEo+iFV3iP2NeRKahaOc\u002fyIquDCEK2j8s6iONx2LfP+FhYosIrM0\u002fMXhwaCUO1z8i6Q3zEnPUP\u002fSex1qIldI\u002fFP1Gs0Uqzj\u002fqLTe3fNfTP3yE7mWjstQ\u002fmJDMYcHP2z\u002fPID2w2EDjPwIXGWwa0uE\u002fPtsVi3qn3z\u002fYSo6n+qHlPzsjXhQNyOE\u002fJHNYkn1l5D8tFXJfDirdPyehfy\u002fXZeE\u002fzK+NFLQo3j+YtFdXx\u002f3dP3azSWcl5+I\u002faYDLbGpK5D+oSPWhexXhP5dGxXKrPOM\u002fOWfYaw0F5D8MPPcx36fjP64jGmgs6+M\u002faGHwRqeI4z+W9SuC4BfhP206L1FHgeY\u002fCzELwUiO5z88Jq68FQfkPyHhvdGEp+U\u002fzU3ynE185z9lIj7l2yrlP4eO\u002fYfG5+M\u002fNWgAjOhr4z+5m2QUMy\u002fjPxiohhdWLeA\u002fMOPHM0684D+FFk3PO67hP9YqgSsq3+A\u002f1GuGcKla3T8Kk2y0eoHgP7AiDRuNoOM\u002f2Kx86h8L3j8U0HoKVtjhPzYN2fnH+uY\u002fCEK67xoc3j8nHLH6lxvgPyr7fx8ISuI\u002fMLUJknv24T95hjAvdyjhP+Z37\u002fJ0FOI\u002fHhuWTHQU5D+CStfZY\u002fPhP\u002f97MiC\u002fZeA\u002fHgI5uth14j9WeO4PStrjP7IjvohNiOE\u002fAMq6F9Ow4T9df+J0agLmPxZmBeBcgOM\u002f5MGHaxDH4z\u002fG5V3dOc3iP\u002fO5T7UZRuM\u002f2+adFNE95D9KmhnYoOvhP8\u002fck3yRLeE\u002fHLXymNJp4z9p\u002fDcA4hPhPwiIIOEMW+I\u002fxPzt6AkR4D\u002f1s8ok5PjkP3n3uAHIguM\u002f+v\u002fNybi85D\u002fxJNmJg4njP1vQwyABxOE\u002fdPac\u002fgVf4j\u002fllhA5AunlPwu5eKr1g+E\u002f4V+Qdt3C4T\u002fU5+DTQCjiPxSY+jwBANs\u002f\u002fwYnPNjC1z8\u002f9M+bJNTTP2VbYm+sA9Q\u002fk53jLXzQ1j8xkZoS2inSP64XSw98m9U\u002fWhQkKIrG0z8nvikjHczWP6t\u002fr\u002fRx4tc\u002f2QTuWBfG1D+sTWqJx+ThP7zQBF++\u002ftg\u002fhPDlT3Do1z9nkJoIU4fUP\u002fK2smZYANM\u002f8LoCxGAc0z8wFudjj+jhP6lViJR+3OQ\u002fue\u002fshp9L5D9ipydzLujjP7wdpoNi+eA\u002fWPIPDnkb5D+6YObjUyHePzZcBcY1EOA\u002fTz6Pl1fb2D+CGGGufqzcP85zldOsq9w\u002fxgrX785p0z8ucOhzEiTgP5gtif2iAeA\u002f2BBO49Rj4D\u002fMsqqxthXiP75i3itxa+E\u002fGV2RV35z3j8VTLwW3Q\u002faPylwtQVwodE\u002fR9pXZ+ys0j8IIigRgjTgP2Mqk4h3P9E\u002fg+aXaoVk3T+r8TNNIX3hP8CyggSkRt4\u002fc+AvC+8G5T8ObJpADXnVP\u002fyvuNUe6uQ\u002f25DXIjTA5j+asHwxj3jbP7WSjFAdI94\u002fUKt9p6+P3T\u002fhmU9BZFnmPztmFFjI3uE\u002fziDgtdcE4z9H1b82ZrHkPwEkpJVYj98\u002f\u002fScp0v\u002fx0j9tIq4CsKbVP92x82rehdM\u002fg7NiUKEa1z+\u002f7jJc4b3UPxN2Kbrlc9Q\u002fLKODmKBg1D+dYr2FjpTgP41\u002fsdT\u002fy98\u002fF2jmcLv7zD\u002fnRJbeX4DfPzuYwW+rwN8\u002fSpHnbjtk4T\u002fnPylMU6DWP+onCtXb\u002f9M\u002fQ3v836jV2j9AftrhqjbiPwMBPUpda+U\u002fgBxo96W42D+vYk5gi5bVP59uyt5e29Q\u002fFQ855iyy1T+mAU4+mOPgP7CjH7hRGuE\u002f5oVuyZIi3j8y3bdJYOriP9kShmtx+d4\u002f"},"y":{"dtype":"f8","bdata":"n9OXYQPX5T8xkIZfC77cP5BGN4yuWuo\u002fGN5j7DyY4z\u002fQ1qeoJOTkP12U4jb2Ktk\u002fFUq3KAGz0z9BtwTU5HLkPyPhaElzguY\u002fy5sZGWU35D80JXPu3nXoP\u002fq+PxUhguU\u002fBPwzDrrJ6T+C+yo5hRrmP9wqWk\u002fqye0\u002fVLQDKQIF4j8T2egTxzjnP47SXDQ8RMU\u002fu6ATcYgn3z+IkPpuGRTcPyA9wveSuNA\u002f4knCcn5svD8ef8Rq83nUP8Shs5MyUdE\u002fgmeubrCl4j+2nB9mlzfrP82ekEMY4uQ\u002fmBNHzaOJ4T8UQtC\u002fdFLsP7MaFrfM3+U\u002f2A7mkqTk6j90lbOTEdLaP5z\u002fkEpwPuc\u002frj6QUoGX3T+TDMuFT6vePzsMTfeMquU\u002fKqUGq+Be6D9V9E1ClOvlPzsdIXLKrOk\u002fwQn0qrw46D\u002f3sRaUsILpP4YizF9fTe0\u002fLcCsLi3H6T\u002fqyx3fkUHnP1gCfvb36uw\u002fJcZtm\u002fbj7T9KtjpGjQDsP+JdnhkIsew\u002f\u002fbcTZffm7D+6zO\u002fRrSjrPzp9VdIhQOk\u002fmZ5zdleG6T99tqp6EvLnPzl\u002fK8ziQeM\u002fGedhgeC44T\u002fhC\u002fZ2yNvnP+WqMe1J1d8\u002fw4kRUmOa2D8vRyEy2jfgP1zQwAC6qOc\u002fr1w3z5ZU2T+xflu4kPTkP5cDtdSW6u0\u002fDZmCEDLF3D9WHa7eeCjjP873yaJfu+g\u002fwmMaaOpq5z8+VbmG74bmP6dXWuIyB+Y\u002fK1levmlS6j9tB\u002fPww13nP\u002f465DOQWuI\u002fDu0TyIjX6T\u002f8RU40cy7rP2M\u002fX8431eg\u002fsQ2aiFsM4j8ASDLCSeTqP0FP3eg5ees\u002fGKLZ1wPQ6T9wKppavNLrP3pCckurRek\u002fj3KByj\u002fC5z9MBn+vlFrlPzG8tnkFleM\u002fThtBoKbK5D93UWKmqR\u002fjP+Xb2HsbruY\u002fe6jjAqMq4j9ojoNpk7DnP5dCMo4YXeg\u002fvH+ztb3c6z+tEYlTpDTpPxqSBbHQ5uc\u002fSGO0FOds5D+y2mW1xw7qPxe39\u002fI2Vug\u002fQ5v+9RcX6T9NOAq5ShboP0v6h7u2W9s\u002fmyh8rt871z8cVLXNtG\u002fOPyThG9pbxMU\u002fd8l8qFsF1D8DlVe0HsG5P4BZzXSNnts\u002fCK2v72lWyz8cgrpVtCXYP3aSpagNQdY\u002f5WqKwhmU1T9J4ACyKzHnP5VxXYad898\u002fHqPdcDT63T+Oi7AMEkvMP1TOvcotScg\u002fts2Tifilxz81WuH9xd3oPz8A7yxNjek\u002fB3jUTRr\u002f5T8sqA106\u002fTmPxBqGB53L+M\u002fPYAsohHC5j8fe3233kfdPxISZydOAuQ\u002fEuL5cY0ezz94gLn03fnfP1belYVt9d4\u002fecgLwpTHyD+ULLSsoEXlPxy9mCg+y+Q\u002f71VxnRSi5D\u002fNrvEUzZ\u002foP0HfLZQhn+Y\u002fZJK4gf3h4T+eNeYZGkzjP4o+N11gE8c\u002fTTtzHZCW1D\u002fVTZmn5cngP\u002fnO56BuGd0\u002f95D1zk3m4j+loMqX1IbiP586SRor9t0\u002fwC2bPpgi6z9\u002fHKJAqjHTPzIK8coD6ug\u002faDD\u002fnaR07T\u002fislpe4HHfP+8JxYIdWtw\u002ffCXMq\u002ffp4j+wy8cYZpDpP2SEBGbKXuE\u002fgUzBKHvm4T9IeADCM+foP+DrycFTetw\u002f0zy2jp580D+VekIvA5\u002fTP7Zu7+PfB9Q\u002fZt2NyHS04T9JWcb6gmXUP1vW3CVmc9M\u002fish0XzqD2j+FOUZ6ctveP49KyVAS7eA\u002fAAAAAAAAAAAp9dwsp4niPy7nLtr7RuU\u002f8jRn8d+G4z9wr9Y19qbKP0lhDqqr8MU\u002fvK703MbC3T81mgtvM+TjPxdsI\u002fgIU+g\u002fpqMGldPg4T\u002fxIhKCN4nZP4HPc1aBqM8\u002fiIF\u002fG0en1D990E04W7XlP2vMx66Ll+Y\u002fKlbNQvTg4D9VK21\u002fkmzjPzkzc06CWd0\u002fGKbyJTnR6T9xLQ5YA3jbP39c52ovYeo\u002f1Pz0VPEb5z84lgYMrf7mP96YU17Ysdg\u002fAzyPEC1Yxz+O1YmStczlPx7HVxYix+c\u002f2mVhmSY65D9pRNDPRFjmP3rTEPmUluI\u002fjDEx4DQX6D8vF9lPVRTmP4vRvtJFq+4\u002faqSGgTcz4D9to+n9BLrjP5Uf9e\u002fzZLU\u002fVSoUbfxF2D+9Wd14kc7TP4ZP+S1iAs8\u002f8AekEQuquD+Ap2fLfl\u002fQP1vINRNAicg\u002fJQqdV6iI4D+lrTcitfXpP4mVrU0afOU\u002fgYM5wJds5T8eKP02H8\u002ftP8872LKAqOU\u002ft\u002fvB\u002fGBT6T8nGQrkOHLXP3x04qW97uM\u002f8yiwys+u2j\u002fJLMJG9TXaP6ycr5BHpuU\u002fjaBzMTN46T\u002fFMZdyRBrjP40IUQjscuk\u002ff5Y83TgY5z9YwBvR8dTnP1W3gQZktew\u002fMTVDUAWd6D8SPiPNz2TmP0S8v7uI7+8\u002fZV0RqW7F7z8phNswN3frP1K6iO5R8+w\u002fAAAAAAAA8D9CVOOTZEDsPxnRyjeJ6eo\u002fqKFBg92F6j+Fr1KsuMrnP+\u002fwNaXkZeI\u002fsi00I4yx4T\u002f\u002fMxcYkBLlP4GZsEje3uE\u002fZrB6vovx1j+KncNEeXngPz0881haROg\u002fJNFZHwnA3D+vsJoqayTkP7ZOcme1+O4\u002fQ6RjOryg2z\u002fwPpJC1r3iP6q4x5Ryxuc\u002fs+QtcS7q5T8DTB1cESvkP9tkC2gCO+Y\u002f8Cd18o5k6j8\u002fLTFE8B7lP1XhTil5JeE\u002fkJU6Ul6T5j8M1W0MKHPpP0eecAJeCeY\u002fvwkTHsVE5z8hUNF02EzsP91MMdP5Cuo\u002frc8WjSYG6D\u002fdFQ1sjNboP7D\u002fEIDAu+c\u002f78cjsh0d6z\u002f4fUVa7LvkPy44VXsMTOM\u002fovWsNiDs5z\u002fGe+iyhPnhP\u002fHBQYH81+U\u002fOvoeMrNw4T8p7K9iryLqP3o3P9Pgz+g\u002fYJHDmkFt6j9LyAjrHVXpPxZ2PWl5JOc\u002f7JUBySyB6D8hM8PRIV7sPxm0UrjkkOg\u002f1vVIJP565z9aMkrVBIznP8UMpVKMOtk\u002fBI2T+doC0j+jglZTuzzEP\u002fZJ\u002fTtdY8Q\u002fDtcmMGMy2T9WzcgcqM+xP4PvWc+o2c8\u002f301tmuo0wj+ZS5XnZtHYP5LDaPnY49M\u002fuvB2ra4XwT8zPAHKX8vmP4wrGF7P3Ng\u002f7FMr1jUH0z9Z1+4dG5vBP2Bhs4reWbA\u002fm1zPHL1msT\u002fW+9FBMbLmP7RS1X8yR+o\u002f2pce0fvF6D+MXQA5vfXnP2iHBrrh4eM\u002fA5+c8Dp76D96Pg4k\u002f0vgP+4hFpp8keY\u002fx5ftgFgb2z9ANR8nUZjjP7nKgM3DeN8\u002f1petaA38yz\u002fvJHMCKlDmPyCO46XlFuY\u002f97LlCK9O5z+zGuL\u002fSeXmP4iZsWyKgec\u002fAtea29R64j+7ELIt+lfcP+Oq4skN08g\u002fLj9ztz11zj8njh9dWD3gP4CmjFfpNsQ\u002fTpkJf75Y4j9EfIQdxWjiP\u002f\u002f8tL+PUOA\u002fmjC2JKOK6j+g5cM7YUXSPw5QmuCZaek\u002fQIf7k0GI7T8v+3ZFF6vgP1qSf9oRYOA\u002f0jfWh9mm4T9LnnpxkX7rPy3jQG6I7eM\u002f6YYko2u95T\u002fEHB+ziZrsP1v1z3C4EuE\u002f9TiNhkvKxT\u002fb4HE9+uDRPwPWY7ECx9A\u002flYRlo7f\u002f1j9y5VpoNQbTP0ip9dTMJNI\u002feXuoM+fiyD8O7TbVnQLiP73TyQ2RDuE\u002foBa2DI4Uqz8BllBknu\u002fiP50yLFEBXeI\u002feh5h7acW6D8BEiLYfu\u002fYPxuBRL+4asQ\u002fMyUEd4me3j8SqtUN9NHkP01fLa5PSe0\u002f9RCbIR2j3D8Z4gPZ0mLSPzHAShQissw\u002fUFLEtb+W0z9FAXDgnM7nP0qKGx51Guc\u002fyM50bmZF5j\u002fHqTGytovmP8a\u002fjBRbOtw\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"z5hv1mWI5T+AaIJLS+fjP+r0yK2ikeg\u002fQ4YJqgKB5D9yrXhkw3DlP4t0oN2WA+M\u002fzo7rhCsE4j+E8GVnQDbnPzjkt4zBlug\u002fpmfuOD1r5j\u002fKVDEOmIXoP2+9fH7yh+c\u002fwf\u002fp1VyV6D9rsOlCjGzmP6gxU66YBes\u002fGScIu6yY5T99I7mDrjDoP+W3NSHhuuA\u002fSLbQpTy85D898dv2iK3jP7jYeOyIteE\u002ffgStpKge4D\u002fJ3Sh8ulPiP5J7fC6gNuI\u002fhgcQqxYQ5j8RhGBiTVzpP0LXJ+ZDlOY\u002f52Joyf615T\u002fJHzkxYyjqP6m7KeeH2OY\u002fk5dizAVL6D8p+jhUycPiP8ZYWbhGIec\u002f0TlMMzgx4z\u002f5vu5EdYzjP8yM1TX5puc\u002fswmYJj3n6D\u002fH5q1l45jnP4eTg\u002f+z2eg\u002fVHZQNLHE6D\u002fpYm+yUyPpP2ArAaFP0Ok\u002ff5Z1UoG76D8LVHmM5ZHnP6j3Wgbx7+k\u002f7LKV8RrQ6z+5lf2vr4HpP5vrJohGneo\u002fGKqUD96F6j8LnleU+yXrP\u002fGMAeAH7ug\u002fBnZklSme6D8pbqjLzcPoPzcLvlWpkOY\u002futjpj1Lj5T\u002fiZ9fF1JXoP6Zq8LNjDeQ\u002fdwhBa0gy4j\u002fLdPK0413kPwtDfTMF2Oc\u002fqHb0ZGjT4j+dIZ8H5HXmP77IoNvl9+o\u002fsk0wugmR4z8gVGqydXTlP1PEsBueA+c\u002fNvrxZbrf5z+8DjjTeornP1Otbvc4Kuc\u002fHIBBZazt6D++KWZQDNbnPzpu+\u002fuVuOY\u002fKNcqaMfB6D\u002fMllXLCofpPwAJIir0Eeg\u002fRPX1r\u002f9J5T8YOFzi9qvpPzrx4BJY6+k\u002f7oEH5wVM6T\u002f7ER6\u002fyMbpP4fWZ2aIz+g\u002fLSWp953y5z\u002feBBuLVhPnP5S2f4lmouY\u002fVEMbH8P25z+owfXfk7PmP6fh4yHAROg\u002fBGAA6kg65j\u002fcMMw+r4npP2GaP2zer+g\u002fR0a9693c6D9pPFgEE4znP9sXgKlCbec\u002fzm7t6yWT5T8pPiBDXBzpP+ElIPO6M+g\u002fFNsthciy6D8JkZBdvjboPz1nuuPjNuQ\u002fC6SoQ9xO4z8X1qWXGvXhP4qcSiCLeeE\u002fmCUd+9hA4j80jfszkb3gPypLtqWPq+M\u002f7Hvm58QR4j\u002fk9oJyeeviP1swXslpYOM\u002fbNp4oH4g4z\u002fm35OUK2PmP4OcckqDo+Q\u002fd0yuyblH5D+OjJSRTP7hP4LLyLra0uE\u002f9mTfL7qS4T9UrWk0\u002ftboP5oC9rYZN+k\u002fk5inyylP5T+4N9rVt9\u002flPyOP5yuVfeQ\u002ffb8yaXb45T9JbbsCvvPiP1NF3Qc5R+U\u002fZHZE1Zr94T99EDewwI\u002fkP86vRB+7YOI\u002f1IXdW2MD4D\u002focqkRhFDmP2th\u002fCb9X+c\u002fhbYcs3Vu5z86spEZsPPmP1+fNvIRPOc\u002f8gN22+ao5j\u002fpFOeYN7HlP4yqNplyieA\u002fcaAS3YpL4j8vbWlf14zlP7Nc07a0zeM\u002fde+LSOo25z9L3tTPXrvmP16kWoDKVOQ\u002f12\u002fksRtv6T8HcNzmhVfiP7L7uea8A+k\u002f6sh95QBo6z\u002fUQtZHyiXlP7qgKr\u002fCXuQ\u002f8COnLSsj5j+9EHo69sjpP\u002fp5kC7gH+Y\u002fEw0MECTD5T9FFbIgzLzoP78fRAa6YeI\u002fm+E4ePkU4T+YJB\u002fL78bgP0lWAjU+Q+I\u002fFBGAB\u002fxR5T89qDCO3o\u002fiP5i\u002fBrCAGeI\u002fWJrS3laC4j8c2DucZp7jPzzPoOvGYuQ\u002fCWMTd6Td3T\u002fvQfdWgHfkP1fnk3aL7+U\u002fSn6RUx8a5T9WJASwD4ThP2og4a\u002f5euE\u002fW5H5We555D9szAcTJ27oP2O3CStKL+k\u002fS2DB1VNQ5D8VOV2qKQTjP7RsEDoOJuI\u002fcJmb04aQ4j8newc0mMLmP8b60gTBLOg\u002fj0HekB485D+c0MF1BLLlPwYUY9lvb+M\u002fozIz3cuQ5z9GV+uHi5\u002fkP1h+wNGfYeg\u002fo7ssJlw95j8nc0U1B83mPziY\u002fLxszOM\u002fv5\u002fe0GpC4j8Pub2+rEjoP6\u002fIfY\u002fPoOg\u002fcTFLvisC5z94h1nyB8\u002fnP4Lm+3Ar1eY\u002f1oE85zrs5z9vXn4\u002fQnDmPxdR7zi2Ies\u002fp76XZjE05T\u002fvcEOXndfmP1gzp0gzFeE\u002fBqMRT\u002fMR5D97gkkPTx\u002fjP8YwBuSZa+I\u002f\u002f6uaXc414T+vVXzU2c3iPxyomcd34eE\u002fvySW0uro5T\u002fcZ\u002f0IIYLoP\u002fQq7muh\u002fOY\u002fp\u002fmRhwss5z8WbHtQiXvrPwSCYrfUpeY\u002fII4wv6l55z\u002fOkoA4xhXiP8hyd\u002f\u002f0tOU\u002fyVOQN5im4j+TP4FDnafiP6SNS1Hrtec\u002fqr9Po7UY6T+jr8gyyQjmP2Q7XbS1mug\u002fYtY0WbRB6D8PR8SumPvnPzzmdbaPX+k\u002fTLW+6hPA5z9UuBtDvkTnP\u002f+eqKiqkes\u002fAVfhk9xN7D\u002fvcZcyxX\u002foP6akEpWkdek\u002fEYIf9kZY6z\u002fcEoX302PqP\u002fGoM3uFaek\u002f9QvAEeS36D\u002f0Q+gyebHoP2YHs+EgGuY\u002fMiiJ5u725T8RlGFHqujnP9pcv6Mo7OQ\u002fc4dEoYv24T8hpJPlYijkP1u5u8FUKug\u002f1tKnc98+4z8Ph28OzynmP+D6lyxZGOs\u002fjcY5V58i4z\u002fFQegSEa3lP9y1jM4XUeg\u002fcN0avFPn5z+sw0sxJ7LmPzvLGYjFVOc\u002fDJPpAZLK6D941hbkfGfnP9BhZMKRcOY\u002fD8XXSrxI6D8JBrbJcw\u002fpP7itho9Xzec\u002fGGaDoPNm6D+ZzzVxVejsPx3UCrgMi+k\u002fwpFljmQO6T9k1+ZdGBvpP1uW6M0Sn+g\u002fZp1V3Lwq6j\u002f+UzW4xVfnPz8gejPEwuY\u002f7wb8AGy26T86Vl+UPcTmP31QPCmb7eg\u002fkDE9tNRE5j8E0rITAVjsP28XciK58Oo\u002f03agS2bZ6j+m4LCk8Q7pPwlHIgJb8ug\u002fm8WCFFaw6D8n0kj0\u002f3npP4SBjDD\u002fd+g\u002fVxETxyNT6D9+nUkx9cjnP0KK3CMSW+Q\u002f31gO7tEa4z\u002f0D5ny3ajhP\u002fI3n7hHo+E\u002ftAllUTml4z\u002fNnNE9usfgP0SRHviPj+I\u002fPUlYZ3iB4T\u002fDztkMQpTjP\u002f+5qcNfH+M\u002fhMZBn1lz4T8XTib5DFroPwkGU+V10eM\u002fOAasol494z+xnBBipoDhPxlZYygM2+A\u002fAUQ8Vlbr4D8wIKodzAXoPwsbc5miAOk\u002fgdeW2lVT5z8uvEZHT\u002fXmP0EKHfdigOU\u002fY8GJmFna5j+xX6gokGjkP+oRhkhu9+Y\u002fABAgqWAz5D85Zp+eBRjmP9FASIvKqOM\u002fU89xLjO14T8mCUtFoQTnP5KAHGPIIec\u002f5\u002fL9YFWB5z+v3BmSVRjoP4bK+zM3eOc\u002fSgU5uLYe5j+BuGtyzsfkP8coHfJNB+I\u002fnh2qYrSn4j+nB21biHPmP\u002fmSCzUu7uE\u002fv2JUcFEM5j\u002fSPWXjcjjnPy723QhU1uU\u002f\u002fPI\u002fB24h6T87S4HE5zLjP3ifc2I7uOg\u002fVr9N5Crb6j+gyFYf1LzlPy5N0D9zv+U\u002fuxZWw5Nu5j9BmjWWPwrrP2pQ4xPRq+c\u002frVpbT\u002fBA6D916zU5eK3qP0bIq6tvheQ\u002fKiuGf9b84T8WD2BkbxziP\u002fEITjNKy+I\u002fB+XIAxcE5D8NMjCtFBXjP4BLg6Ji7+I\u002f7V7K7zf64T9L2Vp7Dt\u002fkP0G+cCqvp+Q\u002fzjaDAdjE4D9Uy+2QMMTkPxWlCyFq2OQ\u002f1WBTS\u002fPI5z9ladMwWXfjP+pExGDNoOE\u002fDrPLz\u002fet5D+AnZR4xxTpP3IeeeCE1es\u002fYhjPINTm4z9sW5cRYqviP06Elf72M+I\u002fxTIZhrEz4z\u002f0scbHXobnP2tvfOGDh+c\u002f28vwF2Xk5j8MM37nBj\u002fnPyAVdlm5GuM\u002f"},"y":{"dtype":"f8","bdata":"n9OXYQPX5T8xkIZfC77cP5BGN4yuWuo\u002fGN5j7DyY4z\u002fQ1qeoJOTkP12U4jb2Ktk\u002fFUq3KAGz0z9BtwTU5HLkPyPhaElzguY\u002fy5sZGWU35D80JXPu3nXoP\u002fq+PxUhguU\u002fBPwzDrrJ6T+C+yo5hRrmP9wqWk\u002fqye0\u002fVLQDKQIF4j8T2egTxzjnP47SXDQ8RMU\u002fu6ATcYgn3z+IkPpuGRTcPyA9wveSuNA\u002f4knCcn5svD8ef8Rq83nUP8Shs5MyUdE\u002fgmeubrCl4j+2nB9mlzfrP82ekEMY4uQ\u002fmBNHzaOJ4T8UQtC\u002fdFLsP7MaFrfM3+U\u002f2A7mkqTk6j90lbOTEdLaP5z\u002fkEpwPuc\u002frj6QUoGX3T+TDMuFT6vePzsMTfeMquU\u002fKqUGq+Be6D9V9E1ClOvlPzsdIXLKrOk\u002fwQn0qrw46D\u002f3sRaUsILpP4YizF9fTe0\u002fLcCsLi3H6T\u002fqyx3fkUHnP1gCfvb36uw\u002fJcZtm\u002fbj7T9KtjpGjQDsP+JdnhkIsew\u002f\u002fbcTZffm7D+6zO\u002fRrSjrPzp9VdIhQOk\u002fmZ5zdleG6T99tqp6EvLnPzl\u002fK8ziQeM\u002fGedhgeC44T\u002fhC\u002fZ2yNvnP+WqMe1J1d8\u002fw4kRUmOa2D8vRyEy2jfgP1zQwAC6qOc\u002fr1w3z5ZU2T+xflu4kPTkP5cDtdSW6u0\u002fDZmCEDLF3D9WHa7eeCjjP873yaJfu+g\u002fwmMaaOpq5z8+VbmG74bmP6dXWuIyB+Y\u002fK1levmlS6j9tB\u002fPww13nP\u002f465DOQWuI\u002fDu0TyIjX6T\u002f8RU40cy7rP2M\u002fX8431eg\u002fsQ2aiFsM4j8ASDLCSeTqP0FP3eg5ees\u002fGKLZ1wPQ6T9wKppavNLrP3pCckurRek\u002fj3KByj\u002fC5z9MBn+vlFrlPzG8tnkFleM\u002fThtBoKbK5D93UWKmqR\u002fjP+Xb2HsbruY\u002fe6jjAqMq4j9ojoNpk7DnP5dCMo4YXeg\u002fvH+ztb3c6z+tEYlTpDTpPxqSBbHQ5uc\u002fSGO0FOds5D+y2mW1xw7qPxe39\u002fI2Vug\u002fQ5v+9RcX6T9NOAq5ShboP0v6h7u2W9s\u002fmyh8rt871z8cVLXNtG\u002fOPyThG9pbxMU\u002fd8l8qFsF1D8DlVe0HsG5P4BZzXSNnts\u002fCK2v72lWyz8cgrpVtCXYP3aSpagNQdY\u002f5WqKwhmU1T9J4ACyKzHnP5VxXYad898\u002fHqPdcDT63T+Oi7AMEkvMP1TOvcotScg\u002fts2Tifilxz81WuH9xd3oPz8A7yxNjek\u002fB3jUTRr\u002f5T8sqA106\u002fTmPxBqGB53L+M\u002fPYAsohHC5j8fe3233kfdPxISZydOAuQ\u002fEuL5cY0ezz94gLn03fnfP1belYVt9d4\u002fecgLwpTHyD+ULLSsoEXlPxy9mCg+y+Q\u002f71VxnRSi5D\u002fNrvEUzZ\u002foP0HfLZQhn+Y\u002fZJK4gf3h4T+eNeYZGkzjP4o+N11gE8c\u002fTTtzHZCW1D\u002fVTZmn5cngP\u002fnO56BuGd0\u002f95D1zk3m4j+loMqX1IbiP586SRor9t0\u002fwC2bPpgi6z9\u002fHKJAqjHTPzIK8coD6ug\u002faDD\u002fnaR07T\u002fislpe4HHfP+8JxYIdWtw\u002ffCXMq\u002ffp4j+wy8cYZpDpP2SEBGbKXuE\u002fgUzBKHvm4T9IeADCM+foP+DrycFTetw\u002f0zy2jp580D+VekIvA5\u002fTP7Zu7+PfB9Q\u002fZt2NyHS04T9JWcb6gmXUP1vW3CVmc9M\u002fish0XzqD2j+FOUZ6ctveP49KyVAS7eA\u002fAAAAAAAAAAAp9dwsp4niPy7nLtr7RuU\u002f8jRn8d+G4z9wr9Y19qbKP0lhDqqr8MU\u002fvK703MbC3T81mgtvM+TjPxdsI\u002fgIU+g\u002fpqMGldPg4T\u002fxIhKCN4nZP4HPc1aBqM8\u002fiIF\u002fG0en1D990E04W7XlP2vMx66Ll+Y\u002fKlbNQvTg4D9VK21\u002fkmzjPzkzc06CWd0\u002fGKbyJTnR6T9xLQ5YA3jbP39c52ovYeo\u002f1Pz0VPEb5z84lgYMrf7mP96YU17Ysdg\u002fAzyPEC1Yxz+O1YmStczlPx7HVxYix+c\u002f2mVhmSY65D9pRNDPRFjmP3rTEPmUluI\u002fjDEx4DQX6D8vF9lPVRTmP4vRvtJFq+4\u002faqSGgTcz4D9to+n9BLrjP5Uf9e\u002fzZLU\u002fVSoUbfxF2D+9Wd14kc7TP4ZP+S1iAs8\u002f8AekEQuquD+Ap2fLfl\u002fQP1vINRNAicg\u002fJQqdV6iI4D+lrTcitfXpP4mVrU0afOU\u002fgYM5wJds5T8eKP02H8\u002ftP8872LKAqOU\u002ft\u002fvB\u002fGBT6T8nGQrkOHLXP3x04qW97uM\u002f8yiwys+u2j\u002fJLMJG9TXaP6ycr5BHpuU\u002fjaBzMTN46T\u002fFMZdyRBrjP40IUQjscuk\u002ff5Y83TgY5z9YwBvR8dTnP1W3gQZktew\u002fMTVDUAWd6D8SPiPNz2TmP0S8v7uI7+8\u002fZV0RqW7F7z8phNswN3frP1K6iO5R8+w\u002fAAAAAAAA8D9CVOOTZEDsPxnRyjeJ6eo\u002fqKFBg92F6j+Fr1KsuMrnP+\u002fwNaXkZeI\u002fsi00I4yx4T\u002f\u002fMxcYkBLlP4GZsEje3uE\u002fZrB6vovx1j+KncNEeXngPz0881haROg\u002fJNFZHwnA3D+vsJoqayTkP7ZOcme1+O4\u002fQ6RjOryg2z\u002fwPpJC1r3iP6q4x5Ryxuc\u002fs+QtcS7q5T8DTB1cESvkP9tkC2gCO+Y\u002f8Cd18o5k6j8\u002fLTFE8B7lP1XhTil5JeE\u002fkJU6Ul6T5j8M1W0MKHPpP0eecAJeCeY\u002fvwkTHsVE5z8hUNF02EzsP91MMdP5Cuo\u002frc8WjSYG6D\u002fdFQ1sjNboP7D\u002fEIDAu+c\u002f78cjsh0d6z\u002f4fUVa7LvkPy44VXsMTOM\u002fovWsNiDs5z\u002fGe+iyhPnhP\u002fHBQYH81+U\u002fOvoeMrNw4T8p7K9iryLqP3o3P9Pgz+g\u002fYJHDmkFt6j9LyAjrHVXpPxZ2PWl5JOc\u002f7JUBySyB6D8hM8PRIV7sPxm0UrjkkOg\u002f1vVIJP565z9aMkrVBIznP8UMpVKMOtk\u002fBI2T+doC0j+jglZTuzzEP\u002fZJ\u002fTtdY8Q\u002fDtcmMGMy2T9WzcgcqM+xP4PvWc+o2c8\u002f301tmuo0wj+ZS5XnZtHYP5LDaPnY49M\u002fuvB2ra4XwT8zPAHKX8vmP4wrGF7P3Ng\u002f7FMr1jUH0z9Z1+4dG5vBP2Bhs4reWbA\u002fm1zPHL1msT\u002fW+9FBMbLmP7RS1X8yR+o\u002f2pce0fvF6D+MXQA5vfXnP2iHBrrh4eM\u002fA5+c8Dp76D96Pg4k\u002f0vgP+4hFpp8keY\u002fx5ftgFgb2z9ANR8nUZjjP7nKgM3DeN8\u002f1petaA38yz\u002fvJHMCKlDmPyCO46XlFuY\u002f97LlCK9O5z+zGuL\u002fSeXmP4iZsWyKgec\u002fAtea29R64j+7ELIt+lfcP+Oq4skN08g\u002fLj9ztz11zj8njh9dWD3gP4CmjFfpNsQ\u002fTpkJf75Y4j9EfIQdxWjiP\u002f\u002f8tL+PUOA\u002fmjC2JKOK6j+g5cM7YUXSPw5QmuCZaek\u002fQIf7k0GI7T8v+3ZFF6vgP1qSf9oRYOA\u002f0jfWh9mm4T9LnnpxkX7rPy3jQG6I7eM\u002f6YYko2u95T\u002fEHB+ziZrsP1v1z3C4EuE\u002f9TiNhkvKxT\u002fb4HE9+uDRPwPWY7ECx9A\u002flYRlo7f\u002f1j9y5VpoNQbTP0ip9dTMJNI\u002feXuoM+fiyD8O7TbVnQLiP73TyQ2RDuE\u002foBa2DI4Uqz8BllBknu\u002fiP50yLFEBXeI\u002feh5h7acW6D8BEiLYfu\u002fYPxuBRL+4asQ\u002fMyUEd4me3j8SqtUN9NHkP01fLa5PSe0\u002f9RCbIR2j3D8Z4gPZ0mLSPzHAShQissw\u002fUFLEtb+W0z9FAXDgnM7nP0qKGx51Guc\u002fyM50bmZF5j\u002fHqTGytovmP8a\u002fjBRbOtw\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"P0D3h1yv6j\u002fYhXOu+kXnP+0Ugm6Oq+0\u002fxSEqDvO06T\u002fDK97fD3LqP7YJRjV36+Y\u002fDt5s\u002fHUy5j8Jkz7QupXqP5D5SPgXfus\u002f78+Zk1wK6z\u002fZgRR\u002fmQDsPy6Cql11Qus\u002fy5Xm6r2i7D+ZdGplA\u002f\u002fpP2GJq8FmEfA\u002fLQv\u002fcyLq6D+VCfi3LmbrP4aKZDTPv+Q\u002ft+Nr87f15z9Lueh70VfnP2LUu3KVg+U\u002fgG52dhgp5D85qPT8c+vlP6hDGypnWOY\u002fcZH2f1lH6T8qYd0zsV3sP9\u002f+xuACZOk\u002fwZRXqQt95z8WBM1EjizuPwvr27l4ueo\u002fPW4JOYi+7D82ZQ73NwzmPypSmQD92uo\u002fxTYFyU\u002fH5j9jKxbR9RnnPxg5UGZd6+k\u002fXGfVSqHc6j+Hh3t2533pP3qAvlqdmus\u002fQ8UOVF5r6j+4zs55bRLrP77fpvVN3+0\u002fiS+rETpF7D+1W5Oo12\u002frP0LbFeLLlu0\u002fvZwYSIAp7z\u002fcLgDT0A3tP190RfT9bO0\u002f9Uwb5RoD7j+zfrfzXRjuP3hwNcsrXew\u002fMKj\u002faL1V7D8nnktSlhDsP3ZzKjd1weo\u002fhh4zyPC66T+cvhx+ngfsP0RFUjgDCec\u002fRzzSU6e\u002f5T94zejTw3nnP2d3xeJkfuo\u002fp6vS1LEa5j\u002fk6zM37RDpP0FOwXsTKu4\u002fVMBHvqed5j9w1L3bBi\u002foP9Dsv\u002f862uk\u002ffzO1gec06z8cJQ5k2gXrP5bjD3DKo+k\u002fv4d6gzow7D8qu5yU7UvrP+zm5jtvpeg\u002f8Z3ao8qw7D8FlHweMU3tP5CgSodqUes\u002fOQvPP\u002fgQ6D8yQIe+lf7rP3DcAWqla+0\u002f\u002f3SETcGV7D9ACmSCKpTtP03Vu3ppz+w\u002fdjG8ek3U6z84B+Bv7gjrPxPiwBJ7EOo\u002f8rxINmQV6z+cHgaUPDTqP9swZyjTZus\u002fnRDsbXly6D84kMgec+brP2JGgBSGweo\u002fPvGYcQ986z+Ul42JIG3qP3sIL4CXaeo\u002faQfa2WlE6D9ts+5SLBvsPwtp2KIrDuw\u002fyhfZgsMB7D88AG+EK03rPwQOTAG4UOg\u002fwTVFY95z5z+ZV9EHGCXmP+0o0LuQTuU\u002fG+W9tmgn5j\u002fy\u002fHvwmGXkP0rT5BSHX+g\u002f9CctaeLn5T9lY1mh7KnmPwfQc+\u002f+uOY\u002fTq4wrWc95j8dzFJxszfpPx41vQDjkuc\u002fhBLgqIPr5j9YoA6edrPlP8xVRICXQOU\u002f4OlGro4\u002f5T\u002fAogYLXhPsPwHhbL9cyus\u002fbC9Nd\u002fBx6T9DAH1vuOTpPxwWFVIZd+k\u002f8Sas6GtV6z+ui8BcnmznPxtFAOybvOg\u002fxiQhvxN05j84n22LX53nP37HSrIxI+c\u002frSlgxNWt5D97EBdVRfToP8b7wj2oyeg\u002fYFlw8NKx6D8RgZY\u002fyRHqPzkTXbWveOk\u002fqSRWwAft5z9raq2Vc\u002fvoP5jLmJ06++Q\u002f8DBamA9M5j+syzSOvNHnPyma0efVq+c\u002fETwBC5gU6D9HdiwCuqfoP8qY2mzraOc\u002flV+evEqK7j98Bg12oZjlP5F1mvkMlus\u002fnmU5TnOc7T\u002fID4f\u002fVm3oP4jh\u002fkPt7Og\u002fiwaDtMQO6j+QR4xkVvDrPwLHIs0UEOg\u002fbt8kWUyy6D\u002fEZSk2kY7sP1EjcvmaPuc\u002fuDNW+Ao65T9+jsaBjIPlP0I+UzB5zuU\u002fmDZwEo+B6D9u6yps3l\u002fmP1aoQQxxneU\u002f72Yj5yAU5z\u002fqd1e19UfnP3XpDHyGw+c\u002fBgHsrssr4z9WfCs1f+HnP4UxBe36Huk\u002fu614ZQ9c6D8c3uu6qjjlP8UJAaszVOU\u002fcARaGTij5z8XI+LHWr3qP99A0OPtduw\u002fheopGnXD6D9Ft2Fo6CrnP56\u002fcBDMZ+Y\u002fotF14eR15j96eUsG9g7pP6m9qGOwlek\u002fW4OWz9TX5z+KRaGWwXfoP96+NttvkeY\u002fLvNgVXWx7D9QaVY72\u002fXoP0ME2mNJru0\u002flvbvxnJ86z887aAjjkPrPwSNblMXdOg\u002fuUCwrC9e5z8Q1gqIUuLqP1tjEmVCPOw\u002fCV4Edw+F6z9a01uEVOjqPyL6Zk6QGeo\u002fv1YPahdN6z8GR3ZFm67qPzJQHuL8HPA\u002fWty1NMm36D9nJRIHozTqP0gdosrBZuY\u002fXUr1YPrY5z\u002fKWdXiPa3nP+VTThFZWOc\u002f6dv2q6595j9Le9U4QHnnP+xfAUtc2+Y\u002f3GX\u002fQVPV6T9giDwQi\u002f\u002frP7e52bw2Wuo\u002fixsQVmc66z+dp\u002fr\u002fehrvP3wy4d1Z2+o\u002fQQtt4ulw7D8mMahRdZnlP7Zkot2Nb+k\u002fVy8XsoVx5j\u002fe2dJZ7G3mPy4y9vAa7uk\u002fUCG4NNQs6z9WAinJjbLoPx+NZqgXq+s\u002f1oIsCE0f6j9IeLV1xf7qPwn\u002fEquJZu4\u002fczFnpw6U6z+DXooSJTzrP0PyDf51pu8\u002fKeVPd1IH8D8q3dRfa8DtP1Bi79+cf+4\u002fDVPAYncC8D9GogGDsIbuPzIjfPdrgu0\u002f8jOLRTBw7T\u002fqP7fEc07sPyyLxBLDreo\u002f4risCk8b6j8JY7Z4YNXqP4J0l1PXHeg\u002fQiNFv9pf5T+3gVM3o1vnP8UZFG1YFus\u002f2pSoamV55j9gQMN1w6foP2FV56ABSO4\u002fkspho3NS5j\u002fTANc8CkPoP8kapMPnVes\u002f1u6lZrpC6j\u002fqQAUv523pPx2L+WB7w+k\u002ftuFd3d\u002fQ6z9sb24v7FDqPy6gQ0F1Yeg\u002fwgxvSyaz6j+bPNH755zrP2MjNPiteOs\u002fiPC37dDJ6z8PAw1xf43tP3KQz59By+s\u002fMdKGqLFX6z96TpbmzKPrP6hbiF6FaOs\u002fmTrkhKs47T8P72Kl4vXpP2i4Mwalnuk\u002f0CReDgWV7D9UloHKrnHpP5hgFl23c+s\u002fOXND1j9X6D\u002ffysEAp57sPwEwCRewg+s\u002fICaOWoBu7D9YkAsvps7rP5hJE0ROu+o\u002fPRoKYB6t6z9XvHHTcVDuP7\u002fs4B3gdew\u002fdVFnnm5n6z8eKXdSmIXqP9\u002feYf3bYug\u002fV1aL0\u002fCb5z\u002fA2jkugzbmPytAcpEwF+Y\u002fLcvMA1uf6D+cdYQzpXflP6EApGNZg+c\u002fgJjVBaXv5T+T\u002fJlD1VnoP3GraiHwgec\u002f2UohezeV5T9KAF7kqczqP0U2pmbIKug\u002f\u002fGZUSl8m5z9Ph0q0nt\u002flPzrpFYsBLeU\u002f+nohdeM\u002f5T\u002fcl2\u002fnlQnsP9u+1Q+XI+0\u002fZfoEQ2\u002fw6z\u002f4oZ666IDrP1\u002fie0Tuq+o\u002fkKzLwN3k6z9XmuSWIYTpP6jjGDWjV+s\u002fR80MGZlg6T+KLS3IiFvqPzFQt4\u002f+EOk\u002f85+n+\u002fMo5z8fFaOrejnrP+VkR31QZ+s\u002fRWu6E0H26z+pNn52HBHrP2KAw+jhuus\u002fLt76WXcC6j8++L0B3nLpP9jqQrphO+c\u002fOvs5tPC95z9TnzVagsnpP6c1OHJA7OY\u002fM4cOlRO56T93+4WIS5DqPys8mseu2ek\u002fLgHHDB3a7T\u002fj0JkAB8HnP8ef0p2p0ew\u002fvePNniEJ7z\u002f6Jjza3CrpP7+3B85LDuo\u002f9HHW0ai16j\u002fWe+cRvurtP+qxitnrtOo\u002fK5N8MXEO7D\u002fhPXXWv0TtPyMaLIw3u+k\u002fUx+7SJ8w5z99wzv0opTnP2A6vyMBjec\u002fNCcAmN+P6D9e7oqFLmXnP9Oa7RIyk+c\u002farR7myc65z8qOail2pvoPx9y9Xx+cug\u002f+96X\u002fDQw5j8xPyOLCk\u002foP+yI2DcqAOg\u002fxJrrnEOs6j\u002fpn3kaHWjoP3HmJVVZFOY\u002f1+UTKhso6T+at9OICTTrPy4Fb0NYuu4\u002fEc5yu+I26T\u002flSh7HiLLnP\u002fVPyaBWOuc\u002fwMsOpZ2e5z+1DtOEdNLrPyKPG+MHgus\u002firDgd2666z+HuDd7EOjpP3Mbo593OeY\u002f"},"y":{"dtype":"f8","bdata":"n9OXYQPX5T8xkIZfC77cP5BGN4yuWuo\u002fGN5j7DyY4z\u002fQ1qeoJOTkP12U4jb2Ktk\u002fFUq3KAGz0z9BtwTU5HLkPyPhaElzguY\u002fy5sZGWU35D80JXPu3nXoP\u002fq+PxUhguU\u002fBPwzDrrJ6T+C+yo5hRrmP9wqWk\u002fqye0\u002fVLQDKQIF4j8T2egTxzjnP47SXDQ8RMU\u002fu6ATcYgn3z+IkPpuGRTcPyA9wveSuNA\u002f4knCcn5svD8ef8Rq83nUP8Shs5MyUdE\u002fgmeubrCl4j+2nB9mlzfrP82ekEMY4uQ\u002fmBNHzaOJ4T8UQtC\u002fdFLsP7MaFrfM3+U\u002f2A7mkqTk6j90lbOTEdLaP5z\u002fkEpwPuc\u002frj6QUoGX3T+TDMuFT6vePzsMTfeMquU\u002fKqUGq+Be6D9V9E1ClOvlPzsdIXLKrOk\u002fwQn0qrw46D\u002f3sRaUsILpP4YizF9fTe0\u002fLcCsLi3H6T\u002fqyx3fkUHnP1gCfvb36uw\u002fJcZtm\u002fbj7T9KtjpGjQDsP+JdnhkIsew\u002f\u002fbcTZffm7D+6zO\u002fRrSjrPzp9VdIhQOk\u002fmZ5zdleG6T99tqp6EvLnPzl\u002fK8ziQeM\u002fGedhgeC44T\u002fhC\u002fZ2yNvnP+WqMe1J1d8\u002fw4kRUmOa2D8vRyEy2jfgP1zQwAC6qOc\u002fr1w3z5ZU2T+xflu4kPTkP5cDtdSW6u0\u002fDZmCEDLF3D9WHa7eeCjjP873yaJfu+g\u002fwmMaaOpq5z8+VbmG74bmP6dXWuIyB+Y\u002fK1levmlS6j9tB\u002fPww13nP\u002f465DOQWuI\u002fDu0TyIjX6T\u002f8RU40cy7rP2M\u002fX8431eg\u002fsQ2aiFsM4j8ASDLCSeTqP0FP3eg5ees\u002fGKLZ1wPQ6T9wKppavNLrP3pCckurRek\u002fj3KByj\u002fC5z9MBn+vlFrlPzG8tnkFleM\u002fThtBoKbK5D93UWKmqR\u002fjP+Xb2HsbruY\u002fe6jjAqMq4j9ojoNpk7DnP5dCMo4YXeg\u002fvH+ztb3c6z+tEYlTpDTpPxqSBbHQ5uc\u002fSGO0FOds5D+y2mW1xw7qPxe39\u002fI2Vug\u002fQ5v+9RcX6T9NOAq5ShboP0v6h7u2W9s\u002fmyh8rt871z8cVLXNtG\u002fOPyThG9pbxMU\u002fd8l8qFsF1D8DlVe0HsG5P4BZzXSNnts\u002fCK2v72lWyz8cgrpVtCXYP3aSpagNQdY\u002f5WqKwhmU1T9J4ACyKzHnP5VxXYad898\u002fHqPdcDT63T+Oi7AMEkvMP1TOvcotScg\u002fts2Tifilxz81WuH9xd3oPz8A7yxNjek\u002fB3jUTRr\u002f5T8sqA106\u002fTmPxBqGB53L+M\u002fPYAsohHC5j8fe3233kfdPxISZydOAuQ\u002fEuL5cY0ezz94gLn03fnfP1belYVt9d4\u002fecgLwpTHyD+ULLSsoEXlPxy9mCg+y+Q\u002f71VxnRSi5D\u002fNrvEUzZ\u002foP0HfLZQhn+Y\u002fZJK4gf3h4T+eNeYZGkzjP4o+N11gE8c\u002fTTtzHZCW1D\u002fVTZmn5cngP\u002fnO56BuGd0\u002f95D1zk3m4j+loMqX1IbiP586SRor9t0\u002fwC2bPpgi6z9\u002fHKJAqjHTPzIK8coD6ug\u002faDD\u002fnaR07T\u002fislpe4HHfP+8JxYIdWtw\u002ffCXMq\u002ffp4j+wy8cYZpDpP2SEBGbKXuE\u002fgUzBKHvm4T9IeADCM+foP+DrycFTetw\u002f0zy2jp580D+VekIvA5\u002fTP7Zu7+PfB9Q\u002fZt2NyHS04T9JWcb6gmXUP1vW3CVmc9M\u002fish0XzqD2j+FOUZ6ctveP49KyVAS7eA\u002fAAAAAAAAAAAp9dwsp4niPy7nLtr7RuU\u002f8jRn8d+G4z9wr9Y19qbKP0lhDqqr8MU\u002fvK703MbC3T81mgtvM+TjPxdsI\u002fgIU+g\u002fpqMGldPg4T\u002fxIhKCN4nZP4HPc1aBqM8\u002fiIF\u002fG0en1D990E04W7XlP2vMx66Ll+Y\u002fKlbNQvTg4D9VK21\u002fkmzjPzkzc06CWd0\u002fGKbyJTnR6T9xLQ5YA3jbP39c52ovYeo\u002f1Pz0VPEb5z84lgYMrf7mP96YU17Ysdg\u002fAzyPEC1Yxz+O1YmStczlPx7HVxYix+c\u002f2mVhmSY65D9pRNDPRFjmP3rTEPmUluI\u002fjDEx4DQX6D8vF9lPVRTmP4vRvtJFq+4\u002faqSGgTcz4D9to+n9BLrjP5Uf9e\u002fzZLU\u002fVSoUbfxF2D+9Wd14kc7TP4ZP+S1iAs8\u002f8AekEQuquD+Ap2fLfl\u002fQP1vINRNAicg\u002fJQqdV6iI4D+lrTcitfXpP4mVrU0afOU\u002fgYM5wJds5T8eKP02H8\u002ftP8872LKAqOU\u002ft\u002fvB\u002fGBT6T8nGQrkOHLXP3x04qW97uM\u002f8yiwys+u2j\u002fJLMJG9TXaP6ycr5BHpuU\u002fjaBzMTN46T\u002fFMZdyRBrjP40IUQjscuk\u002ff5Y83TgY5z9YwBvR8dTnP1W3gQZktew\u002fMTVDUAWd6D8SPiPNz2TmP0S8v7uI7+8\u002fZV0RqW7F7z8phNswN3frP1K6iO5R8+w\u002fAAAAAAAA8D9CVOOTZEDsPxnRyjeJ6eo\u002fqKFBg92F6j+Fr1KsuMrnP+\u002fwNaXkZeI\u002fsi00I4yx4T\u002f\u002fMxcYkBLlP4GZsEje3uE\u002fZrB6vovx1j+KncNEeXngPz0881haROg\u002fJNFZHwnA3D+vsJoqayTkP7ZOcme1+O4\u002fQ6RjOryg2z\u002fwPpJC1r3iP6q4x5Ryxuc\u002fs+QtcS7q5T8DTB1cESvkP9tkC2gCO+Y\u002f8Cd18o5k6j8\u002fLTFE8B7lP1XhTil5JeE\u002fkJU6Ul6T5j8M1W0MKHPpP0eecAJeCeY\u002fvwkTHsVE5z8hUNF02EzsP91MMdP5Cuo\u002frc8WjSYG6D\u002fdFQ1sjNboP7D\u002fEIDAu+c\u002f78cjsh0d6z\u002f4fUVa7LvkPy44VXsMTOM\u002fovWsNiDs5z\u002fGe+iyhPnhP\u002fHBQYH81+U\u002fOvoeMrNw4T8p7K9iryLqP3o3P9Pgz+g\u002fYJHDmkFt6j9LyAjrHVXpPxZ2PWl5JOc\u002f7JUBySyB6D8hM8PRIV7sPxm0UrjkkOg\u002f1vVIJP565z9aMkrVBIznP8UMpVKMOtk\u002fBI2T+doC0j+jglZTuzzEP\u002fZJ\u002fTtdY8Q\u002fDtcmMGMy2T9WzcgcqM+xP4PvWc+o2c8\u002f301tmuo0wj+ZS5XnZtHYP5LDaPnY49M\u002fuvB2ra4XwT8zPAHKX8vmP4wrGF7P3Ng\u002f7FMr1jUH0z9Z1+4dG5vBP2Bhs4reWbA\u002fm1zPHL1msT\u002fW+9FBMbLmP7RS1X8yR+o\u002f2pce0fvF6D+MXQA5vfXnP2iHBrrh4eM\u002fA5+c8Dp76D96Pg4k\u002f0vgP+4hFpp8keY\u002fx5ftgFgb2z9ANR8nUZjjP7nKgM3DeN8\u002f1petaA38yz\u002fvJHMCKlDmPyCO46XlFuY\u002f97LlCK9O5z+zGuL\u002fSeXmP4iZsWyKgec\u002fAtea29R64j+7ELIt+lfcP+Oq4skN08g\u002fLj9ztz11zj8njh9dWD3gP4CmjFfpNsQ\u002fTpkJf75Y4j9EfIQdxWjiP\u002f\u002f8tL+PUOA\u002fmjC2JKOK6j+g5cM7YUXSPw5QmuCZaek\u002fQIf7k0GI7T8v+3ZFF6vgP1qSf9oRYOA\u002f0jfWh9mm4T9LnnpxkX7rPy3jQG6I7eM\u002f6YYko2u95T\u002fEHB+ziZrsP1v1z3C4EuE\u002f9TiNhkvKxT\u002fb4HE9+uDRPwPWY7ECx9A\u002flYRlo7f\u002f1j9y5VpoNQbTP0ip9dTMJNI\u002feXuoM+fiyD8O7TbVnQLiP73TyQ2RDuE\u002foBa2DI4Uqz8BllBknu\u002fiP50yLFEBXeI\u002feh5h7acW6D8BEiLYfu\u002fYPxuBRL+4asQ\u002fMyUEd4me3j8SqtUN9NHkP01fLa5PSe0\u002f9RCbIR2j3D8Z4gPZ0mLSPzHAShQissw\u002fUFLEtb+W0z9FAXDgnM7nP0qKGx51Guc\u002fyM50bmZF5j\u002fHqTGytovmP8a\u002fjBRbOtw\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"ERqlQDru6z8IxQ+rn8jqP1k4Cfn2ze4\u002foRh+mSPO6j8E454ypkLrPzezIEGEjOg\u002fVTrFFycI6D8ns69yqCDuP27h\u002f+NYE+4\u002ffRKnjgwV7z9e\u002fjqipB7wP\u002fwaio9+4O8\u002f27NKC31A7j+aR02aMFvtP7oDQZcjjvA\u002fix5eO3tq6z8ZbD5Eh\u002frtP+wycYoEv+Y\u002fxyBdG\u002f1c6j8VbJ4KFYzpP0OKDwcl0Oc\u002f99sLcNr35T+1xSRbaPPoP1ASEDy3suo\u002fMZmqO\u002f4i7j8PtcdkbvnwPzbBvUL9V+4\u002fO1ovD3CE7D9cr+DtOYLwP2h9SmXmfO0\u002fGhuulYiF7z8x3nw4ewnrP8W7TKS\u002fqu0\u002fnDzVCy\u002fx6j8hqzKZIi3rP0XDHnf20O4\u002fybCkWW4x8D9HeS0haTDvP\u002fcTrmZt8+8\u002fDXlJFrtI8D9BD+Spa1HwP6H9Lgn2j\u002fA\u002fTWlmcbTc8D+Y9K3pGmvwP1fovHkot\u002fA\u002fXP8uhlx28D+CcZ3H8BrwP6ykZQPE\u002f+8\u002fAS6xquUa8D+aoSEYd3rvP5WMOHrL5u4\u002fSBO3X3f47j9JgP00AOvuP7aXQgySN+8\u002fs0Vdg2GC7j+QeF7Fb1bwP1YIKIfX3us\u002fUB4UYsA06j\u002fd\u002f1hhX4vrP9ze\u002fNM3MO4\u002fpPeG5uTg6j+\u002fyHSD5QDtP525aOLYG\u002fE\u002fvQOoF9qM6z9NHAzyNUvtP96l9mhk8e0\u002f9FpAECzH7z+Q+kxVyDjvP\u002fUlZi9JWe4\u002fUVe9SpNh8D+ocUa8s4HvPyKvOmpNfO4\u002fc3prGnCE7z\u002fSrBkBrlXwP8jjKt8TF+8\u002fSX52tpFj7D9axTY0Rn\u002fwPxvqlWrofPA\u002f58FwerqG7z+EdvFLQi7wP7GQDmZ30O8\u002fW4tZjvik7z9wZvsPqbHuPxGykmxdPu4\u002fLcI0\u002fDQ57z\u002fc4VZ4FUbuP4LP\u002fhPW1e8\u002faB4o4DPT7T+Xh4Vc4ULwP0P7SLGjee8\u002fOBKO3OAE8D9w8g+dcYnuP\u002f1CYKSyxe4\u002fR5IuC8+97D922mhXgY7uP5XcZbgxVPA\u002fm3A1B3+n8D9oaHXgvgTwP9wE4AN0Bu0\u002fMV4ncRgl7D\u002f\u002fMxbQBtPqP4kuw439JOo\u002fPhAB0NSN6j+m7sthFDrpP\u002fvzJYqwjew\u002fcuQpjh666j9DNzUtjyTrP96lVrlpaOs\u002f42v5JSHg6j+R+116OdDtP7bKxmieLOw\u002fNEEP0fvn6z+p7iMnppLqP8+zJHJ+ROo\u002feOQ5Atcm6j+8CJ0Oc6DvP1Z6LAt2g+8\u002f40rcZxxe7T9mmxYU\u002fOztP4ySefircus\u002fRic3rV147D8VK2X6wynqP2Idj8n8T+w\u002fDRtOE4sE6z\u002fc+ouJ\u002fEHsP\u002faj++iO6uk\u002fLL6jl+Eq5j+iej9GKtbsP5uVDARBsu0\u002fJApfkSCl7T8SWR+p0nrtP+7uz53Fj+0\u002fi8kG16Gs7D9TEoIe9iDsP\u002f32EJNKGOc\u002fjrVAhRkA6T\u002fyopXU1C7sP9fEoGCxgeo\u002fNYNLbKI87T\u002fT8TdKsfPsPwqf7CWVJ+s\u002fWXREueVU7z8F0HXtF2noP5PJJ3afWu8\u002fYU\u002fYw1sL8D8Y5DD6BK7qP3dZJWgZYO0\u002fUNR7il2k7j+dFHdkspfvPxIL7al6Puw\u002fUklccCNe7D\u002fHvNS3oZ7uP\u002fsoaqNEAOk\u002fjxjAwXJV5z\u002fFfCZa9Y7nP5hfdODNt+g\u002fGMRTtuVl7D9uDV3ImfTnP+pN6\u002f4+Xug\u002f+TfuKO7c6D\u002fvBUCOGUDrP6hdf2Qfhew\u002fuJDFeKx85D\u002fEadHtPY\u002fsP1DdfA9pkO0\u002faKocKUpP7T9dBysRxbnpPwb8jl68Leo\u002fLuMQU5YA7D8NJ8GHUovvP56hq+Y5KPA\u002f5y3Fji3Q6z96oPvhG0rrP9qJJrn0\u002feo\u002fp+4bgrgZ6z8RmcRNdDLtP3XlKchzDe4\u002fgFvIAxJq6z869GOeX07sP1mRgTdL8Oo\u002fMsrfiy6l7T\u002fO98ekJYfoPzFjouqgTu4\u002f3EdKrMMS7D+AMdlaf6DrP+skgeLAk+c\u002f4p7YQvhJ5j\u002fcRo5\u002fuD3tP7xZtq7fKu0\u002fCiCT6ngU7z\u002fllYZI9ubvPyc8y2oJ8O4\u002fFdAcMhIO7D+BFXQMxz\u002ftP6\u002f4zPlmovA\u002ffBEl3LDn6D\u002fmqP5akiDrP2ZwsYDQ1+Q\u002f\u002fFPxjEq85z8B1AMrM7\u002fmP2KwTjWGO+Y\u002fZ1+QEovv5D+UsmneAUvmP+PACQJrXug\u002faaChki4W6z+EI+1JHN7wP3Gt\u002feJEx+4\u002fwOC59CMI7D\u002f6nM2JXYjwP\u002f8keGHWYe0\u002fFTs\u002fuzZo7j\u002fMvDak3obqP3G1xJ9mZ+w\u002fXnuW\u002fF976j98YQ65cWbqPwJWsjmUhe4\u002fZvagylpA8D\u002fdH3W28TbuP3CuD6Y9h+8\u002fUtD+nUAJ8D8Hv\u002f8+W9DvP0lcY5EqDPA\u002fmdaBco6p8D\u002fjkiUlxRvwP9md\u002fg9iGfE\u002fWhC0MT+N8D9aqhQs5\u002fPuP9uBGyyaB+8\u002f+AwYJf128D+rIwUT5wjvP7M3foiPC+4\u002fUraUb0bR7T\u002fnvKLkZiztP+rbrMU1Ye4\u002fVI4XOZFC7j\u002f9vgs+1GvvP7ezLlB8VOw\u002fNVlLOosP6j\u002fIXJ26qarrP6Jdh0+uZO4\u002fdp1HIja46z\u002fl+bkAZEbtP5NVsfsdOPE\u002fArBGCWy06z8tkum8DH3tPz8MlnbiJ+s\u002fjWY2E2c17z8j+snppp\u002fuPy1DnX3LDe8\u002fkqpw2vtv8D+FT1xYX\u002fzuP1RoBns0N+4\u002fzVvmLYgU7z8rQ\u002fd2AhTwPwPCj0j2S+4\u002flibawXDP7D\u002fJGBaQGE7wPx42j2RiNfA\u002fhG0ChqaC7z8InG\u002f9UwfwP4D1yxREie8\u002fhELQcUs48D8Mi+iL16PuPx1v7nTmS+4\u002fx+JXpXPv7z8Siw0qKxbuPyXvBiJtd+8\u002fGiFrK9tK7T+8JTCRgcrvP8LXo6NU9u4\u002fE\u002fayBeyJ7T+ozW7+rzXsP3vMplfi9O0\u002f9ksTJ+qe6z\u002f24BC8O7zuP6LReFbxX\u002fA\u002fUsygPoo38D8aL4v1ASPwP\u002f6PDlPD7+o\u002fGwGNDXuB6T8TAve4kIvnP2fC\u002fFaRY+c\u002fcgRSsDIO6T8bA1BFRP\u002fmP8ww9usIUuk\u002ft0KYE5+l5z9gMoHe3P7oPz+zKe6tWOk\u002fKiekixKv5z85wKiLn\u002f3sP2tF3I4fe+k\u002fbyKoruaN6D+VMSR6wGrnPzy0aRw8rOY\u002fEdCbbOK85j8brMLLCOTsPw+QEUoInu4\u002fzXx2WWke7j8dm1l39cLtP819a5KIbes\u002fkzLJFgpW7T8z4b1xedTpP2OjRb0qxOo\u002fPe+wkYj46j+0BCHfInXqP\u002fg1LKIeq+k\u002f5Y2S8wUX5j\u002fCewBeKtnqP+DZZDPUmOs\u002fgPYeNgaf7D9vXfEfVSHrPzvYKmIZeus\u002f39u7jGau6T\u002fpwuBA\u002f+noP1Lf9za4AOY\u002fujkD0lOp5j+GT9fiac\u002fpP3am0654iuU\u002fbczWl1kF6j9\u002fTTNrM93qP\u002f6JWiFEr+k\u002fRHP08d227j+ADhUzHbfmPzgEKXDCve4\u002fQtv2hCRi7z\u002fO0pUcXaXpP4H7wQ2kr+s\u002f+3QfR7tq7D\u002f749VoFZHvP28vKWYUJ+s\u002fnFAY4xlm7D8v5qTo\u002fATvP7W2sWL91Ok\u002f76pPMD\u002fo5T+IvOoHOKnmP1Dq9n8Zc+Y\u002fetxPUJUd6D+P8rA9z8XmP95JwYk+eOY\u002fCVIla54c5j+ESSj3vy7sPxpHUgso0+w\u002fft+6kuiF5D+YszZT8tDsP0pQ6JLcwOw\u002fx5dt\u002fRIk7j8sxmBLE7\u002foP57lg5r1YOc\u002f7pn7rQC+6j9owy6Mf\u002fXuP5BEEvBx7PA\u002fm8rHHNqy6D\u002fPquNzjMXoP2WJxZws1eg\u002fZ7Oic8It6D\u002fAu4Oza6LrPxSaxaBgi+s\u002fQ5EyrGFU6z9g0XXCSubtP\u002fiJnV5tMes\u002f"},"y":{"dtype":"f8","bdata":"n9OXYQPX5T8xkIZfC77cP5BGN4yuWuo\u002fGN5j7DyY4z\u002fQ1qeoJOTkP12U4jb2Ktk\u002fFUq3KAGz0z9BtwTU5HLkPyPhaElzguY\u002fy5sZGWU35D80JXPu3nXoP\u002fq+PxUhguU\u002fBPwzDrrJ6T+C+yo5hRrmP9wqWk\u002fqye0\u002fVLQDKQIF4j8T2egTxzjnP47SXDQ8RMU\u002fu6ATcYgn3z+IkPpuGRTcPyA9wveSuNA\u002f4knCcn5svD8ef8Rq83nUP8Shs5MyUdE\u002fgmeubrCl4j+2nB9mlzfrP82ekEMY4uQ\u002fmBNHzaOJ4T8UQtC\u002fdFLsP7MaFrfM3+U\u002f2A7mkqTk6j90lbOTEdLaP5z\u002fkEpwPuc\u002frj6QUoGX3T+TDMuFT6vePzsMTfeMquU\u002fKqUGq+Be6D9V9E1ClOvlPzsdIXLKrOk\u002fwQn0qrw46D\u002f3sRaUsILpP4YizF9fTe0\u002fLcCsLi3H6T\u002fqyx3fkUHnP1gCfvb36uw\u002fJcZtm\u002fbj7T9KtjpGjQDsP+JdnhkIsew\u002f\u002fbcTZffm7D+6zO\u002fRrSjrPzp9VdIhQOk\u002fmZ5zdleG6T99tqp6EvLnPzl\u002fK8ziQeM\u002fGedhgeC44T\u002fhC\u002fZ2yNvnP+WqMe1J1d8\u002fw4kRUmOa2D8vRyEy2jfgP1zQwAC6qOc\u002fr1w3z5ZU2T+xflu4kPTkP5cDtdSW6u0\u002fDZmCEDLF3D9WHa7eeCjjP873yaJfu+g\u002fwmMaaOpq5z8+VbmG74bmP6dXWuIyB+Y\u002fK1levmlS6j9tB\u002fPww13nP\u002f465DOQWuI\u002fDu0TyIjX6T\u002f8RU40cy7rP2M\u002fX8431eg\u002fsQ2aiFsM4j8ASDLCSeTqP0FP3eg5ees\u002fGKLZ1wPQ6T9wKppavNLrP3pCckurRek\u002fj3KByj\u002fC5z9MBn+vlFrlPzG8tnkFleM\u002fThtBoKbK5D93UWKmqR\u002fjP+Xb2HsbruY\u002fe6jjAqMq4j9ojoNpk7DnP5dCMo4YXeg\u002fvH+ztb3c6z+tEYlTpDTpPxqSBbHQ5uc\u002fSGO0FOds5D+y2mW1xw7qPxe39\u002fI2Vug\u002fQ5v+9RcX6T9NOAq5ShboP0v6h7u2W9s\u002fmyh8rt871z8cVLXNtG\u002fOPyThG9pbxMU\u002fd8l8qFsF1D8DlVe0HsG5P4BZzXSNnts\u002fCK2v72lWyz8cgrpVtCXYP3aSpagNQdY\u002f5WqKwhmU1T9J4ACyKzHnP5VxXYad898\u002fHqPdcDT63T+Oi7AMEkvMP1TOvcotScg\u002fts2Tifilxz81WuH9xd3oPz8A7yxNjek\u002fB3jUTRr\u002f5T8sqA106\u002fTmPxBqGB53L+M\u002fPYAsohHC5j8fe3233kfdPxISZydOAuQ\u002fEuL5cY0ezz94gLn03fnfP1belYVt9d4\u002fecgLwpTHyD+ULLSsoEXlPxy9mCg+y+Q\u002f71VxnRSi5D\u002fNrvEUzZ\u002foP0HfLZQhn+Y\u002fZJK4gf3h4T+eNeYZGkzjP4o+N11gE8c\u002fTTtzHZCW1D\u002fVTZmn5cngP\u002fnO56BuGd0\u002f95D1zk3m4j+loMqX1IbiP586SRor9t0\u002fwC2bPpgi6z9\u002fHKJAqjHTPzIK8coD6ug\u002faDD\u002fnaR07T\u002fislpe4HHfP+8JxYIdWtw\u002ffCXMq\u002ffp4j+wy8cYZpDpP2SEBGbKXuE\u002fgUzBKHvm4T9IeADCM+foP+DrycFTetw\u002f0zy2jp580D+VekIvA5\u002fTP7Zu7+PfB9Q\u002fZt2NyHS04T9JWcb6gmXUP1vW3CVmc9M\u002fish0XzqD2j+FOUZ6ctveP49KyVAS7eA\u002fAAAAAAAAAAAp9dwsp4niPy7nLtr7RuU\u002f8jRn8d+G4z9wr9Y19qbKP0lhDqqr8MU\u002fvK703MbC3T81mgtvM+TjPxdsI\u002fgIU+g\u002fpqMGldPg4T\u002fxIhKCN4nZP4HPc1aBqM8\u002fiIF\u002fG0en1D990E04W7XlP2vMx66Ll+Y\u002fKlbNQvTg4D9VK21\u002fkmzjPzkzc06CWd0\u002fGKbyJTnR6T9xLQ5YA3jbP39c52ovYeo\u002f1Pz0VPEb5z84lgYMrf7mP96YU17Ysdg\u002fAzyPEC1Yxz+O1YmStczlPx7HVxYix+c\u002f2mVhmSY65D9pRNDPRFjmP3rTEPmUluI\u002fjDEx4DQX6D8vF9lPVRTmP4vRvtJFq+4\u002faqSGgTcz4D9to+n9BLrjP5Uf9e\u002fzZLU\u002fVSoUbfxF2D+9Wd14kc7TP4ZP+S1iAs8\u002f8AekEQuquD+Ap2fLfl\u002fQP1vINRNAicg\u002fJQqdV6iI4D+lrTcitfXpP4mVrU0afOU\u002fgYM5wJds5T8eKP02H8\u002ftP8872LKAqOU\u002ft\u002fvB\u002fGBT6T8nGQrkOHLXP3x04qW97uM\u002f8yiwys+u2j\u002fJLMJG9TXaP6ycr5BHpuU\u002fjaBzMTN46T\u002fFMZdyRBrjP40IUQjscuk\u002ff5Y83TgY5z9YwBvR8dTnP1W3gQZktew\u002fMTVDUAWd6D8SPiPNz2TmP0S8v7uI7+8\u002fZV0RqW7F7z8phNswN3frP1K6iO5R8+w\u002fAAAAAAAA8D9CVOOTZEDsPxnRyjeJ6eo\u002fqKFBg92F6j+Fr1KsuMrnP+\u002fwNaXkZeI\u002fsi00I4yx4T\u002f\u002fMxcYkBLlP4GZsEje3uE\u002fZrB6vovx1j+KncNEeXngPz0881haROg\u002fJNFZHwnA3D+vsJoqayTkP7ZOcme1+O4\u002fQ6RjOryg2z\u002fwPpJC1r3iP6q4x5Ryxuc\u002fs+QtcS7q5T8DTB1cESvkP9tkC2gCO+Y\u002f8Cd18o5k6j8\u002fLTFE8B7lP1XhTil5JeE\u002fkJU6Ul6T5j8M1W0MKHPpP0eecAJeCeY\u002fvwkTHsVE5z8hUNF02EzsP91MMdP5Cuo\u002frc8WjSYG6D\u002fdFQ1sjNboP7D\u002fEIDAu+c\u002f78cjsh0d6z\u002f4fUVa7LvkPy44VXsMTOM\u002fovWsNiDs5z\u002fGe+iyhPnhP\u002fHBQYH81+U\u002fOvoeMrNw4T8p7K9iryLqP3o3P9Pgz+g\u002fYJHDmkFt6j9LyAjrHVXpPxZ2PWl5JOc\u002f7JUBySyB6D8hM8PRIV7sPxm0UrjkkOg\u002f1vVIJP565z9aMkrVBIznP8UMpVKMOtk\u002fBI2T+doC0j+jglZTuzzEP\u002fZJ\u002fTtdY8Q\u002fDtcmMGMy2T9WzcgcqM+xP4PvWc+o2c8\u002f301tmuo0wj+ZS5XnZtHYP5LDaPnY49M\u002fuvB2ra4XwT8zPAHKX8vmP4wrGF7P3Ng\u002f7FMr1jUH0z9Z1+4dG5vBP2Bhs4reWbA\u002fm1zPHL1msT\u002fW+9FBMbLmP7RS1X8yR+o\u002f2pce0fvF6D+MXQA5vfXnP2iHBrrh4eM\u002fA5+c8Dp76D96Pg4k\u002f0vgP+4hFpp8keY\u002fx5ftgFgb2z9ANR8nUZjjP7nKgM3DeN8\u002f1petaA38yz\u002fvJHMCKlDmPyCO46XlFuY\u002f97LlCK9O5z+zGuL\u002fSeXmP4iZsWyKgec\u002fAtea29R64j+7ELIt+lfcP+Oq4skN08g\u002fLj9ztz11zj8njh9dWD3gP4CmjFfpNsQ\u002fTpkJf75Y4j9EfIQdxWjiP\u002f\u002f8tL+PUOA\u002fmjC2JKOK6j+g5cM7YUXSPw5QmuCZaek\u002fQIf7k0GI7T8v+3ZFF6vgP1qSf9oRYOA\u002f0jfWh9mm4T9LnnpxkX7rPy3jQG6I7eM\u002f6YYko2u95T\u002fEHB+ziZrsP1v1z3C4EuE\u002f9TiNhkvKxT\u002fb4HE9+uDRPwPWY7ECx9A\u002flYRlo7f\u002f1j9y5VpoNQbTP0ip9dTMJNI\u002feXuoM+fiyD8O7TbVnQLiP73TyQ2RDuE\u002foBa2DI4Uqz8BllBknu\u002fiP50yLFEBXeI\u002feh5h7acW6D8BEiLYfu\u002fYPxuBRL+4asQ\u002fMyUEd4me3j8SqtUN9NHkP01fLa5PSe0\u002f9RCbIR2j3D8Z4gPZ0mLSPzHAShQissw\u002fUFLEtb+W0z9FAXDgnM7nP0qKGx51Guc\u002fyM50bmZF5j\u002fHqTGytovmP8a\u002fjBRbOtw\u002f"},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"log-rescaled k-participation coefficient"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"rescaled - (Squared coefficient of variation)"}},"legend":{"tracegroupgap":0},"title":{"text":"Structural network: r ~ 0.903"},"width":600,"height":600},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('d2d2326f-ea5f-4fcb-b550-4c799d641b93');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="66416a4f-da47-4a6e-950e-87d4c4d7153b" class="plotly-graph-div" style="height:600px; width:600px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("66416a4f-da47-4a6e-950e-87d4c4d7153b")) {                    Plotly.newPlot(                        "66416a4f-da47-4a6e-950e-87d4c4d7153b",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"f8","bdata":"yqNwg7xa0T8kE87gnRDIPzijgPyp7Mk\u002fmtm0RDSfxD\u002flvW2QrIHGP1Unzi60Ksc\u002fj4J\u002fWPNfxD88AEfk41TGP1+TG2qIOcs\u002fM8c8phWK3j9ZBT\u002fameLcP6LqS0klf+A\u002fpvubM6t6yD9TSvVIribdP6SL5AmI0N0\u002ftnAE3dM7xD+1+CR2vV\u002fHP59C0FfO2MU\u002fMWa5le\u002fvxj+sGMVSi17DP1M4L5l3AcQ\u002fNSoDO7qexj8NM9AWJPLPP7TwPh8DwtU\u002f9YCB4+Gv3j9JYOOQZIzUP00dIaFgcuI\u002fiI63YkCg3D\u002fWCfQ0kiPdP0F8qtsrlss\u002fI\u002fTfghhv0j+pVw0fEZ\u002fTP+w607ZTPcg\u002fXUNCuC260D9VwwPBHSPLPw8yK6OL3tQ\u002f1AatgYqO4D+qWYfz4H\u002ffP4GzbbzoWdE\u002fQLd8ESy6wD9NyupCZvrOP16hMs6JQtw\u002fDQBFufpS2T\u002fgnTBBCjvTP5cosNtEWtg\u002fiQ+vxfRu2z8cInnTA0\u002fgP8o+A4SpCc4\u002f1V1ERWqN0j\u002fwal65G+DdPziDGz+Gf84\u002fe6mICPVD0j\u002fGUV\u002fJDpPGPztUc5NlDM4\u002f5VtccXhEyD9T3hWSb\u002frUP618HUGWa90\u002fy92wq6xs2z8nYlk54CzbP3p+qhITMNs\u002fMUUg4hrxyD8DbgPCrvbSP6AvS5RDltQ\u002fw1llB6Uxzz8hF2nMgLrHP8X6vXK55tQ\u002fH2cNALVA0j9eKiEMe7nQPzokLUikHck\u002fsRPGdIw40T8EJS5vzCnNPwBukNAKl8o\u002fKbn6hnfY1D8zdfSA7qXXP5M\u002ffJkSgtQ\u002f1019nAK00j+jrFlR+7vVP+tA47o3idc\u002f9Gy+vWtj4D\u002fbqBgjdmjbPxjRMwaApt0\u002fngSRRdjx2j8afFQ0d5vWP5cZ20WkCtU\u002ft+SYtKd60T\u002fMnT5ymqfhPwJfzF3AxtA\u002fCTBpr79lxT+k27GG9brUP7djm1zRxtE\u002fXv\u002fCYXgS2D+vC11FQ4jWP4BbHdJGndQ\u002fd0icOcJH0D\u002fLDRWY97\u002fbP0GlpkT5t9g\u002fAfZBwUVy1T943T0yWBfUPxjAH5E2\u002fdc\u002fTVNl\u002fUq0zz9YVq0lDwXIP5nchCL7+dE\u002f+8pne1DH0j9Az0NpSBnQPy0ImGOMB9c\u002fotDKVqWk2D+r8mcmtfPPP9PVS62Rf9U\u002fxQIEn1Ar1T8SEgyspt\u002ffPzcxSE6Ygdk\u002fi2MkZ4Hf4j+nytWOW7fWP9M48bs5J9Y\u002fIawYmp3D0j+nym5Gn0DdP3HEH6ROod0\u002fIXXjKRgv0T\u002fZLcgkYCHeP0Q3BI8Ga9M\u002fC99klCAT1j\u002fP3opjxRTiP2PXSTc+q9g\u002fFZ8b73NMzz8Tuomxh7XQP0LNidu7qN8\u002f+zXpp6zQ3j9KEUlX6VbeP9du4EtSZN0\u002fYvPvxzv60j9EkNbvlPHJPyabLYLjCsc\u002f4CjoFRVY1j9\u002f3uMmmg\u002fVP\u002fvz78gOpuU\u002fstuIs0y32z98I3JebqbXP\u002ffoIB4mKdU\u002fcI660PHN2T9ur3uc2OTgP75ONxLES+A\u002fkBNDBrdV3D9HIeb37CneP2bKJnV4HdY\u002fsk2mGM5H1T+wi0SnAEPdP+Lym\u002f8iY9g\u002fE26f+eiM1T9mA\u002fsJGvjTP0cuzg6J9c4\u002flMmOFZFL0z\u002fYkU\u002fRwqXJPxD5N\u002fT9Cco\u002fQ1vBZGkrxz9+RmIi7GnYP2OvLXPy8cQ\u002fkWk57N6Tzz9zg6ph1rfEP7CyFNNc7sc\u002fKUOrMaiTzT+TwuuOlLfKP+dB5IdGA9Y\u002fm7qP9PVjxj+YIQ7soFjGP17gCDzKA8g\u002fwug7WKAc2D\u002f3dMutyTfbP41rL\u002ffn6ss\u002fvHQAm2mO2D9CiJBum\u002fvVP8LxUHGLHtQ\u002fHLOOczy92j+hWsmu1FvQPzzsJUM8ANQ\u002froeQ3QRc0T\u002f4LbSdlRXIPwk6lS+6A9Q\u002fi652b\u002fSk2j\u002fqRoXAEMreP0ebfsdY\u002fuI\u002fBLC9Da8HzT+s7\u002fDI0HzLPxUOytex7cc\u002fOMu60SKUxD8tJx32VLvEP76fORb6t8Q\u002fkUeDWXO7xD9pdrdnL87DPxHNMyCacsU\u002ffSlHTdiV2T+gVAdyl1jePwvENFNbguA\u002fzlI3chPwxz\u002fNp1rV0lLgP0cyUHLVKtw\u002f6Gl+N2t9xD9g6KvxQZ7GPxTHH2VW8MU\u002f2ZlO9w6OxT\u002fD7Cz1larDP0IiKZRj68Q\u002f\u002fI+pEHn2xT\u002fSF17JnY\u002fSP7zBMIAJxNQ\u002fNIoM8iFp1z9BGhz98NnaPwrPnWDP6OE\u002feUHBC4vt4T9ShmiQ9zveP6XgAdC3Pss\u002frV3oG1Os2D+uiDfbjpvVP2yzcSmdVMg\u002f7KU+6bV30z8jIXs1hJzOPxwTHIoOLM0\u002f4BNX4mnn3z+z8tson+jaP6ASPEK7O9E\u002fZuD8C770wT\u002fFUNndC8XQP62vL4Oba9s\u002fUsdXDUm63T8Cy2RB82DSP1L\u002f+QqVMdg\u002f3gznqoSV3D9n9WEZIdPeP3DcDjBBKMo\u002feCSz60en0D8Kselh0UvdP6Hw5KiG6c0\u002fMvyZNyJVzz8zKZ9+uwDJP1jl3oqAcMw\u002fFzwbO2VUxz\u002fQiV5qFrHVP24ajoGFcNw\u002fQlCJQxOr2j84ieeANITcP4fP4cwiJNs\u002flfr\u002fipR1yz8u34DNf9XVP0T1vjMlUdA\u002fDzSb0fdS1z8b4bpz27zGPyk17G05ANM\u002f6moiaqR91D\u002frVw4ByUDSPxKxL3jk2co\u002fKsSP4aES0T8sqxUdUr3TP2LnsywKKMs\u002f0\u002f+p9bE70j\u002fYH3d4JJ\u002feP4xpRa7FKNo\u002fSfT+TBJy0z9gGz1oe\u002fvRPy0Sbkigm9Y\u002fRZmjVHsw4D9H5kvWO73bP4ne\u002fx5awdk\u002f4QrxJoLH1z9a7zBWrpvSP6U\u002fivk0h9Y\u002fjSfTRqmS0z+mJ4yUKRjbP0ASkcLKPNI\u002faC9VvZ\u002fbxz+8JERvIwvSP076cRmuvdM\u002fSkTRVjBn0z\u002fg8Xi1McDbP+1IgKWx+NE\u002fy8kJbLyFzj+nS\u002f3j+gbfPyabLclMWtg\u002fUq+tMyYV0j+e76uCaeTTP3ZpAmGiONU\u002fjtFIsMZPzT\u002fWWeFEW\u002fXCPw4MabgP79E\u002fXFWJSSDxyj+u3lCrf8\u002fSP1s2kKVCjdY\u002fSDbz3DoZ1z8+\u002fktYAhnQP+M2dCn04tU\u002fVY1RNHyd1T8gcZdlJvnZP6p46Ke0i9Y\u002fG0keLmzM4D8XN1+fXpXWP65ic2i3+dU\u002fjpWs0VV40D8MyY13zhjgPzbjLX4epd4\u002frc6BlZ0I1T\u002fIJ0KrVe\u002fkP5SgrpQ4l9o\u002fE9PMmQdP1j+cm9yJYlLiP9JKqorGwNY\u002f580JmDp6zD+XpODshhXLP\u002fJqiwNCRuI\u002fGSYpf0653z+ILAscPjjeP32ItGzuwuA\u002f3aoTwGhO0z+BwM9giyfJP7rG6CdGpcg\u002fWNMs1RvV0j+sr7hvMVPUPws60HQjf+E\u002fS+FJv0La3T8zQGOdjU\u002fYP4Jc4eg0Msw\u002f19mpQ5JE4T+AlDwXGIrgP07WqPFpVN8\u002fzID6YtwQ2T9dZj6T3JTcP9BDHdXq\u002fNc\u002fdQJPaK401D\u002fIeMHOuoLZP9GkNBuCRdk\u002fUvYfHI3q1D9KYg98wnXSPyW65jzm68o\u002fq21D5qjb1D9a9O8S7gDIP1AJco2wksk\u002fqYdUR5btwz9JXNeoZf7dP+sv1X6eRsQ\u002fWaTCvdRj0D+djTtF7MfFPwJZMvzYgMU\u002fq8Vjw+zIyD+wpT9zXo3SPxsSrJEIxNQ\u002fjavLpFLBxj8wxOurtkLFP\u002f02BKAdJMg\u002fd2pfY9oI4D8G2l\u002fpCNDYP285CSCiCss\u002fk4B\u002f17iw2j9\u002f5RHSRxPUPyWRh4qPBNU\u002f2bZ6mt\u002fP4D9cZZGhfXfQP1lfJjmQ4NA\u002f3uOvbIMHzj9BqmbcAWDKP7IkHU2U1dM\u002fjQohakDv3D9BwCLvREbbPwcS7vNh0t4\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"1Jrcss7h3T+ip+RrWQDMP7sHtbMIHtA\u002fKP+MPSFBtj8ZRya5F4HEPxmdsG5D0Mk\u002fcKkI\u002fSAgvD9W0c03LMjDP9MqPPzIedE\u002fHlMwiOvJ7T+jL0DNuRvmPzza2JItTOg\u002fh7uDwiKIyj8bhgBmmtLlP7DWu3khP+k\u002fRLfS8Ngiuz8CHsiMWffJPzd1B+v6RMI\u002fRXYcEfVkyT+QJlbzPXK0Pxm7cNyrabg\u002fn6ifK5qjxz\u002fNiTxJ\u002foHaP4ablfPrZOM\u002fvwAv05R95T9o7fJC9u7VP27kp3DLBu0\u002fNw6GJstM6T8L3f67n8DpPw+MzydZRM8\u002fLx+s6hn91j+SSmvmaordP+UirnEfu8I\u002fdtZBZUDE1T\u002fnZRA4Sc\u002fQPyrypd2uIeM\u002fPHw+DaFW7T9FhbYIhZzrPzdYum2bC94\u002fAAAAAAAAAAAdNnSGhB3YP\u002f8fac0ibeg\u002fAnpWKV6b5j8WvoyICIbhP\u002fwACs+lDeQ\u002fR9LnvLPo4z+pydVwpO7pPzyEnNUUmNk\u002fVd6QhyXA3D9deWnKnFriP73QH8DB29Q\u002fKxpEljz83T9CY7V5GZ\u002fEP1Ve\u002fkjRa9I\u002fm\u002fjrUDcJxT\u002fRPCiMgyzjP0q7YZ4uFOo\u002fOUrFu0pE5z88XYUtUqvjPzGs93CHVOM\u002fZv8UfCuywz\u002fI094EEbvbP9xlQP+\u002frN4\u002fj6stwt3Dyz9jHWKnqAvBP9Z9UQ\u002fD\u002fN4\u002fc0Sldsec2j9HiTDODHvWP3I9umOQ0c4\u002fi4EzF\u002fcj1z+Gfr0mWgrUPwJACv+xO8s\u002f0F54s9kN4D8DKmM0jsjVPz6g7Itp2NM\u002fBtRdmRba0j+QtWfG4zDgP+Ve2PObz+I\u002fnsYdRti\u002f5j\u002fkA3ubjKLhP0647\u002fu+Nuc\u002fIfze3PIm5D+dx9WO7SHjP4mA9rNE4OI\u002fqX8Iwxbh3D\u002f61ApfAG\u002fqPzUXQipDz9U\u002fhjA0H9QDxj+BK0gIVRjgPzsnkGSTmdY\u002fWgzouei+5T9uaG5YZlHjP6xWAQr8ut4\u002feQ4hDMGu0T8SEx7WCHXiP0Y2fIyD9eI\u002fOR7GAfjH4j\u002fb\u002fBz0dQvgP66PsceHSec\u002f\u002f7OUrNdy3T8pESyyPvjOP4wGN1GYTOA\u002f0heVfHdM4T8Tewb4lODaP3+9PS32W+Q\u002fACKGJCKN6D+9n\u002f\u002f97kLbP3K1fk3sn9Y\u002fwYJEgZ\u002fh2D85pApYui3tP7YSxzWXFeU\u002fjHvpnSn84j\u002fq6eTHiWbfP2zGyN4KE9Y\u002fUFx+R5Is4D97zNd54mPmPwnSo4IQ3+Q\u002fUPikAQcQ2T9lXUDyW9bnP5hXaF6amN8\u002fWNp8x1zi4j8MYscftU7oP69MgRdlDOU\u002ftrC2jCzS2D\u002f32gbEg2LaP9SZrWxANOY\u002f5NiG4BMg4T8rt7s2u2\u002flP3Px+KEzwOE\u002fDb\u002fhh\u002fAk1z8HqEC2YvXOPy0c7xnl78g\u002fBFRY0VCJ4z8oR8e9tpTcP3AG76fvVus\u002fv9Tt052L4z+iHh9OflXjP8NSR1rKi+A\u002f+z7kgVl95z8AfeUDRAfvP6PSJf3Dn+s\u002fTKc+REwS6T8rwZVQrovoP4h5C0xwQ+M\u002f0FYXaZJa4j\u002fLKAKly+PkP9nAbck9O+Y\u002fIN3uTv8D5D+2FXQSUn7dPwneMnb6PdY\u002fnm5Klza33D9\u002fbRNPoKXQP2tBxBFUys4\u002fjJJoZkyYyj+CzRkwFcDgP+GJMMN6\u002f74\u002fHZ9O9VIU1z9QxjAyU7vBPx0oL7wcLcw\u002fPH3SWaWx1T9K0DwTDQzRPwIUCf3WbOE\u002f79VzvPTJxj8eRoosnzy7P9LgAKRHV74\u002fJGGD7u7\u002f5D+SITa2vIbnP\u002fTWw6naZdY\u002f87pNSSyA3j+zBsOhJFniPzz7nC6uh94\u002fXeaAOiR81j+CKwrwpmnaP4106\u002ffHauE\u002f9rtTKwgp3T+hesknp+rNP+S0l+S5ft4\u002fStNGlwOp6D\u002fTlOxxIjPgP9vZnYYZaOQ\u002f8UdoQ\u002fAL1j\u002fDQODmQq7TP4BGY+JXgMc\u002f9vKyt6Httz9X4eOzk6e6PziU9vQgi78\u002fchvq6W4pvz9fsZ4dVaGxPzfSN4wY5r8\u002fQoCvp8mu6j8vi\u002fibZYzpPxDuO3LVgOo\u002f+R+b\u002fXgCyD\u002ft9dtml+LmPzZztxJXF+c\u002fSu0AM3nrvD8puK1JSmvFP7cOFhx+FcM\u002fNHCsbiQrxD\u002fw1zTpwYm3PyD\u002fGADDfb8\u002fL6sdjJzHxD\u002fPwkVuf8PgP8Lbx9GrT+I\u002f\u002fEUO9LDB4j9RB5+NsxLfPx4ug3mFgew\u002f3dkbJzH27D\u002fcGLb+XNPoP2YuNVD2880\u002fN8v7I\u002fDM4D\u002fd8MwR5F\u002fcP+cTuY6BIcQ\u002fUdi86qdx2D8PblYPUWjSP6x5Ve6UhtQ\u002fS3m9cyyc7D\u002fppeFHG7nnP5GKG29AJ9s\u002f62aWCOC9pD9uWX8NWb3bP89thPJbuuc\u002fS4KncPI95z+G3iCSCyjeP3otV3i36+M\u002f8lc0DCFs5D89GsCHQlvpP1\u002fMbpRDRNM\u002f47MhkNue3T\u002fOC5FLfoHiPyFpr4gW4NQ\u002fWX6567Ex0z+Otv6pfKjNP2b5KLplC9E\u002fUYtYZSmywj8Byr6qwD\u002fkPxW9DkxOUek\u002fHmcZ3JYM5z8PJBDOEjfkP6G3C9mmqOI\u002fErV3hBWCwz\u002f84WS8f9XdPyXkFTCARNM\u002fbNOEhQdp2z\u002fAH3UTCwixP7DtaVfLstk\u002fgTTVMgHo3j9Zxi67w6rWP5GlDLQZGdE\u002fPriNlkrC2D\u002fc5+a2yeLdP52s2h1zkc0\u002fYSDgYrb32T+MjqGn0SjpPyFYpKjBj9s\u002fkOsPbPjF3D8M6Vbkdy3YP\u002fnJi1oik+I\u002fmq36qlkN6D+rENnGnrzhP1Ip63YOHuQ\u002ftOwckdqo5D8k0RR5PN\u002fdP5P6U\u002fbrhuM\u002fKKEHyi\u002fy3T\u002f1pVDPiOHhP1fxjSlTsdo\u002fP08xcGQoyz\u002fHYx8Isc7WP5u9boMTY9w\u002fxgYvulbC3j8bkV1XbaXiP97XpV52YNo\u002f05wdSbrM0z+TEAXFjszkP7+zl7dC7eE\u002fAmu5YXjR3D89pVW36GzfPx4MqMP35+M\u002fpUUm4na22T+QEbZadJG7P9JT2CSd9N8\u002fwjjPw8ih1D\u002fCPkhogRPhP0ADTTSRM+I\u002f4lL0rE1Y5j9gpDf7DwLaP+egLO0K2Ng\u002f+AzSdm4U2D+gs\u002f\u002fqOUrpP1x\u002fBn29LOE\u002fpxssC1iK4T9YukW9ojHbPzJCId5vY9c\u002f5YppaqlR2j9CXlv+HRbpP6HvNdbWbeQ\u002fnM+9guEZ4D8AAAAAAADwP1XFL5f36Oc\u002f7e9Vhe2\u002f4z\u002fXI8B\u002fsTDrP5nt15u7EuA\u002fOe3cMV6w1T993w3PzInRPx9AX4FW+uk\u002fFFmN8RKS4j\u002flUm6Sze\u002foP22u\u002f4FKbuY\u002fjEFj607F3T+VhUUvWWDMP4FiNe+2Mss\u002fPA+ZZNCS3j\u002fZj6SSx6\u002feP\u002fp70uhe1Ok\u002fB047eirs5j8yMcv7tc\u002fiP9xRj7B1ktE\u002fb6bArDfU6j+y\u002fD0l1vLtPzrqlecRAes\u002ftnkVYnVe5z+Kuxu6\u002fOPlP6f5AIF4WOU\u002fJxav6pEO4T803ybTsuzkP41ZG27HH+Y\u002fA2cODa6V4j9iwEJ6+OXWP1cpVq\u002fDidA\u002fYMSZsULs3z\u002fVax1ctYzLPyn2JD\u002f9hc4\u002fbnfqad2nuT9qIq39AjTkP3ssnAnLP7k\u002fFPVAHfPG2D+QXBev2dfFPwMW7QrHLMI\u002f5+e3Op53zT+6Oau8mBfcP0SVcnTIXd0\u002f9XOesTiUxz+1mmvrl9K1PyrF\u002fX7jIcE\u002fuOjqXf4T7D+a3YvdtzrkP9FT2ICZtdU\u002fkvv7l6k04j\u002ft+cVXPwLePxoex5ghceE\u002fYrB4EvJk3D9\u002fn3jpVabaP4eezejyFN0\u002f\u002fhv2rPB31z9RlYTs5ljQP3+rMOkjEt0\u002fRYoAM2vp6T+9oaygXe7eP8YjQWBtgdQ\u002f"},"yaxis":"y","type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"xdfmXFHq4T+D28IllNraP81\u002fLKz6otw\u002fBqgYWmMJ2D+jTuuTLLbZP3F30zK5x9k\u002ft3ftoZCA1z\u002fokUqMeRXgP1wgJIYI0uA\u002fNPXtAzrX6D8OtMSvNDbkP0FI777xIuk\u002fwxdhBotv2z8dbii6tNflP7fVgCyLXuc\u002fhucH2XMO1z+wE2mX9O\u002fWP2lvluUEStg\u002fQXeFfaY12T8S5HvnChzWP50y5g9wtNY\u002f++piOLA\u002f2T\u002fG2k4JL2jgP2i3DE3XI+M\u002f27Q+w88Y5z\u002fWZ4pNn0HjPzYy+wh01uo\u002fpLE5S7qK5j91JKd1glDnP4\u002f1NN9tl+E\u002f\u002fH3PupFj4j9MOPeI\u002fv3jP0\u002fwltoZv+A\u002fkU8KH29b4j\u002fjrXMtOMbhPxPLrPhcReM\u002fdinD8Gn66T9S654jOiHpP9Q74QTMn+I\u002fjgqodBSb3j\u002fmU7LbaevhP\u002f\u002fFzTv98eY\u002fCGoFrU765T9sl0qVW0LjP+WMjLKlJOU\u002fTF\u002fsb9JS5D\u002fX\u002fCWaV93mP0Flf813v90\u002f+acdlzYI3T\u002f8AGsnJkfiP63MmxSERuE\u002f3u1zHuJ64j9cD\u002fv4oCrgP4oPFO0nP+E\u002f8VeGYR804D9pcO10DELkP9HIYxHPkuc\u002fVy6UidGo5j\u002f9+u\u002fFjsXkP9ZpA3ZRweQ\u002flIihn3jG4D89Sr0m+ojjP8BhBJNBWOQ\u002fku7Ad9Bm4T9jcNGuKZngP7aYW6yHheQ\u002fk7qlVwJO4z+KqLMoBn3iP5EE\u002fZFv0uE\u002foxvK2\u002fDE4j8VXQwcHUTiPwqhW0VuQuE\u002fnFXW4V+I5D8o\u002fhuGg5\u002fjP35bwiKNMeM\u002fmzPpYyeA4j91tDHICo7kP0iIZGXgTeM\u002fpvAKn5uy6D++IH5WZwTkP4MzI46iQeg\u002fDG9E7v4O5T8htIrUGwflP59lQwJC4+M\u002fu1Yjx\u002fE\u002f4z95KBoRmHPoP3IsXMjWuOI\u002fCy3M6EUx4T+Pbbr+qGXkP7yirVgbkeI\u002fX+aDCjH55T8b3broE5nlP7QO6vcHFOQ\u002fTLYYDC0a4j880ww\u002fDnTjP0LSPeBlvOM\u002fkt3LmnYY5T8irWPV2WTkPygG6uiul+U\u002fOke7JUp64j8c\u002f\u002fL8VLXgP3ZEu4s2eeI\u002fMrZLBVfV4j+BZeEy2pzhP\u002ftfd6K8cuU\u002fwN79IcJD5j+nTnvbbuHhPxmWQTzyGuI\u002fbBsbLAJU4j9TmMKD9XXoP15HvwgxXuY\u002fNSGNIaer6j9DYuuDrOvjP2zvpFBKYeI\u002fn1Xka5VW4z8QSJxdePTkPwxLxkVNquM\u002fekqQRHxb4z9SysAfjm3mP6C70kR+euQ\u002fahO2wV8X5T8S9DafMn3nP25+CTH1R+Y\u002feSJOepmX4T9hl3J7CgfjPyRDT0AvxeY\u002fGIok\u002fwdh5T8VquZNna7nP2p\u002ffSN+6eY\u002f7q3POhgV4z\u002f8K7kb20viP+hX4tD2auE\u002fyWaE0vm75T8lY9OwQ5jjP4tb+WWwouk\u002fT0DgrBqn4z9DIYsZ9cHjP11A0KVIRuA\u002fgvLH+eXt5T9tDfuIEdvpPw7EAmjXr+g\u002f8NKl74BJ6D\u002fFK70ZVs\u002fmP2Adv061s+Q\u002fIZbuNDkA5T\u002faXKGR\u002fc\u002fiP5TsRsfJ4uU\u002fSI1dVjmS5D96jIaYpP7jPxWinxhbkeI\u002fV44ZmaZ24z8\u002fs+yZ5F3cPxEntYksAN0\u002f\u002fXszSDnd2T+5Vl4NRBzkP8Ma6kog7tc\u002fq1id07\u002fq3D+ELiODZtPWP3VhQj6h6No\u002fo25t6W3j3z8yQfVXCuHhP6Jf0uEnTOQ\u002fXPTkecbF2D\u002fvN2HE13TgP6O2j0Nhd+A\u002f1URJ2rgZ5j\u002fXCFFOnKXmPwpJ+kSogOE\u002fZ8fMZpW44z+a2cRhbtLkP9piRHlr1OM\u002f8wZuYRuB5D+BJ2SwSZLhPxYA6sMNl+I\u002fU5SkuTdA4j\u002fgiCx2evrhP\u002fTlUVn34uM\u002f\u002fWuNRsGB5T\u002fo8+ksQ73lP6Xb9U4EXeg\u002fQZxWfGaT3z+YES8joJXdP0cw1Xo0+to\u002flMhPgRfl1z9epv2WbODXP+DNmzuvs9c\u002fmrVAG+Dp1z90tML3dyrfP0\u002f95ACa7N8\u002fvW58l1Gq5j+o5DCYM4vlP1Tiw3X0JOg\u002fJ\u002fXkKTL22j\u002fdVV08hXvmP+PblQ8NTec\u002fjkFwta9E1z9UU8lhtNLVP2nfV0Mab9g\u002fJeFlQ5no1z\u002fpTPdB1CLWPydd1KCuitc\u002fxeTeF2+R2D8FXIQHRjbiP5enlm3G8uI\u002fc\u002fjYRCwQ5T+m6vvaeR\u002flP7n3tM90luo\u002fsnRVzXX26D9WKm7IQXPnP5Dc4HnFe+E\u002fDY6IV+nl4z+2m\u002f0YzFjkP4jyCzL42eA\u002fP+1oSry14j+Ty+WtkPnhPxyNsoXFPOE\u002fivsHNVoW6T\u002fqu5tPzdPmP2Q6iJrDSuI\u002f\u002fc7p7DIJ3z9rh5Z7907iP9l2Llsxr+Y\u002f\u002fnIHIoFA5j9op+0otnfiPx+NU0u6EOU\u002fA8HePXvZ4z\u002fTT12AUunmP3mIz78c+do\u002f1KjhMXPA3j8ySgRSkxriPzOFEfLLSOE\u002f6T52vmY+4T+J6kx48qDgP9SUXA7yDuE\u002fuNGuH4z73z\u002fOfy7\u002fh77kP5+SVSuHTec\u002fjOHNSp0f5j8NECMGBQzlP9yqXTK9iOQ\u002fFbF3zZTs4D8by\u002fo\u002fsCjlP+alDkgvUeI\u002fuOmFrITI4z8RV9bmPhvgP3VdlaJDuOI\u002fhSqdAfFa5D\u002f30FQ1XnPiP+VutsIl9eE\u002fPsPSep8C4z\u002fkSfoT3hzkP6ISaF81hOE\u002fqrmMxvZy4z\u002f+9+c8mp3oPyaYnQmN0+Q\u002fkrXxbYBX4z+i79Z+Fe3iPyxaFrGbluM\u002fs0KlMPnz5z\u002f+QTiHgXbjP6LCI2tex+U\u002fJgJcBRx+5D\u002f29OJ9llXjP6uJ4kMsneQ\u002fqhkdNIQ45D+D93zWejXlPw5K7jfBkuM\u002fy\u002fuUAjBu4T\u002fKZOf1O3HjP\u002fIGRrID0OM\u002fFtAf62PA4z8M50pKgifkP6RMkGzJD+M\u002f5zhiQeh24j8lSO40cafjP5IjXoSILeM\u002fjqNXtPaI4z\u002fhxkVHR0\u002fkP1O\u002fFbKcquQ\u002fC1EaWkYM4j\u002f2+cveP7rfPwO549ChUeI\u002fGS5F0IxQ4T\u002fGR9yboILiP9l3IeWBx+Q\u002fsnM8WYy\u002f5T9z5HjfQpLhP1jyfp1Wh+I\u002fVmsvRZRp4j\u002f9ao2R0RzmPw5NeFvm3eQ\u002fogf8dA9o6D+zTXo27lnjP8NMOH8ZfeI\u002fAoA9dwRc4j8ReVKL5D\u002fmP9GgwG6UNOM\u002fG81sMt7F5D9iJvEKM3\u002frP3oHM7upN+g\u002fIFYlFug25T8IqeAbWuroP+SQYLhTieU\u002fRUe\u002f2eo74T\u002fETzWBlNXhP4Tqmxwahug\u002fPnV3gmMo5T+avwUbVdnoP3TxpYaW6eY\u002ffAvZ+UP+4z9z7FE56BPiPx\u002fK2UdxXuE\u002fSAzq6JOy4z8+uJxzjhXkP0StAgK91ec\u002fc2TyM6CF5D9RaPWCdDDjP6NT+P3Njtk\u002fTdXOYnoi5z\u002fmL8FX8iLpP4QHJpyeOOg\u002fVkIFuU6f5j82BxlCk57kP9g+myZoOuU\u002fs5Qc27tA5D9bzwa+M63iP3z4C+YrFeY\u002fG5Wn27Lt4z+q0P5byJnjP3N1k\u002f2O2eE\u002fC0ToQsQ95D+fPSImhu3aP4Fn7TNdg9w\u002f79Bl1RYJ1z\u002fAxpJkm+flP3kKu0IlXNc\u002f0bSpw8DI3j\u002fZgkdb+ujXP1NHkqzqVtg\u002fawy+Y8bC2z+1iumOop\u002fjPyTDGtxKzOM\u002fKjmwvMAR2T+LyFU2i1fgPyoo9ZtdjuA\u002fkmvuxrPg6D+H+nM8F13lP8s+BJdMYuE\u002fk7b6zidO5T\u002fa3GBrx1XkP8cliLm1NOQ\u002fQ+ho5fXZ5D+j8Gk7253hP9O1iQdzGeI\u002fAr9SjkeA4T\u002foGu3vSObhP1JEzHfIDOQ\u002fqSkshNYR5j\u002fEbYb0ZoDkP7OH1s6AtuQ\u002f"},"y":{"dtype":"f8","bdata":"1Jrcss7h3T+ip+RrWQDMP7sHtbMIHtA\u002fKP+MPSFBtj8ZRya5F4HEPxmdsG5D0Mk\u002fcKkI\u002fSAgvD9W0c03LMjDP9MqPPzIedE\u002fHlMwiOvJ7T+jL0DNuRvmPzza2JItTOg\u002fh7uDwiKIyj8bhgBmmtLlP7DWu3khP+k\u002fRLfS8Ngiuz8CHsiMWffJPzd1B+v6RMI\u002fRXYcEfVkyT+QJlbzPXK0Pxm7cNyrabg\u002fn6ifK5qjxz\u002fNiTxJ\u002foHaP4ablfPrZOM\u002fvwAv05R95T9o7fJC9u7VP27kp3DLBu0\u002fNw6GJstM6T8L3f67n8DpPw+MzydZRM8\u002fLx+s6hn91j+SSmvmaordP+UirnEfu8I\u002fdtZBZUDE1T\u002fnZRA4Sc\u002fQPyrypd2uIeM\u002fPHw+DaFW7T9FhbYIhZzrPzdYum2bC94\u002fAAAAAAAAAAAdNnSGhB3YP\u002f8fac0ibeg\u002fAnpWKV6b5j8WvoyICIbhP\u002fwACs+lDeQ\u002fR9LnvLPo4z+pydVwpO7pPzyEnNUUmNk\u002fVd6QhyXA3D9deWnKnFriP73QH8DB29Q\u002fKxpEljz83T9CY7V5GZ\u002fEP1Ve\u002fkjRa9I\u002fm\u002fjrUDcJxT\u002fRPCiMgyzjP0q7YZ4uFOo\u002fOUrFu0pE5z88XYUtUqvjPzGs93CHVOM\u002fZv8UfCuywz\u002fI094EEbvbP9xlQP+\u002frN4\u002fj6stwt3Dyz9jHWKnqAvBP9Z9UQ\u002fD\u002fN4\u002fc0Sldsec2j9HiTDODHvWP3I9umOQ0c4\u002fi4EzF\u002fcj1z+Gfr0mWgrUPwJACv+xO8s\u002f0F54s9kN4D8DKmM0jsjVPz6g7Itp2NM\u002fBtRdmRba0j+QtWfG4zDgP+Ve2PObz+I\u002fnsYdRti\u002f5j\u002fkA3ubjKLhP0647\u002fu+Nuc\u002fIfze3PIm5D+dx9WO7SHjP4mA9rNE4OI\u002fqX8Iwxbh3D\u002f61ApfAG\u002fqPzUXQipDz9U\u002fhjA0H9QDxj+BK0gIVRjgPzsnkGSTmdY\u002fWgzouei+5T9uaG5YZlHjP6xWAQr8ut4\u002feQ4hDMGu0T8SEx7WCHXiP0Y2fIyD9eI\u002fOR7GAfjH4j\u002fb\u002fBz0dQvgP66PsceHSec\u002f\u002f7OUrNdy3T8pESyyPvjOP4wGN1GYTOA\u002f0heVfHdM4T8Tewb4lODaP3+9PS32W+Q\u002fACKGJCKN6D+9n\u002f\u002f97kLbP3K1fk3sn9Y\u002fwYJEgZ\u002fh2D85pApYui3tP7YSxzWXFeU\u002fjHvpnSn84j\u002fq6eTHiWbfP2zGyN4KE9Y\u002fUFx+R5Is4D97zNd54mPmPwnSo4IQ3+Q\u002fUPikAQcQ2T9lXUDyW9bnP5hXaF6amN8\u002fWNp8x1zi4j8MYscftU7oP69MgRdlDOU\u002ftrC2jCzS2D\u002f32gbEg2LaP9SZrWxANOY\u002f5NiG4BMg4T8rt7s2u2\u002flP3Px+KEzwOE\u002fDb\u002fhh\u002fAk1z8HqEC2YvXOPy0c7xnl78g\u002fBFRY0VCJ4z8oR8e9tpTcP3AG76fvVus\u002fv9Tt052L4z+iHh9OflXjP8NSR1rKi+A\u002f+z7kgVl95z8AfeUDRAfvP6PSJf3Dn+s\u002fTKc+REwS6T8rwZVQrovoP4h5C0xwQ+M\u002f0FYXaZJa4j\u002fLKAKly+PkP9nAbck9O+Y\u002fIN3uTv8D5D+2FXQSUn7dPwneMnb6PdY\u002fnm5Klza33D9\u002fbRNPoKXQP2tBxBFUys4\u002fjJJoZkyYyj+CzRkwFcDgP+GJMMN6\u002f74\u002fHZ9O9VIU1z9QxjAyU7vBPx0oL7wcLcw\u002fPH3SWaWx1T9K0DwTDQzRPwIUCf3WbOE\u002f79VzvPTJxj8eRoosnzy7P9LgAKRHV74\u002fJGGD7u7\u002f5D+SITa2vIbnP\u002fTWw6naZdY\u002f87pNSSyA3j+zBsOhJFniPzz7nC6uh94\u002fXeaAOiR81j+CKwrwpmnaP4106\u002ffHauE\u002f9rtTKwgp3T+hesknp+rNP+S0l+S5ft4\u002fStNGlwOp6D\u002fTlOxxIjPgP9vZnYYZaOQ\u002f8UdoQ\u002fAL1j\u002fDQODmQq7TP4BGY+JXgMc\u002f9vKyt6Httz9X4eOzk6e6PziU9vQgi78\u002fchvq6W4pvz9fsZ4dVaGxPzfSN4wY5r8\u002fQoCvp8mu6j8vi\u002fibZYzpPxDuO3LVgOo\u002f+R+b\u002fXgCyD\u002ft9dtml+LmPzZztxJXF+c\u002fSu0AM3nrvD8puK1JSmvFP7cOFhx+FcM\u002fNHCsbiQrxD\u002fw1zTpwYm3PyD\u002fGADDfb8\u002fL6sdjJzHxD\u002fPwkVuf8PgP8Lbx9GrT+I\u002f\u002fEUO9LDB4j9RB5+NsxLfPx4ug3mFgew\u002f3dkbJzH27D\u002fcGLb+XNPoP2YuNVD2880\u002fN8v7I\u002fDM4D\u002fd8MwR5F\u002fcP+cTuY6BIcQ\u002fUdi86qdx2D8PblYPUWjSP6x5Ve6UhtQ\u002fS3m9cyyc7D\u002fppeFHG7nnP5GKG29AJ9s\u002f62aWCOC9pD9uWX8NWb3bP89thPJbuuc\u002fS4KncPI95z+G3iCSCyjeP3otV3i36+M\u002f8lc0DCFs5D89GsCHQlvpP1\u002fMbpRDRNM\u002f47MhkNue3T\u002fOC5FLfoHiPyFpr4gW4NQ\u002fWX6567Ex0z+Otv6pfKjNP2b5KLplC9E\u002fUYtYZSmywj8Byr6qwD\u002fkPxW9DkxOUek\u002fHmcZ3JYM5z8PJBDOEjfkP6G3C9mmqOI\u002fErV3hBWCwz\u002f84WS8f9XdPyXkFTCARNM\u002fbNOEhQdp2z\u002fAH3UTCwixP7DtaVfLstk\u002fgTTVMgHo3j9Zxi67w6rWP5GlDLQZGdE\u002fPriNlkrC2D\u002fc5+a2yeLdP52s2h1zkc0\u002fYSDgYrb32T+MjqGn0SjpPyFYpKjBj9s\u002fkOsPbPjF3D8M6Vbkdy3YP\u002fnJi1oik+I\u002fmq36qlkN6D+rENnGnrzhP1Ip63YOHuQ\u002ftOwckdqo5D8k0RR5PN\u002fdP5P6U\u002fbrhuM\u002fKKEHyi\u002fy3T\u002f1pVDPiOHhP1fxjSlTsdo\u002fP08xcGQoyz\u002fHYx8Isc7WP5u9boMTY9w\u002fxgYvulbC3j8bkV1XbaXiP97XpV52YNo\u002f05wdSbrM0z+TEAXFjszkP7+zl7dC7eE\u002fAmu5YXjR3D89pVW36GzfPx4MqMP35+M\u002fpUUm4na22T+QEbZadJG7P9JT2CSd9N8\u002fwjjPw8ih1D\u002fCPkhogRPhP0ADTTSRM+I\u002f4lL0rE1Y5j9gpDf7DwLaP+egLO0K2Ng\u002f+AzSdm4U2D+gs\u002f\u002fqOUrpP1x\u002fBn29LOE\u002fpxssC1iK4T9YukW9ojHbPzJCId5vY9c\u002f5YppaqlR2j9CXlv+HRbpP6HvNdbWbeQ\u002fnM+9guEZ4D8AAAAAAADwP1XFL5f36Oc\u002f7e9Vhe2\u002f4z\u002fXI8B\u002fsTDrP5nt15u7EuA\u002fOe3cMV6w1T993w3PzInRPx9AX4FW+uk\u002fFFmN8RKS4j\u002flUm6Sze\u002foP22u\u002f4FKbuY\u002fjEFj607F3T+VhUUvWWDMP4FiNe+2Mss\u002fPA+ZZNCS3j\u002fZj6SSx6\u002feP\u002fp70uhe1Ok\u002fB047eirs5j8yMcv7tc\u002fiP9xRj7B1ktE\u002fb6bArDfU6j+y\u002fD0l1vLtPzrqlecRAes\u002ftnkVYnVe5z+Kuxu6\u002fOPlP6f5AIF4WOU\u002fJxav6pEO4T803ybTsuzkP41ZG27HH+Y\u002fA2cODa6V4j9iwEJ6+OXWP1cpVq\u002fDidA\u002fYMSZsULs3z\u002fVax1ctYzLPyn2JD\u002f9hc4\u002fbnfqad2nuT9qIq39AjTkP3ssnAnLP7k\u002fFPVAHfPG2D+QXBev2dfFPwMW7QrHLMI\u002f5+e3Op53zT+6Oau8mBfcP0SVcnTIXd0\u002f9XOesTiUxz+1mmvrl9K1PyrF\u002fX7jIcE\u002fuOjqXf4T7D+a3YvdtzrkP9FT2ICZtdU\u002fkvv7l6k04j\u002ft+cVXPwLePxoex5ghceE\u002fYrB4EvJk3D9\u002fn3jpVabaP4eezejyFN0\u002f\u002fhv2rPB31z9RlYTs5ljQP3+rMOkjEt0\u002fRYoAM2vp6T+9oaygXe7eP8YjQWBtgdQ\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"puExvGIp6D8aKkXz1v\u002fjP3TowcKzBuU\u002fCbon+iF44z+g8WWu3zLkPzEni\u002fRjUeQ\u002f4dsAX2DZ4j88+EircCzjP6LoAgMbu+Q\u002frAa9jr\u002fx7T8lQgBA4lLqP55n6gLLWus\u002f2HjTvqWa5D+h3cmfRU7sP5MnHkEY5O0\u002f1Bld7Guj4j+t0FHaHUTjPyCCYXUe7uI\u002fQ3uoeyH84z\u002fqzWB8u2\u002fiP+7fv4\u002fdl+I\u002f+dJpJMIj5D8UMVeznRDmP8yYcYtUQ+k\u002fykVB7iUB6j8UE6RlUf7nP0Uy6QCVyO8\u002fKjU1NFUp7D\u002f7OBHl1WLtPw\u002fydjklPOY\u002fFhlYzFXk5z81u6bjK3PpPwyg1nEPnOU\u002fmzE887ag5z8044FAY3\u002fmP16TMHpCcug\u002fktlua9ad7j9XlJRS6ufuP3\u002fYZOvMs+Y\u002fOv8ncGVD4T+mJL5qEzvlPw1qBcIBxOs\u002fMNIiSuYL6z8OHGqSP1rqP2T4iJu\u002fP+w\u002fagBaVIfS6z\u002fCfwOG7yvrP+T85tNHn+U\u002fJE2ag5Kz5T99hiVtyEzpP9uBQV3yUeU\u002f9aUcIB8v5j+M+qwebkjjP9p+YjNA1eM\u002f6yBx1\u002fN04j\u002fuOwpTKKXnPzTU6lWVhe0\u002fT3tCRzB\u002f7T+dHog5ViXrP+13iiz99+o\u002fbarmXsYw5j+M0P2CTh7pP9mNt3LMzuk\u002f7T57uRxc5z+dKvrRqnnlP6TXHLINduk\u002fiF61HK9f6D9UuUnXQK3nPyQO1qihsOY\u002fE6nNzQzk5z9FH7lzHTXnP1COy5lGLeY\u002fVAmAlmwX6j8f8MeGwIDoP6+9pTR0Quc\u002fiRaVOTJV5z+xkoEgxcjpPwmkS88GtOk\u002f+g8f6Xbo6z8z6p+bPczoP+vy5jaom+s\u002f32cwMv8m6j8R6f7V7VTqP2BtYx05G+s\u002fil\u002fbk0Oa6T9SgxsT0eDtP\u002f\u002fmDqPLpec\u002fZEerNWOJ5T8LAVMQ2SfqP1AxoJyBqOc\u002fD7nIx9cN7D8+HGFmC6zqP0xPC9uRPuk\u002fJbkupPT45j8rwtGwEzrqPwkHmQpR4eo\u002fkdag+waC6j91KOKT7PfpP7qAy+ey1Oo\u002fm7qEoE0P5j\u002f5x275C\u002fbiP7sJEahxFec\u002fewMR3brN5z+yucMySgLmPwVPVo82+Ok\u002fr9cb7GIn6z\u002fW5nsKvR7mP6Z2d6sgaug\u002f+e+KpLGO6D\u002ftpZ4bpFvuP0JKAYGro+s\u002fDRNLqtov6j9hJY02KlToP2bzvUpxxec\u002fTgr4KBVv5j89o8WuUMXpP2bJXoJqxuk\u002fXFFIijic5z9Vubg5THvrP8why16Ihug\u002flTHUTFmw6T88vgTGyvDsP6yDLSc28ug\u002fauSkkQX55T8J4ESViizmPzXTQiNM3ek\u002fzHesVoL86j8ujcwD81LpP2QaSpWZP+g\u002f\u002f2S1baP95z9NMYRNQnTmPytiHr6a1+U\u002frrhHPn\u002fY6j911vCktNnoPxaNZI\u002fX\u002f+0\u002f8Qazl\u002f706T9GoBLw7PTqP0XpJgJhxec\u002fX4Gzbe8r6j8ekjpTcbTuP7aak9XmeO0\u002fO0jMW3wM7T\u002fdAJdft8ftP2HIBE8ZgOo\u002fIqF79CxU6j\u002fWIjh3f7HqP1cqcIt0ieo\u002fplR+u71A6z+kUVw6o9DpP2+O4EvlO+c\u002fyqczwTZt6D\u002fEk2kmpBHlP1DCg\u002fsySuU\u002fcuNwvH\u002ff4z\u002f3Hth0YvfnPxuVYdP+5+I\u002f1tnkqBI35D+PEYDvPdbiPyjH1u7xI+Q\u002fDySNS7Y+5j9uzEpCC3PmP4RblAaU\u002fOk\u002fRhaUo2CK4z84PhKRzDXlP4uMRdSjSuU\u002fIc\u002f0+nx87D+SztZNmQHsP6+FA0vL8uQ\u002fsb0scKwH6j8td433y6DqP4y11kkIheg\u002fiN2wfem15j\u002ffwDiWsK7mP57OxrIabeg\u002f3KUd797S5j9CCx0LUVTmPxzr75ey9+g\u002fYh0XOQ1Y6z+UPhuRP9voP5HNtrSCE+o\u002fUfQ2JuWK5j\u002f\u002fTbfwjvLkP3342WyUeeQ\u002fkMNgoRaV4z+TXjtunlXjP\u002fhz1Ah0ieM\u002fmSGHxPVH4z9zMFu1azLiP7d7HKbkGuM\u002f0boz2XL46z\u002fLZ049SHTsP6jtjlD4gO0\u002fVtmX4JZ45D\u002fh3NhL+S\u002ftP+yFcqzKyu0\u002fgSUWw9es4j+R\u002ff74b87iP1cY9cN5HuM\u002fz8KTYRcu4z8EeIwnj2PiP+poH\u002fNuzOI\u002fA+jrTap\u002f4z93q1asCXXnP8uJ01Y46+g\u002fWMFwtR3Z6j+ie0jMDt\u002fpP8p0lszWK+8\u002f6UOdbYaO7j+C0Tn0yGTuP0rrgDK1IeY\u002f+gl6YGes6D\u002fGifE68YnpP4TyvyE1keU\u002fwLdA+M\u002fU5z9YwWnK5BDnPyo70pfXBuU\u002fMWECyieH7T\u002f96jNtIJ\u002ftPxWBQV3CEeY\u002fZbUmqpl04T8uUiTyqxTmP2+IFXU13Oo\u002f3N9Ye\u002fwW7D+6p044uRHpP50HS\u002fFhH+w\u002faRu4r2xO6z+jXM3LPsXqPwjwAlmbYuQ\u002fIxc7XNvt5T9t4XJ1vTTpP4hrh30Y5eQ\u002fsk3eHNfn4z+hl7XXCh7kPxSFKtMoeuM\u002fmy6l2FUu4j\u002fBxcBpmijoP38M9fRvBO0\u002fkcVtpAX37D8mw1uCC4TrPzEESChfyeo\u002fm9r0QYen5j9hsR6ju+rpP4nMvqw8z+c\u002fK7Lr4K6w6T9NimQxRyTlP2eMf2THBug\u002fgsVteQs96T9O8pfc82\u002fnP+an7xxgsuY\u002fCQ1qQw7U5z8izBPcGmbpPzn4LKQgIuY\u002fHYlOP7qZ6D\u002fEZwBQ6ULtP5XsrvEmDek\u002fhQ\u002f\u002fkIej6D\u002fTJCQOEfznPyU\u002fq\u002fgSC+o\u002fvQjTFt3Y7T8wiU2VL47pP0jOkEbOBes\u002fbb5lvpGe6z8oOGGuGrPoP1ilW9xDoOs\u002fqfqbLM6V6T+8p\u002fNKrE7qP7YFIcDxteg\u002fuVqJkGDx5T\u002fcr\u002fJDhsboP4j\u002ftkEWkug\u002fSo0o05RV6T+nZIs8NjbqPxStjlOeKeg\u002fjUast2OK5z9nJtm80snqPzOZ6LINPeo\u002fg7ylnk886T\u002fmso9WsavpPzWcx7cZROk\u002f50IOQO1m5T9Nva3HmdzhPzv94GvYY+c\u002fv2R1OgZw5D+Vy+JBsjHnP4+damINxug\u002fVb5ohufo6T+sYcpVNQzmP5U117KTt+g\u002fYFrDi2l\u002f6D\u002fbqWgoWyvsP9MPuZmjZuo\u002fC2SfiTQU6T839qiHGz3oP2VK5wk60+c\u002f4qZNkQoW5T\u002fID+gHCI3qP\u002fSs2CqAeOk\u002f69X72DqQ6D+tW2XSw3\u002fvP2tla9h\u002feus\u002fVQZdhkDz6T+it5XEKxjuPwpvUpDx7+Y\u002fd1eHbToy5T+F+Ykw1p3kP4EL546fduo\u002fcqsAW9La6j8uUYMhrb\u002frP4EDcRCEr+k\u002f9efJcl0b6T8NNYoj6UrmP1V7tQ0a4uU\u002frXP1bqfe6D9kANb9nuXoPw+SyUxws+0\u002fnuLPMU0U6z9V7elkfnzqP4ySK6l4+eM\u002f\u002fdaCNEMO7T9J7K3fPQbuP9HKGx2cDu0\u002f8DaRo07v6z95UeJq8QDsP66P0D0sI+s\u002fwsa7UvhC6j\u002f\u002frCiW0yPqP\u002fDmNzAIeeo\u002fJV8LeOZJ6j+k1ZxhJKzoPybdz0aMduY\u002ff6sjlasZ6T+04+0Y5FrkP4bbc4CvGuU\u002fh9E9wYXF4j+0Js3upLfoP\u002f3toAc7ruI\u002fPHgpCuev5D+UoTxwuznjP4Xx6zOuDuM\u002flx6aRjl75D\u002f6aC1AZPnoP+ZEgxUHn+k\u002fYqOeEq2X4z\u002fTfg5qQxflP8XeMjKSNuU\u002fW2jRXeYb7z\u002f51maWLYvqPxT+xUDgtuQ\u002frKMUlYCZ6z+vcd+Jq7vpP5okgAXxY+k\u002f4n3RboJ65z+CWOd5ybPmP0RPf5daOec\u002f+o\u002fJTxKY5T+KrP0PBILmP5p7gJKLrug\u002fsomvm7UD7D9d14yd+kPpP4ArV6WOLuc\u002f"},"y":{"dtype":"f8","bdata":"1Jrcss7h3T+ip+RrWQDMP7sHtbMIHtA\u002fKP+MPSFBtj8ZRya5F4HEPxmdsG5D0Mk\u002fcKkI\u002fSAgvD9W0c03LMjDP9MqPPzIedE\u002fHlMwiOvJ7T+jL0DNuRvmPzza2JItTOg\u002fh7uDwiKIyj8bhgBmmtLlP7DWu3khP+k\u002fRLfS8Ngiuz8CHsiMWffJPzd1B+v6RMI\u002fRXYcEfVkyT+QJlbzPXK0Pxm7cNyrabg\u002fn6ifK5qjxz\u002fNiTxJ\u002foHaP4ablfPrZOM\u002fvwAv05R95T9o7fJC9u7VP27kp3DLBu0\u002fNw6GJstM6T8L3f67n8DpPw+MzydZRM8\u002fLx+s6hn91j+SSmvmaordP+UirnEfu8I\u002fdtZBZUDE1T\u002fnZRA4Sc\u002fQPyrypd2uIeM\u002fPHw+DaFW7T9FhbYIhZzrPzdYum2bC94\u002fAAAAAAAAAAAdNnSGhB3YP\u002f8fac0ibeg\u002fAnpWKV6b5j8WvoyICIbhP\u002fwACs+lDeQ\u002fR9LnvLPo4z+pydVwpO7pPzyEnNUUmNk\u002fVd6QhyXA3D9deWnKnFriP73QH8DB29Q\u002fKxpEljz83T9CY7V5GZ\u002fEP1Ve\u002fkjRa9I\u002fm\u002fjrUDcJxT\u002fRPCiMgyzjP0q7YZ4uFOo\u002fOUrFu0pE5z88XYUtUqvjPzGs93CHVOM\u002fZv8UfCuywz\u002fI094EEbvbP9xlQP+\u002frN4\u002fj6stwt3Dyz9jHWKnqAvBP9Z9UQ\u002fD\u002fN4\u002fc0Sldsec2j9HiTDODHvWP3I9umOQ0c4\u002fi4EzF\u002fcj1z+Gfr0mWgrUPwJACv+xO8s\u002f0F54s9kN4D8DKmM0jsjVPz6g7Itp2NM\u002fBtRdmRba0j+QtWfG4zDgP+Ve2PObz+I\u002fnsYdRti\u002f5j\u002fkA3ubjKLhP0647\u002fu+Nuc\u002fIfze3PIm5D+dx9WO7SHjP4mA9rNE4OI\u002fqX8Iwxbh3D\u002f61ApfAG\u002fqPzUXQipDz9U\u002fhjA0H9QDxj+BK0gIVRjgPzsnkGSTmdY\u002fWgzouei+5T9uaG5YZlHjP6xWAQr8ut4\u002feQ4hDMGu0T8SEx7WCHXiP0Y2fIyD9eI\u002fOR7GAfjH4j\u002fb\u002fBz0dQvgP66PsceHSec\u002f\u002f7OUrNdy3T8pESyyPvjOP4wGN1GYTOA\u002f0heVfHdM4T8Tewb4lODaP3+9PS32W+Q\u002fACKGJCKN6D+9n\u002f\u002f97kLbP3K1fk3sn9Y\u002fwYJEgZ\u002fh2D85pApYui3tP7YSxzWXFeU\u002fjHvpnSn84j\u002fq6eTHiWbfP2zGyN4KE9Y\u002fUFx+R5Is4D97zNd54mPmPwnSo4IQ3+Q\u002fUPikAQcQ2T9lXUDyW9bnP5hXaF6amN8\u002fWNp8x1zi4j8MYscftU7oP69MgRdlDOU\u002ftrC2jCzS2D\u002f32gbEg2LaP9SZrWxANOY\u002f5NiG4BMg4T8rt7s2u2\u002flP3Px+KEzwOE\u002fDb\u002fhh\u002fAk1z8HqEC2YvXOPy0c7xnl78g\u002fBFRY0VCJ4z8oR8e9tpTcP3AG76fvVus\u002fv9Tt052L4z+iHh9OflXjP8NSR1rKi+A\u002f+z7kgVl95z8AfeUDRAfvP6PSJf3Dn+s\u002fTKc+REwS6T8rwZVQrovoP4h5C0xwQ+M\u002f0FYXaZJa4j\u002fLKAKly+PkP9nAbck9O+Y\u002fIN3uTv8D5D+2FXQSUn7dPwneMnb6PdY\u002fnm5Klza33D9\u002fbRNPoKXQP2tBxBFUys4\u002fjJJoZkyYyj+CzRkwFcDgP+GJMMN6\u002f74\u002fHZ9O9VIU1z9QxjAyU7vBPx0oL7wcLcw\u002fPH3SWaWx1T9K0DwTDQzRPwIUCf3WbOE\u002f79VzvPTJxj8eRoosnzy7P9LgAKRHV74\u002fJGGD7u7\u002f5D+SITa2vIbnP\u002fTWw6naZdY\u002f87pNSSyA3j+zBsOhJFniPzz7nC6uh94\u002fXeaAOiR81j+CKwrwpmnaP4106\u002ffHauE\u002f9rtTKwgp3T+hesknp+rNP+S0l+S5ft4\u002fStNGlwOp6D\u002fTlOxxIjPgP9vZnYYZaOQ\u002f8UdoQ\u002fAL1j\u002fDQODmQq7TP4BGY+JXgMc\u002f9vKyt6Httz9X4eOzk6e6PziU9vQgi78\u002fchvq6W4pvz9fsZ4dVaGxPzfSN4wY5r8\u002fQoCvp8mu6j8vi\u002fibZYzpPxDuO3LVgOo\u002f+R+b\u002fXgCyD\u002ft9dtml+LmPzZztxJXF+c\u002fSu0AM3nrvD8puK1JSmvFP7cOFhx+FcM\u002fNHCsbiQrxD\u002fw1zTpwYm3PyD\u002fGADDfb8\u002fL6sdjJzHxD\u002fPwkVuf8PgP8Lbx9GrT+I\u002f\u002fEUO9LDB4j9RB5+NsxLfPx4ug3mFgew\u002f3dkbJzH27D\u002fcGLb+XNPoP2YuNVD2880\u002fN8v7I\u002fDM4D\u002fd8MwR5F\u002fcP+cTuY6BIcQ\u002fUdi86qdx2D8PblYPUWjSP6x5Ve6UhtQ\u002fS3m9cyyc7D\u002fppeFHG7nnP5GKG29AJ9s\u002f62aWCOC9pD9uWX8NWb3bP89thPJbuuc\u002fS4KncPI95z+G3iCSCyjeP3otV3i36+M\u002f8lc0DCFs5D89GsCHQlvpP1\u002fMbpRDRNM\u002f47MhkNue3T\u002fOC5FLfoHiPyFpr4gW4NQ\u002fWX6567Ex0z+Otv6pfKjNP2b5KLplC9E\u002fUYtYZSmywj8Byr6qwD\u002fkPxW9DkxOUek\u002fHmcZ3JYM5z8PJBDOEjfkP6G3C9mmqOI\u002fErV3hBWCwz\u002f84WS8f9XdPyXkFTCARNM\u002fbNOEhQdp2z\u002fAH3UTCwixP7DtaVfLstk\u002fgTTVMgHo3j9Zxi67w6rWP5GlDLQZGdE\u002fPriNlkrC2D\u002fc5+a2yeLdP52s2h1zkc0\u002fYSDgYrb32T+MjqGn0SjpPyFYpKjBj9s\u002fkOsPbPjF3D8M6Vbkdy3YP\u002fnJi1oik+I\u002fmq36qlkN6D+rENnGnrzhP1Ip63YOHuQ\u002ftOwckdqo5D8k0RR5PN\u002fdP5P6U\u002fbrhuM\u002fKKEHyi\u002fy3T\u002f1pVDPiOHhP1fxjSlTsdo\u002fP08xcGQoyz\u002fHYx8Isc7WP5u9boMTY9w\u002fxgYvulbC3j8bkV1XbaXiP97XpV52YNo\u002f05wdSbrM0z+TEAXFjszkP7+zl7dC7eE\u002fAmu5YXjR3D89pVW36GzfPx4MqMP35+M\u002fpUUm4na22T+QEbZadJG7P9JT2CSd9N8\u002fwjjPw8ih1D\u002fCPkhogRPhP0ADTTSRM+I\u002f4lL0rE1Y5j9gpDf7DwLaP+egLO0K2Ng\u002f+AzSdm4U2D+gs\u002f\u002fqOUrpP1x\u002fBn29LOE\u002fpxssC1iK4T9YukW9ojHbPzJCId5vY9c\u002f5YppaqlR2j9CXlv+HRbpP6HvNdbWbeQ\u002fnM+9guEZ4D8AAAAAAADwP1XFL5f36Oc\u002f7e9Vhe2\u002f4z\u002fXI8B\u002fsTDrP5nt15u7EuA\u002fOe3cMV6w1T993w3PzInRPx9AX4FW+uk\u002fFFmN8RKS4j\u002flUm6Sze\u002foP22u\u002f4FKbuY\u002fjEFj607F3T+VhUUvWWDMP4FiNe+2Mss\u002fPA+ZZNCS3j\u002fZj6SSx6\u002feP\u002fp70uhe1Ok\u002fB047eirs5j8yMcv7tc\u002fiP9xRj7B1ktE\u002fb6bArDfU6j+y\u002fD0l1vLtPzrqlecRAes\u002ftnkVYnVe5z+Kuxu6\u002fOPlP6f5AIF4WOU\u002fJxav6pEO4T803ybTsuzkP41ZG27HH+Y\u002fA2cODa6V4j9iwEJ6+OXWP1cpVq\u002fDidA\u002fYMSZsULs3z\u002fVax1ctYzLPyn2JD\u002f9hc4\u002fbnfqad2nuT9qIq39AjTkP3ssnAnLP7k\u002fFPVAHfPG2D+QXBev2dfFPwMW7QrHLMI\u002f5+e3Op53zT+6Oau8mBfcP0SVcnTIXd0\u002f9XOesTiUxz+1mmvrl9K1PyrF\u002fX7jIcE\u002fuOjqXf4T7D+a3YvdtzrkP9FT2ICZtdU\u002fkvv7l6k04j\u002ft+cVXPwLePxoex5ghceE\u002fYrB4EvJk3D9\u002fn3jpVabaP4eezejyFN0\u002f\u002fhv2rPB31z9RlYTs5ljQP3+rMOkjEt0\u002fRYoAM2vp6T+9oaygXe7eP8YjQWBtgdQ\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"JGr4bwXW6z\u002flTH+Ph67nPxAeT\u002fndmec\u002f3T1RNIvC5T\u002f12y1H5tLmPyhW9YB8Iug\u002fZuOEliSG5j\u002foXcAAwpbnP3plKV4Kveg\u002fZElKL1qg8T\u002fDnS0log\u002fwPztgELuTle8\u002f9dLIpRwg5z+owmQ3h5vuP08CheuglvA\u002fVMqKmuUC5j9TgW6RYZDpPxoz3radruc\u002fHhSLm97X5z8MHelzgXDmPw+G6oWDl+Y\u002fcbqO1WEp6D\u002fhjgksRBPqP7HJYNvCyuw\u002fGqu8tR6x7j9kJUzluijqP4koOuQmDfI\u002fFa4jbhE68D\u002fleRVL\u002fO3wP42V2HUrwOc\u002fqG99BXf\u002f6T\u002fLJ9kEHdPqP1Cf3SBW6+Y\u002f\u002fFRpAPtL6T+D\u002fT3sV87nP4kxmScxF+w\u002fSC3a5Kqs8T8xTpTdvcPxP0nGsIbNa+s\u002fWHlvmXS35j\u002f3R51tw2XqP\u002f6Vx4FyX\u002fA\u002fmgl2DVvF7z8Kt6upTh\u002fwPyGfkp0elPA\u002fb+RzGUtN8D+ofB15O8XvPyad3MVJXus\u002fSaiM8hqZ7D8UiYRHQvPuP\u002fiVZq0CTuk\u002fy1rRVWGu6z+kakDYO7bnP20ATRJUhOo\u002f2AB2oo+W6D+Pc9xQY\u002f3tP1T6W5196vA\u002fJ6ISBR1P8T8u8wN30wLvPxJzMdCW1e4\u002fb6EYTmRY5z+zKRGqZmvqPxN4kmHUh+s\u002f01hlzZ+J6D8jgQsbCcnmP3l1p\u002fjgd+w\u002fOJO9Hxjy6T9fbD4WaW7pP+ydWsD6JOg\u002f7tnEc8+D6T\u002fTPRoo1pvoP0qGCwF7rOc\u002f3L4SnWhn6z9A0xN7kLPqP6qWQ6DQnOk\u002fmXDa00NH6T8TLyNAPlPrP7jVRRG0JvA\u002fpQo11YvD8D86ANWo7JnvPxluK2IOLfA\u002fRL0wCYxT8D+PMU1BEiLwPyn4brOedvA\u002fJoUQWvg+7T+NDLq9sKbwP+qkuOK6Ruk\u002fWpiB4v8S5z+tP8Jo117rP4fDYZdTOek\u002f76+LMWiU8D9Q45\u002ffxjHvP3LCeaaakeo\u002fdDdQ2eOv6D+4jp5DQAzwPy7sSs9XMvA\u002fc40pwu867T9mKcUa4YbrPz\u002fwb872Nu8\u002fnMAbBqlx6z+Fi6h37yjpP0bWKUbHMus\u002ffyb0Xq8s7D9WEn8+FjzqP2kj6k9AAu8\u002ffQhfh+Ik8D\u002f5bOi+sn3qP5QvEKO9Cu0\u002ffTbXMPOR7T+Lly\u002f\u002f1zfxP6aMYaC7s+8\u002fjpcoeBiy7D\u002fD6u7fZg3tP0OTmNSWT+w\u002f5dHfRRWb7D9FHyOdjrPvP09oNe5Asu8\u002ftWHnXl0L6j+mmRbUiGruP6gP9TqGQus\u002f6pFNyA3H7D9A6TYXdU7vP0aUv32JRe0\u002fy\u002fIJR5Yl6j9sTr0wdOvqP\u002fp8xdnCzu0\u002fB0HicFyh7z+z8xnV1RjtPz177I4W3+s\u002f8IIeOd\u002fb6T+2FEdb4QnoP5JpirLkW+c\u002fVH+Pls1a7T+PuD9AiqDqP0lpw+M0\u002fO4\u002ft7nKLAKv7z8bQgNN913wP+c8sL+j6u0\u002fbKknK9nE7j\u002fZXVbybAHyP8mggQ6DMvE\u002f45ka5e3E8D\u002fmUDLGSALxP6zTQMM5IPA\u002ffj8UJiGJ7j9VUWV3153vP2aZmVFzOPA\u002f8OyXMNGb8D\u002f9u9y4iiTrPztc3tCtC+k\u002fepCRokCF6j\u002fkWlqcuSDoP4YTruuf7uc\u002fhjzvnV0U6D82+krQtL\u002frP+Gjvvwj6uY\u002ft6YsKPE36z+LPz0ssHHnP01B3UGywec\u002fNngbWVqo6T\u002fcssW7r\u002f3nPymizX64P+w\u002fM436nvtG6D8k59uUBLLmP+p4A++s0eY\u002f9sf8eEcB7j\u002fwms2SinPwP7s0mgwMz+k\u002fR2rFfkPy7j+N0SEHC7TsP8JtVOT2G+0\u002fXR5mmBqV6T9UQ1djUaHqPyl4eHBsAOw\u002fanjvAyIT6z8OrJd4j\u002f7nP2\u002fZ0jzLmOo\u002fHWDUe6vy7z8Rwx1S9sPsP8COipc0Je0\u002fZwei7h2d6T99L2IcihHpP5ERRendzeY\u002f4I0BApLp5T9GJq\u002fHKaHlP96AKLnU5uY\u002f5z4Re0R75j82bdEOOOTmP2tI64cnYec\u002fyL6B+qSl8D\u002fIo563fLDwPwmoO2\u002f99vA\u002fTf6nfM\u002fM5j8lOXQKYsXvP0v0hBjTZPA\u002fTqFVTfok5j+bBX3XT3PpP7YMCmwNy+c\u002fUyk4fgVB5z8N80F6k4HmP+cldULIG+c\u002ftTFfY\u002fGz5z\u002fuCVwl1bzrPyjdyl8hcuw\u002fFiD2Tdz57z\u002fGraMmnKbsP6El4VUx2vE\u002fTgrjKCGW8T+l0EaFUFDxP0tyYXLlu+c\u002f3mENWNrC6z9ZD+wabubqPzKeBegx8uY\u002fB08ITgjO6T+PuGttvHfoPzyNOhDhO+k\u002fVcMEo6gc8T+SzWVUxxfxP40ZRPXo++o\u002fKqpV8F8G5z9jXaaJtd3qP6U8Nk03IPA\u002fdHZzz9Gu7z+NItrYnwXvP6lKmR92kPA\u002fna6oTA4e8D9IfeRUsHzvP5ZWNtIo4+k\u002fNkFd5dUt7D9EILYoJp\u002fuP1d0FAVBk+k\u002fW5Ciha0V6j+VCNRU0FroP4jPpn2iAuo\u002fqrukwTAR6D9oLvv1LzzuP7WAncRrz\u002fA\u002foQgrO1ck8T9e+h2ZzBTvP9rQVIVwhe4\u002fruXlY3GK5z+1b3B4Mr7rP8yoGU9b7+o\u002fGvn9PIg16z\u002f0B7YUY1jmPyKkks4c0eo\u002f42TQSrIV6z9QTTZQb0DpP2otzj0lIug\u002f1pIQM8p06T+A6VwAbPTqP6OMZlXKh+c\u002fHI6Ufc5K6z+XlfW3pLDwPxNkRYf5Cew\u002faGEum1x26j+swwrmtznqPw7POGlmHvA\u002fIm8luUh68T\u002fq1PK3jcvvP4uLULHXK\u002fA\u002f0C\u002fIL+y98D+0KC4zFXbtP0eykqXubvA\u002fAHD7klFG7T\u002fXKrrgRrPuP0JepNxxROo\u002fMiScqsJ05z+lxgXm8bPrP9DHEGzvPeo\u002frrSXEPX17T8j65+wOyfwP5oZLIvNveo\u002f9XJvNQIh6T89lyc\u002fGA3wPy5sTMS00O8\u002fma9+aRN+7D8V80AOWMfrP0MftcW6+O0\u002f7GeYzYCy6j\u002f2zJ3s2J3nP9BaUWsGMes\u002f0NEYP+z36T+a1pJNF0frPzkeo9LT8e0\u002fKFxCMgOi7z+lp2HsQjDqP3hYN9WVc+0\u002ffaFvfXVV7T\u002fpz5Q2TyjwP4u5M4oDyO4\u002fY9dhpORG7D\u002f+ehCKANLsPwL0HwEbRew\u002fhN+tpUBt6z\u002fgEoOw33jvP233G8UPBe8\u002fB8AV88xp6z8caySh34DxP5EPCXYdte4\u002fjHjf192D7T9og7avpMrvP0juLqR3les\u002f14dnL5Gz6T9TuT2ruabpP\u002fs9v17XZu4\u002fTfBtpTJU7z+ZnAJcDfzuP4rjbjaDAu4\u002fsAl\u002fWt2+6j+LLr761dTnP4L9ZJp6eec\u002fvlac3n+d7D\u002fQAXTOv+DqP+81+4JsNfA\u002f914MYfUG8D9JsStwaynwP4eZWxel9Oo\u002fwJqQWkmp8D9E+BCmS7LxP8VNX7IyDvE\u002f3r844JlG8D8znVd9FEPwP51LxWC5YvA\u002fYsN7saZj7j9dXC7gDF3vP65mvwTHCfA\u002ftXpZsXYk8D9mddLPDEDrP1iTU9GR9Oc\u002fodr6G0JR6z+vw\u002fI54XDnP7zD4hxZ8Oc\u002fF3d+U7GW5j+jy7f52PnsP9zYN99QiOY\u002fAyg0z49Z6z8l690VuwToP5a1HTyVjOY\u002fX+nA+3re5z9b+6ujQ2PqP2yjcmQsz+s\u002fgLL61IFz6D9HMCBq8prmP\u002fS2Pc2vueY\u002frzHGTVXG8T\u002f658PhrKLvPzql3dCVl+k\u002fpLQpIoLe7z83t6hCBs3rP7PznjSGN+4\u002fu9yGU9mD6z9mgYv6TKjqP32re5bvTes\u002fryIrQbH66T+YR817wiPoP5EmaC4m4eo\u002fuY+We2AW8D\u002flrtROw3LtPyeAHoOqmOo\u002f"},"y":{"dtype":"f8","bdata":"1Jrcss7h3T+ip+RrWQDMP7sHtbMIHtA\u002fKP+MPSFBtj8ZRya5F4HEPxmdsG5D0Mk\u002fcKkI\u002fSAgvD9W0c03LMjDP9MqPPzIedE\u002fHlMwiOvJ7T+jL0DNuRvmPzza2JItTOg\u002fh7uDwiKIyj8bhgBmmtLlP7DWu3khP+k\u002fRLfS8Ngiuz8CHsiMWffJPzd1B+v6RMI\u002fRXYcEfVkyT+QJlbzPXK0Pxm7cNyrabg\u002fn6ifK5qjxz\u002fNiTxJ\u002foHaP4ablfPrZOM\u002fvwAv05R95T9o7fJC9u7VP27kp3DLBu0\u002fNw6GJstM6T8L3f67n8DpPw+MzydZRM8\u002fLx+s6hn91j+SSmvmaordP+UirnEfu8I\u002fdtZBZUDE1T\u002fnZRA4Sc\u002fQPyrypd2uIeM\u002fPHw+DaFW7T9FhbYIhZzrPzdYum2bC94\u002fAAAAAAAAAAAdNnSGhB3YP\u002f8fac0ibeg\u002fAnpWKV6b5j8WvoyICIbhP\u002fwACs+lDeQ\u002fR9LnvLPo4z+pydVwpO7pPzyEnNUUmNk\u002fVd6QhyXA3D9deWnKnFriP73QH8DB29Q\u002fKxpEljz83T9CY7V5GZ\u002fEP1Ve\u002fkjRa9I\u002fm\u002fjrUDcJxT\u002fRPCiMgyzjP0q7YZ4uFOo\u002fOUrFu0pE5z88XYUtUqvjPzGs93CHVOM\u002fZv8UfCuywz\u002fI094EEbvbP9xlQP+\u002frN4\u002fj6stwt3Dyz9jHWKnqAvBP9Z9UQ\u002fD\u002fN4\u002fc0Sldsec2j9HiTDODHvWP3I9umOQ0c4\u002fi4EzF\u002fcj1z+Gfr0mWgrUPwJACv+xO8s\u002f0F54s9kN4D8DKmM0jsjVPz6g7Itp2NM\u002fBtRdmRba0j+QtWfG4zDgP+Ve2PObz+I\u002fnsYdRti\u002f5j\u002fkA3ubjKLhP0647\u002fu+Nuc\u002fIfze3PIm5D+dx9WO7SHjP4mA9rNE4OI\u002fqX8Iwxbh3D\u002f61ApfAG\u002fqPzUXQipDz9U\u002fhjA0H9QDxj+BK0gIVRjgPzsnkGSTmdY\u002fWgzouei+5T9uaG5YZlHjP6xWAQr8ut4\u002feQ4hDMGu0T8SEx7WCHXiP0Y2fIyD9eI\u002fOR7GAfjH4j\u002fb\u002fBz0dQvgP66PsceHSec\u002f\u002f7OUrNdy3T8pESyyPvjOP4wGN1GYTOA\u002f0heVfHdM4T8Tewb4lODaP3+9PS32W+Q\u002fACKGJCKN6D+9n\u002f\u002f97kLbP3K1fk3sn9Y\u002fwYJEgZ\u002fh2D85pApYui3tP7YSxzWXFeU\u002fjHvpnSn84j\u002fq6eTHiWbfP2zGyN4KE9Y\u002fUFx+R5Is4D97zNd54mPmPwnSo4IQ3+Q\u002fUPikAQcQ2T9lXUDyW9bnP5hXaF6amN8\u002fWNp8x1zi4j8MYscftU7oP69MgRdlDOU\u002ftrC2jCzS2D\u002f32gbEg2LaP9SZrWxANOY\u002f5NiG4BMg4T8rt7s2u2\u002flP3Px+KEzwOE\u002fDb\u002fhh\u002fAk1z8HqEC2YvXOPy0c7xnl78g\u002fBFRY0VCJ4z8oR8e9tpTcP3AG76fvVus\u002fv9Tt052L4z+iHh9OflXjP8NSR1rKi+A\u002f+z7kgVl95z8AfeUDRAfvP6PSJf3Dn+s\u002fTKc+REwS6T8rwZVQrovoP4h5C0xwQ+M\u002f0FYXaZJa4j\u002fLKAKly+PkP9nAbck9O+Y\u002fIN3uTv8D5D+2FXQSUn7dPwneMnb6PdY\u002fnm5Klza33D9\u002fbRNPoKXQP2tBxBFUys4\u002fjJJoZkyYyj+CzRkwFcDgP+GJMMN6\u002f74\u002fHZ9O9VIU1z9QxjAyU7vBPx0oL7wcLcw\u002fPH3SWaWx1T9K0DwTDQzRPwIUCf3WbOE\u002f79VzvPTJxj8eRoosnzy7P9LgAKRHV74\u002fJGGD7u7\u002f5D+SITa2vIbnP\u002fTWw6naZdY\u002f87pNSSyA3j+zBsOhJFniPzz7nC6uh94\u002fXeaAOiR81j+CKwrwpmnaP4106\u002ffHauE\u002f9rtTKwgp3T+hesknp+rNP+S0l+S5ft4\u002fStNGlwOp6D\u002fTlOxxIjPgP9vZnYYZaOQ\u002f8UdoQ\u002fAL1j\u002fDQODmQq7TP4BGY+JXgMc\u002f9vKyt6Httz9X4eOzk6e6PziU9vQgi78\u002fchvq6W4pvz9fsZ4dVaGxPzfSN4wY5r8\u002fQoCvp8mu6j8vi\u002fibZYzpPxDuO3LVgOo\u002f+R+b\u002fXgCyD\u002ft9dtml+LmPzZztxJXF+c\u002fSu0AM3nrvD8puK1JSmvFP7cOFhx+FcM\u002fNHCsbiQrxD\u002fw1zTpwYm3PyD\u002fGADDfb8\u002fL6sdjJzHxD\u002fPwkVuf8PgP8Lbx9GrT+I\u002f\u002fEUO9LDB4j9RB5+NsxLfPx4ug3mFgew\u002f3dkbJzH27D\u002fcGLb+XNPoP2YuNVD2880\u002fN8v7I\u002fDM4D\u002fd8MwR5F\u002fcP+cTuY6BIcQ\u002fUdi86qdx2D8PblYPUWjSP6x5Ve6UhtQ\u002fS3m9cyyc7D\u002fppeFHG7nnP5GKG29AJ9s\u002f62aWCOC9pD9uWX8NWb3bP89thPJbuuc\u002fS4KncPI95z+G3iCSCyjeP3otV3i36+M\u002f8lc0DCFs5D89GsCHQlvpP1\u002fMbpRDRNM\u002f47MhkNue3T\u002fOC5FLfoHiPyFpr4gW4NQ\u002fWX6567Ex0z+Otv6pfKjNP2b5KLplC9E\u002fUYtYZSmywj8Byr6qwD\u002fkPxW9DkxOUek\u002fHmcZ3JYM5z8PJBDOEjfkP6G3C9mmqOI\u002fErV3hBWCwz\u002f84WS8f9XdPyXkFTCARNM\u002fbNOEhQdp2z\u002fAH3UTCwixP7DtaVfLstk\u002fgTTVMgHo3j9Zxi67w6rWP5GlDLQZGdE\u002fPriNlkrC2D\u002fc5+a2yeLdP52s2h1zkc0\u002fYSDgYrb32T+MjqGn0SjpPyFYpKjBj9s\u002fkOsPbPjF3D8M6Vbkdy3YP\u002fnJi1oik+I\u002fmq36qlkN6D+rENnGnrzhP1Ip63YOHuQ\u002ftOwckdqo5D8k0RR5PN\u002fdP5P6U\u002fbrhuM\u002fKKEHyi\u002fy3T\u002f1pVDPiOHhP1fxjSlTsdo\u002fP08xcGQoyz\u002fHYx8Isc7WP5u9boMTY9w\u002fxgYvulbC3j8bkV1XbaXiP97XpV52YNo\u002f05wdSbrM0z+TEAXFjszkP7+zl7dC7eE\u002fAmu5YXjR3D89pVW36GzfPx4MqMP35+M\u002fpUUm4na22T+QEbZadJG7P9JT2CSd9N8\u002fwjjPw8ih1D\u002fCPkhogRPhP0ADTTSRM+I\u002f4lL0rE1Y5j9gpDf7DwLaP+egLO0K2Ng\u002f+AzSdm4U2D+gs\u002f\u002fqOUrpP1x\u002fBn29LOE\u002fpxssC1iK4T9YukW9ojHbPzJCId5vY9c\u002f5YppaqlR2j9CXlv+HRbpP6HvNdbWbeQ\u002fnM+9guEZ4D8AAAAAAADwP1XFL5f36Oc\u002f7e9Vhe2\u002f4z\u002fXI8B\u002fsTDrP5nt15u7EuA\u002fOe3cMV6w1T993w3PzInRPx9AX4FW+uk\u002fFFmN8RKS4j\u002flUm6Sze\u002foP22u\u002f4FKbuY\u002fjEFj607F3T+VhUUvWWDMP4FiNe+2Mss\u002fPA+ZZNCS3j\u002fZj6SSx6\u002feP\u002fp70uhe1Ok\u002fB047eirs5j8yMcv7tc\u002fiP9xRj7B1ktE\u002fb6bArDfU6j+y\u002fD0l1vLtPzrqlecRAes\u002ftnkVYnVe5z+Kuxu6\u002fOPlP6f5AIF4WOU\u002fJxav6pEO4T803ybTsuzkP41ZG27HH+Y\u002fA2cODa6V4j9iwEJ6+OXWP1cpVq\u002fDidA\u002fYMSZsULs3z\u002fVax1ctYzLPyn2JD\u002f9hc4\u002fbnfqad2nuT9qIq39AjTkP3ssnAnLP7k\u002fFPVAHfPG2D+QXBev2dfFPwMW7QrHLMI\u002f5+e3Op53zT+6Oau8mBfcP0SVcnTIXd0\u002f9XOesTiUxz+1mmvrl9K1PyrF\u002fX7jIcE\u002fuOjqXf4T7D+a3YvdtzrkP9FT2ICZtdU\u002fkvv7l6k04j\u002ft+cVXPwLePxoex5ghceE\u002fYrB4EvJk3D9\u002fn3jpVabaP4eezejyFN0\u002f\u002fhv2rPB31z9RlYTs5ljQP3+rMOkjEt0\u002fRYoAM2vp6T+9oaygXe7eP8YjQWBtgdQ\u002f"},"type":"scatter"},{"mode":"markers","x":{"dtype":"f8","bdata":"cp3eEtwb7z\u002fgUp6tSRfrPx\u002fUVJ4Fbus\u002fZ3i9f+u26T\u002f8Bu50OaDqPygpBLzvYus\u002frMjcd8Pz6T8bcqW9VsHpP8sBCcfNiOs\u002fT2eMx6zM8j+bRGAPwX3xP6EzbTIrMvE\u002frBbHnsHl6j\u002fNoBanzQPxP\u002fJgry6b6fE\u002f1Z3+mqaA6T98ZSG6RtPrPwe3tUNUxOo\u002fBZLsUdL96j+cfhqTLtjpPx6cUn4t\u002fek\u002f+mGAPD1a6z9hvE9HbjjtP56NF35rIe8\u002fmz\u002fof\u002fSd8D8c5enpXJ3uP3\u002fHqoS\u002fKPM\u002fs6QesA5W8T+nNld6PavyP3jNDSgDmuw\u002fO+X\u002fpPSZ7j9boC+T1+7uP5M2YTKp2Os\u002feRVOBg+z7T\u002f+9qx5m6zsP8wFagdHJu8\u002fZXkxr+Ct8j+mrFlwSMXyP0EcfsHHRu4\u002fF+RgYMa16D8qJRmJRXzsPzuKF4glOPE\u002fBQvvVEoa8T\u002fxiXEn4SzxP15mM4yvj\u002fE\u002fimOX40mI8T96XspKb9TwPxDxdK8Ike0\u002fXuXlH7B07j9AGQuEo\u002fPwP2X6X8rSNew\u002f8cHzmZpn7j+nYfjGFPHpP7r8F9SpIe0\u002fdt1bKxF96j8MuhkszFXwP6vUKjCPNPI\u002fc3UYz\u002fel8j8gC6AI3+DwP1iIfRqFufA\u002fs1SbBXAq7D\u002f4ua+sHYLuP5NN2d\u002fh9O8\u002f88zTDaUs7T+RIY7\u002f\u002fLLrP33UeEFJrO8\u002fnJNcvlVF7j+7PgoV6+XtP+ux5hLFtOw\u002fpAtTZn\u002fJ7T8Iu88CaybtP\u002fpc8ZlXZew\u002fqaS7iqyp7z+jFzCbzPbuPziZYmnyJe4\u002ftmQuYZqd7T\u002fI6ab6An\u002fvPyl8o3y8MPE\u002fSInIf4h08j+\u002fJhSi0YfxP5UOKMfEHvI\u002fcjxvVlDb8T8s3\u002fd8JsvxP8LJsH+ccfE\u002fd\u002f58lEh58D+2L8FsPSjyP8qN7Jcmuu0\u002fHmGFW6fX6z+2yXfHPoLvP+\u002fLvCE4je0\u002fhhBvP+Dw8T9857+jV2TxP9MSBCc51O4\u002fFodNUGkv7T\u002fhfTyGiZvxP6dBwhqwZfE\u002fFmKedVOl8D\u002fRseYPYpnvP5vJ9PEG6\u002fA\u002fR1GhGzWq7T\u002fBtvWCEyXrPzlzn9mdiu0\u002fJ6jolSF+7j9c9shwonjsP6GbAaOB0vA\u002fCqezwjZw8T+272y7ld7sP59CArxTgO8\u002ffyQrFqPk7z9TVkTy2XXyP0YDxyTWPPE\u002fygVtay6X8D\u002fLsfZqNlLvP4x7f74xce4\u002fJQkkRZn27j8inNlWYtXwPx1Br838FPE\u002fKLxre0mr7T9pZzsNgFPxPx9YhwQuZu4\u002fSHMruTRD8D9ZNPNn3GrxP4hEoJabB\u002fA\u002f8H0V2krg7D+mw6nEwpftP\u002fS9i77TLvE\u002fK+1AgM0+8T\u002fHEtPWnV3wP101wSG+me8\u002feXwvjYUd7j+oGgWdB93sP9rMLT4bEew\u002f+5WK1sHD8D9idV8AZY3uP\u002fdLRnc3iPE\u002f8TBWy61K8T\u002fldmc5RJ\u002fxP8EMCLTWJPA\u002fE4KbwznC8D9mE9RFVL7yP4SDi+joO\u002fI\u002fr8xukogL8j9wwUWMXzLyPxDjSD3S2\u002fE\u002fEbxhCmhc8T9LSmoZDWXxP64glY6hV\u002fE\u002fi3Y8SyGe8T\u002fg2wFvMh\u002fvP8ZGOvEej+0\u002fStGRSSi+7j+0\u002fxNfOLjrP0uyd301ous\u002fNyG8YT5r6z9krghLZCPwP\u002fJsMVD5ROo\u002fHJpqZo\u002f57D99pSDBRnLqP\u002fCzsBFuVes\u002fBFcnwWQp7T\u002f7V4JFOsXsP2eQBvD5KPA\u002ff\u002fFAOuNU6z\u002fMXzPNxILrP\u002fESKKR6gOs\u002fnklD7pka8T\u002fQBAqJ0ajxPyNkLci71es\u002f5GitTRmR8D\u002fogTsuk1LwP\u002f2KNAl\u002fkvA\u002fu84w\u002fjo37j8PXVjU6v\u002fsPyV7ggj9y+4\u002fKqyFLaLs7T+wBAAlUsLsP1JMd\u002fwfpO4\u002f7jUYP0Q58T+kvqpQ3vLvP3I0S7xZR\u002fA\u002fTgwmMXEm7T+Jh+BsumPsPzHgJ8XTsuo\u002f6EbMFVnN6T\u002fVChvK5mbpP3JkQj8oU+o\u002ffT1pVJL26T9PtWLdwizpPw\u002fzS2QxuOk\u002fh8ZBECbY8T9\u002f14pOZBvyP9mebBig2\u002fE\u002ftfnxmkmm6j8KgGpqUmXxP1Vhl4RMyvE\u002fWUUEs3Oe6T\u002fahcFTSZ\u002frP3Cyz0mg2uo\u002f\u002fuGT6Gtv6j+8Yx7yOc\u002fpPx1+V\u002fnGYuo\u002fAvAJ0Zbi6j+nl+Zz58ruP3G+IgBRDe8\u002fP1n4wEos8T9ZJCzcR2\u002fwPwIV1Ob46PI\u002fwG+IqT1R8j\u002fforT1B+byPxLJgCcBjOw\u002fABvS8INJ8D\u002ftQRrxEOruP4wQ6GGR3+s\u002fhwnnhOsX7j+m5FzTJDftP\u002fTVeKdxJ+w\u002fqEBGM71C8j8ciRfPtjfyP64Y6FBaBO4\u002fPbCUc58V6T\u002f8Fsmt\u002fintPyAwd\u002fAdBvE\u002fPugpoT378D9BZujDQabwP362cPrfmPE\u002fUInKWDd38T90R6XCaszwP7AgqqsMVew\u002f9ptXS7Ix7j9NIzYr4rfwPzzVuXvYh+w\u002fWlVvER+z7D8uAgKcLrvqP5pk5HIPpOw\u002fs\u002f\u002f2Uar36T9sLOZrsH7wP4p8GHKNCfI\u002fvNItveaO8j+ms010i97wP\u002fdVPP36nvA\u002fApgFRkJw7D+bxdmUCbnvP8659cSzFu8\u002ft7+V2Y537z+V\u002fKBgS03rP0QwrwBtQu4\u002fNmmBse0Q7z8SoMUj1LbtP3haXoguuuw\u002fyAXrd+qm7T+YE4gRo9fuP1+Lz1JMWuw\u002fyHt3tfSg7z9nSP2b4MvxP7CuUbxNNPA\u002fDBjY2WzC7j8KO7h7ga3uP\u002fXNjqUlGPE\u002fZxAY4vJr8j9HmixpTqPxP6V1IH5EGvI\u002fR4QHhTPZ8T+gY+aERLDwP\u002fLwV5wej\u002fE\u002fiRFZrntZ8D8z2DJqXcfwP5L22aOxOO4\u002ftmhJMDc87D\u002fyuI+sH5rvPyHA+8DPJu4\u002fZ6U2i9Ga8D9Agttm4rTxP8aWHB+9ke4\u002fdWdtVru07T\u002f+fGpSdNPxP3B2N4IcM\u002fE\u002fcsGt5Oha8D81kiEHEQDwP6iZuJdoTfA\u002fNViYpovH7D\u002f1L9V56pDpP+UA8cEUl+0\u002fGfiLJy\u002fi6z+3WLmV26HtP+RXbpxWTvA\u002fXG0rxGIf8T\u002fY58qegMLsP57d9Zk9we8\u002fZ5PO8fKN7z\u002f0eXtA3n7xP0RTelcVkvA\u002f6YK69G4S8D9zFMouAhvvP+ygH3dtm+4\u002fPiUk4cl+7T9OYseWc6zwP6wyDF8cz\u002fA\u002fDbw1Wdxc7j+4w\u002fURpELzP77E6GUxY\u002fA\u002fYGEKNFZ+8D+PyvpsOIrxPzcEPIDZoe4\u002fvFsaAQY07D+M\u002fsgTBYXsP5yMQt+\u002fe\u002fE\u002fm7vyCE078T9BZeHCx3LxPykQWSdWlfA\u002fMAOEYQ\u002fN7j\u002fZ0PUHN5\u002fsPymYS1bBNuw\u002fskRy\u002fm108D\u002fO3xW4s7buP3t9wbBx1PE\u002fuGWyzW2P8T+Ieal5tHPxP1QVUOYXz+w\u002fnCCrdTuD8T9pBzWfEIDyP\u002fQ7+D0MDPI\u002fW+4WtuCn8T\u002fQ6KFk6p3xPzrl42jsI\u002fI\u002fq8ibs7gx8T9BQ2\u002fJKybxP3JAtJBjUPE\u002fYGo0uC8i8T8lz7VlLk3vP1ReMPx5uew\u002fdYc4spR67z+0q7fsvxTrPytVLZ2Vq+s\u002fGnh\u002f4wAD6j\u002f6PkKH5NnwP1OVk+oF\u002f+k\u002fATEtRV057T\u002fnfLLIrvLqP+SleWfcBOo\u002fjrDUUM6F6z+ibkxqucbuP7iMl\u002fAC1e8\u002fbB4j6pp46z\u002fJHDJDO1DrP+5ZGYPkies\u002f\u002fx2fpVnh8j9LNqxLbA7xP1K+GUiknes\u002fQI9PzN\u002f38D8EAbYsgO7vPxFBRawFyfA\u002fVrfm2TDY7z8kOQuZXRHtP6PmmGIa7e0\u002f5YI2fXKo7D9EjZmZceXsP90S9nyTG+8\u002fvujvun5H8T\u002ffAm8FuhfwP14FFbqKEO4\u002f"},"y":{"dtype":"f8","bdata":"1Jrcss7h3T+ip+RrWQDMP7sHtbMIHtA\u002fKP+MPSFBtj8ZRya5F4HEPxmdsG5D0Mk\u002fcKkI\u002fSAgvD9W0c03LMjDP9MqPPzIedE\u002fHlMwiOvJ7T+jL0DNuRvmPzza2JItTOg\u002fh7uDwiKIyj8bhgBmmtLlP7DWu3khP+k\u002fRLfS8Ngiuz8CHsiMWffJPzd1B+v6RMI\u002fRXYcEfVkyT+QJlbzPXK0Pxm7cNyrabg\u002fn6ifK5qjxz\u002fNiTxJ\u002foHaP4ablfPrZOM\u002fvwAv05R95T9o7fJC9u7VP27kp3DLBu0\u002fNw6GJstM6T8L3f67n8DpPw+MzydZRM8\u002fLx+s6hn91j+SSmvmaordP+UirnEfu8I\u002fdtZBZUDE1T\u002fnZRA4Sc\u002fQPyrypd2uIeM\u002fPHw+DaFW7T9FhbYIhZzrPzdYum2bC94\u002fAAAAAAAAAAAdNnSGhB3YP\u002f8fac0ibeg\u002fAnpWKV6b5j8WvoyICIbhP\u002fwACs+lDeQ\u002fR9LnvLPo4z+pydVwpO7pPzyEnNUUmNk\u002fVd6QhyXA3D9deWnKnFriP73QH8DB29Q\u002fKxpEljz83T9CY7V5GZ\u002fEP1Ve\u002fkjRa9I\u002fm\u002fjrUDcJxT\u002fRPCiMgyzjP0q7YZ4uFOo\u002fOUrFu0pE5z88XYUtUqvjPzGs93CHVOM\u002fZv8UfCuywz\u002fI094EEbvbP9xlQP+\u002frN4\u002fj6stwt3Dyz9jHWKnqAvBP9Z9UQ\u002fD\u002fN4\u002fc0Sldsec2j9HiTDODHvWP3I9umOQ0c4\u002fi4EzF\u002fcj1z+Gfr0mWgrUPwJACv+xO8s\u002f0F54s9kN4D8DKmM0jsjVPz6g7Itp2NM\u002fBtRdmRba0j+QtWfG4zDgP+Ve2PObz+I\u002fnsYdRti\u002f5j\u002fkA3ubjKLhP0647\u002fu+Nuc\u002fIfze3PIm5D+dx9WO7SHjP4mA9rNE4OI\u002fqX8Iwxbh3D\u002f61ApfAG\u002fqPzUXQipDz9U\u002fhjA0H9QDxj+BK0gIVRjgPzsnkGSTmdY\u002fWgzouei+5T9uaG5YZlHjP6xWAQr8ut4\u002feQ4hDMGu0T8SEx7WCHXiP0Y2fIyD9eI\u002fOR7GAfjH4j\u002fb\u002fBz0dQvgP66PsceHSec\u002f\u002f7OUrNdy3T8pESyyPvjOP4wGN1GYTOA\u002f0heVfHdM4T8Tewb4lODaP3+9PS32W+Q\u002fACKGJCKN6D+9n\u002f\u002f97kLbP3K1fk3sn9Y\u002fwYJEgZ\u002fh2D85pApYui3tP7YSxzWXFeU\u002fjHvpnSn84j\u002fq6eTHiWbfP2zGyN4KE9Y\u002fUFx+R5Is4D97zNd54mPmPwnSo4IQ3+Q\u002fUPikAQcQ2T9lXUDyW9bnP5hXaF6amN8\u002fWNp8x1zi4j8MYscftU7oP69MgRdlDOU\u002ftrC2jCzS2D\u002f32gbEg2LaP9SZrWxANOY\u002f5NiG4BMg4T8rt7s2u2\u002flP3Px+KEzwOE\u002fDb\u002fhh\u002fAk1z8HqEC2YvXOPy0c7xnl78g\u002fBFRY0VCJ4z8oR8e9tpTcP3AG76fvVus\u002fv9Tt052L4z+iHh9OflXjP8NSR1rKi+A\u002f+z7kgVl95z8AfeUDRAfvP6PSJf3Dn+s\u002fTKc+REwS6T8rwZVQrovoP4h5C0xwQ+M\u002f0FYXaZJa4j\u002fLKAKly+PkP9nAbck9O+Y\u002fIN3uTv8D5D+2FXQSUn7dPwneMnb6PdY\u002fnm5Klza33D9\u002fbRNPoKXQP2tBxBFUys4\u002fjJJoZkyYyj+CzRkwFcDgP+GJMMN6\u002f74\u002fHZ9O9VIU1z9QxjAyU7vBPx0oL7wcLcw\u002fPH3SWaWx1T9K0DwTDQzRPwIUCf3WbOE\u002f79VzvPTJxj8eRoosnzy7P9LgAKRHV74\u002fJGGD7u7\u002f5D+SITa2vIbnP\u002fTWw6naZdY\u002f87pNSSyA3j+zBsOhJFniPzz7nC6uh94\u002fXeaAOiR81j+CKwrwpmnaP4106\u002ffHauE\u002f9rtTKwgp3T+hesknp+rNP+S0l+S5ft4\u002fStNGlwOp6D\u002fTlOxxIjPgP9vZnYYZaOQ\u002f8UdoQ\u002fAL1j\u002fDQODmQq7TP4BGY+JXgMc\u002f9vKyt6Httz9X4eOzk6e6PziU9vQgi78\u002fchvq6W4pvz9fsZ4dVaGxPzfSN4wY5r8\u002fQoCvp8mu6j8vi\u002fibZYzpPxDuO3LVgOo\u002f+R+b\u002fXgCyD\u002ft9dtml+LmPzZztxJXF+c\u002fSu0AM3nrvD8puK1JSmvFP7cOFhx+FcM\u002fNHCsbiQrxD\u002fw1zTpwYm3PyD\u002fGADDfb8\u002fL6sdjJzHxD\u002fPwkVuf8PgP8Lbx9GrT+I\u002f\u002fEUO9LDB4j9RB5+NsxLfPx4ug3mFgew\u002f3dkbJzH27D\u002fcGLb+XNPoP2YuNVD2880\u002fN8v7I\u002fDM4D\u002fd8MwR5F\u002fcP+cTuY6BIcQ\u002fUdi86qdx2D8PblYPUWjSP6x5Ve6UhtQ\u002fS3m9cyyc7D\u002fppeFHG7nnP5GKG29AJ9s\u002f62aWCOC9pD9uWX8NWb3bP89thPJbuuc\u002fS4KncPI95z+G3iCSCyjeP3otV3i36+M\u002f8lc0DCFs5D89GsCHQlvpP1\u002fMbpRDRNM\u002f47MhkNue3T\u002fOC5FLfoHiPyFpr4gW4NQ\u002fWX6567Ex0z+Otv6pfKjNP2b5KLplC9E\u002fUYtYZSmywj8Byr6qwD\u002fkPxW9DkxOUek\u002fHmcZ3JYM5z8PJBDOEjfkP6G3C9mmqOI\u002fErV3hBWCwz\u002f84WS8f9XdPyXkFTCARNM\u002fbNOEhQdp2z\u002fAH3UTCwixP7DtaVfLstk\u002fgTTVMgHo3j9Zxi67w6rWP5GlDLQZGdE\u002fPriNlkrC2D\u002fc5+a2yeLdP52s2h1zkc0\u002fYSDgYrb32T+MjqGn0SjpPyFYpKjBj9s\u002fkOsPbPjF3D8M6Vbkdy3YP\u002fnJi1oik+I\u002fmq36qlkN6D+rENnGnrzhP1Ip63YOHuQ\u002ftOwckdqo5D8k0RR5PN\u002fdP5P6U\u002fbrhuM\u002fKKEHyi\u002fy3T\u002f1pVDPiOHhP1fxjSlTsdo\u002fP08xcGQoyz\u002fHYx8Isc7WP5u9boMTY9w\u002fxgYvulbC3j8bkV1XbaXiP97XpV52YNo\u002f05wdSbrM0z+TEAXFjszkP7+zl7dC7eE\u002fAmu5YXjR3D89pVW36GzfPx4MqMP35+M\u002fpUUm4na22T+QEbZadJG7P9JT2CSd9N8\u002fwjjPw8ih1D\u002fCPkhogRPhP0ADTTSRM+I\u002f4lL0rE1Y5j9gpDf7DwLaP+egLO0K2Ng\u002f+AzSdm4U2D+gs\u002f\u002fqOUrpP1x\u002fBn29LOE\u002fpxssC1iK4T9YukW9ojHbPzJCId5vY9c\u002f5YppaqlR2j9CXlv+HRbpP6HvNdbWbeQ\u002fnM+9guEZ4D8AAAAAAADwP1XFL5f36Oc\u002f7e9Vhe2\u002f4z\u002fXI8B\u002fsTDrP5nt15u7EuA\u002fOe3cMV6w1T993w3PzInRPx9AX4FW+uk\u002fFFmN8RKS4j\u002flUm6Sze\u002foP22u\u002f4FKbuY\u002fjEFj607F3T+VhUUvWWDMP4FiNe+2Mss\u002fPA+ZZNCS3j\u002fZj6SSx6\u002feP\u002fp70uhe1Ok\u002fB047eirs5j8yMcv7tc\u002fiP9xRj7B1ktE\u002fb6bArDfU6j+y\u002fD0l1vLtPzrqlecRAes\u002ftnkVYnVe5z+Kuxu6\u002fOPlP6f5AIF4WOU\u002fJxav6pEO4T803ybTsuzkP41ZG27HH+Y\u002fA2cODa6V4j9iwEJ6+OXWP1cpVq\u002fDidA\u002fYMSZsULs3z\u002fVax1ctYzLPyn2JD\u002f9hc4\u002fbnfqad2nuT9qIq39AjTkP3ssnAnLP7k\u002fFPVAHfPG2D+QXBev2dfFPwMW7QrHLMI\u002f5+e3Op53zT+6Oau8mBfcP0SVcnTIXd0\u002f9XOesTiUxz+1mmvrl9K1PyrF\u002fX7jIcE\u002fuOjqXf4T7D+a3YvdtzrkP9FT2ICZtdU\u002fkvv7l6k04j\u002ft+cVXPwLePxoex5ghceE\u002fYrB4EvJk3D9\u002fn3jpVabaP4eezejyFN0\u002f\u002fhv2rPB31z9RlYTs5ljQP3+rMOkjEt0\u002fRYoAM2vp6T+9oaygXe7eP8YjQWBtgdQ\u002f"},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"log-rescaled k-participation coefficient"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"rescaled - (Squared coefficient of variation)"}},"legend":{"tracegroupgap":0},"title":{"text":"Correlation network: r ~ 0.917"},"width":600,"height":600},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('66416a4f-da47-4a6e-950e-87d4c4d7153b');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/mikarubi\.github\.io\/abct\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../examples/6_degree.html" class="pagination-link" aria-label="Degree and Second Degree">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Degree and Second Degree</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/8_shrinkage.html" class="pagination-link" aria-label="Network Shrinkage">
+        <span class="nav-page-text">Network Shrinkage</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

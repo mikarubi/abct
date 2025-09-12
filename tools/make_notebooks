@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import os
+import glob
+
+for qmd_file in glob.glob(f"./docs-code/examples/*.qmd"):
+    os.system(f"quarto convert {qmd_file}")

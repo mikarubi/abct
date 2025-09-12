@@ -6,8 +6,8 @@ repos:
       entry: ./tools/sync_docstrings
       language: python
       stages: [pre-commit]
-    - id: render-docs
-      name: Render docs
-      entry: ./tools/render_docs
+    - id: make-notebooks
+      name: Make notebooks from qmd
+      entry: ./tools/make_notebooks
       language: python
       stages: [pre-commit]
