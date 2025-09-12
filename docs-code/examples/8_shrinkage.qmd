@@ -11,7 +11,7 @@ order: 8
 ## Import modules
 import abct
 import numpy as np
-from utils import W, Distance, ordw, not_eye, fig_scatter, fig_imshow
+from abct_utils import W, Distance, ordw, not_eye, fig_scatter, fig_imshow
 
 ```
 

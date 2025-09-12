@@ -14,7 +14,7 @@ import numpy as np
 from scipy import sparse
 from nctpy import utils, metrics
 from bct import mean_first_passage_time
-from utils import W, fig_scatter, fig_surf
+from abct_utils import W, fig_scatter, fig_surf
 
 ```
 

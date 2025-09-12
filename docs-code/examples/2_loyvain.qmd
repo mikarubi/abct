@@ -13,7 +13,7 @@ import abct
 import time
 import numpy as np
 from sklearn import cluster
-from utils import X, C, fig_scatter, fig_surf
+from abct_utils import X, C, fig_scatter, fig_surf
 
 ```
 
