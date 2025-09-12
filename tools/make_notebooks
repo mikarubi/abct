@@ -3,6 +3,5 @@
 import os
 import glob
 
-os.system(f"quarto render ./docs-code")
 for qmd_file in glob.glob(f"./docs-code/examples/*.qmd"):
     os.system(f"quarto convert {qmd_file}")
