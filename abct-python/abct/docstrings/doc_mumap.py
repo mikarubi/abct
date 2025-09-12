@@ -51,8 +51,8 @@
 
            start=Initial embedding method.
                "greedy": Spherical maximin initialization (default).
-               "spectral": Spectral initialization.
-               "spectral_nn": Spectral initialization on full (n x n) matrix.
+               "spectral": Spectral initialization of module (k x k) matrix.
+               "spectral_nn": Spectral initialization of full (n x n) matrix.
                Numeric matrix: Initial embedding of size n x d, where:
                    n is the number of data points and
                    d is the embedding dimension.
@@ -100,5 +100,6 @@
            PyTorch
            PyNNDescent (if method="indirect")
            PyManopt (if solver="trustregions") * warning: slow *
+
 
 ```

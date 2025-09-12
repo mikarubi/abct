@@ -16,17 +16,18 @@ function S = degree(W, type)
 %       S: Degree vector (length n).
 %
 %   Methodological notes:
-%       The first-degree degree is the sum of connection weights. The
-%       second-degree degree is the sum of squared connection weights.
-%       Together, the first and second degrees are exactly or approximately
-%       equivalent to several measures of network communication and control.
+%       The first degree is the sum of connection weights. The second
+%       degree is the sum of squared connection weights. Together, the
+%       first and second degrees are exactly or approximately equivalent to
+%       several measures of network communication and control.
 %
-%       The residual degree is the degree after first-component removal
-%       and can be approximately equivalent to the primary co-activity 
-%       gradient in co-activity networks.
+%       The residual degree is the degree after first-component removal and
+%       can be approximately equivalent to the primary co-activity gradient
+%       in functional MRI co-activity networks.
 %
 %   See also:
 %       RESIDUALN, DISPERSION.
+%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

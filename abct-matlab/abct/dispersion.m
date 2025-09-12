@@ -22,14 +22,16 @@ function D = dispersion(W, type, M)
 %       of the second moment to the square of the first moment.
 %
 %       The participation coefficient is a popular module-based measure of
-%       connectional diversity. The k-participation coefficient is the participation
-%       coefficient normalized by module size.
+%       connectional diversity. The k-participation coefficient is the
+%       participation coefficient normalized by module size.
 %
-%       CV2 is approximately equivalent to the k-participation coefficient in
-%       homogeneously modular networks, such as correlation or co-neighbor networks.
+%       CV2 is approximately equivalent to the k-participation coefficient
+%       in homogeneously modular networks, such as correlation or
+%       co-neighbor networks.
 %
 %   See also:
 %       DEGREE.
+%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal, mustBeNonnegative}

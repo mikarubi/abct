@@ -40,6 +40,7 @@ function [Mx, My, R, R_all] = coloyvain(varargin)
 %
 %   See also:
 %       LOYVAIN, CANONCOV.
+%
 
 %% Parse, process, and test arguments
 

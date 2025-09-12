@@ -22,7 +22,7 @@
            "spectral": Spectral clustering objective (normalized cut).
 
        similarity: Type of similarity.
-         The first option assumes that the first input is W, a network matrix.
+         The first option assumes that the first input is a network matrix.
            "network": Network connectivity (default).
                W is a symmetric network matrix. The network must
                be non-negative for k-modularity and spectral
@@ -40,7 +40,7 @@
        Name=Value Arguments:
 
            start=Initial module assignments.
-               "greedy": Maximin (maximally greedy kmeans++) initialization (default).
+               "greedy": Maximin (greedy kmeans++) initialization (default).
                "balanced": Standard kmeans++ initialization.
                "random": Uniformly random initialization.
                Numeric vector: Initial module assignment vector of length n.
@@ -88,5 +88,6 @@
 
    See also:
        COLOYVAIN, CANONCOV, KNEICOMP, RESIDUALN.
+
 
 ```

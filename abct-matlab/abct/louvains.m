@@ -35,6 +35,7 @@ function [M, Q] = louvains(W, Args)
 %
 %   See also:
 %       MUMAP, LOYVAIN.
+%
 
 arguments
     W (:, :) double {mustBeNonnegativeSymmetric}

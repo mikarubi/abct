@@ -46,8 +46,8 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %          normalized covariances or correlations.
 %
 %   Methodological notes:
-%       Weighted canonical correlation or covariance analysis is computed via
-%       singular value decomposition of cross-covariance matrix.
+%       Weighted canonical correlation or covariance analysis is computed
+%       via singular value decomposition of cross-covariance matrix.
 %
 %       Binary canonical covariance analysis is computed via co-Loyvain
 %       k-means clustering of cross-covariance matrix. This analysis
@@ -55,7 +55,7 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %
 %       Binary canonical covariance analysis is computed via co-Loyvain
 %       k-means clustering of _whitened_ cross-covariance matrix. This
-%       analysis produces binary orthogonal canonical coefficients for 
+%       analysis produces binary orthogonal canonical coefficients for
 %       the whitened matrix. However, the output coefficients after
 %       dewhitening will, in general, not be binary.
 %
@@ -65,6 +65,7 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %
 %   See also:
 %       COLOYVAIN, LOYVAIN, RESIDUALN.
+%
 
 % Parse inputs and test arguments
 arguments

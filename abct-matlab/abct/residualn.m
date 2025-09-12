@@ -19,6 +19,7 @@ function X = residualn(X, type)
 %
 %   See also:
 %       SHRINKAGE.
+%
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
