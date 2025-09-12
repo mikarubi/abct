@@ -1,6 +1,7 @@
 import torch
 import pymanopt
 import numpy as np
+import warnings
 
 def step4_run(U, Args):
     # m-umap main algorithm
@@ -19,7 +20,7 @@ def step4_run(U, Args):
     ## Precompute gradient matrices
 
     # Normalized degree vector
-    K_nrm = np.sqrt(gamma / A.sum()) * A.sum(1)
+    K_nrm = np.sqrt(gamma / A.sum()) * A.sum(1, keepdims=True)
 
     # Modules and normalized modules
     N = M.sum(0, keepdims=True)
@@ -55,7 +56,8 @@ def step4_run(U, Args):
     for i in range(k):
         Ic[i] = torch.as_tensor(Ic[i], device=device)
         Bc[i] = torch.as_tensor(Bc[i], device=device)
-        Ac[i] = torch.sparse_csr_tensor(Ac[i].indptr, Ac[i].indices, Ac[i].data, device=device)
+        with warnings.catch_warnings(action="ignore"):
+            Ac[i] = torch.sparse_csr_tensor(Ac[i].indptr, Ac[i].indices, Ac[i].data, device=device)
         Kc_nrm[i] = torch.as_tensor(Kc_nrm[i], device=device)
 
     ## Run solvers
