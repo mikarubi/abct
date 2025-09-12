@@ -6,3 +6,8 @@ repos:
       entry: ./tools/sync_docstrings
       language: python
       stages: [pre-commit]
+    - id: render-docs
+      name: Render docs
+      entry: ./tools/render_docs
+      language: python
+      stages: [pre-commit]
