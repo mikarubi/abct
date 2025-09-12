@@ -1,17 +1,21 @@
+import os
 import numpy as np
 from scipy import io
 from nilearn import plotting
 import plotly.express as px
 
-base = "https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/"
-try:
-    data = io.loadmat("./hcp_data.mat")
-except:
-    import requests
-    response = requests.get(f"{base}hcp_data.mat")
-    with open("./hcp_data.mat", "wb") as f:
+# Download files if they don't exist
+base_url = "https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/"
+files = ["hcp_data.mat", "S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii"]
+for file in files:
+    if not os.path.isfile(file):
+        print("Downloading file: " + file)
+        import requests
+        response = requests.get(base_url + file)
+    with open(file, "wb") as f:
         f.write(response.content)
-    data = io.loadmat("./hcp_data.mat")
+
+data = io.loadmat("./hcp_data.mat")
 not_eye = ~np.eye(data["W"].shape[0], dtype=bool)
 
 # Get data
@@ -41,7 +45,6 @@ fig_scatter3 = lambda x, y, z, tl=None: \
         width=600, 
         height=600
     )
-
 
 fig_imshow = lambda W, tl, cmap, pmin=5, pmax=95: \
     px.imshow(W,
