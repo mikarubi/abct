@@ -1,8 +1,8 @@
 project:                          # Project-level configuration
   type: website                   # Project type
+  output-dir: ../docs             # Output directory
   render:
     - "*.qmd"
-  output-dir: ../docs             # Output directory
 
 website:                          # Website-level configuration
   title: abct documentation       # The title displayed in the website header and tab
