@@ -1,4 +1,4 @@
-'''
+```
  DISPERSION Dispersion of network matrix
 
    D = dispersion(W)
@@ -32,4 +32,4 @@
    See also:
        DEGREE.
 
-'''
+```

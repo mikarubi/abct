@@ -1,4 +1,4 @@
-'''
+```
  SHRINKAGE Shrinkage of network or timeseries data
 
    X1 = shrinkage(X)
@@ -18,4 +18,4 @@
    See also:
        RESIDUALN.
 
-'''
+```

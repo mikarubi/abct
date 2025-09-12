@@ -1,4 +1,4 @@
-'''
+```
  LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB)
  LEIDEN igraph Leiden modularity maximization (Python)
 
@@ -36,4 +36,4 @@
    See also:
        MUMAP, LOYVAIN.
 
-'''
+```

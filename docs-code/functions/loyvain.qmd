@@ -1,4 +1,4 @@
-'''
+```
  LOYVAIN K-modularity, k-means, or spectral clustering
 
    M, Q = loyvain(W, k)
@@ -89,4 +89,4 @@
    See also:
        COLOYVAIN, CANONCOV, KNEICOMP, RESIDUALN.
 
-'''
+```

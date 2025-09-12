@@ -1,4 +1,4 @@
-'''
+```
  MUMAP m-umap low-dimensional embedding
 
    U = mumap(X);
@@ -101,4 +101,4 @@
            PyNNDescent (if method="indirect")
            PyManopt (if solver="trustregions") * warning: slow *
 
-'''
+```

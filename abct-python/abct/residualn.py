@@ -35,4 +35,4 @@ def residualn(
             return X - U @ np.diag(S) @ VT
 
 
-residualn.__doc__ = files("abct").joinpath("docstrings", "doc_residualn.py").read_text().replace("'''", "")
+residualn.__doc__ = files("abct").joinpath("docstrings", "doc_residualn.py").read_text().replace("```", "")

@@ -1,4 +1,4 @@
-'''
+```
  DEGREE Degree of network matrix
 
    S = degree(W)
@@ -28,4 +28,4 @@
    See also:
        RESIDUALN, DISPERSION.
 
-'''
+```

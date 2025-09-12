@@ -86,4 +86,4 @@ def canoncov(
     return A, B, U, V, R
 
 
-canoncov.__doc__ = files("abct").joinpath("docstrings", "doc_canoncov.py").read_text().replace("'''", "")
+canoncov.__doc__ = files("abct").joinpath("docstrings", "doc_canoncov.py").read_text().replace("```", "")
