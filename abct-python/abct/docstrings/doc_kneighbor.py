@@ -32,14 +32,14 @@
 
        method: Method of neighbor search.
            "direct": Direct computation of similarity matrix (default).
-           "indirect": knnsearch (MATLAB Statistics and Machine Learning Toolbox)
-                       pynndescent (Python, PyNNDescent).
+           "indirect": knnsearch (in MATLAB)
+                       pynndescent (in Python).
 
        Name=Value Arguments:
-           Optional arguments passed to knnsearch (MATLAB) or pynndescent (Python).
+           Optional arguments passed to knnsearch or pynndescent.
 
    Outputs:
-       B: Common-neighbor or symmetric kappa-nearest-neighbor matrix (size n x n).
+       B: Co-neighbor or symmetric nearest-neighbor matrix (size n x n).
 
    Methodological notes:
        Symmetric kappa-nearest-neighbor matrices are binary matrices that
@@ -54,7 +54,14 @@
        Direct computation of the similarity matrix is performed in
        blocks. It is generally faster than indirect computation.
 
+   Dependencies:
+       MATLAB: 
+           Statistics and Machine Learning Toolbox (if method="indirect")
+       Python: 
+           PyNNDescent (if method="indirect")
+
    See also:
        KNEICOMP, MUMAP.
+
 
 ```

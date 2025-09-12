@@ -29,16 +29,18 @@
        V: Component matrix (size n x k).
 
    Methodological notes:
-       By default, weighted components are eigenvectors of common-neighbors 
-       matrices. In imaging neuroscience, these components are approximately 
-       equivalent to co-activity gradients (diffusion-map embeddings).
+       By default, weighted components are eigenvectors of
+       common-neighbors matrices. In imaging neuroscience, these
+       components are approximately equivalent to co-activity gradients
+       (diffusion-map embeddings).
  
        Correspondingly, binary components are modules of common-neighbors 
-       matrices, estimated using the Loyvain algorithm. They are equivalent 
-       to eigenvectors of common-neighbors matrices with binary constraints.
-       The order of binary components will, in general, be arbitrary.
+       matrices, estimated using the Loyvain algorithm. They are
+       equivalent to eigenvectors of common-neighbors matrices with binary
+       constraints. The order of binary components will be arbitrary. 
 
    See also:
        KNEIGHBOR, LOYVAIN.
+
 
 ```
