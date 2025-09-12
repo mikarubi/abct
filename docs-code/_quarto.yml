@@ -21,3 +21,4 @@ format:
 execute:
   freeze: auto
   cache: true
+  warnings: false

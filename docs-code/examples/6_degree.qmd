@@ -9,7 +9,7 @@ order: 6
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
+!pip install --quiet abct nilearn nctpy bctpy
 !wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
 
 # Import modules
