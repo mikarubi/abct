@@ -31,7 +31,6 @@ function D = dispersion(W, type, M)
 %
 %   See also:
 %       DEGREE.
-%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal, mustBeNonnegative}

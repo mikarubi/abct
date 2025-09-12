@@ -66,5 +66,4 @@
    See also:
        COLOYVAIN, LOYVAIN, RESIDUALN.
 
-
 ```

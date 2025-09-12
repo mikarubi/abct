@@ -28,5 +28,4 @@
    See also:
        RESIDUALN, DISPERSION.
 
-
 ```

@@ -27,7 +27,6 @@ function S = degree(W, type)
 %
 %   See also:
 %       RESIDUALN, DISPERSION.
-%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

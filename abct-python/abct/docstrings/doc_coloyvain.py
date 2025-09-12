@@ -41,5 +41,4 @@
    See also:
        LOYVAIN, CANONCOV.
 
-
 ```

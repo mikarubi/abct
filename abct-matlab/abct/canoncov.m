@@ -65,7 +65,6 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %
 %   See also:
 %       COLOYVAIN, LOYVAIN, RESIDUALN.
-%
 
 % Parse inputs and test arguments
 arguments
