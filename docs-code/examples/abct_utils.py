@@ -9,6 +9,7 @@ base_url = "https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examp
 files = ["hcp_data.mat", "S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii"]
 for file in files:
     if not os.path.isfile(file):
+        print(f"Downloading {file}")
         os.system(f"wget {base_url + file}")
 
 data = io.loadmat("./hcp_data.mat")
