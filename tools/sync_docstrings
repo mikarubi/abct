@@ -9,7 +9,6 @@ ext_docs = {"python": ".py",
             "quarto": ".qmd"}
 
 filenames_mat = glob.glob(f"{dir_matlab}/*m")
-filenames_mat
 
 for filename_mat in filenames_mat:
     with open(filename_mat, "r") as f:

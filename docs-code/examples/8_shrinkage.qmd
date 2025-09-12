@@ -8,7 +8,11 @@ order: 8
 
 ```{python}
 
-## Import modules
+# Install abct and download abct_utils.py
+!pip install abct
+!wget https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+
+# Import modules
 import abct
 import numpy as np
 from abct_utils import W, Distance, ordw, not_eye, fig_scatter, fig_imshow
