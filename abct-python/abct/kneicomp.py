@@ -49,4 +49,4 @@ def kneicomp(
             return V
 
 
-kneicomp.__doc__ = files("abct").joinpath("docstrings", "kneicomp.py").read_text().replace("```", "")
+kneicomp.__doc__ = files("abct").joinpath("docstrings", "doc_kneicomp.py").read_text().replace("'''", "")

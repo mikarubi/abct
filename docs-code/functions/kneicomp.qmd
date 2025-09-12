@@ -1,4 +1,4 @@
-```
+'''
  KNEICOMP Components of neighbor matrices
 
    V = kneicomp(W, k)
@@ -42,4 +42,4 @@
    See also:
        KNEIGHBOR, LOYVAIN.
 
-```
+'''

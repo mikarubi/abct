@@ -45,4 +45,4 @@ def shrinkage(X: ArrayLike) -> np.ndarray:
     return V @ np.diag(D) @ V.T
 
 
-shrinkage.__doc__ = files("abct").joinpath("docstrings", "shrinkage.py").read_text().replace("```", "")
+shrinkage.__doc__ = files("abct").joinpath("docstrings", "doc_shrinkage.py").read_text().replace("'''", "")

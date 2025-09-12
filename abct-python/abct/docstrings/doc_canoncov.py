@@ -1,4 +1,4 @@
-```
+'''
  CANONCOV Canonical covariance analysis (aka partial least squares)
           Canonical correlation analysis
 
@@ -66,4 +66,4 @@
    See also:
        COLOYVAIN, LOYVAIN, RESIDUALN.
 
-```
+'''

@@ -23,7 +23,7 @@ for filename_mat in filenames_mat:
     # get the docstring
     docstring = "".join([line[1:] for line in filetext[1:i+1]])
     docstring = docstring.replace("[", "").replace("]", "")
-    docstring = "```\n" + docstring + "\n```"
+    docstring = "'''\n" + docstring + "\n'''\n"
 
     # write docstrings
     for typ in ["python", "quarto"]:
