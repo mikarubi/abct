@@ -1,6 +1,7 @@
 ---
-title: Visualization and residualization
+title: Transforms
 jupyter: python3
+order: 1
 ---
 
 ### Set up and load data
@@ -10,7 +11,7 @@ jupyter: python3
 ## Import modules
 import abct
 import numpy as np
-from noteutils import W, X, C, ordw, ordc, not_eye, fig_scatter, fig_imshow
+from utils import W, X, C, ordw, ordc, not_eye, fig_scatter, fig_imshow
 
 ```
 

@@ -19,8 +19,8 @@ def step4_run(U, Args):
 
     ## Precompute gradient matrices
 
-    # Normalized degree vector
-    K_nrm = np.sqrt(gamma / A.sum()) * A.sum(1, keepdims=True)
+    # Normalized degree column vector
+    K_nrm = np.sqrt(gamma / A.sum()) * A.sum(1)[:, np.newaxis]
 
     # Modules and normalized modules
     N = M.sum(0, keepdims=True)

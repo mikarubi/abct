@@ -1,6 +1,7 @@
 ---
-title: Degree and second degree
+title: Degree
 jupyter: python3
+order: 6
 ---
 
 ### Set up and load data
@@ -13,7 +14,7 @@ import numpy as np
 from scipy import sparse
 from nctpy import utils, metrics
 from bct import mean_first_passage_time
-from noteutils import W, fig_scatter, fig_surf
+from utils import W, fig_scatter, fig_surf
 
 ```
 

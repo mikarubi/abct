@@ -18,7 +18,7 @@ def step0_args(X: ArrayLike, **kwargs) -> SimpleNamespace:
 def parse_args(
     X: ArrayLike | SparseArray,
     d: int = 3,
-    kappa: int = 30,
+    kappa: float = 30,
     alpha: float = 1.0,
     beta: float = 1.0,
     gamma: float = 1.0,
