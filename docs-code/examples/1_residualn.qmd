@@ -1,5 +1,5 @@
 ---
-title: Transforms
+title: Network Transformations
 jupyter: python3
 order: 1
 ---

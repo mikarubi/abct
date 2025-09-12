@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Gradients – abct documentation</title>
+<title>Co-activity Gradients – abct documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -120,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/4_kneicomp.html">Gradients</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/4_kneicomp.html">Co-activity Gradients</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -136,9 +136,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">abct documentation</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/mikarubi/abct" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -160,49 +157,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/1_residualn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transforms</span></a>
+ <span class="menu-text">Network Transformations</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/2_loyvain.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Clustering</span></a>
+ <span class="menu-text">Network Clustering</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/3_canoncov.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Canoncov</span></a>
+ <span class="menu-text">Canonical Covariance</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/4_kneicomp.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Gradients</span></a>
+ <span class="menu-text">Co-activity Gradients</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/5_mumap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">m-umap</span></a>
+ <span class="menu-text">m-umap Embeddings</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/6_degree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Degree</span></a>
+ <span class="menu-text">Degree and Second Degree</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/7_dispersion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dispersion</span></a>
+ <span class="menu-text">Measures of Dispersion</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/8_shrinkage.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Shrinkage</span></a>
+ <span class="menu-text">Network Shrinkage</span></a>
   </div>
 </li>
       </ul>
@@ -289,24 +286,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#set-up-and-load-data" id="toc-set-up-and-load-data" class="nav-link active" data-scroll-target="#set-up-and-load-data">Set up and load data</a></li>
-  <li><a href="#get-co-activity-gradients" id="toc-get-co-activity-gradients" class="nav-link" data-scroll-target="#get-co-activity-gradients">Get co-activity gradients</a></li>
-  <li><a href="#show-maps-of-weighted-and-binary-co-activity-components" id="toc-show-maps-of-weighted-and-binary-co-activity-components" class="nav-link" data-scroll-target="#show-maps-of-weighted-and-binary-co-activity-components">Show maps of weighted and binary co-activity components</a></li>
-  <li><a href="#show-map-and-scatter-of-residual-degree" id="toc-show-map-and-scatter-of-residual-degree" class="nav-link" data-scroll-target="#show-map-and-scatter-of-residual-degree">Show map and scatter of residual degree</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/4_kneicomp.html">Gradients</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/4_kneicomp.html">Co-activity Gradients</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Gradients</h1>
+<h1 class="title">Co-activity Gradients</h1>
 </div>
 
 
@@ -325,7 +311,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="set-up-and-load-data" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-and-load-data">Set up and load data</h3>
-<div id="580678b7" class="cell" data-execution_count="1">
+<div id="580678b7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Import modules</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abct</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -334,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="get-co-activity-gradients" class="level3">
 <h3 class="anchored" data-anchor-id="get-co-activity-gradients">Get co-activity gradients</h3>
-<div id="64efb38f" class="cell" data-execution_count="2">
+<div id="64efb38f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define co-activity gradient parameters (see kneighbor)</span></span>
@@ -358,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="show-maps-of-weighted-and-binary-co-activity-components" class="level3">
 <h3 class="anchored" data-anchor-id="show-maps-of-weighted-and-binary-co-activity-components">Show maps of weighted and binary co-activity components</h3>
-<div id="535f96e2" class="cell" data-execution_count="3">
+<div id="535f96e2" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>comps <span class="op">=</span> {<span class="st">"Weighted co-activity gradient"</span>: (V_wei, <span class="st">"viridis"</span>),</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Binary co-activity gradient"</span>: (V_bin, <span class="st">"viridis"</span>)}</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -412,7 +398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="show-map-and-scatter-of-residual-degree" class="level3">
 <h3 class="anchored" data-anchor-id="show-map-and-scatter-of-residual-degree">Show map and scatter of residual degree</h3>
-<div id="bde847f4" class="cell" data-execution_count="4">
+<div id="bde847f4" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map of residual degree</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig_surf(D_wei, <span class="st">"Residual degree"</span>, <span class="st">"viridis"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -869,13 +855,13 @@ if (outputEl) {{
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../examples/3_canoncov.html" class="pagination-link" aria-label="Canoncov">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Canoncov</span>
+      <a href="../examples/3_canoncov.html" class="pagination-link" aria-label="Canonical Covariance">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Canonical Covariance</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../examples/5_mumap.html" class="pagination-link" aria-label="m-umap">
-        <span class="nav-page-text">m-umap</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../examples/5_mumap.html" class="pagination-link" aria-label="m-umap Embeddings">
+        <span class="nav-page-text">m-umap Embeddings</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

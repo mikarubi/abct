@@ -1,5 +1,5 @@
 ---
-title: Degree
+title: Degree and Second Degree
 jupyter: python3
 order: 6
 ---
