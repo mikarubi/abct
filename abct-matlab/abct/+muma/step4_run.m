@@ -141,7 +141,7 @@ EGrad = G * (M_nrm' * U) + M_nrm * (G' * U);
 %% Compute full within-module cost and gradient
 
 for i = 1:k
-    if ~isempty(Bc{i})
+    if ~isempty(Bc{i})               % Args.cache is True
         Bi = Bc{i};
     else
         Bi = full(Ac{i}) - (Kc_nrm{i} * Kc_nrm{i}');

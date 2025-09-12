@@ -1,6 +1,7 @@
 import torch
 import pymanopt
 import numpy as np
+from scipy import sparse
 import warnings
 
 def step4_run(U, Args):
@@ -33,10 +34,10 @@ def step4_run(U, Args):
     #    -> then simplify (A - g) .* (M * M')
     Bm = (Am - M * Am) - (g * N - g * (M * N))
 
-    Ic = [[]] * k
-    Bc = [[]] * k
-    Ac = [[]] * k
-    Kc_nrm = [[]] * k
+    Ic = [np.array([])] * k
+    Bc = [np.array([])] * k
+    Ac = [sparse.csr_array([])] * k
+    Kc_nrm = [np.array([])] * k
     for i in range(k):
         I = np.where(Args.partition == i)[0]
         Ic[i] = I
@@ -140,7 +141,7 @@ def fx_cost(U, Ic, Bc, Ac, Kc_nrm, M_nrm, Bm, alpha, beta):
 
     ## Compute full within-module cost and gradient
     for i in range(k):
-        if len(Bc[i]):
+        if len(Bc[i]):           # Args.cache is True
             Bi = Bc[i]
         else:
             Bi = Ac[i].to_dense() - (Kc_nrm[i] * Kc_nrm[i].T)
