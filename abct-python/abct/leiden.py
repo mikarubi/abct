@@ -48,4 +48,4 @@ def leiden(
 
     return np.asarray(M), Q
 
-leiden.__doc__ = files("abct").joinpath("docstrings", "louvains.py").read_text().replace("```", "")
+leiden.__doc__ = files("abct").joinpath("docstrings", "doc_louvains.py").read_text().replace("'''", "")

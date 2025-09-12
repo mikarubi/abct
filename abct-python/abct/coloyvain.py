@@ -79,4 +79,4 @@ def coloyvain(*args, **kwargs) -> Tuple[np.ndarray, np.ndarray, float, np.ndarra
     return Mx, My, R, R_all.ravel()
 
 
-coloyvain.__doc__ = files("abct").joinpath("docstrings", "coloyvain.py").read_text().replace("```", "")
+coloyvain.__doc__ = files("abct").joinpath("docstrings", "doc_coloyvain.py").read_text().replace("'''", "")

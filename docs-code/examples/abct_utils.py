@@ -3,7 +3,15 @@ from scipy import io
 from nilearn import plotting
 import plotly.express as px
 
-data = io.loadmat("./hcp_data.mat")
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/"
+try:
+    data = io.loadmat("./hcp_data.mat")
+except:
+    import requests
+    response = requests.get(f"{base}hcp_data.mat")
+    with open("./hcp_data.mat", "wb") as f:
+        f.write(response.content)
+    data = io.loadmat("./hcp_data.mat")
 not_eye = ~np.eye(data["W"].shape[0], dtype=bool)
 
 # Get data

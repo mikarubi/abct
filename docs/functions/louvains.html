@@ -255,43 +255,32 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<pre><code> LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB)
- LEIDEN igraph Leiden modularity maximization (Python)
+<p>’’’ LOUVAINS Efficient Louvain modularity maximization of sparse networks (MATLAB) LEIDEN igraph Leiden modularity maximization (Python)</p>
+<p>M, Q = louvains(W, Name=Value) % MATLAB M, Q = leiden(W, Name=Value) # Python</p>
+<p>Inputs: W: Network matrix of size n x n.</p>
+<pre><code>   Name=Value Arguments:
 
-   M, Q = louvains(W, Name=Value)        % MATLAB
-   M, Q = leiden(W, Name=Value)          # Python
+       gamma=Resolution parameter.
+           Positive scalar (default is 1).
 
-   Inputs:
-       W:  Network matrix of size n x n.
+       start=Initial module assignments.
+           Vector of length n (default is 1:n).
 
-       Name=Value Arguments:
+       replicates=Number of replicates.
+           Positive integer (default is 10).
 
-           gamma=Resolution parameter.
-               Positive scalar (default is 1).
+       finaltune=Final tuning of optimized assignment.
+           Logical (default is false).
 
-           start=Initial module assignments.
-               Vector of length n (default is 1:n).
+       tolerance=Convergence tolerance.
+           Positive scalar (default is 1e-10).
 
-           replicates=Number of replicates.
-               Positive integer (default is 10).
-
-           finaltune=Final tuning of optimized assignment.
-               Logical (default is false).
-
-           tolerance=Convergence tolerance.
-               Positive scalar (default is 1e-10).
-
-           display=Display progress.
-               "none": no display (default).
-               "replicate": display progress at each replicate.
-
-   Outputs:
-       M: Vector of module assignments (length n).
-       Q: Value of maximized modularity.
-
-   See also:
-       MUMAP, LOYVAIN.
-</code></pre>
+       display=Display progress.
+           "none": no display (default).
+           "replicate": display progress at each replicate.</code></pre>
+<p>Outputs: M: Vector of module assignments (length n). Q: Value of maximized modularity.</p>
+<p>See also: MUMAP, LOYVAIN.</p>
+<p>’’’</p>
 
 
 

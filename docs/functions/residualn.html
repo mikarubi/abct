@@ -255,27 +255,16 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<pre><code> RESIDUALN Global residualization of network or timeseries data
-
-   X1 = residualn(X)
-   X1 = residualn(X, type)
-
-   Inputs:
-       X:  Network matrix of size n x n, or data matrix of size n x p.
-           n is the number of nodes or data points and
-           p is the number of features.
-
-       type: Type of global residualization.
-           "degree": Degree correction (default).
-           "global": Global signal regression.
-           "rankone": Subtraction of rank-one approximation.
-
-   Outputs:
-       X1: Residual network or timeseries matrix.
-
-   See also:
-       SHRINKAGE.
-</code></pre>
+<p>’’’ RESIDUALN Global residualization of network or timeseries data</p>
+<p>X1 = residualn(X) X1 = residualn(X, type)</p>
+<p>Inputs: X: Network matrix of size n x n, or data matrix of size n x p. n is the number of nodes or data points and p is the number of features.</p>
+<pre><code>   type: Type of global residualization.
+       "degree": Degree correction (default).
+       "global": Global signal regression.
+       "rankone": Subtraction of rank-one approximation.</code></pre>
+<p>Outputs: X1: Residual network or timeseries matrix.</p>
+<p>See also: SHRINKAGE.</p>
+<p>’’’</p>
 
 
 

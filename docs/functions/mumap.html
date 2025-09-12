@@ -255,108 +255,84 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<pre><code> MUMAP m-umap low-dimensional embedding
+<p>’’’ MUMAP m-umap low-dimensional embedding</p>
+<p>U = mumap(X); U, Partition, CostHistory = mumap(X, Name=Value);</p>
+<p>Inputs: W: Network matrix of size n x n.</p>
+<pre><code>   OR
 
-   U = mumap(X);
-   U, Partition, CostHistory = mumap(X, Name=Value);
+   X:  Data matrix of size n x p, where
+       n is the number of data points and
+       p is the number of features.
 
-   Inputs:
-       W:  Network matrix of size n x n.
+   Name=Value Arguments:
+       d=Embedding dimension.
+           Positive integer (default is 3).
 
-       OR
+       kappa=Number of nearest neighbors.
+           Positive integer (default is 30).
 
-       X:  Data matrix of size n x p, where
-           n is the number of data points and
-           p is the number of features.
+       alpha=Inverse amplitude of long-range attraction.
+           Positive scalar &gt;= 1 (default is 1).
+           Larger alpha implies weaker long-range attraction.
 
-       Name=Value Arguments:
-           d=Embedding dimension.
-               Positive integer (default is 3).
+       beta=Slope of long-range attraction.
+           Positive scalar &lt;= 1 (default is 1).
+           Larger beta implies faster decay of attraction.
 
-           kappa=Number of nearest neighbors.
-               Positive integer (default is 30).
+       gamma=Modularity resolution parameter.
+           Positive scalar (default is 1).
 
-           alpha=Inverse amplitude of long-range attraction.
-               Positive scalar &gt;= 1 (default is 1).
-               Larger alpha implies weaker long-range attraction.
+       similarity=Type of similarity.
+           "network": Network connectivity (default).
+           "corr": Pearson correlation coefficient.
+           "cosim": Cosine similarity.
 
-           beta=Slope of long-range attraction.
-               Positive scalar &lt;= 1 (default is 1).
-               Larger beta implies faster decay of attraction.
+       method=Method of nearest-neighbor search.
+           "direct": Direct computation of similarity matrix.
+           "indirect": knnsearch (MATLAB) or pynndescent (Python).
 
-           gamma=Modularity resolution parameter.
-               Positive scalar (default is 1).
+       replicates=Number of modularity replicates.
+           Positive integer (default is 10).
 
-           similarity=Type of similarity.
-               "network": Network connectivity (default).
-               "corr": Pearson correlation coefficient.
-               "cosim": Cosine similarity.
+       finaltune=Modularity final tuning.
+           Logical scalar (default is true).
 
-           method=Method of nearest-neighbor search.
-               "direct": Direct computation of similarity matrix.
-               "indirect": knnsearch (MATLAB) or pynndescent (Python).
+       partition=Module partition.
+           Integer vector: module partition of length n (default is ).
 
-           replicates=Number of modularity replicates.
-               Positive integer (default is 10).
+       start=Initial embedding method.
+           "greedy": Spherical maximin initialization (default).
+           "spectral": Spectral initialization of module (k x k) matrix.
+           "spectral_nn": Spectral initialization of full (n x n) matrix.
+           Numeric matrix: Initial embedding of size n x d, where:
+               n is the number of data points and
+               d is the embedding dimension.
 
-           finaltune=Modularity final tuning.
-               Logical scalar (default is true).
+       solver=Optimization solver.
+           "trustregions": Manopt trust-regions method (default for MATLAB).
+           "adam": Adaptive Moment Estimation optimizer (default for Python).
 
-           partition=Module partition.
-               Integer vector: module partition of length n (default is ).
+       maxiter=Maximum number of iterations.
+           Positive integer (default is 10000).
 
-           start=Initial embedding method.
-               "greedy": Spherical maximin initialization (default).
-               "spectral": Spectral initialization of module (k x k) matrix.
-               "spectral_nn": Spectral initialization of full (n x n) matrix.
-               Numeric matrix: Initial embedding of size n x d, where:
-                   n is the number of data points and
-                   d is the embedding dimension.
+       learnrate=Optimizer learning rate.
+           Positive scalar (default is 0.001).
 
-           solver=Optimization solver.
-               "trustregions": Manopt trust-regions method (default for MATLAB).
-               "adam": Adaptive Moment Estimation optimizer (default for Python).
+       tolerance=Solution tolerance.
+           Positive scalar (default is 1e-6).
 
-           maxiter=Maximum number of iterations.
-               Positive integer (default is 10000).
+       gpu=Use GPU.
+           Logical (default is false).
 
-           learnrate=Optimizer learning rate.
-               Positive scalar (default is 0.001).
+       cache=Cache gradient matrices.
+           Logical (default is false).
 
-           tolerance=Solution tolerance.
-               Positive scalar (default is 1e-6).
-
-           gpu=Use GPU.
-               Logical (default is false).
-
-           cache=Cache gradient matrices.
-               Logical (default is false).
-
-           verbose=Verbose output.
-               Logical (default is true).
-
-   Outputs:
-       U:  Embedding matrix of size n x d.
-       Partition: Module partition of length n.
-       CostHistory: Cost history of optimization.
-
-   Methodological notes:
-       m-umap is a first-order approximation of the true parametric
-       loss of UMAP, with spherical constraints. It is simultaneously
-       equivalent to the modularity, and to spring layout methods with
-       Cauchy components and spherical constraints.
-
-   Dependencies:
-       MATLAB: 
-           Statistics and Machine Learning Toolbox (if method="indirect")
-           Deep Learning Toolbox (if solver="adam")
-           Manopt (if solver="trustregions")
-       Python: 
-           igraph
-           PyTorch
-           PyNNDescent (if method="indirect")
-           PyManopt (if solver="trustregions") * warning: slow *
-</code></pre>
+       verbose=Verbose output.
+           Logical (default is true).</code></pre>
+<p>Outputs: U: Embedding matrix of size n x d. Partition: Module partition of length n. CostHistory: Cost history of optimization.</p>
+<p>Methodological notes: m-umap is a first-order approximation of the true parametric loss of UMAP, with spherical constraints. It is simultaneously equivalent to the modularity, and to spring layout methods with Cauchy components and spherical constraints.</p>
+<p>Dependencies: MATLAB: Statistics and Machine Learning Toolbox (if method=“indirect”) Deep Learning Toolbox (if solver=“adam”) Manopt (if solver=“trustregions”) Python: igraph PyTorch PyNNDescent (if method=“indirect”) PyManopt (if solver=“trustregions”) * warning: slow *</p>
+<p>’’’</p>
 
 
 

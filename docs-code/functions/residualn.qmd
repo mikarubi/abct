@@ -1,4 +1,4 @@
-```
+'''
  RESIDUALN Global residualization of network or timeseries data
 
    X1 = residualn(X)
@@ -20,4 +20,4 @@
    See also:
        SHRINKAGE.
 
-```
+'''
