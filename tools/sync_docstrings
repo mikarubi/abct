@@ -4,7 +4,7 @@ import glob
 
 dir_matlab = "./abct-matlab/abct/"
 dir_docs = {"python": "./abct-python/abct/docstrings/doc_",
-            "quarto": "./docs-code/docstrings/"}
+            "quarto": "./docs-code/functions/"}
 ext_docs = {"python": ".py", 
             "quarto": ".qmd"}
 

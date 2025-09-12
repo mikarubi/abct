@@ -1,6 +1,7 @@
 ---
 title: Clustering
 jupyter: python3
+order: 2
 ---
 
 ### Set up and load data
@@ -12,7 +13,7 @@ import abct
 import time
 import numpy as np
 from sklearn import cluster
-from noteutils import X, C, fig_scatter, fig_surf
+from utils import X, C, fig_scatter, fig_surf
 
 ```
 

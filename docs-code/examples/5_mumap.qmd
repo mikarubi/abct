@@ -1,0 +1,45 @@
+---
+title: m-umap
+jupyter: python3
+order: 5
+---
+
+### Set up and load data
+
+```{python}
+
+## Import modules
+import abct
+import numpy as np
+from utils import C, fig_scatter3, fig_scatter, fig_surf
+
+```
+
+### Get m-umap embeddings
+
+```{python}
+
+np.random.seed(1)
+U3, M, _ = abct.mumap(C, kappa=50, learnrate=0.01, verbose=False)
+
+X3, Y3, Z3 = zip(*U3)
+fig = fig_scatter3(X3, Y3, Z3, f"m-umap embedding on a sphere")
+fig.update_traces(marker=dict(color=M+1), marker_showscale=True)
+fig.show()
+
+U2 = abct.muma.projection(abct.muma.rotation(U3)[0])
+X2, Y2 = zip(*U2)
+fig = fig_scatter(X2, Y2, f"m-umap projection on a plane")
+fig.update_traces(marker=dict(color=M+1), marker_showscale=True)
+fig.show()
+
+```
+
+### Show maps of individual modules
+
+```{python}
+
+for i in range(M.max()+1):
+    fig_surf(1.0 * (M == i), f"Module {i+1}", "viridis")
+
+```

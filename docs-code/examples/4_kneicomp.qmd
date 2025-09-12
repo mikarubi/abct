@@ -1,6 +1,7 @@
 ---
-title: Co-activity gradients
+title: Gradients
 jupyter: python3
+order: 4
 ---
 
 ### Set up and load data
@@ -10,7 +11,7 @@ jupyter: python3
 ## Import modules
 import abct
 import numpy as np
-from noteutils import W, C, fig_scatter, fig_surf
+from utils import W, C, fig_scatter, fig_surf
 
 ```
 

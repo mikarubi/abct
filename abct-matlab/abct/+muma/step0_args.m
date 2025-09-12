@@ -4,7 +4,7 @@ function Args = step0_args(X, Args)
 arguments
     X (:, :) {mustBeFinite, mustBeReal}
     Args.d (1, 1) {mustBePositive, mustBeInteger} = 3
-    Args.kappa (1, 1) {mustBePositive, mustBeInteger} = 30
+    Args.kappa (1, 1) {mustBePositive} = 30
     Args.alpha (1, 1) {mustBePositive} = 1
     Args.beta (1, 1) {mustBePositive} = 1
     Args.gamma (1, 1) {mustBePositive} = 1

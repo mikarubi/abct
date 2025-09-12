@@ -27,7 +27,7 @@ def kneighbor(
         assert np.isclose(kappa, np.round(kappa)), "kappa > 1 must be an integer."
     kappa = int(kappa)
 
-    Row = np.tile(np.arange(n)[:, None], (1, kappa+1))
+    Row = np.tile(np.arange(n)[:, np.newaxis], (1, kappa+1))
     if similarity == "network":
         W = X.copy()
         assert W.shape[0] == W.shape[1], "Network matrix must be square."

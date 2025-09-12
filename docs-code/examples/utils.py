@@ -3,7 +3,7 @@ from scipy import io
 from nilearn import plotting
 import plotly.express as px
 
-data = io.loadmat("./data/hcp_data.mat")
+data = io.loadmat("./hcp_data.mat")
 not_eye = ~np.eye(data["W"].shape[0], dtype=bool)
 
 # Get data
@@ -25,6 +25,16 @@ fig_scatter = lambda x, y, xl=None, yl=None, tl=None: \
         height=600
     )
 
+fig_scatter3 = lambda x, y, z, tl=None: \
+    px.scatter_3d(x=x, y=y, z=z).\
+    update_layout(
+        title=tl, 
+        title_x=0.5, 
+        width=600, 
+        height=600
+    )
+
+
 fig_imshow = lambda W, tl, cmap, pmin=5, pmax=95: \
     px.imshow(W,
         color_continuous_scale=cmap,
@@ -40,7 +50,7 @@ fig_imshow = lambda W, tl, cmap, pmin=5, pmax=95: \
 parc = data["parc"].ravel() - 1
 fig_surf = lambda M, tl, cmap, pmin=0, pmax=100: \
     plotting.plot_surf(
-        surf_mesh="./data/S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii",
+        surf_mesh="./S1200.L.very_inflated_MSMAll.32k_fs_LR.surf.gii",
         surf_map=M[parc][:parc.size // 2],
         cmap=cmap,
         vmin=np.percentile(M[parc][:parc.size // 2], pmin),
