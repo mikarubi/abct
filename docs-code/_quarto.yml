@@ -1,5 +1,7 @@
 project:                          # Project-level configuration
   type: website                   # Project type
+  render:
+    - "*.qmd"
   output-dir: ../docs             # Output directory
 
 website:                          # Website-level configuration
