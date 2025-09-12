@@ -9,8 +9,8 @@ order: 4
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install abct
-!wget https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+!pip install --quiet abct nilearn
+!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
 
 # Import modules
 import abct
