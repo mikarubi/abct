@@ -1,79 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook8.html</loc>
-    <lastmod>2025-09-10T23:14:47.734Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/dispersion.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/dispersion.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/loyvain.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/loyvain.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/kneicomp.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/kneicomp.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/louvains.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/louvains.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/kneighbor.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/kneighbor.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/functions/coloyvain.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/coloyvain.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/4_kneicomp.html</loc>
+    <lastmod>2025-09-12T00:38:07.330Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook3.html</loc>
-    <lastmod>2025-09-10T23:14:19.340Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/2_loyvain.html</loc>
+    <lastmod>2025-09-12T00:36:39.330Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook5.html</loc>
-    <lastmod>2025-09-10T23:10:04.962Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/7_dispersion.html</loc>
+    <lastmod>2025-09-12T00:31:40.136Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook7.html</loc>
-    <lastmod>2025-09-10T23:14:35.319Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/8_shrinkage.html</loc>
+    <lastmod>2025-09-12T00:30:29.957Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook4.html</loc>
-    <lastmod>2025-09-10T23:09:46.654Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/1_residualn.html</loc>
+    <lastmod>2025-09-12T00:36:47.488Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook1.html</loc>
-    <lastmod>2025-09-10T23:13:02.921Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/5_mumap.html</loc>
+    <lastmod>2025-09-12T03:02:30.853Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/notebook6.html</loc>
-    <lastmod>2025-09-10T23:14:08.615Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/3_canoncov.html</loc>
+    <lastmod>2025-09-12T00:38:38.887Z</lastmod>
   </url>
   <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/degree.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/shrinkage.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/residualn.html</loc>
-    <lastmod>2025-09-11T17:29:41.516Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/canoncov.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
-  </url>
-  <url>
-    <loc>https://mikarubi.github.io/abct/docstrings/mumap.html</loc>
-    <lastmod>2025-09-11T17:29:41.526Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/examples/6_degree.html</loc>
+    <lastmod>2025-09-12T00:37:22.913Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/index.html</loc>
     <lastmod>2025-09-11T17:40:54.915Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/functions/degree.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/functions/shrinkage.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/functions/residualn.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/functions/canoncov.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/functions/mumap.html</loc>
+    <lastmod>2025-09-12T03:06:33.401Z</lastmod>
   </url>
 </urlset>
