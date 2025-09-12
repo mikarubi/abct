@@ -1,4 +1,4 @@
-'''
+```
  COLOYVAIN K-modularity, k-means, or spectral co-clustering
 
    Mx, My, R = coloyvain(W, k)
@@ -41,4 +41,4 @@
    See also:
        LOYVAIN, CANONCOV.
 
-'''
+```

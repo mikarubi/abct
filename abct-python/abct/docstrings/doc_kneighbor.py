@@ -1,4 +1,4 @@
-'''
+```
  KNEIGHBOR Common-neighbor or symmetric kappa-nearest-neighbor matrix
 
    B = kneighbor(W)
@@ -63,4 +63,4 @@
    See also:
        KNEICOMP, MUMAP.
 
-'''
+```
