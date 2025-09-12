@@ -11,7 +11,7 @@ order: 5
 ## Import modules
 import abct
 import numpy as np
-from utils import C, fig_scatter3, fig_scatter, fig_surf
+from abct_utils import C, fig_scatter3, fig_scatter, fig_surf
 
 ```
 
