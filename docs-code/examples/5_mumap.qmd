@@ -1,5 +1,5 @@
 ---
-title: m-umap
+title: m-umap Embeddings
 jupyter: python3
 order: 5
 ---

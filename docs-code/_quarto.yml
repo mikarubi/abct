@@ -9,14 +9,10 @@ website:                          # Website-level configuration
   sidebar:
     search: true
     contents: auto
-    tools:
-      - icon: github
-        href: https://github.com/mikarubi/abct
 
 format:
   html:
     theme: sandstone
-    toc: true
     code-fold: false
     code-copy: true
 

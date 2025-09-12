@@ -1,5 +1,5 @@
 ---
-title: Shrinkage
+title: Network Shrinkage
 jupyter: python3
 order: 8
 ---
