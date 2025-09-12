@@ -5,19 +5,17 @@ project:                          # Project-level configuration
 website:                          # Website-level configuration
   title: abct documentation       # The title displayed in the website header and tab
   site-url: https://mikarubi.github.io/abct/
-  search: true
+  page-navigation: true
   sidebar:
+    search: true
     contents: auto
-    background: primary
     tools:
       - icon: github
         href: https://github.com/mikarubi/abct
 
-  page-navigation: true
-
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     toc: true
     code-fold: false
     code-copy: true
