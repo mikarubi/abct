@@ -3,9 +3,6 @@
 import os
 import glob
 
-dir_examples = "./docs-code/examples"
-os.system(f"quarto render {dir_examples}")
-
-qmd_files = glob.glob(f"{dir_examples}/*.qmd")
-for qmd_file in qmd_files:
+os.system(f"quarto render ./docs-code")
+for qmd_file in glob.glob(f"./docs-code/examples/*.qmd"):
     os.system(f"quarto convert {qmd_file}")
