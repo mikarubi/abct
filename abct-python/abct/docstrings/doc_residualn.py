@@ -20,5 +20,4 @@
    See also:
        SHRINKAGE.
 
-
 ```

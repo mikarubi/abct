@@ -88,7 +88,6 @@ function [M, Q] = loyvain(varargin)
 %
 %   See also:
 %       COLOYVAIN, CANONCOV, KNEICOMP, RESIDUALN.
-%
 
 %% Parse, process, and test arguments
 

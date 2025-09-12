@@ -36,5 +36,4 @@
    See also:
        MUMAP, LOYVAIN.
 
-
 ```

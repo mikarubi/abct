@@ -17,7 +17,6 @@ function X = shrinkage(X)
 %
 %   See also:
 %       RESIDUALN.
-%
 
 arguments
     X (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

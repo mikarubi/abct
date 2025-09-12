@@ -32,5 +32,4 @@
    See also:
        DEGREE.
 
-
 ```

@@ -41,7 +41,6 @@ function V = kneicomp(W, k, weight, varargin)
 %
 %   See also:
 %       KNEIGHBOR, LOYVAIN.
-%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

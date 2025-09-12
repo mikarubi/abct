@@ -89,5 +89,4 @@
    See also:
        COLOYVAIN, CANONCOV, KNEICOMP, RESIDUALN.
 
-
 ```

@@ -62,7 +62,6 @@ function B = kneighbor(W, type, kappa, similarity, method, varargin)
 %
 %   See also:
 %       KNEICOMP, MUMAP.
-%
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}

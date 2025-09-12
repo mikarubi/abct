@@ -18,5 +18,4 @@
    See also:
        RESIDUALN.
 
-
 ```

@@ -42,5 +42,4 @@
    See also:
        KNEIGHBOR, LOYVAIN.
 
-
 ```

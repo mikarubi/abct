@@ -101,5 +101,4 @@
            PyNNDescent (if method="indirect")
            PyManopt (if solver="trustregions") * warning: slow *
 
-
 ```
