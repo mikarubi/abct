@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>abct – abct documentation</title>
+<title>Installation – abct documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./notebooks.html" rel="next">
+<link href="./examples/1_residualn.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -117,12 +117,6 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="./installation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Installation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./notebooks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Notebooks</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -272,7 +266,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">abct</h1>
+<h1 class="title">Installation</h1>
 </div>
 
 
@@ -289,8 +283,72 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="matlab-installation" class="level2">
+<h2 class="anchored" data-anchor-id="matlab-installation">MATLAB Installation</h2>
+<section id="dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="dependencies">Dependencies</h3>
+<ul>
+<li>MATLAB ≥R2024a</li>
+<li>kneighbor: Statistics and Machine Learning Toolbox (if <code>method="indirect"</code>)</li>
+<li>mumap: Manopt (<code>trustregions</code> solver) or Deep Learning Toolbox (<code>adam</code> solver)</li>
+<li>mumap: Parallel Computing Toolbox (if <code>gpu=true</code>)</li>
+</ul>
+</section>
+<section id="simple-installation" class="level3">
+<h3 class="anchored" data-anchor-id="simple-installation">Simple installation</h3>
+<p>Add <code>./abct-matlab/abct</code> to your MATLAB path.</p>
+<pre><code>addpath('./abct-matlab/abct')</code></pre>
+</section>
+<section id="package-installation" class="level3">
+<h3 class="anchored" data-anchor-id="package-installation">Package installation</h3>
+<p>Install using the MATLAB Package Manager.</p>
+<pre><code>mpminstall("./abct-matlab/abct")</code></pre>
+</section>
+<section id="getting-help-on-a-function" class="level3">
+<h3 class="anchored" data-anchor-id="getting-help-on-a-function">Getting help on a function</h3>
+<pre><code>help functionname
+doc functionname</code></pre>
+</section>
+</section>
+<section id="python-installation" class="level2">
+<h2 class="anchored" data-anchor-id="python-installation">Python Installation</h2>
+<section id="dependencies-1" class="level3">
+<h3 class="anchored" data-anchor-id="dependencies-1">Dependencies</h3>
+<ul>
+<li>Python ≥3.11</li>
+<li>numpy</li>
+<li>scipy</li>
+<li>igraph</li>
+<li>pytorch</li>
+<li>pynndescent</li>
+<li>pymanopt</li>
+<li>pydantic</li>
+</ul>
+</section>
+<section id="direct-install" class="level3">
+<h3 class="anchored" data-anchor-id="direct-install">Direct install</h3>
+<p>Download latest release and install using pip.</p>
+<pre><code>pip install ./abct-python</code></pre>
+</section>
+<section id="pypi-install" class="level3">
+<h3 class="anchored" data-anchor-id="pypi-install">Pypi install</h3>
+<p>Install directly from pypi (may not be the latest release).</p>
+<pre><code>pip install abct</code></pre>
+</section>
+<section id="getting-help-on-a-function-1" class="level3">
+<h3 class="anchored" data-anchor-id="getting-help-on-a-function-1">Getting help on a function</h3>
+<pre><code>import abct
+
+help(abct.functionname)  # python
+abct.functionname?       # ipython</code></pre>
+</section>
+</section>
+<section id="computational-notebooks" class="level2">
+<h2 class="anchored" data-anchor-id="computational-notebooks">Computational notebooks</h2>
+<p>All the provided examples can be run online as Jupyter notebooks in <a href="https://colab.research.google.com/">Google Colab</a> (You need a Google account). To run in Colab, click the “Open in Colab” button at the top of the page of each example.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -699,8 +757,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./notebooks.html" class="pagination-link" aria-label="Notebooks">
-        <span class="nav-page-text">Notebooks</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./examples/1_residualn.html" class="pagination-link" aria-label="Global Residualization">
+        <span class="nav-page-text">Global Residualization</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

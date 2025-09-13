@@ -1,5 +1,7 @@
 ## Dispersion Centralities
 
+[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/7_dispersion.ipynb){.btn .btn-primary}
+
 ### Set up and load data
 
 ```{python}

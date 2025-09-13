@@ -26,8 +26,6 @@ website:                          # Website-level configuration
         href: index.qmd
       - text: Installation
         href: installation.qmd
-      - text: Notebooks
-        href: notebooks.qmd
       
       - section: Examples
         contents:

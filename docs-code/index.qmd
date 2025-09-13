@@ -2,3 +2,21 @@
 title: abct
 ---
 
+abct is a MATLAB and Python toolbox for unsupervised learning, network science, and imaging/network neuroscience.
+
+The toolbox includes three variants of global residualization, the Loyvain and co-Loyvain methods (for $k$-means, $k$-modularity, or spectral clustering of data or network inputs), binary and weighted canonical, co-neighbor, and m-umap components. It also includes computation of degrees (first, second, and residual), dispersions (squared coefficient of variation, $k$-participation coefficient), and network shrinkage. The toolbox illustrates the main analyses on example data that can be run online without a local computational environment. 
+
+See this reference for additional details: Rubinov M (2025). Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience. [https://doi.org/10.48550/arXiv.2508.10045](arXiv:2508.10045)
+
+### Download
+
+Download latest releases:
+[ABCT MATLAB](https://github.com/mikarubi/abct/raw/refs/heads/main/abct-matlab.zip){.btn .btn-primary}.
+[ABCT Python](https://github.com/mikarubi/abct/raw/refs/heads/main/abct-python.zip){.btn .btn-primary}.
+
+[Installation instructions](installation.qmd).
+
+### Contact and GitHub
+
+Mika Rubinov: mika.rubinov at vanderbilt.edu
+[GitHub](https://github.com/mikarubi/abct){.btn .btn-primary}.

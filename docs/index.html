@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -116,12 +145,6 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="./installation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Installation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./notebooks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Notebooks</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -288,8 +311,20 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>abct is a MATLAB and Python toolbox for unsupervised learning, network science, and imaging/network neuroscience.</p>
+<p>The toolbox includes three variants of global residualization, the Loyvain and co-Loyvain methods (for <span class="math inline">\(k\)</span>-means, <span class="math inline">\(k\)</span>-modularity, or spectral clustering of data or network inputs), binary and weighted canonical, co-neighbor, and m-umap components. It also includes computation of degrees (first, second, and residual), dispersions (squared coefficient of variation, <span class="math inline">\(k\)</span>-participation coefficient), and network shrinkage. The toolbox illustrates the main analyses on example data that can be run online without a local computational environment.</p>
+<p>See this reference for additional details: Rubinov M (2025). Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience. <a href="arXiv:2508.10045">https://doi.org/10.48550/arXiv.2508.10045</a></p>
+<section id="download" class="level3">
+<h3 class="anchored" data-anchor-id="download">Download</h3>
+<p>Download latest releases: <a href="https://github.com/mikarubi/abct/raw/refs/heads/main/abct-matlab.zip" class="btn btn-primary">ABCT MATLAB</a>. <a href="https://github.com/mikarubi/abct/raw/refs/heads/main/abct-python.zip" class="btn btn-primary">ABCT Python</a>.</p>
+<p><a href="./installation.html">Installation instructions</a>.</p>
+</section>
+<section id="contact-and-github" class="level3">
+<h3 class="anchored" data-anchor-id="contact-and-github">Contact and GitHub</h3>
+<p>Mika Rubinov: mika.rubinov at vanderbilt.edu <a href="https://github.com/mikarubi/abct" class="btn btn-primary">GitHub</a>.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
