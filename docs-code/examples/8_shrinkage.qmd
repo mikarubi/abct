@@ -1,8 +1,4 @@
----
-title: Network Shrinkage
-jupyter: python3
-order: 8
----
+## Network Shrinkage
 
 ### Set up and load data
 

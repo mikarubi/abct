@@ -1,8 +1,4 @@
----
-title: Network Clustering
-jupyter: python3
-order: 2
----
+## Loyvain Clustering
 
 ### Set up and load data
 

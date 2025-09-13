@@ -1,8 +1,4 @@
----
-title: Degree and Second Degree
-jupyter: python3
-order: 6
----
+## Degree Centralities
 
 ### Set up and load data
 

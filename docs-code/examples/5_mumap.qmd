@@ -1,8 +1,4 @@
----
-title: m-umap Embeddings
-jupyter: python3
-order: 5
----
+## m-umap Components
 
 ### Set up and load data
 

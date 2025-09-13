@@ -1,8 +1,4 @@
----
-title: Network Transformations
-jupyter: python3
-order: 1
----
+## Global Residualization
 
 ### Set up and load data
 
