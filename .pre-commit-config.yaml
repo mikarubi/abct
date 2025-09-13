@@ -7,7 +7,12 @@ repos:
       language: python
       stages: [pre-commit]
     - id: make-notebooks
-      name: Make notebooks from qmd
+      name: Make notebooks
       entry: ./tools/make_notebooks
       language: python
+      stages: [pre-commit]
+    - id: update-readme
+      name: Update README.md
+      entry: bash -c "cp ./docs-code/installation.qmd ./README.md"
+      language: system
       stages: [pre-commit]

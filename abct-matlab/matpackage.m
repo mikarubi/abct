@@ -1,3 +1,8 @@
+version = "2025-09-13"
 abct_dir = fullfile(fileparts(mfilename("fullpath")), "abct");
+
 delete(fullfile(abct_dir, "resources", "mpackage.json"));
-mpmcreate("abct", abct_dir, DisplayName="abct", ReleaseCompatibility=">=R2024a");
+mpmcreate("abct", abct_dir, ...
+            DisplayName="abct", ...
+            ReleaseCompatibility=">=R2024a", ...
+            Version=version);

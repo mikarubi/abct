@@ -41,7 +41,7 @@ def leiden(
         # test for increase
         if (C.modularity - Q) > tolerance:
             if display == "replicate":
-                print("Replicate: %4d.    Objective: %4.4f.    Δ: %4.4f." % (i, C.modularity, C.modularity - Q))
+                print(f"Replicate: {i:4d}.    Objective: {C.modularity:4.4f}.    Δ: {C.modularity - Q:4.4f}.")
             
             Q = C.modularity
             M = C.membership

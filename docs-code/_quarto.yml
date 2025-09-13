@@ -6,7 +6,7 @@ project:                          # Project-level configuration
 
 format:
   html:
-    theme: pulse
+    theme: cosmo
     code-fold: false
     code-copy: true
 
