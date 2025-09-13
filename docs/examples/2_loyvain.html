@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Network Clustering – abct documentation</title>
+<title>loyvain – abct documentation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b078c8d890d03b44fdc8771f83f9aa3e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f5b03477205d38c42941473989caebc7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -120,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/2_loyvain.html">Network Clustering</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/2_loyvain.html">Loyvain Clustering</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -145,6 +145,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Notebooks</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -157,43 +175,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/1_residualn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Network Transformations</span></a>
+ <span class="menu-text">Global Residualization</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/2_loyvain.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Network Clustering</span></a>
+ <span class="menu-text">Loyvain Clustering</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/3_canoncov.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Canonical Covariance</span></a>
+ <span class="menu-text">Canonical Components</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/4_kneicomp.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Co-activity Gradients</span></a>
+ <span class="menu-text">Co-neighbor Components</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/5_mumap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">m-umap Embeddings</span></a>
+ <span class="menu-text">m-umap Components</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/6_degree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Degree and Second Degree</span></a>
+ <span class="menu-text">Degree Centralities</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/7_dispersion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Measures of Dispersion</span></a>
+ <span class="menu-text">Dispersion Centralities</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -290,9 +308,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/2_loyvain.html">Network Clustering</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/2_loyvain.html">Loyvain Clustering</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Network Clustering</h1>
+<h1 class="title">Loyvain Clustering</h1>
 </div>
 
 
@@ -311,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="set-up-and-load-data" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-and-load-data">Set up and load data</h3>
-<div id="24193602" class="cell" data-execution_count="1">
+<div id="24193602" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install abct and download abct_utils.py</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">--</span>quiet abct nilearn</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">--</span>no<span class="op">-</span>clobber https:<span class="op">//</span>github.com<span class="op">/</span>mikarubi<span class="op">/</span>abct<span class="op">/</span>raw<span class="op">/</span>refs<span class="op">/</span>heads<span class="op">/</span>main<span class="op">/</span>docs<span class="op">-</span>code<span class="op">/</span>examples<span class="op">/</span>abct_utils.py</span>
@@ -346,7 +364,7 @@ File ‘abct_utils.py’ already there; not retrieving.
 </section>
 <section id="set-up-data-and-functions" class="level3">
 <h3 class="anchored" data-anchor-id="set-up-data-and-functions">Set up data and functions</h3>
-<div id="727edd52" class="cell" data-execution_count="2">
+<div id="727edd52" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get residual correlation networks</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Xg <span class="op">=</span> abct.residualn(X.T, <span class="st">"global"</span>).T</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Xg <span class="op">=</span> Xg <span class="op">/</span> np.linalg.norm(Xg, axis<span class="op">=</span><span class="dv">0</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
@@ -380,7 +398,7 @@ File ‘abct_utils.py’ already there; not retrieving.
 </section>
 <section id="run-standard-k-means-and-spectral-clustering" class="level3">
 <h3 class="anchored" data-anchor-id="run-standard-k-means-and-spectral-clustering">Run standard k-means and spectral clustering</h3>
-<div id="71d6c62c" class="cell" data-execution_count="3">
+<div id="71d6c62c" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>start_time <span class="op">=</span> time.time()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Running standard k-means and spectral clustering."</span>)</span>
@@ -408,7 +426,7 @@ Time elapsed: 99.83438682556152 seconds.</code></pre>
 </section>
 <section id="run-loyvain-k-means-and-spectral-clustering" class="level3">
 <h3 class="anchored" data-anchor-id="run-loyvain-k-means-and-spectral-clustering">Run Loyvain k-means and spectral clustering</h3>
-<div id="0d1178c5" class="cell" data-execution_count="4">
+<div id="0d1178c5" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>start_time <span class="op">=</span> time.time()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Running Loyvain k-means and spectral clustering."</span>)</span>
@@ -438,7 +456,7 @@ Time elapsed: 5.108588218688965 seconds.</code></pre>
 </section>
 <section id="visualize-clustering-results" class="level2">
 <h2 class="anchored" data-anchor-id="visualize-clustering-results">Visualize clustering results</h2>
-<div id="34590a3a" class="cell" data-execution_count="5">
+<div id="34590a3a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, Mi <span class="kw">in</span> <span class="bu">enumerate</span>(MKmod):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    fig_surf(Mi, <span class="ss">f"Loyvain correlation networks: </span><span class="sc">{</span>K[i]<span class="sc">}</span><span class="ss"> modules"</span>, <span class="st">"tab20b"</span>, pmin<span class="op">=</span><span class="dv">0</span>, pmax<span class="op">=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -479,7 +497,7 @@ Time elapsed: 5.108588218688965 seconds.</code></pre>
 </div>
 <section id="compare-clustering-similarities" class="level3">
 <h3 class="anchored" data-anchor-id="compare-clustering-similarities">Compare clustering similarities</h3>
-<div id="d1c2e85f" class="cell" data-execution_count="6">
+<div id="d1c2e85f" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plots of k-means clustering similarities</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> kmeans_lloyd_similarity, kmeans_loyvain_similarity</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span>fig_scatter(x, y, <span class="st">"Lloyd k-means"</span>, <span class="st">"Loyvain k-means"</span>, <span class="st">"K-means similarity"</span>)</span>
@@ -963,13 +981,13 @@ if (outputEl) {{
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../examples/1_residualn.html" class="pagination-link" aria-label="Network Transformations">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Network Transformations</span>
+      <a href="../examples/1_residualn.html" class="pagination-link" aria-label="Global Residualization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Global Residualization</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../examples/3_canoncov.html" class="pagination-link" aria-label="Canonical Covariance">
-        <span class="nav-page-text">Canonical Covariance</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../examples/3_canoncov.html" class="pagination-link" aria-label="Canonical Components">
+        <span class="nav-page-text">Canonical Components</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

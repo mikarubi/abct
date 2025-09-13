@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mikarubi.github.io/abct/index.html</loc>
-    <lastmod>2025-09-12T19:26:01.433Z</lastmod>
+    <loc>https://mikarubi.github.io/abct/notebooks.html</loc>
+    <lastmod>2025-09-13T02:51:09.491Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/residualn.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/loyvain.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/kneighbor.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/dispersion.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/coloyvain.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/8_shrinkage.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:44:28.896Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/6_degree.html</loc>
-    <lastmod>2025-09-12T22:38:46.213Z</lastmod>
+    <lastmod>2025-09-13T02:44:07.424Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/4_kneicomp.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:43:35.964Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/2_loyvain.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:43:09.314Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/1_residualn.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:42:52.057Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/3_canoncov.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:43:22.672Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/5_mumap.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:43:52.626Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/examples/7_dispersion.html</loc>
-    <lastmod>2025-09-12T22:10:51.063Z</lastmod>
+    <lastmod>2025-09-13T02:44:18.279Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/canoncov.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/degree.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/kneicomp.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/louvains.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/mumap.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
   </url>
   <url>
     <loc>https://mikarubi.github.io/abct/functions/shrinkage.html</loc>
-    <lastmod>2025-09-12T22:16:15.633Z</lastmod>
+    <lastmod>2025-09-12T22:41:10.453Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mikarubi.github.io/abct/installation.html</loc>
+    <lastmod>2025-09-13T02:51:08.754Z</lastmod>
   </url>
 </urlset>

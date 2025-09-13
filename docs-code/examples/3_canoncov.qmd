@@ -1,8 +1,4 @@
----
-title: Canonical Covariance
-jupyter: python3
-order: 3
----
+## Canonical Components
 
 ### Set up and load data
 

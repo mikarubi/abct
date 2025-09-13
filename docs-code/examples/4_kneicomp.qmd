@@ -1,8 +1,4 @@
----
-title: Co-activity Gradients
-jupyter: python3
-order: 4
----
+## Co-neighbor Components
 
 ### Set up and load data
 

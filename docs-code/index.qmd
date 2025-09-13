@@ -1,6 +1,4 @@
 ---
-title: abct documentation
-toc: true
+title: abct
 ---
 
-Welcome! Browse notebooks via the sidebar or the gallery below.
