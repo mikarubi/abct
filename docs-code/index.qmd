@@ -21,4 +21,4 @@ All the provided examples can be run online as Jupyter notebooks in [Google Cola
 
 ### Contact
 
-Mika Rubinov: mika.rubinov at vanderbilt.edu
+Mika Rubinov: `mika.rubinov at vanderbilt.edu`

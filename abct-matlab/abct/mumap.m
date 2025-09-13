@@ -100,6 +100,9 @@ function [U, Partition, CostHistory] = mumap(varargin)
 %           PyTorch
 %           PyNNDescent (if method="indirect")
 %           PyManopt (if solver="trustregions") * warning: slow *
+%
+%   See also:
+%       KNEIGHBOR, LOUVAINS, KNEICOMP
 
 % Parse, process, and test arguments
 Args = muma.step0_args(varargin{:});
