@@ -1,8 +1,6 @@
----
-title: Installation
----
+# Installation
 
-## MATLAB Installation
+## MATLAB
 
 ### Dependencies
 
@@ -32,7 +30,7 @@ help functionname
 doc functionname
 ```
 
-## Python Installation
+## Python
 
 ### Dependencies
 
