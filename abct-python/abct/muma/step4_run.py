@@ -67,11 +67,11 @@ def step4_run(U, Args):
         case "adam":
             vb = Args.verbose
             fp = {
-                "head": lambda: print("%5s %24s %12s" % ("iter", "cost val", "grad. norm")) if vb else None,
-                "iter": lambda t, cost, grad_norm: print("%5d %+.16e %12e" % (t, cost, grad_norm)) if vb else None,
-                "stop_cost": lambda: print("Cost tolerance reached; tolerance = %g." % Args.tolerance) if vb else None,
-                "stop_grad": lambda: print("Gradient norm tolerance reached; tolerance = %g." % Args.tolerance) if vb else None,
-                "stop_iter": lambda: print("Max iter exceeded; maxiter = %g." % Args.maxiter) if vb else None
+                "head": lambda: print(f"{'iter':5s} {'cost val':24s} {'grad. norm':12s}") if vb else None,
+                "iter": lambda t, cost, grad_norm: print(f"{t:5d} {cost:+.16e} {grad_norm:12e}") if vb else None,
+                "stop_cost": lambda: print(f"Cost tolerance reached; tolerance = {Args.tolerance:g}.") if vb else None,
+                "stop_grad": lambda: print(f"Gradient norm tolerance reached; tolerance = {Args.tolerance:g}.") if vb else None,
+                "stop_iter": lambda: print(f"Max iter exceeded; maxiter = {Args.maxiter:g}.") if vb else None
             }
             fp["head"]()
 

@@ -1,51 +1,73 @@
-# abct
+---
+title: Installation
+---
 
-abc-tool in MATLAB and Python
-
-## MATLAB
+## MATLAB Installation
 
 ### Dependencies
+
 - MATLAB ≥R2024a
+- kneighbor: Statistics and Machine Learning Toolbox (if `method="indirect"`)
+- mumap: Manopt (`trustregions` solver) or Deep Learning Toolbox (`adam` solver)
+- mumap: Parallel Computing Toolbox (if `gpu=true`)
 
-### Installation
+### Simple installation
 
-#### Simple
-- Just add `./abct-matlab/abct` to your MATLAB path.
-
-#### Package
-- Run the following command in MATLAB:
-  ```matlab
-  mpminstall("./abct-matlab/abct")
-  ```
-
-### Usage
-
-```matlab
-help functionname
+Add `./abct-matlab/abct` to your MATLAB path.
+```
+addpath('./abct-matlab/abct')
 ```
 
-## Python
+### Package installation
+
+Install using the MATLAB Package Manager.
+```
+mpminstall("./abct-matlab/abct")
+```
+
+### Getting help on a function
+
+```
+help functionname
+doc functionname
+```
+
+## Python Installation
 
 ### Dependencies
-- Python ≥3.10
+
+- Python ≥3.11
 - numpy
 - scipy
+- igraph
+- pytorch
+- pynndescent
+- pymanopt
 - pydantic
 
-### Installation
+### Direct install
 
-```bash
+Download latest release and install using pip.
+```
+pip install ./abct-python
+```
+
+### Pypi install
+
+Install directly from pypi (may not be the latest release).
+```
 pip install abct
 ```
 
-### Usage
+### Getting help on a function
 
-```ipython
+```
 import abct
 
-abct.functionname?
+help(abct.functionname)  # python
+abct.functionname?       # ipython
 ```
 
-## Contact
+## Computational notebooks
 
-mika.rubinov at vanderbilt.edu
+All the provided examples can be run online as Jupyter notebooks in [Google Colab](https://colab.research.google.com/) (You need a Google account). To run in Colab, click the "Open in Colab" button at the top of the page of each example.
