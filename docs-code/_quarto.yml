@@ -37,7 +37,7 @@ website:                          # Website-level configuration
           href: examples/3_canoncov.qmd
         - text: Co-neighbor Components
           href: examples/4_kneicomp.qmd
-        - text: m-umap Components
+        - text: m-umap Embeddings
           href: examples/5_mumap.qmd
         - text: Degree Centralities
           href: examples/6_degree.qmd
