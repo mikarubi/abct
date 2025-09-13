@@ -1,6 +1,6 @@
 ## Network Shrinkage
 
-[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/8_shrinkage.ipynb){.btn .btn-primary}
+[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/8_shrinkage.ipynb){.btn .btn-primary .btn-sm}
 
 ### Set up and load data
 
