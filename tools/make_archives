@@ -1,0 +1,8 @@
+#!/bin/bash
+
+rm ./abct-matlab.zip
+rm ./abct-python.zip
+touch ./v$(date +%Y%m%d)
+zip -r abct-matlab.zip ./abct-matlab v$(date +%Y%m%d)
+zip -r abct-python.zip ./abct-python v$(date +%Y%m%d)
+rm ./v$(date +%Y%m%d)
