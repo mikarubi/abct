@@ -4,7 +4,7 @@ import os
 from datetime import date
 
 # Make archives
-today = str(date.today())
+today = date.today().strftime("%Y.%m.%d")
 os.system("rm ./abct-matlab.zip")
 os.system("rm ./abct-python.zip")
 os.system("touch ./v"+today)
