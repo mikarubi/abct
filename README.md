@@ -65,7 +65,3 @@ import abct
 help(abct.functionname)  # python
 abct.functionname?       # ipython
 ```
-
-## Computational notebooks
-
-All the provided examples can be run online as Jupyter notebooks in [Google Colab](https://colab.research.google.com/) (You need a Google account). To run in Colab, click the "Open in Colab" button at the top of the page of each example.
