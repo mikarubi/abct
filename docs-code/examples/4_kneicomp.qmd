@@ -1,6 +1,6 @@
 ## Co-neighbor Components
 
-[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/4_kneicomp.ipynb){.btn .btn-primary .btn-sm}
+[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/4_kneicomp.ipynb){.btn .btn-dark .btn-sm}
 
 ### Set up and load data
 
