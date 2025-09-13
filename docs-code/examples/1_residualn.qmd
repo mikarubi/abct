@@ -1,5 +1,7 @@
 ## Global Residualization
 
+[Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/1_residualn.ipynb){.btn .btn-primary}
+
 ### Set up and load data
 
 ```{python}
