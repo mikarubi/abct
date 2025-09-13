@@ -8,8 +8,8 @@ today = str(date.today())
 os.system("rm ./abct-matlab.zip")
 os.system("rm ./abct-python.zip")
 os.system("touch ./v"+today)
-os.system("zip -r abct-matlab.zip ./abct-matlab v"+today)
-os.system("zip -r abct-python.zip ./abct-python v"+today)
+os.system("zip -r abct-matlab.zip ./abct-matlab/abct ./abct-matlab/matpackage.m v"+today)
+os.system("zip -r abct-python.zip ./abct-python/abct ./abct-python/pyproject.toml v"+today)
 os.system("rm ./v"+today)
 
 # Update versions
