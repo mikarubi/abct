@@ -6,9 +6,8 @@ The toolbox includes three variants of global residualization, the Loyvain and c
 
 See this reference for additional details:
 
-Rubinov M (2025). 
-Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience.
-arXiv (2025) [doi:10.48550/arXiv.2508.10045](https://doi.org/10.48550/arXiv.2508.10045).
+Rubinov M. Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience.
+arXiv, 2025, [doi:10.48550/arXiv.2508.10045](https://doi.org/10.48550/arXiv.2508.10045).
 
 ### Download
 

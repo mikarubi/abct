@@ -1,4 +1,4 @@
-## m-umap Components
+## m-umap Embeddings
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/5_mumap.ipynb){.btn .btn-dark .btn-sm}
 
