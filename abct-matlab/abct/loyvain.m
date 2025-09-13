@@ -87,7 +87,7 @@ function [M, Q] = loyvain(varargin)
 %       Therefore, it is generally a good idea to set NumBatches > 1.
 %
 %   See also:
-%       COLOYVAIN, CANONCOV, KNEICOMP, RESIDUALN.
+%       COLOYVAIN, CANONCOV, KNEICOMP, LOUVAINS, RESIDUALN.
 
 %% Parse, process, and test arguments
 

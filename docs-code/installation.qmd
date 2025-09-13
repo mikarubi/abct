@@ -6,7 +6,7 @@
 
 - MATLAB ≥R2024a
 - kneighbor: Statistics and Machine Learning Toolbox (if `method="indirect"`)
-- mumap: Manopt (`trustregions` solver) or Deep Learning Toolbox (`adam` solver)
+- mumap: Manopt (if `solver="trustregions"`) or Deep Learning Toolbox (if `solver="adam"`)
 - mumap: Parallel Computing Toolbox (if `gpu=true`)
 
 ### Simple installation

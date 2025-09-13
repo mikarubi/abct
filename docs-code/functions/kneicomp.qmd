@@ -40,6 +40,6 @@
        constraints. The order of binary components will be arbitrary. 
 
    See also:
-       KNEIGHBOR, LOYVAIN.
+       KNEIGHBOR, LOYVAIN, MUMAP.
 
 ```

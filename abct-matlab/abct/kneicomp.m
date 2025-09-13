@@ -40,7 +40,7 @@ function V = kneicomp(W, k, weight, varargin)
 %       constraints. The order of binary components will be arbitrary. 
 %
 %   See also:
-%       KNEIGHBOR, LOYVAIN.
+%       KNEIGHBOR, LOYVAIN, MUMAP.
 
 arguments
     W (:, :) double {mustBeNonempty, mustBeFinite, mustBeReal}
