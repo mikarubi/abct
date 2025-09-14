@@ -16,7 +16,7 @@ execute:
   warnings: false
 
 website:                          # Website-level configuration
-  title: abct documentation       # The title displayed in the website header and tab
+  title: abct                     # Website header and tab title
   site-url: https://mikarubi.github.io/abct/
   page-navigation: true
   sidebar:
