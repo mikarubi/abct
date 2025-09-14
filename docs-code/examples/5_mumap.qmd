@@ -26,8 +26,8 @@ UMAP and m-umap ultimately seek to approximate symmetric 𝜅-nearest-neighbor r
 
 ```{python}
 
-# Define and visualize co-neighbor networks
-Cn = abct.kneighbor(C, "nearest", 50).toarray()   # Correlation nearest-neighbor network
+# Correlation nearest-neighbor network
+Cn = abct.kneighbor(C, "nearest", 50).toarray()
 
 fig_imshow(Cn[np.ix_(ordc, ordc)],
            "Correlation nearest-neighbor network",

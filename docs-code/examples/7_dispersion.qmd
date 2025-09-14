@@ -55,7 +55,7 @@ CV = abct.dispersion(Cn, "coefvar2")
 
 # Get participation coefficients
 K = np.arange(5, 30, 5)    # number of clusters
-repl = 100                 # number of replicates
+repl = 10                  # number of replicates
 
 # Set random seed
 np.random.seed(1)
@@ -97,9 +97,11 @@ normalize = lambda x: (x - x.min()) / (x.max() - x.min())
 
 for i in range(len(K)):
     if i == 0:
-        fig = fig_scatter(- np.log10(1 - WP[i]), normalize(- WV))
+        fig = fig_scatter(- np.log10(1 - WP[i]),
+                            normalize(- WV))
     else:
-        fig.add_scatter(x = - np.log10(1 - WP[i]), y = normalize(- WV), mode="markers")
+        fig.add_scatter(x = - np.log10(1 - WP[i]),
+                        y = normalize(- WV), mode="markers")
 
 r = np.corrcoef(WV, np.array(WP))[0][1:]
 fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
@@ -108,9 +110,11 @@ fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
 
 for i in range(len(K)):
     if i == 0:
-        fig = fig_scatter(- np.log10(1 - CP[i]), normalize(- CV))
+        fig = fig_scatter(- np.log10(1 - CP[i]), 
+                            normalize(- CV))
     else:
-        fig.add_scatter(x = - np.log10(1 - CP[i]), y = normalize(- CV), mode="markers")
+        fig.add_scatter(x = - np.log10(1 - CP[i]), 
+                              y = normalize(- CV), mode="markers")
 
 r = np.corrcoef(CV, np.array(CP))[0][1:]
 fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
