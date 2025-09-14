@@ -83,7 +83,7 @@ else
     assert(isequal(kappa, round(kappa)), "kappa > 1 must be an integer.")
 end
 
-Row = repmat((1:n).', 1, kappa+1);
+Row = repmat((1:n)', 1, kappa+1);
 if similarity == "network"
     assert(isequal(size(W, 1), size(W, 2)), "Network matrix must be square.")
     W(1:n+1:end) = inf;
@@ -108,7 +108,7 @@ else
             Col = zeros(n, kappa+1);
             for i = 1:b
                 Ixi = Ix(i):Ix(i+1)-1;
-                [~, Col(Ixi, :)] = maxk(X(Ixi, :) * X.', kappa+1, 2);
+                [~, Col(Ixi, :)] = maxk(X(Ixi, :) * X', kappa+1, 2);
             end
         case "indirect"
             switch similarity

@@ -30,11 +30,11 @@ D = D(ix);
 n = length(D);
 [bk, r0] = polyfit((1:n)', D, 3);
 rms0 = r0.normr / sqrt(n);    % get rms
-x = rescale(1:n).';
+x = rescale(1:n)';
 y(n) = 0;
 for k = 1:n
     b = bk;
-    [bk, rk] = polyfit((k:n).', D(k:n), 3);
+    [bk, rk] = polyfit((k:n)', D(k:n), 3);
     assert(numel((k:n))==(n-k+1))
     rmsk = rk.normr / sqrt(n-k+1);
     y(k) = (rms0 - rmsk) / rms0;
@@ -44,5 +44,5 @@ for k = 1:n
     end
 end
 
-D = polyval(b, (1:n).');
+D = polyval(b, (1:n)');
 X = V * diag(D) * V';

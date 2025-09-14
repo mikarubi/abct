@@ -39,7 +39,7 @@ function [M, Q] = louvains(W, Args)
 arguments
     W (:, :) double {mustBeNonnegativeSymmetric}
     Args.gamma (1, 1) {mustBePositive} = 1
-    Args.start (:, 1) {mustBePositive, mustBeInteger} = (1:length(W)).'
+    Args.start (:, 1) {mustBePositive, mustBeInteger} = (1:length(W))'
     Args.replicates (1, 1) {mustBeInteger, mustBePositive} = 10
     Args.finaltune (1, 1) logical = false
     Args.tolerance (1, 1) double {mustBePositive} = 1e-10
@@ -136,7 +136,7 @@ while 1
                     Sm_nrm(u) = Sm_nrm(u) - S_nrm(i);
 
                     flag = true;                                % If we move the node to a different community, we add
-                    Pi = Ji(M(Ji) ~= v).';                      % to the rear of the queue all neighbours of the node
+                    Pi = Ji(M(Ji) ~= v)';                      % to the rear of the queue all neighbours of the node
                     Pi = Pi(~Queued(Pi));                       % that do not belong to the node’s new community and
                     Queued(Pi) = p + (1:length(Pi));            % that are not yet in the queue (Traag et al., 2019)
                     p = p + length(Pi);
@@ -157,9 +157,9 @@ while 1
     end
 
     L = sparse(1:n, M, 1);                                      % new module assignments
-    W = full(L.' * W * L);                                      % node-to-module strength
+    W = full(L' * W * L);                                      % node-to-module strength
     n = length(W);                                              % number of nodes
-    M = (1:n).';                                                % initial modules
+    M = (1:n)';                                                % initial modules
 end
 
 end

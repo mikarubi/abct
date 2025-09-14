@@ -21,7 +21,7 @@ U3 = U3 * Rp;
 %% Rotate data to sparse anti-prime meridian
 
 % Unit circle
-Theta = pi * (-p:2:p-2).'/p;
+Theta = pi * (-p:2:p-2)'/p;
 V = [cos(Theta) sin(Theta)];
 
 % Sparse meridians have few strong correlations to other points
