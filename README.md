@@ -23,13 +23,6 @@ Install using the MATLAB Package Manager.
 mpminstall("./abct-matlab/abct")
 ```
 
-### Getting help on a function
-
-```
-help functionname
-doc functionname
-```
-
 ## Python
 
 ### Dependencies
@@ -55,13 +48,4 @@ pip install ./abct-python
 Install directly from pypi (may not be the latest release).
 ```
 pip install abct
-```
-
-### Getting help on a function
-
-```
-import abct
-
-help(abct.functionname)  # python
-abct.functionname?       # ipython
 ```

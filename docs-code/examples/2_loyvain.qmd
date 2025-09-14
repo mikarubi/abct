@@ -2,6 +2,10 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/2_loyvain.ipynb){.btn .btn-dark .btn-sm}
 
+The Loyvain method is a fusion of Lloyd and Louvain methods, two classic algorithms for _k_-means clustering and modularity maximization, respectively. This method specifically interpolates between Lloyd and Louvain, and thus represents unified algorithm for _k_-means clustering and modularity maximization.
+
+Here, we compare the Loyvain method against classic _k_-means and spectral clustering methods on our example brain-imaging correlation networks.
+
 ### Set up and load data
 
 ```{python}
@@ -17,16 +21,18 @@ import numpy as np
 from sklearn import cluster
 from abct_utils import X, C, fig_scatter, fig_surf
 
-```
-
-### Set up data and functions
-
-```{python}
-
 # Get residual correlation networks
 Xg = abct.residualn(X.T, "global").T
 Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
 Cg = Xg.T @ Xg
+
+```
+
+### Set up data and clustering similarity functions
+
+We will compare the performance of Loyvain across a range of cluster numbers. To do this, we will first define the corresponding similarity or objective functions for each of these methods.
+
+```{python}
 
 # Define clustering hyperparameters
 K = np.arange(5, 30, 5)     # number of clusters
@@ -38,7 +44,7 @@ def kmeans_similarity(X, M):
     for u in range(k):
         I = (M == u)                        # cluster indices
         ni = I.sum()                        # cluster size
-        Xi = X[:, I]                        # cluster timeseries
+        Xi = X[:, I]                        # cluster time series
         xi = Xi.mean(1, keepdims=1)         # cluster centroid
         # distance += ((Xi - xi) ** 2).sum()  # distance
         similarity += (Xi.T @ Xi).sum() / ni
@@ -57,6 +63,8 @@ def spectral_similarity(C, M):
 
 ### Run standard k-means and spectral clustering
 
+We will first run standard _k_-means and spectral clustering algorithms. Note that Loyvain maximizes the _k_-means objective on residual networks, and the spectral clustering objective (normalized cut) on the original networks. Accordingly, here we compare it to _k_-means clustering of time series after global signal regression, and spectral clustering of the original correlation networks.
+
 ```{python}
 
 np.random.seed(1)
@@ -68,7 +76,8 @@ spectral_shimalik_similarity = np.zeros(len(K))
 for i, k in enumerate(K):
     print(f"Number of clusters: {k}")
     M_kmeans_sklearn = cluster.KMeans(n_clusters=k, n_init=repl).fit(Xg.T).labels_
-    M_spectral_sklearn = cluster.SpectralClustering(n_clusters=k, affinity='precomputed', n_init=repl).fit(C).labels_
+    M_spectral_sklearn = cluster.SpectralClustering(
+        n_clusters=k, affinity='precomputed', n_init=repl).fit(C).labels_
     kmeans_lloyd_similarity[i] = kmeans_similarity(Xg, M_kmeans_sklearn)
     spectral_shimalik_similarity[i] = spectral_similarity(C, M_spectral_sklearn)
 
@@ -77,6 +86,8 @@ print(f"Time elapsed: {time.time() - start_time} seconds.")
 ```
 
 ### Run Loyvain k-means and spectral clustering
+
+We will now use Loyvain method for direct _k_-means clustering and spectral clustering of correlation networks.
 
 ```{python}
 
@@ -101,6 +112,8 @@ print(f"Time elapsed: {time.time() - start_time} seconds.")
 
 ## Visualize clustering results
 
+We now show the maps of _k_-modularity clusters detected with the Loyvain method.
+
 ```{python}
 
 for i, Mi in enumerate(MKmod):
@@ -109,6 +122,8 @@ for i, Mi in enumerate(MKmod):
 ```
 
 ### Compare clustering similarities
+
+Finally, we directly compare the clustering similarities of Loyvain method to standard _k_-means and spectral clustering algorithms.
 
 ```{python}
 

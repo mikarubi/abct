@@ -1,5 +1,5 @@
 function X = residualn(X, type)
-% RESIDUALN Global residualization of network or timeseries data
+% RESIDUALN Global residualization of network or data matrix
 %
 %   X1 = residualn(X)
 %   X1 = residualn(X, type)
@@ -15,7 +15,7 @@ function X = residualn(X, type)
 %           "rankone": Subtraction of rank-one approximation.
 %
 %   Outputs:
-%       X1: Residual network or timeseries matrix.
+%       X1: Residual network or data matrix.
 %
 %   See also:
 %       SHRINKAGE.

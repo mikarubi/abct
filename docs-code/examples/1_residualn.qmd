@@ -2,6 +2,14 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/1_residualn.ipynb){.btn .btn-dark .btn-sm}
 
+Many datasets and networks contain dominant global patterns that sometimes represent artifactual, trivial, or irrelevant structure. Correspondingly, analyses often seek to remove these patterns to uncover or accentuate interesting underlying structure. We use the term _global residualization_ to describe this removal.
+
+Here, we show approximate equivalence between three variants of global residualization across unsupervised learning, network science, and imaging neuroscience:
+
+- _First-component removal_: Subtraction of rank-one approximation of the data (common in unsupervised learning).
+- _Degree correction_: Subtraction of the normalized outer product of node degree vectors (common in network science).
+- _Global signal regression_: Regression out of the mean time series signal from the time series data (common in imaging neuroscience).
+
 ### Set up and load data
 
 ```{python}
@@ -17,57 +25,61 @@ from abct_utils import W, X, C, ordw, ordc, not_eye, fig_scatter, fig_imshow
 
 ```
 
-### Get structural and correlation networks
+### Show original structural and correlation networks
+
+To show these relationships, we first consider the original structural and correlation networks in our example brain-imaging data. Each network contains 360 nodes (rows and columns) that denote cortical (brain) regions.
 
 ```{python}
 
-WD = dict()
-WD["Original"] = W
-WD["Degree-corrected"] = abct.residualn(W, "degree")
-WD["Rank-one subtracted"] = abct.residualn(W, "rankone")
-WD["Co-neighbor"] = abct.kneighbor(W, "common", kappa=0.1).toarray()
-WD["Nearest-neighbor"] = abct.kneighbor(W, "nearest", kappa=0.1).toarray()
-
-CD = dict()
-Xg = abct.residualn(X.T, "global").T
-Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
-CD["Original"] = C
-CD["Degree-corrected"] = abct.residualn(C, "degree")
-CD["Global-signal regressed"] = Xg.T @ Xg
-CD["Co-neighbor"] = abct.kneighbor(C, "common", kappa=0.1).toarray()
-CD["Nearest-neighbor"] = abct.kneighbor(C, "nearest", kappa=0.1).toarray()
+fig_imshow(W[np.ix_(ordw, ordw)], "Original structural network", "inferno").show()
+fig_imshow(C[np.ix_(ordc, ordc)], "Original correlation network", "viridis").show()
 
 ```
 
-### Visualize structural and correlation networks
+### Residualize structural and correlation networks
+
+We now apply the three variants of global residualization to these networks. Note that while the degree and first-component are removed directly from the networks, the global signal is regressed out of the time series data.
 
 ```{python}
 
-for i, name in enumerate(WD):
-    Wi = WD[name][np.ix_(ordw, ordw)]
-    fig_imshow(Wi, f"{name} structural network", "inferno").show()
+# Residualize structural network
+Wd = abct.residualn(W, "degree")
+Wr = abct.residualn(W, "rankone")
 
-for i, name in enumerate(CD):
-    Ci = CD[name][np.ix_(ordc, ordc)]
-    fig_imshow(Ci, f"{name} correlation network", "viridis").show()
+# Residualize correlation networks
+Cd = abct.residualn(C, "degree")
+Xg = abct.residualn(X.T, "global").T
+Xg = Xg / np.linalg.norm(Xg, axis=0, keepdims=True)
+Cg = Xg.T @ Xg
 
 ```
 
 ### Visualize residual structural and correlation networks
 
+We now visualize variants of the residual structual and correlation networks.
+
+```{python}
+
+fig_imshow(Wd[np.ix_(ordw, ordw)], "Structural network after degree correction", "inferno").show()
+fig_imshow(Wr[np.ix_(ordw, ordw)], "Structural network first-component removal", "inferno").show()
+fig_imshow(Cd[np.ix_(ordc, ordc)], "Correlation network after degree correction", "viridis").show()
+fig_imshow(Cg[np.ix_(ordc, ordc)], "Correlation network after global signal regression", "viridis").show()
+
+```
+
+Finally, we directly show the strong similarity between network weights after distinct residualizations.
+
 ```{python}
 
 # Scatter plot of degree-corrected and rank-one subtracted structural networks
-x, y = WD["Rank-one subtracted"][not_eye], WD["Degree-corrected"][not_eye]
-fig_scatter(x, y, 
+fig_scatter(Wr[not_eye], Wd[not_eye], 
             "Network weights after first-component removal",
             "Network weights after degree correction",
-            f"Structural networks (r = {np.corrcoef(x, y)[0, 1]:.3f})").show()
+            f"Structural networks (r = {np.corrcoef(Wr[not_eye], Wd[not_eye])[0, 1]:.3f})").show()
 
-x, y = CD["Global-signal regressed"][not_eye], CD["Degree-corrected"][not_eye]
-fig_scatter(x, y, 
+fig_scatter(Cd[not_eye], Cg[not_eye], 
             "Network weights after degree correction",
             "Network weights after global-signal regression",
-            f"Correlation networks (r = {np.corrcoef(x, y)[0, 1]:.3f})").show()
+            f"Correlation networks (r = {np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]:.3f})").show()
 
 ```

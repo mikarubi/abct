@@ -2,6 +2,8 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/8_shrinkage.ipynb){.btn .btn-dark .btn-sm}
 
+Popular models in network neuroscience model network growth as a function of spatial proximity and connectional similarity. These models typically start with a sparse “seed” network of connections, and then proceed to simulate growth by adding connections to this network in discrete time steps. Here, we show that the assumption of network growth in a variant of these models can be subsumed by a type of shrinkage, or the weakening of dominant structural patterns in the network. We illustrate this relationship in structural and proximity networks from our example brain-imaging data.
+
 ### Set up and load data
 
 ```{python}
@@ -19,41 +21,56 @@ from abct_utils import W, Distance, ordw, not_eye, fig_scatter, fig_imshow
 
 ### Visualize structural networks
 
+We begin by visualizing the structural network in our data.
+
 ```{python}
 
-## Get structural networks
-WD = dict()
-WD["Original"] = W
-WD["Proximity"] = Distance**(-1)
-np.fill_diagonal(WD["Proximity"], 0)
-WD["Shrunken proximity"] = abct.shrinkage(WD["Proximity"])
+fig_imshow(W[np.ix_(ordw, ordw)], 
+            "Structural network", "inferno",
+            pmin=-0, pmax=-0.01).show()
 
-for i, name in enumerate(WD):
-    fig = fig_imshow(WD[name][np.ix_(ordw, ordw)], 
-                    f"{name} structural network", "inferno", 
-                    pmin=-0, pmax=-0.01).show() # negatives define absolute values
+```
+
+### Compute proximity networks
+
+ We now compute and visualize proximity networks, and show that these networks accurately approximate structural networks. Here, we define proximity as distance<sup>(-α)</sup> and simply set α = 1. In practice, we usually fit α to the data, although this has no qualitative effect on our results.
+
+```{python}
+
+# Get proximity networks
+with np.errstate(divide="ignore"):
+    Phi = Distance**(-1)
+    np.fill_diagonal(Phi, 0)
+
+fig_imshow(Phi[np.ix_(ordw, ordw)],
+            "Proximity network", "inferno",
+            pmin=-0, pmax=-0.01).show()
+
+r = np.corrcoef(W[not_eye], Phi[not_eye])[0, 1]
+fig = fig_scatter(W[not_eye], Phi[not_eye],
+                  "Network weights of structural network",
+                  "Network weights of proximity network",
+                 f"Structural and proximity networks (r = {r:.3f})").show()
 
 ```
 
 ### Scatter plots of connectivity and proximity networks
 
+We now sparsify proximity matrices by weakening the contribution of their first several components. This weakening is formally known as shrinkage, and is commonly used to clean covariance or correlation matrices. In our analyses, we find that shrunken proximity networks approximate structural networks with considerably higher accuracy.
+
 ```{python}
 
-# Scatter plot of structural and proximity networks
-x, y = WD["Original"][not_eye], WD["Proximity"][not_eye]
-r = np.corrcoef(x, y)[0, 1]
-fig = fig_scatter(x, y,
-                  "Network weights of structural network",
-                  "Network weights of proximity network",
-                 f"Structural and proximity networks (r = {r:.3f})").show()
+Phi_s = abct.shrinkage(Phi)
+r = np.corrcoef(W[not_eye], Phi_s[not_eye])[0, 1]
 
-# Scatter plot of structural and shrunken proximity networks
-x, y = WD["Original"][not_eye], WD["Shrunken proximity"][not_eye]
-r = np.corrcoef(x, y)[0, 1]
-fig = fig_scatter(x, y,
+fig_imshow(Phi_s[np.ix_(ordw, ordw)],
+            "Shrunken proximity network", "inferno",
+            pmin=-0, pmax=-0.01).show()
+
+r = np.corrcoef(W[not_eye], Phi_s[not_eye])[0, 1]
+fig_scatter(W[not_eye], Phi_s[not_eye],
                   "Network weights of structural network",
                   "Network weights of shrunken proximity network",
                  f"Structural and shrunken proximity networks (r = {r:.3f})").show()
 
 ```
-

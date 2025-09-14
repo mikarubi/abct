@@ -2,6 +2,10 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/7_dispersion.ipynb){.btn .btn-dark .btn-sm}
 
+The squared coefficient of variation is a basic measure of normalized dispersion. It is defined as the ratio of the variance over the squared mean, or equivalently, the ratio of the first and second degrees. 
+
+Here, we show that in networks with relatively homogeneous connections within modules, the squared coefficient of variation is equivalent to a variant of the participation coefficient, a popular module-based measure of con-nectional diversity. It is specifically equivalent to the _k_-participation coefficient, the participation coefficient normalized by module size. We show these equivalences in structural and correlation co-neighbor networks from our example brain-imaging data, because these networks have high connectional homogeneity by construction. 
+
 ### Set up and load data
 
 ```{python}
@@ -13,17 +17,31 @@
 # Import modules
 import abct
 import numpy as np
-from abct_utils import W, C, fig_scatter, fig_surf
+from abct_utils import W, C, ordw, ordc, fig_scatter, fig_surf, fig_imshow
 
 ```
 
-### Set up data and functions
+### Compute and visualize co-neighbor matrices
+
+We first compute and visualize the co-neighbor matrices.
 
 ```{python}
 
 # Get co-neighbor matrices
 Wn = abct.kneighbor(W, "common", kappa=0.1).toarray()
 Cn = abct.kneighbor(C, "common", kappa=0.1).toarray()
+
+# Visualize co-neighbor matrices
+fig_imshow(Wn[np.ix_(ordw, ordw)], "Structural co-neighbor network", "inferno").show()
+fig_imshow(Cn[np.ix_(ordc, ordc)], "Correlation co-neighbor network", "viridis").show()
+
+```
+
+### Compute squared coefficient of variation and _k_-participation coefficient
+
+We now compute the squared coefficient of variation, and the _k_-participation coefficient for these co-neighbor networks. Note that the _k_-participation coefficient is defined for a specific module partition, and we therefore compute it for a range of partitions.
+
+```{python}
 
 # Get squared coefficient of variation
 WV = abct.dispersion(Wn, "coefvar2")
@@ -45,7 +63,10 @@ for i, k in enumerate(K):
 
 ```
 
-### Show maps of CV2
+### Show maps of squared coefficient of variation
+
+We next show the maps of the squared coefficient of variation, separately for the structural and correlation co-neighbor networks.
+
 ```{python}
 
 cv2s = {"Structural - (Squared coefficient of variation)": (- WV, "inferno"),
@@ -57,7 +78,9 @@ for i, (name, vals_cmap) in enumerate(cv2s.items()):
 
 ```
 
-### Scatter plots of CV2 and participation coefficient
+### Scatter plots of squared coefficient of variation and _k_-participation coefficient
+
+Finally, we show the scatter plots of the squared coefficient of variation and the _k_-participation coefficient, separately for the structural and correlation co-neighbor networks. As expected, the squared coefficient of variation and the _k_-participation coefficient are strongly correlated, and this correlation increases with the number of modules, as the within-module connectivity becomes more homogeneous.
 
 ```{python}
 

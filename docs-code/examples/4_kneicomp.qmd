@@ -1,6 +1,10 @@
-## Co-neighbor Components
+## Co-neighbor Components and Residual Degree
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/4_kneicomp.ipynb){.btn .btn-dark .btn-sm}
+
+Diffusion-map embedding is a versatile method for nonlinear dimensionality reduction. One variant of this method has transformed analyses in much of imaging neuroscience by robustly detecting co-activity (functional) gradients, low-dimensional representations of correlation networks that capture important properties of functional organization.
+
+Here, we show an approximate equivalence between the components of co-neighbor networks --- a simple class of integer networks --- and this variant of diffusion-map embedding in our example brain-imaging data.
 
 ### Set up and load data
 
@@ -13,11 +17,27 @@
 # Import modules
 import abct
 import numpy as np
-from abct_utils import W, C, fig_scatter, fig_surf
+from abct_utils import W, C, ordc, fig_scatter, fig_surf, fig_imshow
+
+```
+
+### Visualize co-neighbor networks
+
+Co-neighbor networks, as their name suggests, encode the number of shared 𝜅-nearest, or strongest correlated, neighbors between pairs of nodes. We first visualize the structure of co-neighbor correlation networks in our data.
+
+```{python}
+
+# Define and visualize co-neighbor networks
+# (kappa = 0.1 is equivalent to the top 10% nearest neighbors)
+Cn = abct.kneighbor(C, "common", 0.1).toarray()   # Correlation co-neighbor network
+
+fig_imshow(Cn[np.ix_(ordc, ordc)], "Correlation co-neighbor network", "viridis").show()
 
 ```
 
 ### Get co-activity gradients
+
+Next, we compute the components of co-neighbor networks using the function `kneicomp`.
 
 ```{python}
 
@@ -27,23 +47,22 @@ np.random.seed(1)
 k = 5
 kwargs = {"type":"common", "kappa":0.1, "similarity":"network"}
 
-# Weighted gradients
+# Weighted co-activity gradients
 V_wei = abct.kneicomp(C, k, "weighted", **kwargs)
-V_wei = V_wei[:, [0, 1, 3]]
+V_wei = V_wei[:, [0, 1, 3]] # match components to standard order
 
-# Binary gradients
+# Binary co-activity gradients
 V_bin = abct.kneicomp(C, k, "binary", **kwargs)
-V_bin = V_bin[:, [1, 2, 3]]
+V_bin = V_bin[:, [1, 2, 3]] # match components to standard order
 
 # Flip sign of weighted gradients to match binary gradients
 V_wei *= np.sign(np.sum(V_wei * V_bin, 0))
 
-# Residual degree
-D_wei = abct.degree(C, "residual")
-
 ```
 
 ### Show maps of weighted and binary co-activity components
+
+We now show the maps of three weighted and binary co-activity components. These maps closely resemble the maps of co-activity gradients estimated with diffusion-map embedding.
 
 ```{python}
 
@@ -59,7 +78,12 @@ for i, (name, Vals_cmap) in enumerate(comps.items()):
 
 ### Show map and scatter of residual degree
 
+The primary co-activity gradient plays an especially important role in imaging neuroscience because it represents a transition between primary and association cortical areas. We conclude by showing a particular simple approximation of this component, as the degree of the residual network after first-component removal, or global signal regression.
+
 ```{python}
+
+# Residual degree
+D_wei = abct.degree(C, "residual")
 
 # Map of residual degree
 fig_surf(D_wei, "Residual degree", "viridis")
