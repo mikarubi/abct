@@ -94,10 +94,10 @@ fig_scatter(Wr[not_eye], Wd[not_eye],
             "Weights after degree correction",
             f"Structural network (r = {r:.3f})").show()
 
-r = np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]
-fig_scatter(Cd[not_eye], Cg[not_eye], 
-            "Weights after degree correction",
+r = np.corrcoef(Cg[not_eye], Cd[not_eye])[0, 1]
+fig_scatter(Cg[not_eye], Cd[not_eye], 
             "Weights after global-signal regression",
+            "Weights after degree correction",
             f"Correlation network (r = {r:.3f})").show()
 
 ```
