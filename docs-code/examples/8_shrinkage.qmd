@@ -2,7 +2,7 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/8_shrinkage.ipynb){.btn .btn-dark .btn-sm}
 
-Popular models in network neuroscience model network growth as a function of spatial proximity and connectional similarity. These models typically start with a sparse “seed” network of connections, and then proceed to simulate growth by adding connections to this network in discrete time steps. Here, we show that the assumption of network growth in a variant of these models can be subsumed by a type of shrinkage, or the weakening of dominant structural patterns in the network. We illustrate this relationship in structural and proximity networks from our example brain-imaging data.
+Popular models in network neuroscience model network growth as a function of spatial proximity and connectional similarity. These models typically start with a sparse “seed” network of connections, and then proceed to simulate growth by adding connections to this network in discrete time steps. Here, we show that the assumption of network growth in a variant of these models can be subsumed by a type of shrinkage, or the weakening of dominant structural patterns in the network. We illustrate this relationship in structural and proximity networks on our example brain-imaging data.
 
 ### Set up and load data
 
@@ -33,7 +33,7 @@ fig_imshow(W[np.ix_(ordw, ordw)],
 
 ### Compute proximity networks
 
- We now compute and visualize proximity networks, and show that these networks accurately approximate structural networks. Here, we define proximity as distance<sup>(-α)</sup> and simply set α = 1. In practice, we usually fit α to the data, although this has no qualitative effect on our results.
+ We now compute and visualize proximity networks and show that these networks accurately approximate structural networks. Here, we define proximity as distance<sup>(-α)</sup> and simply set α = 1. In practice, we usually fit α to the data, although this has no qualitative effect on our results.
 
 ```{python}
 

@@ -8,7 +8,7 @@ Here, we show approximate equivalence between three variants of global residuali
 
 - _First-component removal_: Subtraction of rank-one approximation of the data (common in unsupervised learning).
 - _Degree correction_: Subtraction of the normalized outer product of node degree vectors (common in network science).
-- _Global signal regression_: Regression out of the mean time series signal from the time series data (common in imaging neuroscience).
+- _Global signal regression_: Regression of the mean time series signal from the time series data (common in imaging neuroscience).
 
 ### Set up and load data
 
@@ -38,7 +38,7 @@ fig_imshow(C[np.ix_(ordc, ordc)], "Original correlation network", "viridis").sho
 
 ### Residualize structural and correlation networks
 
-We now apply the three variants of global residualization to these networks. Note that while the degree and first-component are removed directly from the networks, the global signal is regressed out of the time series data.
+We now apply the three variants of global residualization to these networks. Note that while the degree and first component are removed directly from the networks, the global signal is regressed out of the time series data.
 
 ```{python}
 
@@ -56,7 +56,7 @@ Cg = Xg.T @ Xg
 
 ### Visualize residual structural and correlation networks
 
-We now visualize variants of the residual structual and correlation networks.
+We now visualize variants of the residual structural and correlation networks.
 
 ```{python}
 
@@ -75,11 +75,11 @@ Finally, we directly show the strong similarity between network weights after di
 fig_scatter(Wr[not_eye], Wd[not_eye], 
             "Network weights after first-component removal",
             "Network weights after degree correction",
-            f"Structural networks (r = {np.corrcoef(Wr[not_eye], Wd[not_eye])[0, 1]:.3f})").show()
+            f"Structural network (r = {np.corrcoef(Wr[not_eye], Wd[not_eye])[0, 1]:.3f})").show()
 
 fig_scatter(Cd[not_eye], Cg[not_eye], 
             "Network weights after degree correction",
             "Network weights after global-signal regression",
-            f"Correlation networks (r = {np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]:.3f})").show()
+            f"Correlation network (r = {np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]:.3f})").show()
 
 ```

@@ -37,7 +37,7 @@ fig_imshow(Cn[np.ix_(ordc, ordc)], "Correlation co-neighbor network", "viridis")
 
 ### Get co-activity gradients
 
-Next, we compute the components of co-neighbor networks using the function `kneicomp`.
+Next, we compute the components of co-neighbor networks.
 
 ```{python}
 
@@ -90,6 +90,9 @@ fig_surf(D_wei, "Residual degree", "viridis")
 
 # Scatter of residual degree and weighted co-activity gradient
 r = np.corrcoef(D_wei, V_wei[:, 0])[0, 1]
-fig = fig_scatter(D_wei, V_wei[:, 0], "Residual degree", "Weighted co-activity gradient", f"r = {r:.3f}").show()
+fig = fig_scatter(D_wei, V_wei[:, 0], 
+                 "Residual degree", 
+                 "Weighted co-activity gradient", 
+                f"Correllation network (r = {r:.3f})").show()
 
 ```

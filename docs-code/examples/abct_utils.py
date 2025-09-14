@@ -30,8 +30,8 @@ fig_scatter = lambda x, y, xl=None, yl=None, tl=None: \
         yaxis_title=yl, 
         title=tl, 
         title_x=0.5, 
-        width=500, 
-        height=500
+        width=360, 
+        height=360
     )
 
 fig_scatter3 = lambda x, y, z, tl=None: \
@@ -39,8 +39,8 @@ fig_scatter3 = lambda x, y, z, tl=None: \
     update_layout(
         title=tl, 
         title_x=0.5, 
-        # width=600, 
-        # height=600
+        width=360, 
+        height=360
     )
 
 fig_imshow = lambda W, tl, cmap, pmin=5, pmax=95: \
@@ -51,8 +51,8 @@ fig_imshow = lambda W, tl, cmap, pmin=5, pmax=95: \
     update_layout(
         title=tl,
         title_x=0.5,
-        # width=600,
-        # height=600
+        width=360,
+        height=360
     )
 
 parc = data["parc"].ravel() - 1

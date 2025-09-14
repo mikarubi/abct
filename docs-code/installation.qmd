@@ -6,7 +6,7 @@
 
 - MATLAB ≥R2024a
 - kneighbor: Statistics and Machine Learning Toolbox (if `method="indirect"`)
-- mumap: Manopt (if `solver="trustregions"`) or Deep Learning Toolbox (if `solver="adam"`)
+- mumap: [Manopt](https://www.manopt.org/) (if `solver="trustregions"`) or Deep Learning Toolbox (if `solver="adam"`)
 - mumap: Parallel Computing Toolbox (if `gpu=true`)
 
 ### Simple installation
@@ -38,7 +38,7 @@ mpminstall("./abct-matlab/abct")
 
 ### Direct install
 
-Download latest release and install using pip.
+Download the latest release and install using pip.
 ```
 pip install ./abct-python
 ```

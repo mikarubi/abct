@@ -4,19 +4,21 @@ abct is a MATLAB and Python toolbox for unsupervised learning, network science, 
 
 The toolbox includes three variants of global residualization, the Loyvain and co-Loyvain methods (for _k_-means, _k_-modularity, or spectral clustering of data or network inputs), as well as binary and weighted canonical and co-neighbor components, and m-umap embeddings. It also includes computation of degree centralities (first, second, and residual), dispersion centralities (squared coefficient of variation, _k_-participation coefficient), and network shrinkage.
 
-See this reference for additional details: Rubinov M. Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience. arXiv, 2025, [doi:10.48550/arXiv.2508.10045](https://doi.org/10.48550/arXiv.2508.10045).
+See this reference for more details: Rubinov M. Unifying equivalences across unsupervised learning, network science, and imaging/network neuroscience. arXiv, 2025, [doi:10.48550/arXiv.2508.10045](https://doi.org/10.48550/arXiv.2508.10045).
 
 ### Download
 
 [ABCT MATLAB](https://github.com/mikarubi/abct/raw/refs/heads/main/abct-matlab.zip){.btn .btn-primary}
 [ABCT Python](https://github.com/mikarubi/abct/raw/refs/heads/main/abct-python.zip){.btn .btn-primary}
-[GitHub](https://github.com/mikarubi/abct){.btn .btn-dark .btn-sm}
+[GitHub](https://github.com/mikarubi/abct){.btn .btn-dark}
 
 ### Interactive examples
 
-The examples illustrate the main analyses in the above study, and can be run interactively as online Jupyter notebooks in [Google Colab](https://colab.research.google.com/) (You need a Google account). To run in Colab, click the `Open in Colab` button at the top of the page of each example.
+The examples illustrate the main analyses in the above study, and can be run interactively as online Jupyter notebooks in [Google Colab](https://colab.research.google.com/) (You need a Google account). To run in Colab, click the **Open in Colab** button at the top of the page of each example.
 
-_NB: Some examples have been simplified for illustrative purposes and computational efficiency, but without qualitative effect on the results._
+Our example brain-imaging data come from the [Human Connectome Project](https://www.humanconnectome.org/), a large brain-imaging resource.
+
+_NB: For illustrative and computational ease, the example analyses are simplified versions of analyses in the original study._
 
 ### Contact
 

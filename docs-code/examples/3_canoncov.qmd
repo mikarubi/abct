@@ -2,7 +2,7 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/3_canoncov.ipynb){.btn .btn-dark .btn-sm}
 
-Canonical covariance analysis (aka. partial least squares correlation) finds linear relationships between pairs of datasets that have the same number of data points but usually have different numbers of features. It specifically finds _k_ pairs of coefficient vectors that transform the original data points into _k_ pairs of components, in a way that maximizes the total covariance over all pairs of components.
+Canonical covariance analysis (aka partial least squares correlation) finds linear relationships between pairs of datasets that have the same number of data points but usually have different numbers of features. It specifically finds _k_ pairs of coefficient vectors that transform the original data points into _k_ pairs of components, in a way that maximizes the total covariance over all pairs of components.
 
 This method is popular across diverse scientific fields, but its application to data with many features can often lead to unstable estimates of coefficients. This problem can be ameliorated, to some extent, through the adoption of sparse variants of these methods.
 
@@ -25,7 +25,7 @@ from abct_utils import W, C, fig_scatter, fig_surf
 
 ### Run canonical covariance analysis
 
-A common formulation of canonical covariance analysis centers on the detection of (principal) components of cross-covariance matrices. We build on this formulation to extend the Loyvain algorithm to do binary variant of this analysis by independently clustering the rows and columns of cross-covariance matrices, or any other bipartite (two-part) networks for that matter. This process simultaneously finds pairs of modules from both datasets and is equivalent to canonical covariance analysis with binary coefficients. 
+A common formulation of canonical covariance analysis centers on the detection of (principal) components of cross-covariance matrices. We build on this formulation to extend the Loyvain algorithm to do a binary variant of this analysis by independently clustering the rows and columns of cross-covariance matrices, or any other bipartite (two-part) networks, for that matter. This process simultaneously finds pairs of modules from both datasets and is equivalent to canonical covariance analysis with binary coefficients. 
 
 ```{python}
 
@@ -89,7 +89,7 @@ fig_scatter(np.arange(k), R_bin,
 
 ### Visualize scatters of canonical components
 
-Finally, we directly show the relationship between the first weighted and binary canonical components. These results show generally high correlations between these components. We note, however, that this high correlations are not necessarily guaranteed because binary constraints can, in principle, result in considerably different components.
+Finally, we directly show the relationship between the first weighted and binary canonical components. These results show generally high correlations between these components. We note, however, that these high correlations are not necessarily guaranteed because binary constraints can, in principle, result in considerably different components.
 
 ```{python}
 
@@ -104,6 +104,6 @@ rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
 fig_scatter(V_wei[:, 0], V_bin[:, 0],
                   "Weighted canonical components",
                   "Binary canonical components",
-                  f"Functional canonical components (r = {rf:.3f})").show()
+                  f"Correlation canonical components (r = {rf:.3f})").show()
 
 ```

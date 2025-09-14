@@ -1,4 +1,4 @@
-version = "2025.09.13"
+version = "2025.09.14"
 abct_dir = fullfile(fileparts(mfilename("fullpath")), "abct");
 
 delete(fullfile(abct_dir, "resources", "mpackage.json"));

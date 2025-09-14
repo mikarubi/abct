@@ -2,7 +2,7 @@
 
 [Open in Colab](https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/6_degree.ipynb){.btn .btn-dark .btn-sm}
 
-Degree is a basic measure of node centrality, defined as sum of node connection weights. Here, we show the equivalence of the degree and its extension, the second degree, with five measures of communication, control, and diversity. Since many of these measures assume that activity propagates on physical networks, we primarily study them on structural networks in our example brain-imaging data.
+Degree is a basic measure of node centrality, defined as the sum of node connection weights. Here, we show the equivalence of the degree and its extension, the second degree, with five measures of communication, control, and diversity. Since many of these measures assume that activity propagates on physical networks, we primarily study them on structural networks in our example brain-imaging data.
 
 ### Set up and load data
 
@@ -43,10 +43,16 @@ Eigenvector_centrality *= np.sign(np.sum(Eigenvector_centrality * Degree))
 Diffusion_efficiency = 1/mean_first_passage_time(W).mean(0)
 
 r = np.corrcoef(Degree, Eigenvector_centrality)[0, 1]
-fig = fig_scatter(Degree, Eigenvector_centrality, "Degree", "Eigenvector centrality", f"r = {r:.3f}").show()
+fig = fig_scatter(Degree, Eigenvector_centrality, 
+                 "Degree", 
+                 "Eigenvector centrality", 
+                f"Structural network (r = {r:.3f})").show()
 
 r = np.corrcoef(Degree, Diffusion_efficiency)[0, 1]
-fig = fig_scatter(Degree, Diffusion_efficiency, "Degree", "Diffusion efficiency", f"r = {r:.3f}").show()
+fig = fig_scatter(Degree, Diffusion_efficiency, 
+                 "Degree", 
+                 "Diffusion efficiency", 
+                f"Structural network (r = {r:.3f})").show()
 
 ```
 
@@ -61,7 +67,7 @@ fig_surf(Degree, "Second degree", "inferno").show()
 
 ```
 
-The second degree is exactly or approximately equivalent to communicability centrality, average controllability, and modal controllability, three popular measures of communication and control. These measures are also based on the assumption of diffusion dynamics, and consider the number and length of all possible walks between two pairs of nodes.
+The second degree is exactly or approximately equivalent to communicability centrality, average controllability, and modal controllability, three popular measures of communication and control. These measures are also based on the assumption of diffusion dynamics and consider the number and length of all possible walks between two pairs of nodes.
 
 ```{python}
 
@@ -72,14 +78,20 @@ Mod_control = metrics.modal_control(W)
 
 r = np.corrcoef(Second_degree, Communicability)[0, 1]
 fig = fig_scatter(Second_degree, Communicability, 
-    "Second degree", "Communicability", f"r = {r:.3f}").show()
+                 "Second degree", 
+                 "Communicability", 
+                f"Structural network (r = {r:.3f})").show()
 
 r = np.corrcoef(Second_degree, Ave_control)[0, 1]
 fig = fig_scatter(Second_degree, Ave_control, 
-    "Second degree", "Average controllability", f"r = {r:.3f}").show()
+                 "Second degree", 
+                 "Average controllability", 
+                f"Structural network (r = {r:.3f})").show()
 
 r = np.corrcoef(Second_degree, Mod_control)[0, 1]
 fig = fig_scatter(Second_degree, Mod_control, 
-    "Second degree", "Modal controllability", f"r = {r:.3f}").show()
+                 "Second degree", 
+                 "Modal controllability", 
+                f"Structural network (r = {r:.3f})").show()
 
 ```
