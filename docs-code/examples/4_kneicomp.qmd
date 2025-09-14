@@ -11,8 +11,9 @@ Here, we show an approximate equivalence between the components of co-neighbor n
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn
 
 # Import modules
 import abct
@@ -31,7 +32,9 @@ Co-neighbor networks, as their name suggests, encode the number of shared 𝜅-n
 # (kappa = 0.1 is equivalent to the top 10% nearest neighbors)
 Cn = abct.kneighbor(C, "common", 0.1).toarray()   # Correlation co-neighbor network
 
-fig_imshow(Cn[np.ix_(ordc, ordc)], "Correlation co-neighbor network", "viridis").show()
+fig_imshow(Cn[np.ix_(ordc, ordc)],
+           "Correlation co-neighbor network",
+           "viridis").show()
 
 ```
 

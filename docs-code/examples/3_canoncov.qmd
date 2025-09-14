@@ -13,8 +13,9 @@ Here, we extend the Loyvain method to do sparse binary canonical covariance anal
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn
 
 # Import modules
 import abct
@@ -96,14 +97,14 @@ Finally, we directly show the relationship between the first weighted and binary
 # Scatter plot of structural canonical components
 rs = np.corrcoef(U_wei[:, 0], U_bin[:, 0])[0, 1]
 fig_scatter(U_wei[:, 0], U_bin[:, 0],
-                  "Weighted canonical components",
-                  "Binary canonical components",
-                  f"Structural canonical components (r = {rs:.3f})").show()
+            "Weighted canonical components",
+            "Binary canonical components",
+           f"Structural canonical components (r = {rs:.3f})").show()
 
 rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
 fig_scatter(V_wei[:, 0], V_bin[:, 0],
-                  "Weighted canonical components",
-                  "Binary canonical components",
-                  f"Correlation canonical components (r = {rf:.3f})").show()
+            "Weighted canonical components",
+            "Binary canonical components",
+           f"Correlation canonical components (r = {rf:.3f})").show()
 
 ```

@@ -9,8 +9,9 @@ Degree is a basic measure of node centrality, defined as the sum of node connect
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn nctpy bctpy
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn nctpy bctpy
 
 # Import modules
 import abct
@@ -63,7 +64,9 @@ We next consider the second degree, defined for each node as the sum of its squa
 ```{python}
 
 Second_degree = abct.degree(W, "second")
-fig_surf(Degree, "Second degree", "inferno").show()
+fig_surf(Degree,
+        "Second degree",
+        "inferno").show()
 
 ```
 

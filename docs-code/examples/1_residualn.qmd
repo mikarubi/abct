@@ -15,8 +15,9 @@ Here, we show approximate equivalence between three variants of global residuali
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn
 
 # Import modules
 import abct
@@ -31,8 +32,13 @@ To show these relationships, we first consider the original structural and corre
 
 ```{python}
 
-fig_imshow(W[np.ix_(ordw, ordw)], "Original structural network", "inferno").show()
-fig_imshow(C[np.ix_(ordc, ordc)], "Original correlation network", "viridis").show()
+fig_imshow(W[np.ix_(ordw, ordw)],
+           "Original structural network",
+           "inferno").show()
+
+fig_imshow(C[np.ix_(ordc, ordc)],
+           "Original correlation network",
+           "viridis").show()
 
 ```
 
@@ -60,10 +66,21 @@ We now visualize variants of the residual structural and correlation networks.
 
 ```{python}
 
-fig_imshow(Wd[np.ix_(ordw, ordw)], "Structural network after degree correction", "inferno").show()
-fig_imshow(Wr[np.ix_(ordw, ordw)], "Structural network first-component removal", "inferno").show()
-fig_imshow(Cd[np.ix_(ordc, ordc)], "Correlation network after degree correction", "viridis").show()
-fig_imshow(Cg[np.ix_(ordc, ordc)], "Correlation network after global signal regression", "viridis").show()
+fig_imshow(Wd[np.ix_(ordw, ordw)],
+           "Struct. degree correction",
+           "inferno").show()
+
+fig_imshow(Wr[np.ix_(ordw, ordw)],
+           "Struct. first-component removal",
+           "inferno").show()
+
+fig_imshow(Cd[np.ix_(ordc, ordc)],
+           "Corr. degree correction",
+           "viridis").show()
+
+fig_imshow(Cg[np.ix_(ordc, ordc)],
+           "Corr. global signal regression",
+           "viridis").show()
 
 ```
 
@@ -71,15 +88,16 @@ Finally, we directly show the strong similarity between network weights after di
 
 ```{python}
 
-# Scatter plot of degree-corrected and rank-one subtracted structural networks
+r = np.corrcoef(Wr[not_eye], Wd[not_eye])[0, 1]
 fig_scatter(Wr[not_eye], Wd[not_eye], 
-            "Network weights after first-component removal",
-            "Network weights after degree correction",
-            f"Structural network (r = {np.corrcoef(Wr[not_eye], Wd[not_eye])[0, 1]:.3f})").show()
+            "Weights after first-component removal",
+            "Weights after degree correction",
+            f"Structural network (r = {r:.3f})").show()
 
+r = np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]
 fig_scatter(Cd[not_eye], Cg[not_eye], 
-            "Network weights after degree correction",
-            "Network weights after global-signal regression",
-            f"Correlation network (r = {np.corrcoef(Cd[not_eye], Cg[not_eye])[0, 1]:.3f})").show()
+            "Weights after degree correction",
+            "Weights after global-signal regression",
+            f"Correlation network (r = {r:.3f})").show()
 
 ```

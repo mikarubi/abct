@@ -9,8 +9,9 @@ UMAP is a prominent manifold-learning method especially popular in the analysis 
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn
 
 # Import modules
 import abct
@@ -28,7 +29,9 @@ UMAP and m-umap ultimately seek to approximate symmetric 𝜅-nearest-neighbor r
 # Define and visualize co-neighbor networks
 Cn = abct.kneighbor(C, "nearest", 50).toarray()   # Correlation nearest-neighbor network
 
-fig_imshow(Cn[np.ix_(ordc, ordc)], "Correlation nearest-neighbor network", "viridis").show()
+fig_imshow(Cn[np.ix_(ordc, ordc)],
+           "Correlation nearest-neighbor network",
+           "viridis").show()
 
 ```
 
@@ -58,7 +61,7 @@ fig.show()
 
 U2 = abct.muma.projection(U3)
 X2, Y2 = zip(*U2)
-fig = fig_scatter(X2, Y2, f"m-umap projection on a plane")
+fig = fig_scatter(X2, Y2, "", "", f"m-umap projection on a plane")
 fig.update_traces(marker=dict(color=M+1), marker_showscale=True)
 fig.show()
 

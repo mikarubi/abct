@@ -11,8 +11,9 @@ Here, we compare the Loyvain method against classic _k_-means and spectral clust
 ```{python}
 
 # Install abct and download abct_utils.py
-!pip install --quiet abct nilearn
-!wget --no-clobber https://github.com/mikarubi/abct/raw/refs/heads/main/docs-code/examples/abct_utils.py
+base = "https://github.com/mikarubi/abct/raw/refs/heads/main"
+!wget --no-clobber {base}/docs-code/examples/abct_utils.py
+%pip install --quiet abct nilearn
 
 # Import modules
 import abct
@@ -117,7 +118,8 @@ We now show the maps of _k_-modularity clusters detected with the Loyvain method
 ```{python}
 
 for i, Mi in enumerate(MKmod):
-    fig_surf(Mi, f"Loyvain on correlation network: {K[i]} modules", "tab20b", pmin=0, pmax=100)
+    fig_surf(Mi, f"Loyvain on correlation network: {K[i]} modules",
+             "tab20b", pmin=0, pmax=100)
 
 ```
 
@@ -129,14 +131,28 @@ Finally, we directly compare the clustering similarities of the Loyvain method t
 
 # Scatter plots of k-means clustering similarities
 x, y = kmeans_lloyd_similarity, kmeans_loyvain_similarity
-fig =fig_scatter(x, y, "Lloyd k-means", "Loyvain k-means", "K-means similarity")
-fig.add_shape(type="line", x0=np.min([x, y]), y0=np.min([x, y]), x1=np.max([x, y]), y1=np.max([x, y]))
+fig = fig_scatter(x, y,
+                  "Lloyd k-means",
+                  "Loyvain k-means",
+                  "K-means similarity")
+fig.add_shape(type="line",
+              x0=np.min([x, y]),
+              y0=np.min([x, y]),
+              x1=np.max([x, y]),
+              y1=np.max([x, y]))
 fig.show()
 
 # Scatter plots of spectral clustering similarities
 x, y = spectral_shimalik_similarity, spectral_loyvain_similarity
-fig = fig_scatter(x, y, "Lloyd spectral", "Loyvain spectral", "Spectral similarity")
-fig.add_shape(type="line", x0=np.min([x, y]), y0=np.min([x, y]), x1=np.max([x, y]), y1=np.max([x, y]))
+fig = fig_scatter(x, y,
+                 "Lloyd spectral",
+                 "Loyvain spectral",
+                 "Spectral similarity")
+fig.add_shape(type="line",
+              x0=np.min([x, y]),
+              y0=np.min([x, y]),
+              x1=np.max([x, y]),
+              y1=np.max([x, y]))
 fig.show()
 
 ```
