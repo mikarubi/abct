@@ -101,12 +101,14 @@ for i in range(len(K)):
                             normalize(- WV))
     else:
         fig.add_scatter(x = - np.log10(1 - WP[i]),
-                        y = normalize(- WV), mode="markers")
+                        y = normalize(- WV), 
+                        mode="markers")
 
 r = np.corrcoef(WV, np.array(WP))[0][1:]
 fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
                   yaxis_title="rescaled - (Squared coefficient of variation)",
-                  title=f"Structural network: r ~ {-np.mean(r):.3f}").show()
+                  title=f"Structural network: r ~ {-np.mean(r):.3f}",
+                  showlegend=False).show()
 
 for i in range(len(K)):
     if i == 0:
@@ -114,11 +116,13 @@ for i in range(len(K)):
                             normalize(- CV))
     else:
         fig.add_scatter(x = - np.log10(1 - CP[i]), 
-                              y = normalize(- CV), mode="markers")
+                              y = normalize(- CV), 
+                              mode="markers")
 
 r = np.corrcoef(CV, np.array(CP))[0][1:]
 fig.update_layout(xaxis_title="log-rescaled k-participation coefficient",
                   yaxis_title="rescaled - (Squared coefficient of variation)",
-                  title=f"Correlation network: r ~ {-np.mean(r):.3f}").show()
+                  title=f"Correlation network: r ~ {-np.mean(r):.3f}",
+                  showlegend=False).show()
 
 ```

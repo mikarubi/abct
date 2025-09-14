@@ -1,10 +1,10 @@
 ```
  COLOYVAIN K-modularity, k-means, or spectral co-clustering
 
-   Mx, My, R = coloyvain(W, k)
-   Mx, My, R = coloyvain(W, k, objective)
-   Mx, My, R = coloyvain(X, Y, k, objective, similarity)
-   Mx, My, R = coloyvain(_, objective, similarity, Name=Value)
+   [Mx, My, R] = coloyvain(W, k)
+   [Mx, My, R] = coloyvain(W, k, objective)
+   [Mx, My, R] = coloyvain(X, Y, k, objective, similarity)
+   [Mx, My, R] = coloyvain(_, objective, similarity, Name=Value)
 
    Inputs:
 
@@ -26,7 +26,7 @@
        similarity: Type of similarity.
            See LOYVAIN for all options.
 
-       Name=Value Arguments.
+       Name=[Value] Arguments.
            See LOYVAIN for all Name=Value arguments.
 
    Outputs:

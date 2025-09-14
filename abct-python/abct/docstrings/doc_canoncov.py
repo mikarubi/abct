@@ -2,11 +2,11 @@
  CANONCOV Canonical covariance analysis (aka partial least squares)
           Canonical correlation analysis
 
-   A, B, U, V, R = canoncov(X, Y, k)
-   A, B, U, V, R = canoncov(X, Y, k, type)
-   A, B, U, V, R = canoncov(X, Y, k, type, resid)
-   A, B, U, V, R = canoncov(X, Y, k, type, resid, corr)
-   A, B, U, V, R = canoncov(X, Y, k, type, resid, corr, Name=Value)
+   [A, B, U, V, R] = canoncov(X, Y, k)
+   [A, B, U, V, R] = canoncov(X, Y, k, type)
+   [A, B, U, V, R] = canoncov(X, Y, k, type, resid)
+   [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr)
+   [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, Name=Value)
 
    Inputs:
        X: Data matrix of size n x p, where
@@ -31,7 +31,7 @@
            0: Canonical covariance analysis (default).
            1: Canonical correlation analysis.
 
-       Name=Value Arguments
+       Name=[Value] Arguments
            (binary canonical analysis only):
            See LOYVAIN for all Name=Value options.
 

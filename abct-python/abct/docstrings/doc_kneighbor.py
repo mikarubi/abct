@@ -35,7 +35,7 @@
            "indirect": knnsearch (in MATLAB)
                        pynndescent (in Python).
 
-       Name=Value Arguments:
+       Name=[Value] Arguments:
            Optional arguments passed to knnsearch or pynndescent.
 
    Outputs:

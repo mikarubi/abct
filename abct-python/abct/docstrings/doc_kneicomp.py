@@ -19,7 +19,7 @@
            "weighted": Weighted components (default).
            "binary": Binary components.
 
-       Name=Value Arguments:
+       Name=[Value] Arguments:
            KNEIGHBOR: type, kappa, similarity, method
                (see KNEIGHBOR for details).
            LOYVAIN: All Name=Value arguments

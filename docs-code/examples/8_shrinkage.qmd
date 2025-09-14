@@ -51,7 +51,7 @@ r = np.corrcoef(W[not_eye], Phi[not_eye])[0, 1]
 fig = fig_scatter(W[not_eye], Phi[not_eye],
                   "Network weights of structural network",
                   "Network weights of proximity network",
-                 f"Structural and proximity networks (r = {r:.3f})").show()
+                 f"Structural network (r = {r:.3f})").show()
 
 ```
 
@@ -72,6 +72,6 @@ r = np.corrcoef(W[not_eye], Phi_s[not_eye])[0, 1]
 fig_scatter(W[not_eye], Phi_s[not_eye],
                   "Network weights of structural network",
                   "Network weights of shrunken proximity network",
-                 f"Structural and shrunken proximity networks (r = {r:.3f})").show()
+                 f"Structural network (r = {r:.3f})").show()
 
 ```

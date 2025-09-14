@@ -1,10 +1,10 @@
 ```
  LOYVAIN K-modularity, k-means, or spectral clustering
 
-   M, Q = loyvain(W, k)
-   M, Q = loyvain(W, k, objective)
-   M, Q = loyvain(X, k, objective, similarity)
-   M, Q = loyvain(_, objective, similarity, Name=Value)
+   [M, Q] = loyvain(W, k)
+   [M, Q] = loyvain(W, k, objective)
+   [M, Q] = loyvain(X, k, objective, similarity)
+   [M, Q] = loyvain(_, objective, similarity, Name=Value)
 
    Inputs:
        W:  Network matrix of size n x n.
@@ -37,27 +37,27 @@
            "dot": Dot product.
                A sum of an elementwise vector product.
 
-       Name=Value Arguments:
+       Name=[Value] Arguments:
 
-           start=Initial module assignments.
+           start=[Initial module assignments].
                "greedy": Maximin (greedy kmeans++) initialization (default).
                "balanced": Standard kmeans++ initialization.
                "random": Uniformly random initialization.
                Numeric vector: Initial module assignment vector of length n.
 
-           numbatches=Number of batches.
+           numbatches=[Number of batches].
                Positive integer (default is 10).
 
-           maxiter=Maximum number of algorithm iterations.
+           maxiter=[Maximum number of algorithm iterations].
                Positive integer (default is 1000).
 
-           replicates=Number of replicates.
+           replicates=[Number of replicates].
                Positive integer (default is 10).
 
-           tolerance=Convergence tolerance.
+           tolerance=[Convergence tolerance].
                Positive scalar (default is 1e-10).
 
-           display=Display progress.
+           display=[Display progress].
                "none": no display (default).
                "replicate": display progress at each replicate.
                "iteration": display progress at each iteration.
