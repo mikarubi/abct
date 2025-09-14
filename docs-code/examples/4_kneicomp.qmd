@@ -30,7 +30,7 @@ Co-neighbor networks, as their name suggests, encode the number of shared 𝜅-n
 
 # Define and visualize co-neighbor networks
 # (kappa = 0.1 is equivalent to the top 10% nearest neighbors)
-Cn = abct.kneighbor(C, "common", 0.1).toarray()   # Correlation co-neighbor network
+Cn = abct.kneighbor(C, "common", 0.1).toarray()
 
 fig_imshow(Cn[np.ix_(ordc, ordc)],
            "Correlation co-neighbor network",

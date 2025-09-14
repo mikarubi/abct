@@ -2,15 +2,7 @@
 
 import os
 from datetime import date
-
-# Make archives
 today = date.today().strftime("%Y.%m.%d")
-os.system("rm ./abct-matlab.zip")
-os.system("rm ./abct-python.zip")
-os.system("touch ./v"+today)
-os.system("zip -r abct-matlab.zip ./abct-matlab/abct ./abct-matlab/matpackage.m v"+today)
-os.system("zip -r abct-python.zip ./abct-python/abct ./abct-python/pyproject.toml v"+today)
-os.system("rm ./v"+today)
 
 # Update versions
 files = ["./abct-python/pyproject.toml", "./abct-matlab/matpackage.m"]
@@ -23,3 +15,11 @@ for file in files:
                 break
     with open(file, "w") as f:
         f.writelines(text)
+
+# Make archives
+os.system("rm ./abct-matlab.zip")
+os.system("rm ./abct-python.zip")
+os.system("touch ./v"+today)
+os.system("zip -r abct-matlab.zip ./abct-matlab/abct ./abct-matlab/matpackage.m v"+today)
+os.system("zip -r abct-python.zip ./abct-python/abct ./abct-python/pyproject.toml v"+today)
+os.system("rm ./v"+today)
