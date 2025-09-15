@@ -99,12 +99,12 @@ rs = np.corrcoef(U_wei[:, 0], U_bin[:, 0])[0, 1]
 fig_scatter(U_wei[:, 0], U_bin[:, 0],
             "Weighted canonical components",
             "Binary canonical components",
-           f"Structural canonical components (r = {rs:.3f})").show()
+           f"Structural canon. comp. (r = {rs:.3f})").show()
 
 rf = np.corrcoef(V_wei[:, 0], V_bin[:, 0])[0, 1]
 fig_scatter(V_wei[:, 0], V_bin[:, 0],
             "Weighted canonical components",
             "Binary canonical components",
-           f"Correlation canonical components (r = {rf:.3f})").show()
+           f"Correlation canon. comp. (r = {rf:.3f})").show()
 
 ```

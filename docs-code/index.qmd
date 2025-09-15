@@ -18,7 +18,7 @@ The examples illustrate the main analyses in the above study, and can be run int
 
 Our example brain-imaging data come from the [Human Connectome Project](https://www.humanconnectome.org/), a large brain-imaging resource.
 
-_NB: For illustrative and computational ease, the example analyses are simplified versions of analyses in the original study._
+NB: For illustrative ease, some example analyses are simplified versions of analyses in the original study.
 
 ### Contact
 
