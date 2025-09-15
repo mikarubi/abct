@@ -64,7 +64,7 @@ We next consider the second degree, defined for each node as the sum of its squa
 ```{python}
 
 Second_degree = abct.degree(W, "second")
-fig_surf(Degree,
+fig_surf(Second_degree,
         "Second degree",
         "inferno").show()
 

@@ -96,6 +96,6 @@ r = np.corrcoef(D_wei, V_wei[:, 0])[0, 1]
 fig = fig_scatter(D_wei, V_wei[:, 0], 
                  "Residual degree", 
                  "Weighted co-activity gradient", 
-                f"Correllation network (r = {r:.3f})").show()
+                f"Correlation network (r = {r:.3f})").show()
 
 ```
