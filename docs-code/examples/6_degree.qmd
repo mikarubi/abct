@@ -74,10 +74,14 @@ The second degree is exactly or approximately equivalent to communicability cent
 
 ```{python}
 
-Communicability = np.diag(sparse.linalg.expm(W))
-W_nrm = utils.matrix_normalization(W, "discrete")
-Ave_control = metrics.ave_control(W_nrm, "discrete")
-Mod_control = metrics.modal_control(W)
+# Normalize for communicability analysis
+W_nrm1 = W / sparse.linalg.eigs(W, k=1)[0].real
+Communicability = np.diag(sparse.linalg.expm(W_nrm1))
+
+# Normalize for controllability analysis
+W_nrm2 = utils.matrix_normalization(W_nrm1, "discrete")
+Ave_control = metrics.ave_control(W_nrm2, "discrete")
+Mod_control = metrics.modal_control(W_nrm2)
 
 r = np.corrcoef(Second_degree, Communicability)[0, 1]
 fig = fig_scatter(Second_degree, Communicability, 
