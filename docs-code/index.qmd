@@ -22,4 +22,4 @@ NB: For illustrative ease, some example analyses are simplified versions of anal
 
 ### Contact
 
-Mika Rubinov: `mika.rubinov at vanderbilt.edu`
+Mika Rubinov: mika.rubinov at vanderbilt.edu
