@@ -1,4 +1,4 @@
-# Installation
+# Getting started
 
 ## MATLAB
 
@@ -22,6 +22,17 @@ Install using the MATLAB Package Manager.
 ```
 mpminstall("./abct-matlab/abct")
 ```
+
+### Usage
+
+Basic usage:
+
+```
+[output1, output2, ...] = function_name(input1, input2, name=value, ...)
+```
+
+See the individual function pages for more details.
+See the individual examples for example usage (in Python).
 
 ## Python
 
@@ -49,3 +60,15 @@ Install directly from pypi (may not be the latest release).
 ```
 pip install abct
 ```
+
+### Usage
+
+Basic usage:
+
+```
+import abct
+[output1, output2, ...] = abct.function_name(input1, input2, name=value, ...)
+```
+
+See the individual function pages for more details.
+See the individual examples for example usage (in Python).

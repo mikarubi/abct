@@ -25,7 +25,7 @@ website:                          # Website-level configuration
     contents:
       - text: Home
         href: index.qmd
-      - text: Installation
+      - text: Getting started
         href: installation.qmd
       
       - section: Examples
