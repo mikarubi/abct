@@ -92,7 +92,7 @@ gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./installation.html">Installation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./installation.html">Getting started</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -126,7 +126,7 @@ gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./installation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Installation</span></a>
+ <span class="menu-text">Getting started</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -277,8 +277,8 @@ gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
 
 
 
-<section id="installation" class="level1">
-<h1>Installation</h1>
+<section id="getting-started" class="level1">
+<h1>Getting started</h1>
 <section id="matlab" class="level2">
 <h2 class="anchored" data-anchor-id="matlab">MATLAB</h2>
 <section id="dependencies" class="level3">
@@ -299,6 +299,12 @@ gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="package-installation">Package installation</h3>
 <p>Install using the MATLAB Package Manager.</p>
 <pre><code>mpminstall("./abct-matlab/abct")</code></pre>
+</section>
+<section id="usage" class="level3">
+<h3 class="anchored" data-anchor-id="usage">Usage</h3>
+<p>Basic usage:</p>
+<pre><code>[output1, output2, ...] = function_name(input1, input2, name=value, ...)</code></pre>
+<p>See the individual function pages for more details. See the individual examples for example usage (in Python).</p>
 </section>
 </section>
 <section id="python" class="level2">
@@ -325,6 +331,13 @@ gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="pypi-install">Pypi install</h3>
 <p>Install directly from pypi (may not be the latest release).</p>
 <pre><code>pip install abct</code></pre>
+</section>
+<section id="usage-1" class="level3">
+<h3 class="anchored" data-anchor-id="usage-1">Usage</h3>
+<p>Basic usage:</p>
+<pre><code>import abct
+[output1, output2, ...] = abct.function_name(input1, input2, name=value, ...)</code></pre>
+<p>See the individual function pages for more details. See the individual examples for example usage (in Python).</p>
 
 
 </section>
