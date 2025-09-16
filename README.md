@@ -24,6 +24,7 @@ NB: For illustrative ease, some example analyses are simplified versions of anal
 
 Mika Rubinov: mika.rubinov at vanderbilt.edu
 
+
 # Getting started
 
 ## MATLAB
@@ -54,10 +55,11 @@ mpminstall("./abct-matlab/abct")
 Basic usage:
 
 ```
-[output1, output2, ...] = function_name(input1, input2, name=value, ...)
+[output1, output2, ...] = function_name(input1, input2, ..., name=value)
 ```
 
 See the individual function pages for more details.
+
 See the individual examples for example usage (in Python).
 
 ## Python
@@ -93,8 +95,10 @@ Basic usage:
 
 ```
 import abct
-[output1, output2, ...] = abct.function_name(input1, input2, name=value, ...)
+output1, output2, ... = abct.function_name(input1, input2, ..., name=value)
 ```
 
 See the individual function pages for more details.
-See the individual examples for example usage (in Python).
+
+See the individual examples for example usage.
+
