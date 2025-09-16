@@ -1,0 +1,52 @@
+project:                          # Project-level configuration
+  type: website                   # Project type
+  render:
+    - "*.qmd"
+
+format:
+  html:
+    theme: cosmo
+    code-fold: false
+    code-copy: true
+
+execute:
+  freeze: auto
+  cache: true
+  warnings: false
+
+website:                          # Website-level configuration
+  title: abct                     # Website header and tab title
+  site-url: https://mikarubi.github.io/abct/
+  favicon: favicon.png
+  google-analytics: G-0GHB4GG9DZ
+  page-navigation: true
+  sidebar:
+    search: true
+    contents:
+      - text: Home
+        href: index.qmd
+      - text: Installation
+        href: installation.qmd
+      
+      - section: Examples
+        contents:
+        - text: Global Residualization
+          href: examples/1_residualn.qmd
+        - text: Loyvain Clustering
+          href: examples/2_loyvain.qmd
+        - text: Canonical Components
+          href: examples/3_canoncov.qmd
+        - text: Co-neighbor Components
+          href: examples/4_kneicomp.qmd
+        - text: m-umap Embeddings
+          href: examples/5_mumap.qmd
+        - text: Degree Centralities
+          href: examples/6_degree.qmd
+        - text: Dispersion Centralities
+          href: examples/7_dispersion.qmd
+        - text: Network Shrinkage
+          href: examples/8_shrinkage.qmd
+      
+      - section: Functions
+        contents: functions/*.qmd
+

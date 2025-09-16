@@ -1,0 +1,19 @@
+{
+    "name": "abct",
+    "version": "1.0.0",
+    "id": "96b9adbb-99df-4493-b7d8-dece3c8f5b16",
+    "formerNames": [],
+    "displayName": "abct",
+    "summary": "",
+    "description": "",
+    "provider": {
+        "name": "",
+        "organization": "",
+        "email": "",
+        "url": ""
+    },
+    "folders": [],
+    "dependencies": [],
+    "releaseCompatibility": ">=R2024a",
+    "schemaVersion": "1.0.0"
+}
