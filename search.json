@@ -4,7 +4,7 @@
     "href": "installation.html",
     "title": "Getting started",
     "section": "",
-    "text": "MATLAB ≥R2024a\nkneighbor: Statistics and Machine Learning Toolbox (if method=\"indirect\")\nmumap: Manopt (if solver=\"trustregions\") or Deep Learning Toolbox (if solver=\"adam\")\nmumap: Parallel Computing Toolbox (if gpu=true)\n\n\n\n\nAdd ./abct-matlab/abct to your MATLAB path.\naddpath('./abct-matlab/abct')\n\n\n\nInstall using the MATLAB Package Manager.\nmpminstall(\"./abct-matlab/abct\")\n\n\n\nBasic usage:\n[output1, output2, ...] = function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage (in Python).\n\n\n\n\n\n\n\nPython ≥3.11\nnumpy\nscipy\nigraph\npytorch\npynndescent\npymanopt\npydantic\n\n\n\n\nDownload the latest release and install using pip.\npip install ./abct-python\n\n\n\nInstall directly from pypi (may not be the latest release).\npip install abct\n\n\n\nBasic usage:\nimport abct\noutput1, output2, ... = abct.function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage.",
+    "text": "MATLAB ≥R2024a\nkneighbor: Statistics and Machine Learning Toolbox (if method=\"indirect\")\nmumap: Manopt (if solver=\"trustregions\") or Deep Learning Toolbox (if solver=\"adam\")\nmumap: Parallel Computing Toolbox (if gpu=true)\n\n\n\n\nAdd ./abct-matlab/abct to your MATLAB path.\naddpath('./abct-matlab/abct')\n\n\n\nInstall using the MATLAB Package Manager.\nmpminstall(\"./abct-matlab/abct\")\n\n\n\nBasic usage:\n[output1, output2, ...] = function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage (in Python).\n\n\n\n\n\n\n\nPython ≥3.11\nnumpy\nscipy\nigraph\npytorch\npymanopt\npynndescent\npydantic\n\n\n\n\nDownload the latest release and install using pip.\npip install ./abct-python\n\n\n\nInstall directly from pypi (may not be the latest release).\npip install abct\n\n\n\nBasic usage:\nimport abct\noutput1, output2, ... = abct.function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage.",
     "crumbs": [
       "Getting started"
     ]
@@ -24,7 +24,7 @@
     "href": "installation.html#python",
     "title": "Getting started",
     "section": "",
-    "text": "Python ≥3.11\nnumpy\nscipy\nigraph\npytorch\npynndescent\npymanopt\npydantic\n\n\n\n\nDownload the latest release and install using pip.\npip install ./abct-python\n\n\n\nInstall directly from pypi (may not be the latest release).\npip install abct\n\n\n\nBasic usage:\nimport abct\noutput1, output2, ... = abct.function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage.",
+    "text": "Python ≥3.11\nnumpy\nscipy\nigraph\npytorch\npymanopt\npynndescent\npydantic\n\n\n\n\nDownload the latest release and install using pip.\npip install ./abct-python\n\n\n\nInstall directly from pypi (may not be the latest release).\npip install abct\n\n\n\nBasic usage:\nimport abct\noutput1, output2, ... = abct.function_name(input1, input2, ..., name=value)\nSee the individual function pages for more details.\nSee the individual examples for example usage.",
     "crumbs": [
       "Getting started"
     ]
