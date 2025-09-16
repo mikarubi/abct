@@ -18,7 +18,7 @@ execute:
 website:                          # Website-level configuration
   title: abct                     # Website header and tab title
   site-url: https://mikarubi.github.io/abct/
-  favicon: favicon.jpg
+  favicon: favicon.png
   google-analytics: G-0GHB4GG9DZ
   page-navigation: true
   sidebar:
