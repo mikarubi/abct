@@ -8,3 +8,4 @@ dist
 .quarto/
 .jupyter_cache/
 _freeze/
+docs/
