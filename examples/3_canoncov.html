@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>canoncov – abct</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../examples/4_kneicomp.html" rel="next">
+<link href="../examples/2_loyvain.html" rel="prev">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ad8578ea4769016da19e598db427e829.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-0GHB4GG9DZ"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-0GHB4GG9DZ', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/3_canoncov.html">Canonical Components</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">abct</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../installation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Installation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/1_residualn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Global Residualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/2_loyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loyvain Clustering</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/3_canoncov.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Canonical Components</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/4_kneicomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Co-neighbor Components</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/5_mumap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">m-umap Embeddings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/6_degree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Degree Centralities</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/7_dispersion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dispersion Centralities</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/8_shrinkage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Network Shrinkage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Functions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/canoncov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Canoncov</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/coloyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Coloyvain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/degree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Degree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/dispersion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dispersion</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/kneicomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kneicomp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/kneighbor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kneighbor</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/louvains.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Louvains</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/loyvain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loyvain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/mumap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mumap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/residualn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Residualn</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../functions/shrinkage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shrinkage</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../examples/1_residualn.html">Examples</a></li><li class="breadcrumb-item"><a href="../examples/3_canoncov.html">Canonical Components</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Canonical Components</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://colab.research.google.com/github/mikarubi/abct/blob/main/docs-code/examples/3_canoncov.ipynb" class="btn btn-dark btn-sm">Open in Colab</a></p>
+<p>Canonical covariance analysis (aka partial least squares correlation) finds linear relationships between pairs of datasets that have the same number of data points but usually have different numbers of features. It specifically finds <em>k</em> pairs of coefficient vectors that transform the original data points into <em>k</em> pairs of components, in a way that maximizes the total covariance over all pairs of components.</p>
+<p>This method is popular across diverse scientific fields, but its application to data with many features can often lead to unstable estimates of coefficients. This problem can be ameliorated, to some extent, through the adoption of sparse variants of these methods.</p>
+<p>Here, we extend the Loyvain method to do sparse binary canonical covariance analysis. We illustrate this method for finding the cross-correlation structure of structural and correlation networks from our example brain-imaging data.</p>
+<section id="set-up-and-load-data" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-and-load-data">Set up and load data</h3>
+<div id="e40ede3d" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install abct and download abct_utils.py</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> <span class="st">"https://github.com/mikarubi/abct/raw/refs/heads/main"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget <span class="op">--</span>no<span class="op">-</span>clobber {base}<span class="op">/</span>docs<span class="op">-</span>code<span class="op">/</span>examples<span class="op">/</span>abct_utils.py</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">--</span>quiet abct nilearn</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Import modules</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abct</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abct_utils <span class="im">import</span> W, C, fig_scatter, fig_surf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>File ‘abct_utils.py’ already there; not retrieving.
+
+Note: you may need to restart the kernel to use updated packages.</code></pre>
+</div>
+</div>
+</section>
+<section id="run-canonical-covariance-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="run-canonical-covariance-analysis">Run canonical covariance analysis</h3>
+<p>A common formulation of canonical covariance analysis centers on the detection of (principal) components of cross-covariance matrices. We build on this formulation to extend the Loyvain algorithm to do a binary variant of this analysis by independently clustering the rows and columns of cross-covariance matrices, or any other bipartite (two-part) networks, for that matter. This process simultaneously finds pairs of modules from both datasets and is equivalent to canonical covariance analysis with binary coefficients.</p>
+<div id="6ddb3c64" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of canonical components</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Weighted canonical covariance analysis (with degree correction by default)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>A_wei, B_wei, U_wei, V_wei, R_wei <span class="op">=</span> abct.canoncov(W, C, k, <span class="st">"weighted"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Reverse the signs of the coefficients</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (signs of canonical coefficients are arbitrary)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>A_wei <span class="op">=</span> <span class="op">-</span> A_wei</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>B_wei <span class="op">=</span> <span class="op">-</span> B_wei</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>U_wei <span class="op">=</span> <span class="op">-</span> U_wei</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>V_wei <span class="op">=</span> <span class="op">-</span> V_wei</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Binary canonical covariance analysis (with degree correction by default)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>A_bin, B_bin, U_bin, V_bin, R_bin <span class="op">=</span> abct.canoncov(W, C, k, <span class="st">"binary"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="show-maps-of-weighted-and-binary-canonical-coefficients-and-components" class="level3">
+<h3 class="anchored" data-anchor-id="show-maps-of-weighted-and-binary-canonical-coefficients-and-components">Show maps of weighted and binary canonical coefficients and components</h3>
+<p>We now visualize maps of the weighted and binary canonical coefficients and components. These results show that binary coefficients can be sparse and more interpretable than their weighted counterparts. Moreover, binary coefficients lead to a particularly simple definition of canonical components, as sums of data points over the non-zero features.</p>
+<div id="ad671d47" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ccas <span class="op">=</span> {<span class="st">"Weighted structural canonical coefficient"</span>: (A_wei[:, <span class="dv">0</span>], <span class="st">"inferno"</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Weighted structural canonical component"</span>: (U_wei[:, <span class="dv">0</span>], <span class="st">"inferno"</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Weighted functional canonical coefficient"</span>: (B_wei[:, <span class="dv">0</span>], <span class="st">"viridis"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Weighted functional canonical component"</span>: (V_wei[:, <span class="dv">0</span>], <span class="st">"viridis"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Binary structural canonical coefficient"</span>: (A_bin[:, <span class="dv">0</span>], <span class="st">"inferno"</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Binary structural canonical component"</span>: (U_bin[:, <span class="dv">0</span>], <span class="st">"inferno"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Binary functional canonical coefficient"</span>: (B_bin[:, <span class="dv">0</span>], <span class="st">"viridis"</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Binary functional canonical component"</span>: (V_bin[:, <span class="dv">0</span>], <span class="st">"viridis"</span>)}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (name, vals_cmap) <span class="kw">in</span> <span class="bu">enumerate</span>(ccas.items()):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    vals, cmap <span class="op">=</span> vals_cmap</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    fig_surf(vals, name, cmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-1.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-2.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-3.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-4.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-5.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-6.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-7.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_canoncov_files/figure-html/cell-4-output-8.png" width="403" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-scatters-of-canonical-covariances" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-scatters-of-canonical-covariances">Visualize scatters of canonical covariances</h3>
+<p>We now visualize the normalized covariances between the first five canonical components from the weighted and binary canonical covariance analyses. Note that the values of these covariances are not directly comparable due to different normalizations of the weighted and binary analyses.</p>
+<div id="cf70cdf4" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig_scatter(np.arange(k), R_wei, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Canonical components"</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Canonical covariances"</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Weighted canonical covariance analysis"</span>).show()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fig_scatter(np.arange(k), R_bin, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Canonical components"</span>, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Canonical covariances"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Binary canonical covariance analysis"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+        <script type="text/javascript">
+        window.PlotlyConfig = {MathJaxConfig: 'local'};
+        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+        </script>
+        <script type="module">import "https://cdn.plot.ly/plotly-3.0.1.min"</script>
+        
+</div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="f677c4ed-5442-43d7-a756-b2cc34c9e561" class="plotly-graph-div" style="height:360px; width:360px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("f677c4ed-5442-43d7-a756-b2cc34c9e561")) {                    Plotly.newPlot(                        "f677c4ed-5442-43d7-a756-b2cc34c9e561",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"i1","bdata":"AAECAwQ="},"xaxis":"x","y":{"dtype":"f8","bdata":"8RKyoB1EIEB\u002fkzYMtn0RQOu3267R3g1AY4FzbwVwBEDUwBGRqq4AQA=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Canonical components"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Canonical covariances"}},"legend":{"tracegroupgap":0},"title":{"text":"Weighted canonical covariance analysis","x":0.5},"width":360,"height":360},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('f677c4ed-5442-43d7-a756-b2cc34c9e561');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="2cd7d98c-04c0-42a0-aa44-b881f5048230" class="plotly-graph-div" style="height:360px; width:360px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("2cd7d98c-04c0-42a0-aa44-b881f5048230")) {                    Plotly.newPlot(                        "2cd7d98c-04c0-42a0-aa44-b881f5048230",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"i1","bdata":"AAECAwQ="},"xaxis":"x","y":{"dtype":"f8","bdata":"uZ3xsGmuDEAaX9YDi9ELQI40VXV1QwZARgcRSdxYAEA6ngRlH4fwPw=="},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Canonical components"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Canonical covariances"}},"legend":{"tracegroupgap":0},"title":{"text":"Binary canonical covariance analysis","x":0.5},"width":360,"height":360},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('2cd7d98c-04c0-42a0-aa44-b881f5048230');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+</section>
+<section id="visualize-scatters-of-canonical-components" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-scatters-of-canonical-components">Visualize scatters of canonical components</h3>
+<p>Finally, we directly show the relationship between the first weighted and binary canonical components. These results show generally high correlations between these components. We note, however, that these high correlations are not necessarily guaranteed because binary constraints can, in principle, result in considerably different components.</p>
+<div id="8c00bf68" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot of structural canonical components</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rs <span class="op">=</span> np.corrcoef(U_wei[:, <span class="dv">0</span>], U_bin[:, <span class="dv">0</span>])[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig_scatter(U_wei[:, <span class="dv">0</span>], U_bin[:, <span class="dv">0</span>],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Weighted canonical components"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Binary canonical components"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>           <span class="ss">f"Structural canon. comp. (r = </span><span class="sc">{</span>rs<span class="sc">:.3f}</span><span class="ss">)"</span>).show()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> np.corrcoef(V_wei[:, <span class="dv">0</span>], V_bin[:, <span class="dv">0</span>])[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>fig_scatter(V_wei[:, <span class="dv">0</span>], V_bin[:, <span class="dv">0</span>],</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Weighted canonical components"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Binary canonical components"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>           <span class="ss">f"Correlation canon. comp. (r = </span><span class="sc">{</span>rf<span class="sc">:.3f}</span><span class="ss">)"</span>).show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="89593a43-5ddc-4329-887a-9d2d3a559b9d" class="plotly-graph-div" style="height:360px; width:360px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("89593a43-5ddc-4329-887a-9d2d3a559b9d")) {                    Plotly.newPlot(                        "89593a43-5ddc-4329-887a-9d2d3a559b9d",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"f8","bdata":"FUeEsj6Uob8gb4kJaBWdv4VX2X3LF5K\u002fMl\u002f6LGekp7+Jppy5bxOrv+27C\u002f6Nba6\u002fT\u002ftmbIKBnr+N\u002f2cffVivv2PMfLp1K7C\u002fRvBo+\u002f6HiL8S4wlCr3ZhP0AlZDevSmm\u002fnzm2+XkHpL\u002fE0C4QcaGjP5GmGXo0KW6\u002fslnv0QKPpb97EDv76oKnv2ab5Zfd85+\u002fxRufi5mupr8dgbchBNWkv2LSRBU+XaO\u002ftwrhRZmfoL83dvwxtmSev6W2lQ0IsqC\u002fExZWxjZih79nAEzNxVeVP0lD\u002fdnJi5E\u002f7IfIEYwbgT\u002fW\u002fDOIH3x0Py6ay1gwlKQ\u002fuqMGUWRnfD\u002fW41Aea4ijP1bs7TEKF6Q\u002fTZfRV5QOrT87\u002fMx7CJiuPzSxlfeG6Je\u002fS9pZ6kBLkL+RiihLzZBQv6BYyQozIZ2\u002f\u002fJhJI4UOj780ja05oY1pv0YKihDt35+\u002f0UBFRC\u002fzUT9WiOa36bNKP0C+EG+5cIu\u002fNCluLdNTlL+qexANNsCjv4ty\u002fE7dmJ2\u002fv727Hxgimr8PODYiBZuiv685LUftObG\u002fvbUF0aMysL9PHOhXQ76sv9rxTRAvHpi\u002fqS6YEaKNmr\u002fjphkIwSKCv5IAU4jSUZY\u002fC+yoRFQBpz894uumnTujP0AS9ycoepY\u002falytcAEEtD\u002fZBNc3UuexPwzhOAFt66g\u002fDj9hhve9tD\u002fjB1UrDfa3PzP8BSKIEqA\u002fYcBVzXB1oj\u002f36QlMDqCwP+CDBFfNWrY\u002fHQmzVVgrpz+AZYm6jdOvP+4dJLOWZLQ\u002fHu7b04P7nj+FZ+oHq1eRP2+Vnf1LhpU\u002fdyloDkBylz\u002fpEwVw5GurPzXlWFJ1p3E\u002fEWEvXaMXjz+3BNWFri2MPwBr\u002fihd1Jo\u002f37BYdkwKpD\u002f8ARQGIKKlPz0fobs5VbE\u002fBp7ZwMeVrz\u002fu27YDMQ60P8WhoIWbubE\u002f+MXC3AJFtT\u002fOY3W8DLWrP2f\u002fwlpeW6o\u002fk3f+mHazqT\u002fMFnxULRipP0oIOrASq7A\u002fEPO8stB+nz\u002fNeC8VdBSZv1C+RY9xrn+\u002fagOHNC4Wkj8mdZPno4KhP1RBQd61LZy\u002fJmAyCX\u002fmpL\u002fYWN3NjVyjv+KNZUv1xKG\u002fnoCKw8GAlr\u002fv96A7Qleiv9NHd\u002fVqpKG\u002fkyVq60CXmL+wxP5vVUSQv8KKI8A\u002fMHS\u002fVYYEoqXBfr+qyjIjFEeRP3o+gR8X94s\u002fKwZa+Hakjz\u002fqFJDYh+2Uv0b4xYEP8ZC\u002fFPXRZlNimb8zyY6chwGnv5zI\u002fYcUBKe\u002fNMuP\u002f6eyij+1K53GmjONP7ZxjPbwWIM\u002f5GSFgVA5dr8oZA3YdyB2P8aNQl\u002f\u002fWXw\u002fF00LdYxGor9kd9z9B9aPPwPBG8Eq5kg\u002f9untS2\u002f6ir+cp3+NrQWZP3mMNI1sqJ4\u002fVJVIiiPhoj\u002fO6vFZbQWZP4OIsqsPQ6M\u002fMJSFaAWjmD80Kh0FFBKdP1XsLJuS8GC\u002fjJVrLZOagb\u002fZKh8wA69hPwgh81wsmp6\u002fw4salOlulT\u002fyZ19v7SBRvyKW\u002foESg46\u002fhTXopTVIlL8iuZQPetChv3rrJltl+Jm\u002fKcT9IPTDnr\u002fRyWFadYyov5t+bdWE1KO\u002fM8+YI3UQob89uRx5AV6Hv4ZsabRKGIQ\u002fTGRwBrPRgL88Pql7LTScv3CRajHaTIy\u002fnuU9z9Wnlr9q\u002fY+nectZv8ktYxJE9KG\u002fpwE8j4Dmn79276Ip4Iynv+OFM1sA\u002f6G\u002fFyuauDUxj7+h4zCUL06tP0YzVB7H86A\u002fL1pcTEIwnb8uhR4RkMCsP\u002fz+ljfBd7E\u002fCQlruz\u002fRpT9878SWoCOSv8eXv2qJgKC\u002f6xharhPngT\u002fCnR+nAnevPyVFSvz3f6Q\u002fM+eWSbz+jD\u002fpTQyQfEigvw89JFh8\u002fqC\u002foyIxXkR6lb\u002f+6Em0sy6hP9BkqlLyD6E\u002fBA2ZkE7me7+7NZtDUnipP+WhcEZqOa8\u002f\u002fZr6\u002fTU9o7\u002f2MrADBd+iv5Wn3fpM5pi\u002frGGVKgi1qb8ROCBmRJKtv4\u002fEiWeGsrC\u002f6kaxmV0sor\u002fQ9f5nfgexv\u002fxIRC8KMbG\u002fzuJyCYeQk785D+wEc7B3vz6OGtU0HIS\u002fXIZW+05Opr9GlM+0LYCkP2YBjg2LtIe\u002fc0Tluh3XqL9oXnYrUoOqv4rA\u002fTrHrKO\u002fXob+F15vqr8ZhNxeM9ulv6e5b5KTsKS\u002fAnvrLgqepL99FsKOJdyiv5Vx6Z2366G\u002f1kz4DeuNl7\u002ff5w7N2amCPytf46DbmYg\u002fCy8tETDuaz8X7u8Gqe1MP+q6kIbJgqM\u002fMfvHKlaHcz+F2b8OVv+hP9CwddmyPaQ\u002f21gMTBqRqT+\u002fnnUx44isPwstj20JF5y\u002f\u002fL9vD2kgk7\u002fj5M8ca1Rtv0OV8gSObaC\u002ffjqQx3E\u002flb99KqYQGw2Av8EBKAHZKqG\u002fCN4Wn5Gper+UxIClsPKFv6RxJuZgZ5K\u002f+nn6PG2Jmb+RcVIfO\u002f6lv7+\u002fCIffFKG\u002f+6JwGkz1nL+il8R8nLGmv1sXw26CprK\u002f3vDmAK1esb\u002fTcVNw8kyuv1DCihm6x52\u002fGCSx8BS6nb\u002f08D\u002fAwfqSv5\u002frJpqmI40\u002fCgcYCJDMqD+2r0ap9rOfP4zRnGUs9ZI\u002fRrPEbwQTsz9b\u002fqpm8u6vP9R8B+hOFaY\u002flPtidlzWtT8y6\u002fXEShu4P13pEOn1AZs\u002fXGi8doQSnT8TLVrlxVOqP1dsJF3jC7c\u002fkk8emjxZqT\u002fGrgO9ygisP8IKX0IzQLI\u002f+kmMTqh7kz9TQH\u002fO6Px1P1R4JjcYzXk\u002fTNLO0dkmjD9+52xecCCqP+sPt2GXjoW\u002f0r10gjt1bz9r7zKyIrZaP\u002fc4SEKaHZU\u002f2Ln5RGm4mj9FeaZCwVSjP9Wt5qL9nK0\u002f4GmxUnIBpz+OkRj5TIWwP9cgDYKAGaw\u002fU1gqD5hZtT+LpJlgVRqnP4Q3aJvAfas\u002fU\u002foBrHj8pz8FkvaYtzChP8Z05oyexKw\u002fcJAqvfINlD+29VHhlh+av9bY+iMVHZC\u002fTdroQ37SgT9HlNOMiBeUPx149UxtmKK\u002fHDF8W+MGqr+3VGdbWxSlv8ih\u002fqJeIqS\u002f8YQ1ljTAmL9eM0gHzf6nv3jsONjObKa\u002fNTe1eXTPob+vtdW1iISXvw4\u002fuM5fAJK\u002f0ue1chXVlr9rciBq8RWPP9MkWoyIako\u002ftud6L5NwcT99p+pZU1Obv\u002fbLIFB5rJe\u002fhAJa9c7Fn78tQ3tB+9unvwz87AqsB6i\u002f4UExI8PZfT8mmKXRxLh+P3aliDt4Jm8\u002fRE0n25K9e79O5t4v7Q48P4oFuboV72o\u002fFzQYstPOpr\u002fINMWS1DGDP\u002fnlkeSS5n6\u002fwHgcBsE9k79CFcxkjiaTPyScOWu+dJQ\u002fDveGQ\u002f5xmD8Sxb9KoOGUP7TioCqD9Zw\u002fPPW6GGp7hj9QE4N1JkuUP\u002fR7nkWhOo6\u002f9N1\u002f+80Ukb8ue3YxoFqFv3uGmBQEoKS\u002fOtZlM8pYhz\u002fwrQ8nB0CQvxBvV3NoDJi\u002fCtzdCaHknL+1pvc3eSamv4sB5F88hZ2\u002fN3I7Cj5poL\u002ftFVrZ34qrv6sJWBXySaa\u002fWtYIlCempr8gYuLTqzSSv8LE05EkFTS\u002fccBxwVnli7+8iuwl2X+gv8SrXArJUJa\u002fBgoB9+jknL8Obx9\u002fFV2Cv\u002fXwJ2Lqs6S\u002fAjYOhPg8pL\u002fIO5aiwRCrv5yLCDmdlKW\u002fQxRIvy23mL9pFbDuzEyoP34wg6K4caA\u002f62fMIOjboL8tNWAsdsKqP6GeiwoGj7I\u002fYlY89HycpD9TQPlfv2mYv5oyxYzuTaO\u002fiDJUtrECa7\u002f7oaTE43GtP2JUYIHVGp0\u002fM+yhYP7FaT8lzmgDqFSiv\u002fyqmHgUqqS\u002ffutgyxGfn7+8fy6RRUWbP3xuyO91kZY\u002fUEujsJrIiL8wy9Mr2R+lPzQGPNSRIK4\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"r6Q6q8nLt7+WVzr7Oa7Cv3YUQnLcBam\u002fO0\u002faHHyiu78H+Sgf5GLGv+gXlo+Kscq\u002frj5iWtdhu7+RNY1yiHnJv2ximykbGsi\u002fOMD2dT+QwL8CXYZmhdu8v8Gp6IVmVsK\u002fvRbi06tdwL8OGutZ67nZP6HpHU+vfbc\u002fYCWvtaKMwb+b71KRtETGv1qyHti8Dse\u002fX9nijtYNwb\u002fumVE5mNG+vyhE+oe5gMC\u002fTK\u002fhinGavL\u002fFxJ9ykW7CvwD68W6Be8O\u002f+LpMxXDvwr\u002fc15lwQ93BP2sv55ayEMw\u002f7uJmz3WVw7+ODIKlbpG+P5IvJPvKKNw\u002fKXzctdJVtT8GuZ6\u002fe7jZP+HtPJ2pVdw\u002fikvax9fn4z8Gz04zSMnjP5NVt6fryqi\u002fNAy5qBqfkr\u002fUzIEfi2jCP8vLlZOaJra\u002fJ8o5qfZLo79TvmcYv4+mvzz3w6yw\u002fbq\u002f+nLmfBYkmb97sKoUeta0v0LLF6xo+Xk\u002fqa8GRTkpub9Yd\u002fB5P7DCvy3qtGNZOsO\u002fLHFsO1XDvr9CpQ7qhFjFv5nviGwWQsi\u002feOaHNfXNyb+c\u002f8npRjbEvyh5dCAZhsC\u002fn3Qajebmv7+co2kzvYy8v9QdIax2Hc8\u002fKWZU2\u002fSf2z\u002f1jcVt8rbXP\u002fzO10kTi8Y\u002f5vA79zs15j\u002fLmkRW+A7lPxwyifSGltk\u002f8GwMGd7B5D9huW8t\u002fNLoP4hsHRMKjbW\u002fVgA3KY9Wtj9aNavD1d\u002fYPxs1fXVIPug\u002fqsJMBid31T9hOyMz2gfdP+BuNg15keQ\u002fnxwqMJZCxL8aUO2RH4S7v1VQykx9icG\u002fGuW9+58cwb92xuQYRF2tP0QHMsE4Dsa\u002fUfY0A300wr\u002fSbRsOxgHBvw3pRtuPZb2\u002f9lzOkaUCu7\u002fG3bgjTXixv0rpdlfqntI\u002fm6EyiCfpyz\u002fugPbMb07ZP4UjeGnBzd8\u002fypdcpsJN5j\u002fUlsYoZ8bSPypEkP7matI\u002frTSFx9vuuD+T4SNDuYOxP03WbQF8KNI\u002fcSZcVRjHt787DjWgMujBv++r+4IoxcG\u002faqi8yiY4oD8UM8RnYhDFP7rIt\u002f\u002fJMsK\u002fsvb5abbsxb\u002fRa54SQqHFvzNvEN0D78S\u002fixv3\u002fo7Ew78r0Gw2bD\u002fHv2CobEtGJMa\u002f\u002f45suK7Mx78WiV+neBLEv6DEkqNaYcW\u002fOuaMgi5jxb9o7aWbD4eavyH+fm9qr8G\u002ftol14n1Nu7\u002fcunP3EOLAv1Yftxz598C\u002fQ4AF1iPQwb8wJCOS1WHCv+GTRIsKXce\u002fh2lCh4Xvpr+oGulIDqtuv06y4gkW\u002f7m\u002fj32ghpqblD+5iRl46f3BvzBAa7oki8C\u002fXqBRgBgbyL+e7PQ7D0THv3Gx\u002fFCeQLm\u002fLUA2YhWZxr8T9KilSbXFv3oqC6dQy8W\u002f8es5Qk8vyL9Mg46LgpHAv0JkbJdcSMW\u002fNMEV3UW6yL8HenBNFwfGv0kMlcS\u002fmMi\u002fxhXdc7DdxL8NKdliiMTIv\u002fgzocE8jsi\u002fbHWbpI++xL8bmJrULG3Fv\u002fScoCayTMG\u002fvepFN6Y9qr\u002fmcs8dKiLGv1MHGXromcS\u002fR1syajpUxb+7ewvQa+\u002fFvyaecVRAV8K\u002fiLmI3t6+yb\u002fyawO427TJv4YPMRt\u002fX8m\u002ftuS3b44Nx78WLBVf+fO6v2vLxE4ip7m\u002f0EGXSnMCvL85XL6TH1y8v9icyrlbxMC\u002ftkKHDzp5xb+2jji+j+LBv\u002fKd7VDPYsK\u002fQ\u002fMtZfAJvb88YnIKMenjPzy+5iazXNc\u002fmxjq7\u002fXgxL9GZVL5cvndPyFZQqApMeI\u002fd4+Xer+H0j99Pfn51Z7FvwU7lyL\u002fIsW\u002fQE1tGMdzw7+OseY09XbdPw9hBCD3QLO\u002fLb9zeXZWv7+pI1A5m33Hv1BAdkPhTcS\u002fubC\u002fhTdbyb9BlzW3uVTFv\u002f7iUnyJuMG\u002fOjcmY7YYw79SL+mbvFbcP3OrMkCfvOI\u002fjlL6a0tlsb8d975PQDLDvxpb22pk+a+\u002fhsv5dq2vt79MHouW2J\u002fEvxj0OY4mbcm\u002fuKQlEGkIvL\u002fzMfVmeqPJv6IgXNGt2se\u002fv06o4ezZwb\u002fkZSlPVyjBv+pCPt6EksC\u002fD+Mw2Qr4v7+vDZ7C7zHeP07vq1x0TbM\u002fpc8qPkYewr9uu8esGQvFvxkVulHc1cW\u002fAkXLBA6bwb+GNjJ0qbu8v026YP57KL6\u002fRfI5Vmu\u002fvr\u002fMvCGz1MPCvxGOQ2DqmcG\u002fwf6LJGtZwr+J60VZeAqIP8M3KZ9uU8k\u002fvWGIO192v7+TvyJ82668P\u002fnjikzxId4\u002fa+h97pawvz+Wck+9r8\u002fZP3Fl9\u002f2j7d0\u002fQCXWQHXo4T9J8WxWGZLkP+a6le46Ja6\u002fMCNs\u002fTKmWj8poauveHDHPzUjrrVU\u002fre\u002f8Cov3zqDqL9iF5QdQoKmv6dXlz7HWLu\u002fHLlzJqh3pL\u002fzxz5G0grDv04+\u002fTYH6oa\u002fbiEFksAxub9yXtuulw\u002fDv0uH1txqksK\u002fcef1XWdJvL8vLcdndObFv9wPIPTwjsi\u002ftPCgOsRfyr+lcedJ44TDv29wbFjZ+b+\u002fGcNAvhiiwL8I+9WoCdnAv3N6KUJFgMk\u002fyR3wzjMw4D9yI8gAYUrVP+eGpQuP9sk\u002fRd+i8In15T\u002fWw9uZx5bkP2dyxS9fi9c\u002f1xdHRPqs5j++xYkUSLLoPyLKgSvNO7a\u002fHjWAnAhhgT\u002fmOEIRN1e6P\u002fyU5K+f1Ok\u002f8I1lxrEH1j8jSk2QrxzSP1uLtPoHteI\u002fM1MTmxaow79wim3GcUG+v59XGPxPjMC\u002f3Az5tJSvwL\u002fEjq8MFAfDP2VQZCFYasa\u002ffhTdCDGdwL9yhv1iGta9v1x1yArYAb6\u002fPsuUobDpvL9FEpcrmsC3v2BJzvVuY7U\u002fEF2PYGmffz9NYY7kQsPUPwM6bDOL8tM\u002frngnKcp74j\u002ff0IarqMrQP7YB7dRr6dE\u002fjOT2OeCYtj82Od4sHNK4vyKgQaCYstA\u002faqLd2o7ev78gzIWhy9G\u002fv5eSovm8w8W\u002fuVZRlQNjsL8iG7lDSwevP\u002fGg\u002fOtMqsO\u002fw5O1ssDVx7\u002fwn9qwh3HDv3UAxSTQIsS\u002fluJarSzSwL92UxssI97Hv2ywhEtWdcS\u002f\u002fCDqN\u002ffgyL\u002f7RdouDDrFv4zqYoi9dMW\u002fhH+Q5bMwxr+5yzIA5xqnv0ywOZxnicO\u002fNxG7RmRUwb971pl2s+LBvw5\u002fi4lPKcG\u002fKyXd3Ez9wb8Bjct+\u002fffAv0af2g\u002fSNce\u002fYhTSWb2rqL\u002fR7AXqGUeGvwrKwDcKfLS\u002f\u002f+Wjj3zAlz9ivjWzPY69v6FFmOntE7i\u002fME3w7IMbx79qcH0jIpjCvxp44kfHKrq\u002fFgocC9gqw79ngBCPEUa2v\u002fyqj8e6Vr+\u002fdB+PKfBNsr9eiVJlcX+fPx6OZbIm3L4\u002froQwbi0tsz9JrzQ\u002fyXXAP9sil46bmr+\u002f5juUSDGIob+klbh4yRvBv1xJLsQ3Y8a\u002fTLH3a\u002fh6xL96PtsSncfEv9GtUVuI0sG\u002fp9NYWNpls79TjuQKhxXIvxUkXbX388O\u002fcZJHjgqPxb8oYPyGlyTFvzW64BGa+cC\u002fgAI0de7Yxr9yF2Enq1zHv3WOi\u002fA1kMe\u002fZPEwE4ECxL99xp3meZy6v4\u002fAoRBjWbi\u002fVxwJ\u002fuzavr93RfQKSMC8vx2d0YL6dsC\u002fK4lxbmDXw7\u002flmgEzVaLCv46Jl2eaNcK\u002fUo3PAaSrv797Xy9\u002f1qnhP0hq88o7jdg\u002ftR7Wi8smxb8hSa8SCB\u002fZP4Ey\u002fVCtSeM\u002fXMt6grxlwj9jS3kF\u002fmvGvw6cFzsXaMS\u002fM2y+4uZexL8EbZubbz3SPxyfa1R\u002f67G\u002fUE17Z3Fij78znStWxJLFv1SG9JxufsO\u002fMP26Kf67xr\u002fsifxB8u+XPw8+noZc\u002fbs\u002fi4c\u002fasm7w7\u002fIH1I2U7\u002fZP0DXx2tWYuM\u002f"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Weighted canonical components"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Binary canonical components"}},"legend":{"tracegroupgap":0},"title":{"text":"Structural canon. comp. (r = 0.798)","x":0.5},"width":360,"height":360},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('89593a43-5ddc-4329-887a-9d2d3a559b9d');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="5dadcbf3-2c26-46cc-96a3-fef82d3a176b" class="plotly-graph-div" style="height:360px; width:360px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("5dadcbf3-2c26-46cc-96a3-fef82d3a176b")) {                    Plotly.newPlot(                        "5dadcbf3-2c26-46cc-96a3-fef82d3a176b",                        [{"hovertemplate":"x=%{x}\u003cbr\u003ey=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","symbol":"circle"},"mode":"markers","name":"","orientation":"v","showlegend":false,"x":{"dtype":"f8","bdata":"Awv9mpHJ1b9m4dPdNGPrv6ewtZb1o\u002fC\u002f3pYTxYua77\u002fn1M8d\u002fnHvv9DXAxmfL+u\u002fs1NeWxge5r+oTP4K\u002flLlv4km\u002fPu7CuG\u002fIojyhuj27L98tIR8xHPlvzAxTQYtibs\u002fnORRFrcj878vskbw3ojnP1aD5MH+fuc\u002feaQSfWDJ77+M+5nncaLvv8txW4RDCOW\u002fSQU6oj\u002fo7r8xDAvhKoPqv+0cbBGepua\u002fY0mCCG9E4r\u002fioMHdYoHmvybSwa9wr6+\u002f\u002fo\u002f9EDsJnb8puckYwCvnP00h94CM5KC\u002fCh5ANs2lzr8JReL6tBfkPwk2qHo49\u002fc\u002fXHGYJ\u002fdH8T9bpPICI4nuPyla8EwFmvU\u002fJUb11cSt9T9OyWqCRmL4P7nO+mk06tu\u002f\u002frrw1Grz5b9Z\u002fGcsGzfbv2RWhhGGCOC\u002fkyr92VA8278jGK+jtUrbv6+pi2vSA+y\u002fq9Wm2qwI6L+gKdPIh\u002frbv03UYacUr+S\u002f6VcTSVEp4r9hEyZMienqvwXp1oEcFPK\u002flbZMZYio7L+hxkn+zkLnvyOX+rZN7+a\u002fl6VX+\u002fuP6b9ux7XY3j3hvzjVvWwZmdS\u002fcyK2x9GN37\u002fy0E7vgOrlv4r6iUdJdyk\u002fh+B4W3PIzz8Yy9RNEGLZv8lBa5Wh1eO\u002fv4MZkB6Y7T+pPwIT+Q71P3ETqVBzqvA\u002fpmiN3bS67j+oBCpPByzvP2csGL1lyOA\u002fLQTwZbKX+T8e0rT7qGT3P1FuMcmE0PU\u002fxysu8Tyl9j9ISC4JQfD2P+xxmmLBM\u002fc\u002fXePWuCKY8z9uW6VgwaflP\u002f5rvoJqtek\u002f8u66zXj27T\u002fTsBwMNMXxP5wRt2nWJOW\u002fuN0njAV5uj859yHkFMC4P07kAGkYyNk\u002fM60GBfRlqr95twr1oY3SP+E6XBhlwOG\u002fJOSW86XR4z92Mm7YUoytv4Nej2DEUfM\u002fk\u002f3vqdgt7j8PEQhe1eTvP4ju\u002fsINgeo\u002ffC20K9Vryj\u002f8\u002fsZcFjzbP4BLRW1YZuQ\u002fr5zmIXsm6T8+p9Mvhh3bvyneD6tc2OO\u002fTLvUODGz8D89jGwYRvDwP\u002flXOZaOZ+W\u002fQ8xTcmP95b\u002f6a9Dw\u002ff\u002fdv1bL6VBcOtW\u002fUjv6AWlzzb9K3jIj0MHav\u002fjkxkZ+U+i\u002fwGe47Jvd2L+cy8CntUHVv4rMWNEp4eO\u002f2kg6QdSN2L9gRXyo9ES9PzVxSCuzR9Q\u002fGVuIPbji1j9MJogM3Ybiv7qTyLASKNe\u002fPVH4b\u002fRB2b+6ZoFSOOnrv6J8bH9wZ+q\u002fmMr+oBIN3j8D\u002fuRiHnrdP+W0LHK0jd0\u002fXKcq02Ihvr9mQm97r4O9PzgndyPFA6M\u002fLGQ480rS2b8g7SQUh97Ov8h20uzLXtY\u002fq5DKH0CqsD9k31zo7WDMP8FZpYtsjNA\u002fflmmPLJF8z+98ZVn\u002fF7nP53I509VVvY\u002fH3XQLAXX8D8kFNVOYljsP0tzo87GLMk\u002fU3QVEkyy279VUx30mnLcvzfzdVKoqum\u002fywuYXq1Q0b9dL414Y4bmvx8NoXFsUNu\u002fgEiFZTOJ5L9cMKf7KGHev30CGG7n9dY\u002fVEtHzP1t6D+IXSoD1c7jv5vFhawQn+2\u002fodhKl1X45r9bFmb2v+b2P3fFhvZ3l\u002fg\u002feELF4EFa\u002fT9JOJGnfjbwv\u002f4NK7hBnuG\u002fMxpoWoBd478WgN9u0AniP+m1EAG6Pem\u002fN5jvHeo08L\u002fM\u002f+wb8o3sv05l2QpKQPC\u002fuR\u002fX2wZ42b+HJ6gNip71P+8sBq6I9fA\u002fidooWd7a4L8gQLQxhG7iPyuqvAR4Peg\u002f\u002fC7iFeNc3D9UjGk2KsDVv12P9Ufz8MK\u002fQibx9ihNyL\u002fzvrtvVPnvP+og3JaGQOM\u002fTxRDXhZt0j+zbJ+v9+3Ev73iPU6tKMe\u002fhPTB9SCF4b+dxXkUIxHxP5r7nW1MfvU\u002foF93E6myz79\u002f+vnGnNfTP9g8IvrU2dg\u002fKmQrMjB727+D365szBXsv9GzbO7kovG\u002fcYSc76HC8L\u002fumj9cgr3tv33NPfL8e+y\u002f\u002fg1Nt7B56L\u002fglG7CQG\u002fkvwykUlGJYOC\u002fjf+uwM548L\u002ffGIeKVHLrv8fDImJwrdW\u002fDqbF9NxJ87+00uEh1irhPxiofOW\u002f2OA\u002fAoVAJoJ+8L\u002fpMKlJJijuv7jPD3a9veW\u002f5VQ5P+oV8L9NFKmzYgTrv1mVRwleMOe\u002f1yfYKhLL5L\u002fi\u002fgai0y\u002fmvz2vs7nuxLS\u002fkPBO\u002fEe26L9V76zpKNbZP8XuIgyFLce\u002fNEuLAD6V178rqMZJJZ7RP\u002fC29OalPPY\u002fZee19yS26T8VKCHvUrTsP4SaudC18vI\u002fyvjVMf3k8D97tjMIP7T3P2PSG9u19t+\u002fSq4GDULr6b8sAOuYXPPhv+Z5IsnLPuC\u002f9qwRiUNi3b\u002ff3QqqGXPbv2suaoLIwui\u002feZEXwj9777+rzTrq9wrlv+vqGPYK5+y\u002flpXTa\u002fDz5r9pHglCX53qvz1P8qzJRfK\u002f541v9ROQ7b8aW+ZH67DpvycGKLMmDue\u002friMjavv76b8qLtPjH5DgvxmJBXk5htW\u002fYbFk4SsW3r\u002ftIrBpkjHsv2IX32Tg9Me\u002fl1KYMwVm0D90NVZO6A7Wv+HJxbpNjea\u002fMIXTo4K37D89d3Vl1TPxP5wixF6X0uY\u002fxC6x5zP96z8Ku1DNXanwP1v\u002fehJ\u002foOQ\u002fcdr8POaM+D\u002f+Nk4GBen3P6talOEKBfg\u002fbQ7mGQyt+D8+Vx6ugGDzP+3pKlBNc\u002fc\u002foqsGUz1j8D\u002fMG8WOM2ndP9kOerusluA\u002ff7P+F+6\u002f8z+USudRV2TxP4Litqw\u002fru2\u002f0kh1qFrlvb+JRQP7JSa6v5Q1Fh5GMM8\u002fjW8Lt3Ca4b+iRLgyn5PWP+ZM6yeQFuC\u002f1uHjGUSI2j9FVR7kBM6Ev9YYE\u002f1w1fM\u002fMrY5SgHS8j8bT9WrJgzfPzRIQDGQh+s\u002fsRfXZDGi0D9KwvxiK4q1P8w7TIGqKts\u002fIX8NzqgT7D+7HuMtVyvav8O3jZPFsua\u002fN6VA+yp96z\u002faYRUa2E\u002fxP+OBrM6aMOm\u002fai4OVbtA578Pths6NgDZv\u002fPCeCJfAtS\u002fS8qwu6d5wL\u002fkpHpEwSviv+sHsUDHpuu\u002fD5wOJ2FQ4b89F42TAQnRvxpf3KF3t+a\u002fz172\u002fkQN4r8+plSiy1iVPwAjQy5Jjs0\u002fpOxkvfb41j9AxvEP+qjiv2a6ac9w8+C\u002f\u002fKESG2QX3b9bya\u002fO4vDsv4TfMB7SE\u002fC\u002febDKSJGN3D8vvzKh05nRPxe9MoBEztc\u002fcttIligNzb++GO0CKtTAP4X\u002f6+jFT7M\u002fJg7QvjBo2L9tI7lHNjjSv+NbFWpGpdE\u002fnSMPlQhylr\u002fow+5k0DXWPy4WWK60RaI\u002fdSxm+TIC9T\u002fVsXNONATrP3vU+WY4Svc\u002fNt6caoJW7D+eYVO2hZPwPx\u002fqsXUJqpM\u002fAcsXhg0a4L\u002fiBo1y+VDkv0LgIWyHM+y\u002foNbsWITL07\u002fAJrGVJyHpv+xzGH5os+C\u002fzou1wzZP6L\u002fBS3x05x7kv0OnPdzIQcM\u002f0wZKzYHZ7D\u002fgNsMcoWLlvzl3I\u002fkpSfG\u002fsbb0bAnN8L97kzx773XxP56f3+HC0fo\u002f4XrLjDWr+z\u002fi37D0S7ruv6JYcepXX+O\u002fJ1TzX8se4L9e\u002fKS5hqvYP8WCLGaHzOm\u002fmC4h2VkC8L+3hlFXrUftv9VCHyLz4fC\u002fSgFwOyFX379Bg7OP0k3zP0vceneEg+8\u002fDGKU3JNy3b\u002fBx9JzaR7dP50BnROi8Og\u002fIOKoIX6GyD+p7zHE7n\u002ffvzVDnr8R7NS\u002fFUlMLKICwL++7W7\u002fWrfxP5HMQJ03DeA\u002fFjiVQbI6xz8OBYzu4eC1v159+dXUHs+\u002fGY5o3ddn37+Y\u002f1sR+nbzP4N0QayQr\u002fM\u002fNQYwwEgmwb9km1XWqga6P5\u002fsg5mpmNc\u002f"},"xaxis":"x","y":{"dtype":"f8","bdata":"AAAA4ES1878AAACI3lcKwAAAAIyhghHAAAAAsqM+EMAAAABI1NoPwAAAAHBBgwnAAAAAOBZNBsAAAACoq68HwAAAANB0GQDAAAAA+vkUFMAAAAB26GoRwAAAAJBLmua\u002fAAAAZmI7FMAAAABcik0TQAAAAEhH3BFAAAAAEFXMD8AAAAAoRvUQwAAAAEg1GwbAAAAAzN+RD8AAAAA4rAkIwAAAANgtwgPAAAAASNkhAMAAAAB0DmsEwAAAAEBNQNy\u002fAAAAUO7H9b8AAAA4\u002frMGQAAAAIAbEdU\u002fAAAAgIbm+L8AAACAHHgKQAAAADQmXyNAAAAA4EynHUAAAADUBcEWQAAAAFfawCFAAAAA2CCLIEAAAABkRTwjQAAAAEAeCPy\u002fAAAAFH1tCsAAAACA2YQBwAAAAPjMCQHAAAAAMN5p\u002fr8AAADUGmYBwAAAAIZkFhDAAAAASHrgEcAAAAC8VwIIwAAAADzXWwrAAAAARHJTCsAAAACIeYgMwAAAABq0MBTAAAAAMNVlDsAAAACehbIQwAAAAAByfwbAAAAAEAlzCsAAAAAo5IACwAAAALBO8vO\u002fAAAA6P2pAsAAAAAsPx4NwAAAAIAk49W\u002fAAAAQM4C5D8AAADIs0sCwAAAAODViAzAAAAAXqrgGEAAAAB44mkcQAAAABCG6QlAAAAAGnNpGkAAAACG5qcbQAAAAKxBDQNAAAAAsugHIEAAAAAAeZ4hQAAAAL7FZR9AAAAAQPHYHEAAAADWuLYgQAAAAEDMMiJAAAAABPnIEkAAAACAjIT1PwAAAKTk3wRAAAAAxN5tDUAAAADg78wPQAAAAPx1PBXAAAAAQGBm9L8AAADYeVr3vwAAAOAm7dY\u002fAAAAtC\u002fgBMAAAACQvdvkvwAAAPwg5Q7AAAAAKGcF+T8AAACgm9PlvwAAAHA9CRpAAAAAhi\u002f9F0AAAADwnhwSQAAAAOgnuw1AAAAAQBrKyr8AAACAd3LyPwAAAHR3nARAAAAAVNbiC0AAAACw+9UMwAAAAHjTDw3AAAAA6OVEEkAAAAAAFa4UQAAAAOQKogzAAAAA+EzjC8AAAAAUGYcAwAAAAGBVdPi\u002fAAAAwLUO9b8AAABgs3L\u002fvwAAAAycVQ\u002fAAAAAXOGiA8AAAAAwLmH9vwAAAADDnxHAAAAASOrcB8AAAABAwV7NPwAAAMDPD8Y\u002fAAAA4K6g+D8AAADQY0QKwAAAAGzeEQLAAAAA4EM9AsAAAACcJkITwAAAAKo6DxTAAAAA0LrsAUAAAABAzfUDQAAAALhmPQVAAAAAAN6btj8AAAAAFj6xPwAAAMCD3dG\u002fAAAAkEGl\u002fr8AAABgxi75vwAAAEAACAFAAAAAwMGN2T8AAABA9QjoPwAAAACoYds\u002fAAAAaJJ0FUAAAABowagOQAAAAD7l2iBAAAAAwrENEEAAAACgnLINQAAAAIDlu98\u002fAAAAYItJB8AAAAAEF7YPwAAAAAwd8w\u002fAAAAAgMoOAcAAAAAQ3+MOwAAAAECaRf6\u002fAAAAeFtPA8AAAACIzT4CwAAAAAB45OC\u002fAAAAWDTGA0AAAABUxLcLwAAAALpz8RTAAAAAYhmtFsAAAACAYU4XQAAAAELrWyFAAAAAdnu3JEAAAABYk\u002fUQwAAAAGQ\u002f8wLAAAAAiEGWBMAAAAD4A4oJQAAAAPBsLwbAAAAAWjfZEMAAAAAIR4oLwAAAABSP0RDAAAAAUA1M+78AAACyNp4gQAAAAGglORhAAAAA8C1XAcAAAAAwSG8JQAAAAMz+0hJAAAAA+Bbi+z8AAAB4bY4BwAAAAKAdROu\u002fAAAAjIvcA8AAAAAQUjgXQAAAAMDQwdo\u002fAAAAQM4v6T8AAABgVYTqvwAAAOD\u002fgu6\u002fAAAAaJ\u002fqBcAAAAAYpGUYQAAAAFgp0RpAAAAAcHlZ+78AAABA\u002fjD5PwAAAMiPGAVAAAAAIAFP+b8AAACE+fUKwAAAAHwAsxLAAAAA2AcxEcAAAAD4ZBcNwAAAAKjwXwrAAAAAwCFlCMAAAAAcaUcGwAAAAGA5\u002fP+\u002fAAAAoOEDFsAAAAAINS4UwAAAAJAMZwXAAAAA0AcKFMAAAADIiZkOQAAAAOABowpAAAAAzMYZEMAAAAAKswsQwAAAAGAgXgXAAAAA0L1EEMAAAAD0x8oHwAAAABzqdQTAAAAAYBPDAsAAAADIoFQEwAAAAMD8JOG\u002fAAAAepAjFMAAAAAI9r71PwAAAACvFeC\u002fAAAA0LGkAMAAAACQ7A71PwAAAJD6VCJAAAAATP4wF0AAAAAqvMcVQAAAAK6FHyBAAAAACDlJGUAAAACEK78iQAAAALhA3wDAAAAAdKkqD8AAAACMbF4HwAAAAJjyDQHAAAAABNPeAMAAAAC4cU8BwAAAALzeLQzAAAAA1LwIFsAAAAB+VAsQwAAAAAaUJhLAAAAAQAM8D8AAAACs2tcMwAAAAORbvBPAAAAA5LDFDsAAAADud30RwAAAACAFTwfAAAAAXDT9CsAAAABgCLwBwAAAAKBf\u002fvW\u002fAAAALCDnAcAAAAB0yMIRwAAAANjOF\u002fO\u002fAAAAkIT15z8AAAAsbrMAwAAAAEjz0w\u002fAAAAA9IkfGEAAAADIa\u002fUWQAAAAHjKGPs\u002fAAAAZJt2F0AAAADcXFwdQAAAACBGHQpAAAAAhL+BHkAAAABw70wiQAAAAGoWECJAAAAAcIkCIEAAAABYcE8aQAAAANeWOiJAAAAAeOkMDkAAAACA\u002fne+PwAAAJChyfU\u002fAAAAELcTFUAAAABAWQQPQAAAAAa6iBnAAAAAwPri\u002f78AAACgvmcAwAAAAICGdtu\u002fAAAA8F5FE8AAAADAHiXUvwAAAMx36QvAAAAAMOa14z8AAAAgol\u002fdvwAAAFQ2rxpAAAAALN3KHUAAAABg\u002fsP4PwAAAOS46Q5AAAAAoLoN078AAABA9LfbvwAAABAXnvo\u002fAAAAWmUdEEAAAACQNVwJwAAAAGxnKg\u002fAAAAAQL1ODEAAAABsQNoVQAAAAJjvRBDAAAAAVCfTC8AAAACwzXv7vwAAAIBeQ\u002fe\u002fAAAA8O6r7b8AAAAgtZEFwAAAAJbwLBHAAAAAYBZOCcAAAABQ+tL3vwAAAN5V9hLAAAAAUCPLDsAAAACAoyHMvwAAANBMpuS\u002fAAAAGAUz+T8AAADQOvwKwAAAAHCxwAfAAAAABPMvA8AAAADyCxwSwAAAACSCxhXAAAAAROZXAkAAAADgB4D4PwAAAJBULQFAAAAAYIxe5L8AAACAB\u002fDUPwAAAADC1Zy\u002fAAAA0Bae\u002fr8AAAA42Dr6vwAAAMB2i\u002fs\u002fAAAAgK\u002fltb8AAAAwsRP9PwAAAOCvHeG\u002fAAAAELFjGEAAAADCzdUSQAAAAEr0ACJAAAAAmNcYCUAAAAA4X8YUQAAAAABcKL6\u002fAAAA+FS3BcAAAABsJOERwAAAAHSILA7AAAAAiNH0AMAAAACUw64PwAAAAHAx+gDAAAAAnETDCMAAAABswmkHwAAAAMhYwvO\u002fAAAAnFr1C0AAAAAcZPkKwAAAACB3iBbAAAAAPGeoGsAAAABYuX0QQAAAAOiA+iNAAAAAxvsII0AAAADck4IPwAAAAOiVSQTAAAAA0Hb4\u002f78AAAA4+BQBQAAAAKg6vgbAAAAAVOL7D8AAAADIvpQLwAAAANoFDBHAAAAA0PDQ\u002f78AAAB0HQ4dQAAAAIy4ThZAAAAAYI6n\u002fL8AAAAskLsCQAAAAP63VRNAAAAAoF884D8AAADc\u002fuEHwAAAANCj4\u002fm\u002fAAAAeNt\u002fAsAAAAC0qC4YQAAAAIDcDbo\u002fAAAAwIn80z8AAADgjErivwAAAIDu2PS\u002fAAAAOLS4A8AAAABAHBAeQAAAADYYRBdAAAAAgI3D8b8AAAAAnB6+PwAAAPDFFwRA"},"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Weighted canonical components"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Binary canonical components"}},"legend":{"tracegroupgap":0},"title":{"text":"Correlation canon. comp. (r = 0.972)","x":0.5},"width":360,"height":360},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('5dadcbf3-2c26-46cc-96a3-fef82d3a176b');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/mikarubi\.github\.io\/abct\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../examples/2_loyvain.html" class="pagination-link" aria-label="Loyvain Clustering">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Loyvain Clustering</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../examples/4_kneicomp.html" class="pagination-link" aria-label="Co-neighbor Components">
+        <span class="nav-page-text">Co-neighbor Components</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
