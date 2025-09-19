@@ -21,7 +21,7 @@ end
 
 if Args.method == "loyvain"
     % Test symmetry
-    assert(isequal(size(W, 1), size(W, 2)) && all(abs(W - W') < eps("single"), "all"), ...
+    assert(isequal(size(W, 1), size(W, 2)) && all(abs(W - W') < double(eps("single")), "all"), ...
         "Network matrix must be symmetric or similarity must not be ""network"".")
 
     % Test initialization
