@@ -9,7 +9,7 @@ arguments
     Args.beta (1, 1) {mustBePositive} = 1
     Args.gamma (1, 1) {mustBePositive} = 1
     Args.similarity (1, 1) string {mustBeMember( ...
-        Args.similarity, ["network", "corr", "cosim"])} = "network"
+        Args.similarity, ["network", "corr", "cosim", "none"])} = "network"
     Args.method (1, 1) string {mustBeMember( ...
         Args.method, ["direct", "indirect"])} = "direct"
     Args.replicates (1, 1) {mustBePositive, mustBeInteger} = 10
@@ -27,11 +27,11 @@ arguments
 end
 Args.X = X;
 
-if Args.similarity == "network"
+if ismember(Args.similarity, ["network", "none"])
     % Test symmetry
     assert(isequal(size(Args.X, 1), size(Args.X, 2)) && ...
         all(abs(Args.X - Args.X') < double(eps("single")), "all"), ...
-        "Network matrix must be symmetric or similarity must not be ""network"".")
+        "Input matrix must be symmetric if similarity is ""network"" or ""none"".")
 end
 
 if Args.gpu

@@ -38,9 +38,9 @@ def parse_args(
 ) -> dict:
 
     X = np.asarray(X)
-    if similarity == "network":
+    if similarity in ["network", "none"]:
         if (X.shape[0] != X.shape[1]) or not np.allclose(X, X.T):
-            raise ValueError('Network matrix must be symmetric or similarity must not be "network".')
+            raise ValueError('Input matrix must be symmetric if similarity is "network" or "none".')
 
     if gpu and not torch.cuda.is_available():
         raise ValueError("GPU must be available or gpu must be False.")

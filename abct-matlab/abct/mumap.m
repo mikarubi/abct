@@ -35,6 +35,7 @@ function [U, Partition, CostHistory] = mumap(varargin)
 %               "network": Network connectivity (default).
 %               "corr": Pearson correlation coefficient.
 %               "cosim": Cosine similarity.
+%               "none": Precomputed similarity matrix.
 %
 %           method=[Method of nearest-neighbor search].
 %               "direct": Direct computation of similarity matrix.

@@ -1,5 +1,6 @@
 import abct
 import numpy as np
+import warnings
 
 def step1_proc(Args):
     # m-umap arguments processing
@@ -10,12 +11,18 @@ def step1_proc(Args):
         Args.start = "custom"
 
     # Generate a nearest-neighbor matrix
-    Args.A = abct.kneighbor(Args.X,
-        "nearest",
-        Args.kappa,
-        Args.similarity,
-        Args.method,
-    )
+    if Args.similarity == "none":
+        if Args.verbose:
+            warnings.warn('Similarity is "none". Ignoring "kappa" and "method" arguments.')
+        Args.A = np.asarray(Args.X)
+        np.fill_diagonal(Args.A, 0)
+    else:
+        Args.A = abct.kneighbor(Args.X,
+            "nearest",
+            Args.kappa,
+            Args.similarity,
+            Args.method,
+        )
 
     # Module structure
     if Args.partition is None:
