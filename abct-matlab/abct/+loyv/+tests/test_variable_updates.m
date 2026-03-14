@@ -1,4 +1,4 @@
-function test_variable_updates(Args, W, M, My, Vals)
+function test_variable_updates(Args, effective_objective, W, M, My, Vals)
 %#ok<*NASGU> Test accuracy of variable update rules after an update
 
 % Unpack arguments
@@ -12,7 +12,14 @@ N = full(sum(MM, 2));                           % number of nodes in module
 switch Args.method
     case "loyvain"
         if Args.similarity == "network"
-            Smn = MM * W;                       % degree of module to node
+            % degree of module to node
+            S = mean(W, 2);                     % NB: mean not sum
+            s = mean(W, "all");                 % NB: mean not sum
+            switch Args.objective
+                case "kmodularity";     Smn = MM * (W - S * S' / s);
+                case "kmodularity_ctr"; Smn = MM * (W - S - S' + s);
+                otherwise;              Smn = MM * W;
+            end
         else
             X = Args.X;
             G = MM * X;                         % cluster centroid
@@ -23,7 +30,6 @@ switch Args.method
             S = sum(Smn, 1);                    % degree of node
             D = sum(Smn, 2);                    % degree of module
         end
-        Wii = Args.Wii;                         % within-node weight sum
 
     case "coloyvain"
         ny = length(My);
@@ -38,7 +44,7 @@ switch Args.method
         end
 end
 
-switch Args.objective
+switch effective_objective
     case "kmeans";      Cii_nrm = Cii ./ N;
     case "spectral";    Cii_nrm = Cii ./ D;
     case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);

@@ -1,4 +1,4 @@
-function test_objective_updates(Args, W, M, My, U, MU, delta_QU)
+function test_objective_updates(Args, effective_objective, W, M, My, U, MU, delta_QU)
 % Test accuracy of objective update rules for Nodes U in Modules MU
 
 % Unpack arguments
@@ -21,7 +21,14 @@ for i = 1:numel(U)
         switch Args.method
             case "loyvain"
                 if Args.similarity == "network"
-                    Smn = MM * W;                       % degree of module to node
+                    % degree of module to node
+                    S = mean(W, 2);                     % NB: mean not sum
+                    s = mean(W, "all");                 % NB: mean not sum
+                    switch Args.objective
+                        case "kmodularity";     Smn = MM * (W - S * S' / s);
+                        case "kmodularity_ctr"; Smn = MM * (W - S - S' + s);
+                        otherwise;              Smn = MM * W;
+                    end
                 else
                     X = Args.X;
                     G = MM * X;                         % cluster centroid
@@ -29,10 +36,8 @@ for i = 1:numel(U)
                 end
                 Cii = diag(Smn * MM');                  % within-module weight sum
                 if Args.objective == "spectral"
-                    S = sum(Smn, 1);                    % degree of node
                     D = sum(Smn, 2);                    % degree of module
                 end
-                Wii = Args.Wii;                         % within-node weight sum
 
             case "coloyvain"
                 ny = length(My);
@@ -41,13 +46,12 @@ for i = 1:numel(U)
                 Smn = MMy * W';                         % strength node to module of Wxy
                 Cii = diag(MM * Smn');                  % within-module weight sum
                 if Args.objective == "cospectral"
-                    S = sum(W, 2)';
                     D = sum(MM * W, 2);
                     Dy = sum(MMy * W', 2);
                 end
         end
 
-        switch Args.objective
+        switch effective_objective
             case "kmeans";      Cii_nrm = Cii ./ N;
             case "spectral";    Cii_nrm = Cii ./ D;
             case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);

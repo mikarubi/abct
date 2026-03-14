@@ -33,11 +33,11 @@ function V = kneicomp(W, k, weight, varargin)
 %       common-neighbors matrices. In imaging neuroscience, these
 %       components are approximately equivalent to co-activity gradients
 %       (diffusion-map embeddings).
-% 
-%       Correspondingly, binary components are modules of common-neighbors 
+%
+%       Correspondingly, binary components are modules of common-neighbors
 %       matrices, estimated using the Loyvain algorithm. They are
 %       equivalent to eigenvectors of common-neighbors matrices with binary
-%       constraints. The order of binary components will be arbitrary. 
+%       constraints. The order of binary components will be arbitrary.
 %
 %   See also:
 %       KNEIGHBOR, LOYVAIN, MUMAP.
@@ -77,6 +77,6 @@ switch weight
         [V, ~] = eigs(B, k+1);
         V = V(:, 2:end);
     case "binary"
-        M = loyvain(full(B), k, "kmodularity", "network", varargin{:});
+        M = loyvain(B, k, "kmodularity", "network", varargin{:});
         V = full(sparse(1:length(B), M, 1));
 end

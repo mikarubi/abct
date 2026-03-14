@@ -6,12 +6,10 @@ assert(k <= n, "Number of modules must be not exceed number of nodes or data poi
 assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes or data points.")
 assert(all(isfinite(X), "all"), "Data matrix has non-finite elements after processing.")
 
-% Test non-negativity for spectral clustering
-if ismember(Args.objective, ["spectral", "cospectral"])
+% Test data non-negativity for spectral clustering
+if ismember(Args.objective, ["spectral", "cospectral"]) && (Args.similarity ~= "network")
     ending = "non-negative for ""spectral"" objective.";
-    if Args.similarity == "network"
-        assert(all(W >= 0, "all"), "Network matrix must be " + ending);
-    elseif numel(X) < 1e6
+    if numel(X) < 1e6
         assert(all(X * X' >= 0, "all"), "Similarity matrix must be " + ending)
     else
         warning("Not checking similarity matrix for negative values because " + ...

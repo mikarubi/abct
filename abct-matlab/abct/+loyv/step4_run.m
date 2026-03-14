@@ -3,6 +3,7 @@ function [M, Q, Cii_nrm] = step4_run(Args, W, M, My)
 
 % Unpack arguments
 k = Args.k;
+effective_objective = Args.objective;           % effective optimization objective
 
 n = length(M);
 LinIdx = M + k*(0:n-1);                         % two-dimensional indices of M
@@ -12,18 +13,41 @@ N = full(sum(MM, 2));                           % number of nodes in module
 switch Args.method
     case "loyvain"
         if Args.similarity == "network"
-            Smn = MM * W;                       % degree of module to node
+            S = mean(W, 2);                     % NB: mean not sum
+            s = mean(W, "all");                 % NB: mean not sum
+            O = ones(n, 1);
+
+            % Compute degrees of module to node and within-node weights
+            switch Args.objective
+                case "kmodularity"
+                    Smn = MM * W - (MM * S) * S' / s;
+                    Wii = (diag(W) - (S .* S) / s)';
+                    % Smn = MM * (W - S * S' / s);
+                case "kmodularity_ctr"
+                    Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
+                    Wii = (diag(W) - S - S + s)';
+                    % Smn = MM * (W - S - S' + s);
+                otherwise                       % k-means and spectral objectives
+                    Smn = MM * W;
+                    Wii = diag(W)';
+            end
         else
             X = Args.X;
             G = MM * X;                         % cluster centroid
             Smn = G * X';                       % dot of centroid with node
+            Wii = sum(X.^2, 2)';                % self-connection weights
         end
+
         Cii = diag(Smn * MM');                  % within-module weight sum
         if Args.objective == "spectral"
             S = sum(Smn, 1);                    % degree of node
             D = sum(Smn, 2);                    % degree of module
         end
-        Wii = Args.Wii;                         % within-node weight sum
+
+        % Convert objectives after residualization
+        if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
+            effective_objective = "kmeans";
+        end
 
     case "coloyvain"
         ny = length(My);
@@ -38,7 +62,7 @@ switch Args.method
         end
 end
 
-switch Args.objective
+switch effective_objective
     case "kmeans";      Cii_nrm = Cii ./ N;
     case "spectral";    Cii_nrm = Cii ./ D;
     case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
@@ -58,7 +82,7 @@ for v = 1:Args.maxiter
         MU = M(U);                              % module assignments of nodes in batch
         b = numel(U);                           % number of nodes in batch
 
-        switch Args.objective
+        switch effective_objective
             case "kmeans"
                 delta_QU = ...
                     ((2 * Smn(:, U) + Wii(U)) - Cii_nrm     ) ./ (N      + 1) - ...
@@ -81,7 +105,7 @@ for v = 1:Args.maxiter
 
         % % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
         % if ~exist("My", "var"); My = []; end
-        % loyv.tests.test_objective_updates(Args, W, M, My, U, MU, delta_QU)
+        % loyv.tests.test_objective_updates(Args, effective_objective, W, M, My, U, MU, delta_QU)
         % % END UNCOMMENT TO TEST OBJECTIVE UPDATES
 
         % Update if improvements
@@ -101,7 +125,7 @@ for v = 1:Args.maxiter
                 delta_MMI = (MMI_new - MMI);
                 N_new = N + sum(delta_MMI, 2);
                 if all(N_new)
-                    break;
+                    break
                 else
                     E = find(~N_new);           % empty modules
                     k_e = numel(E);             % number of empty modules
@@ -118,7 +142,15 @@ for v = 1:Args.maxiter
                 case "loyvain"
                     % Update G and Smn
                     if Args.similarity == "network"
-                        delta_Smn = delta_MMI * W(I, :);
+                        switch Args.objective
+                            case "kmodularity"
+                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
+                            case "kmodularity_ctr"
+                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
+                                    (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
+                            otherwise                   % k-means and spectral objectives
+                                delta_Smn = delta_MMI * W(I, :);
+                        end
                     else
                         delta_G = delta_MMI * X(I, :);  % change in centroid
                         G = G + delta_G;                % update centroids
@@ -136,7 +168,7 @@ for v = 1:Args.maxiter
                 D = D + sum(delta_Smn, 2);
             end
 
-            switch Args.objective
+            switch effective_objective
                 case "kmeans";      Cii_nrm = Cii ./ N;
                 case "spectral";    Cii_nrm = Cii ./ D;
                 case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
@@ -148,7 +180,7 @@ for v = 1:Args.maxiter
             %     if ~exist(name, "var"); val = []; else; eval("val = " + name + ";"); end
             %     Vals.(name) = val;
             % end
-            % loyv.tests.test_variable_updates(Args, W, M, My, Vals)
+            % loyv.tests.test_variable_updates(Args, effective_objective, W, M, My, Vals)
             % % END UNCOMMENT TO TEST VARIABLE UPDATES
         end
     end

@@ -17,7 +17,8 @@ function [M, Q] = loyvain(varargin)
 %           Set to 0 to infer number from initial module assignment.
 %
 %       objective: Clustering objective.
-%           "kmodularity": K-modularity (default).
+%           "kmodularity": K-modularity with degree correction (default).
+%           "kmodularity_ctr": K-modularity with double centering.
 %           "kmeans": K-means clustering objective.
 %           "spectral": Spectral clustering objective (normalized cut).
 %
@@ -110,7 +111,7 @@ for i = 1:Args.replicates
         M0 = Args.M0;
     else
         % initialize
-        M0 = loyv.step3_init(Args.X, Args.normX, Args.Dist, Args.n, Args);
+        M0 = loyv.step3_init(Args.X, Args.Norm, Args.Dist, Args.n, Args);
     end
 
     % run algorithm

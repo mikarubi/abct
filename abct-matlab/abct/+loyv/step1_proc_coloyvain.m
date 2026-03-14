@@ -10,14 +10,18 @@ end
 [Args.px, Args.py] = size(Args.W);
 
 % Global residualization for kmodularity
-if Args.objective == "kmodularity"
+if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
     Args.W = Args.W * (sqrt(Args.px*Args.py)/Args.k) / sum(abs(Args.W), "all");
-    Args.W = residualn(Args.W, "degree");
+    switch Args.objective
+        case "kmodularity";     Args.W = residualn(Args.W, "degree");
+        case "kmodularity_ctr"; Args.W = residualn(Args.W, "degree_ctr");
+    end
 end
 switch Args.objective
-    case "kmodularity"; Args.objective = "cokmeans";
-    case "kmeans";      Args.objective = "cokmeans";
-    case "spectral";    Args.objective = "cospectral";
+    case "kmodularity";         Args.objective = "cokmeans";
+    case "kmodularity_ctr";     Args.objective = "cokmeans";
+    case "kmeans";              Args.objective = "cokmeans";
+    case "spectral";            Args.objective = "cospectral";
 end
 if ismember(Args.start, ["greedy", "balanced"])
     Args.DistX = Args.W ./ vecnorm(Args.W, 2, 2);

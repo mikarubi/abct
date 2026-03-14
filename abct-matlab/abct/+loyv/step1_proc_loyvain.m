@@ -19,14 +19,17 @@ if isnumeric(Args.start)
 end
 
 % Global residualization for kmodularity
-if Args.objective == "kmodularity"
+if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
     if Args.similarity == "network"
-        Args.W = Args.W * (Args.n/Args.k) / sum(abs(Args.W), "all");
-        Args.W = residualn(Args.W, "degree");
+        % residualize in step4 to avoid constructing full n * n matrices
+        Args.W = Args.W * (Args.n / Args.k) / sum(abs(Args.W), "all");
     else
-        Args.X = residualn(Args.X, "global");
+        % residualize here to enable subsequent centering and normalization
+        switch Args.objective
+            case "kmodularity";     Args.X = residualn(Args.X, "global");
+            case "kmodularity_ctr"; Args.X = residualn(Args.X, "global_ctr");
+        end
     end
-    Args.objective = "kmeans";
 end
 
 % Center to mean 0 for covariance and correlation
@@ -41,22 +44,21 @@ elseif ismember(Args.similarity, ["dot", "cov"])
     Args.X = Args.X / sqrt(Args.p);
 end
 
-% Compute self-connection weights
-if Args.similarity == "network"
-    Args.Wii = diag(Args.W)';
-else
-    Args.Wii = sum(Args.X.^2, 2)';
-end
-
 % Precompute kmeans++ variables
-[Args.Dist, Args.normX] = deal(0);
+% One-pass norm-rescaling acts as a rough degree correction that both
+% maintains sparsity and also naturally works with negative values.
+[Args.Dist, Args.Norm] = deal(0);
 if ismember(Args.start, ["greedy", "balanced"])
     if Args.similarity == "network"
-        Args.Dist = Args.W ./ vecnorm(Args.W, 2, 2);
-        Args.Dist = 1 - Args.Dist * Args.Dist';
+        S = sqrt(sqrt(sum(Args.W.^2, 2)));          % sqrt(vecnorm(W)) for geomean
+        S(~S) = 1;                                  % protect isolated nodes
+        Args.Dist = (Args.W ./ S) ./ S';            % efficient norm rescaling
+        % centered norm
+        Args.Norm = sqrt(sum(Args.Dist.^2, 2) - Args.n * mean(Args.Dist, 2).^2);
     else
-        Args.normX = vecnorm(Args.X, 2, 2);
+        Args.Norm = vecnorm(Args.X, 2, 2);
     end
 end
+Args.Norm(~Args.Norm) = 1;
 
 end

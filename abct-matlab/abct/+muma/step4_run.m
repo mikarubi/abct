@@ -84,11 +84,11 @@ switch Args.solver
 
             fp.iter(t, cost, grad_norm);
             if (t > 1) && (abs(cost - CostHistory(t-1)) < Args.tolerance)
-                fp.stop_cost(); break;
+                fp.stop_cost(); break
             elseif grad_norm < Args.tolerance
-                fp.stop_grad(); break;
+                fp.stop_grad(); break
             elseif t == Args.maxiter
-                fp.stop_iter(); break;
+                fp.stop_iter(); break
             end
         end
         CostHistory = CostHistory(~isnan(CostHistory));

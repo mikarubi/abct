@@ -96,7 +96,7 @@ while 1
     Bd = full(diag(W)) - (S_nrm.^2);                            % self modularities
     Q1 = sum(Bd) / s;                                           % total modularity
     if Q1 - Q0 <= Args.tolerance
-        break;
+        break
     else
         Q0 = Q1;
     end

@@ -16,12 +16,12 @@ classdef test_options < matlab.unittest.TestCase
     end
 
     properties (TestParameter)
-        Method = {"loyvain", "coloyvain"}
+        Method = {"loyvain", "coloyvain"};
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};
-        Objective = {"kmodularity", "kmeans", "spectral"};
+        Objective = {"kmodularity", "kmodularity_ctr", "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
-        Start = {"greedy", "balanced", "random", "custom"}
+        Start = {"greedy", "balanced", "random", "custom"};
         MaxIter = {1, 10};
         Replicates = {1, 10};
     end

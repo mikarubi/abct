@@ -40,7 +40,7 @@ arguments
     Args.Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite} = 0
     Args.k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     Args.objective (1, 1) string {mustBeMember(Args.objective, ...
-        ["kmodularity", "kmeans", "spectral"])} = "kmodularity"
+        ["kmodularity", "kmodularity_ctr", "kmeans", "spectral"])} = "kmodularity"
     Args.similarity (1, 1) string {mustBeMember(Args.similarity, ...
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
     Args.start (1, :) = "greedy"
@@ -52,6 +52,13 @@ arguments
         ["none", "replicate", "iteration"])} = "none"
 end
 
+if ismember(Args.objective, ["kmodularity", "spectral"]) && ...
+        (Args.similarity == "network")
+    assert(all(Args.W >= 0, "all"), ...
+        "Network matrix must be non-negative for " + ...
+        """kmodularity"" and ""spectral"" objectives.");
+end
+
 if isnumeric(Args.start) && (Args.method == "loyvain")
 elseif (isStringScalar(Args.start) || ischar(Args.start)) && ...
         ismember(Args.start, ["greedy", "balanced", "random"])
@@ -59,6 +66,7 @@ else
     error("Start must be either ""greedy"", ""balanced"", " + ...
         """random"", or a numeric vector (loyvain only).");
 end
+
 if Args.method == "coloyvain"
     assert(Args.k > 0, "k must be positive for co-Loyvain.")
     if Args.similarity == "network"
