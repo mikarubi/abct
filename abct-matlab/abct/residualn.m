@@ -19,9 +19,9 @@ function X = residualn(X, type)
 %           "degree_ctr": Double centering
 %               Subtraction of the rescaled and shifted degrees.
 %           "global": Global signal regression
-%               Regression out of the global (column mean) signal.
-%           "global_ctr": Global signal centering (global signal subtraction)
-%               Subtraction of the global (column mean) signal.
+%               Regression out of the global signal (column mean).
+%           "global_ctr": Global signal subtraction (centering)
+%               Subtraction of the global signal (column mean).
 %           "rankone": Rank-one subtraction
 %               Subtraction of the rank-one approximation.
 %

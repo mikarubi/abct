@@ -1,21 +1,34 @@
 ```
- RESIDUALN Global residualization of network or data matrix
+ RESIDUALN Residualization of network or data matrix
 
+   W1 = residualn(W)
+   W1 = residualn(W, type)
    X1 = residualn(X)
    X1 = residualn(X, type)
 
    Inputs:
-       X:  Network matrix of size n x n, or data matrix of size n x p.
-           n is the number of nodes or data points and
+       W:  Network matrix of size n x n.
+       OR
+       X:  Data matrix of size n x p, where
+           n is the number of data points and
            p is the number of features.
 
-       type: Type of global residualization.
-           "degree": Degree correction (default).
-           "global": Global signal regression.
-           "rankone": Subtraction of rank-one approximation.
+       type: Type of residualization.
+           "degree": Degree correction (default)
+               Subtraction of the rescaled product of the degrees.
+           "degree_ctr": Double centering
+               Subtraction of the rescaled and shifted degrees.
+           "global": Global signal regression
+               Regression out of the global signal (column mean).
+           "global_ctr": Global signal subtraction (centering)
+               Subtraction of the global signal (column mean).
+           "rankone": Rank-one subtraction
+               Subtraction of the rank-one approximation.
 
    Outputs:
-       X1: Residual network or data matrix.
+       W1: Residual network matrix.
+       OR
+       X1: Residual data matrix.
 
    See also:
        SHRINKAGE.

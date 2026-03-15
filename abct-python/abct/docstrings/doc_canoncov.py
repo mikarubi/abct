@@ -23,9 +23,9 @@
            "weighted": Weighted canonical analysis (default).
            "binary": Binary canonical analysis.
 
-       resid: Global residualization (logical scalar).
-           0: No global residualization.
-           1: Global residualization via degree correction (default).
+       resid: Residualization (logical scalar).
+           0: No residualization.
+           1: Residualization via degree correction (default).
 
        corr: Canonical correlation analysis (logical scalar).
            0: Canonical covariance analysis (default).
@@ -59,9 +59,8 @@
        the whitened matrix. However, the output coefficients after
        dewhitening will, in general, not be binary.
 
-       Global residualization is implemented via generalized degree
-       correction, and converts k-means co-clustering into k-modularity
-       co-maximization.
+       Residualization is implemented via generalized degree correction,
+       and converts k-means co-clustering into k-modularity co-maximization.
 
    See also:
        COLOYVAIN, LOYVAIN, RESIDUALN.

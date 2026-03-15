@@ -10,7 +10,7 @@
        type: Degree type
            "first": (First) degree (default).
            "second": Second degree.
-           "residual": Degree after global residualization.
+           "residual": Degree after residualization.
 
    Outputs:
        S: Degree vector (length n).

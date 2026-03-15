@@ -22,6 +22,8 @@
 
        objective: Clustering objective.
            See LOYVAIN for all options.
+           Note that "modularity" and "modularity_ctr"
+           objectives are not compatible with co-Loyvain.
 
        similarity: Type of similarity.
            See LOYVAIN for all options.

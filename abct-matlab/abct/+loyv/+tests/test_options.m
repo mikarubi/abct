@@ -103,7 +103,11 @@ classdef test_options < matlab.unittest.TestCase
 
             TestCase.verifyThat(M, matlab.unittest.constraints.IsFinite);
             TestCase.verifyThat(Q, matlab.unittest.constraints.IsFinite);
-            TestCase.verifyEqual(unique(M), 1:N.(NumClusters));
+            if ismember(Objective, ["modularity", "modularity_ctr"])
+                TestCase.verifyEmpty(setdiff(unique(M), 1:N.(NumClusters)));
+            else
+                TestCase.verifyEqual(unique(M), 1:N.(NumClusters));
+            end
         end
     end
 end

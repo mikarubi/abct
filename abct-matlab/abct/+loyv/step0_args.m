@@ -2,7 +2,7 @@ function Args = step0_args(method, varargin)
 % Loyvain arguments initialization
 
 n_args = length(varargin);
-assert(n_args >= 2, "Wrong number of input arguments.");
+assert(n_args >= 2, "Wrong number of input arguments.")
 switch method
     case "loyvain"
         n_args_num = 2;
@@ -56,14 +56,14 @@ end
 if ismember(Args.objective, ["modularity", "modularity_ctr"])
     assert(Args.method ~= "coloyvain", ...
         "coloyvain is not compatible with " + ...
-        """modularity"" and ""modularity_ctr"" objectives.");
+        """modularity"" and ""modularity_ctr"" objectives.")
 end
 
 if ismember(Args.objective, ["kmodularity", "modularity", "spectral"]) && ...
         (Args.similarity == "network")
     assert(all(Args.W >= 0, "all"), ...
         "Network matrix must be non-negative for " + ...
-        """kmodularity"", ""modularity"", and ""spectral"" objectives.");
+        """kmodularity"", ""modularity"", and ""spectral"" objectives.")
 end
 
 if isnumeric(Args.start) && (Args.method == "loyvain")
@@ -71,7 +71,7 @@ elseif (isStringScalar(Args.start) || ischar(Args.start)) && ...
         ismember(Args.start, ["greedy", "balanced", "random"])
 else
     error("Start must be either ""greedy"", ""balanced"", " + ...
-        """random"", or a numeric vector (loyvain only).");
+        """random"", or a numeric vector (loyvain only).")
 end
 
 if Args.method == "coloyvain"

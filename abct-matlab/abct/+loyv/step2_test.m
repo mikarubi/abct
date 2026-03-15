@@ -24,9 +24,13 @@ if Args.method == "loyvain"
 
     % Test initialization
     if Args.start == "custom"
-        assert((length(Args.M0) == n) && isequal(unique(Args.M0), 1:k), ...
-            "Initial module assignment must have length %d and contain integers 1 to %d.", n, k)
+        message = sprintf(...
+            "Initial module assignment must have length %d and contain integers 1 to %d.", n, k);
+        if ismember(Args.objective, ["modularity", "modularity_ctr"])
+            assert((length(Args.M0) == n) && isempty(setdiff(unique(Args.M0), 1:k)), message)
+        else
+            assert((length(Args.M0) == n) && isequal(unique(Args.M0), 1:k), message)
+        end
     end
-end
 
 end

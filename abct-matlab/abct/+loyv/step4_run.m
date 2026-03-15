@@ -71,7 +71,7 @@ switch effective_objective
     case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
 end
 
-if (k == 1) || (k == n)
+if (k == 1) || ((k == n) && (effective_objective ~= "modularity"))
     Args.maxiter = 0;                           % skip loop if trivial partition
 end
 
@@ -123,14 +123,14 @@ for v = 1:Args.maxiter
             I = U(IU);                          % actual indices of nodes to be switched
             MI_new = MU_new(IU);                % new module assignments
 
-            % get delta modules and ensure non-empty modules
+            % get delta modules and ensure non-empty modules for non-modularity objectives
             n_i = numel(I);
             MMI = sparse(M(I), 1:n_i, 1, k, n_i);
             while 1
                 MMI_new = sparse(MI_new, 1:n_i, 1, k, n_i);
                 delta_MMI = (MMI_new - MMI);
                 N_new = N + sum(delta_MMI, 2);
-                if all(N_new)
+                if all(N_new) || (effective_objective == "modularity")
                     break
                 else
                     E = find(~N_new);           % empty modules

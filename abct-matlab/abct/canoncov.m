@@ -23,9 +23,9 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %           "weighted": Weighted canonical analysis (default).
 %           "binary": Binary canonical analysis.
 %
-%       resid: Global residualization (logical scalar).
-%           0: No global residualization.
-%           1: Global residualization via degree correction (default).
+%       resid: Residualization (logical scalar).
+%           0: No residualization.
+%           1: Residualization via degree correction (default).
 %
 %       corr: Canonical correlation analysis (logical scalar).
 %           0: Canonical covariance analysis (default).
@@ -59,9 +59,8 @@ function [A, B, U, V, R] = canoncov(X, Y, k, type, resid, corr, varargin)
 %       the whitened matrix. However, the output coefficients after
 %       dewhitening will, in general, not be binary.
 %
-%       Global residualization is implemented via generalized degree
-%       correction, and converts k-means co-clustering into k-modularity
-%       co-maximization.
+%       Residualization is implemented via generalized degree correction,
+%       and converts k-means co-clustering into k-modularity co-maximization.
 %
 %   See also:
 %       COLOYVAIN, LOYVAIN, RESIDUALN.
@@ -92,7 +91,7 @@ if type == "weighted"
     end
 end
 
-% Global residualization or centering
+% Residualization or centering
 if resid       % Degree correction automatically centers data
     X = residualn(X, "degree");
     Y = residualn(Y, "degree");

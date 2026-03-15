@@ -9,7 +9,7 @@ if Args.similarity ~= "network"
 end
 [Args.px, Args.py] = size(Args.W);
 
-% Global residualization for kmodularity
+% Residualization for kmodularity
 if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
     Args.W = Args.W * (sqrt(Args.px*Args.py)/Args.k) / sum(abs(Args.W), "all");
     switch Args.objective

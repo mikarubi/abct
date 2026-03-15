@@ -75,7 +75,7 @@ end
 
 function mustBeNonnegativeSymmetric(W)
 assert(issymmetric(W) && all(nonzeros(W) >= 0), ...
-    "Matrix must be nonnegative and symmetric.");
+    "Matrix must be nonnegative and symmetric.")
 end
 
 function [M1, Q1] = louvains_run(W, Args)

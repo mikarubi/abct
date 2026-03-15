@@ -1,5 +1,5 @@
 ```
- LOYVAIN K-modularity, k-means, or spectral clustering
+ LOYVAIN K-modularity, modularity, k-means, or spectral clustering
 
    [M, Q] = loyvain(W, k)
    [M, Q] = loyvain(W, k, objective)
@@ -15,17 +15,22 @@
 
        k: Number of modules (positive integer or 0).
            Set to 0 to infer number from initial module assignment.
+           Note that for "modularity" and "modularity_ctr", k is an upper
+           bound on, rather than an exact value of, the number of modules.
 
        objective: Clustering objective.
-           "kmodularity": K-modularity (default).
+           "kmodularity": K-modularity with degree correction (default).
+           "kmodularity_ctr": K-modularity with double centering.
+           "modularity": Modularity with degree correction.
+           "modularity_ctr": Modularity with double centering.
            "kmeans": K-means clustering objective.
            "spectral": Spectral clustering objective (normalized cut).
 
        similarity: Type of similarity.
          The first option assumes that the first input is a network matrix.
            "network": Network connectivity (default).
-               W is a symmetric network matrix. The network must
-               be non-negative for k-modularity and spectral
+               W is a symmetric network matrix. The network must be 
+               non-negative for k-modularity, modularity, and spectral
                objectives. No additional similarity is computed.
          The other options assume that the first input is X, a data matrix.
            "corr": Pearson correlation coefficient.
@@ -73,9 +78,10 @@
 
        K-modularity maximization is exactly equivalent to normalized
        modularity maximization and approximately equivalent to k-means
-       clustering with global residualization. Global residualization is
-       implemented as degree correction for network matrices and
-       global-signal regression for data matrices.
+       clustering with residualization. Residualization is implemented 
+       as degree correction or double centering for network matrices 
+       and, respectively/equivalently, as global-signal regression or
+       global-signal subtraction (centering) for data matrices.
 
        For "network" similarity, k-modularity is rescaled by:
            (average module size) / (absolute sum of all weights)
