@@ -18,18 +18,17 @@ switch Args.method
             O = ones(n, 1);
 
             % Compute degrees of module to node and within-node weights
-            switch Args.objective
-                case "kmodularity"
-                    Smn = MM * W - (MM * S) * S' / s;
-                    Wii = (diag(W) - (S .* S) / s)';
-                    % Smn = MM * (W - S * S' / s);
-                case "kmodularity_ctr"
-                    Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
-                    Wii = (diag(W) - S - S + s)';
-                    % Smn = MM * (W - S - S' + s);
-                otherwise                       % k-means and spectral objectives
-                    Smn = MM * W;
-                    Wii = diag(W)';
+            if ismember(Args.objective, ["kmodularity", "modularity"])
+                Smn = MM * W - (MM * S) * S' / s;
+                Wii = (diag(W) - (S .* S) / s)';
+                % Smn = MM * (W - S * S' / s);
+            elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+                Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
+                Wii = (diag(W) - S - S + s)';
+                % Smn = MM * (W - S - S' + s);
+            else                                % k-means and spectral objectives
+                Smn = MM * W;
+                Wii = diag(W)';
             end
         else
             X = Args.X;
@@ -47,6 +46,8 @@ switch Args.method
         % Convert objectives after residualization
         if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
             effective_objective = "kmeans";
+        elseif ismember(Args.objective, ["modularity", "modularity_ctr"])
+            effective_objective = "modularity";
         end
 
     case "coloyvain"
@@ -63,6 +64,7 @@ switch Args.method
 end
 
 switch effective_objective
+    case "modularity";  Cii_nrm = Cii;
     case "kmeans";      Cii_nrm = Cii ./ N;
     case "spectral";    Cii_nrm = Cii ./ D;
     case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
@@ -83,6 +85,8 @@ for v = 1:Args.maxiter
         b = numel(U);                           % number of nodes in batch
 
         switch effective_objective
+            case "modularity"
+                delta_QU = 2 * (Smn(:, U) - Smn(LinU) + Wii(U));
             case "kmeans"
                 delta_QU = ...
                     ((2 * Smn(:, U) + Wii(U)) - Cii_nrm     ) ./ (N      + 1) - ...
@@ -100,7 +104,9 @@ for v = 1:Args.maxiter
                     (Cii      + Smn(:, U)) ./ sqrt((D      + S(U)) .* Dy     ) - Cii_nrm + ...
                     (Cii(MU)' - Smn(LinU)) ./ sqrt((D(MU)' - S(U)) .* Dy(MU)') - Cii_nrm(MU)';
         end
-        delta_QU(:, N(MU) == 1) = - inf;        % no change allowed if one-node cluster
+        if effective_objective ~= "modularity"
+            delta_QU(:, N(MU) == 1) = - inf;    % no change allowed if one-node cluster
+        end
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
 
         % % UNCOMMENT TO TEST OBJECTIVE UPDATES with runtests loyv.tests.test_options
@@ -142,14 +148,13 @@ for v = 1:Args.maxiter
                 case "loyvain"
                     % Update G and Smn
                     if Args.similarity == "network"
-                        switch Args.objective
-                            case "kmodularity"
-                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
-                            case "kmodularity_ctr"
-                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
-                                    (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
-                            otherwise                   % k-means and spectral objectives
-                                delta_Smn = delta_MMI * W(I, :);
+                        if ismember(Args.objective, ["kmodularity", "modularity"])
+                            delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
+                        elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+                            delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
+                                (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
+                        else                            % k-means and spectral objectives
+                            delta_Smn = delta_MMI * W(I, :);
                         end
                     else
                         delta_G = delta_MMI * X(I, :);  % change in centroid
@@ -169,6 +174,7 @@ for v = 1:Args.maxiter
             end
 
             switch effective_objective
+                case "modularity";  Cii_nrm = Cii;
                 case "kmeans";      Cii_nrm = Cii ./ N;
                 case "spectral";    Cii_nrm = Cii ./ D;
                 case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);

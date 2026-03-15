@@ -19,7 +19,8 @@ classdef test_options < matlab.unittest.TestCase
         Method = {"loyvain", "coloyvain"};
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};
-        Objective = {"kmodularity", "kmodularity_ctr", "kmeans", "spectral"};
+        Objective = {"kmodularity", "kmodularity_ctr", "modularity", ...
+                     "modularity_ctr", "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
         Start = {"greedy", "balanced", "random", "custom"};
         MaxIter = {1, 10};
@@ -52,6 +53,9 @@ classdef test_options < matlab.unittest.TestCase
                         Data = X;
                     end
                 case "coloyvain"
+                    if ismember(Objective, ["modularity", "modularity_ctr"])
+                        return;
+                    end
                     if Similarity == "network"
                         Data = max(corr(X, Y), 0);
                     elseif ismember(Objective, ["kmodularity", "spectral"])

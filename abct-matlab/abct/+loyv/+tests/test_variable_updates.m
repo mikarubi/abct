@@ -15,10 +15,12 @@ switch Args.method
             % degree of module to node
             S = mean(W, 2);                     % NB: mean not sum
             s = mean(W, "all");                 % NB: mean not sum
-            switch Args.objective
-                case "kmodularity";     Smn = MM * (W - S * S' / s);
-                case "kmodularity_ctr"; Smn = MM * (W - S - S' + s);
-                otherwise;              Smn = MM * W;
+            if ismember(Args.objective, ["kmodularity", "modularity"])
+                Smn = MM * (W - S * S' / s);
+            elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+                Smn = MM * (W - S - S' + s);
+            else
+                Smn = MM * W;
             end
         else
             X = Args.X;
@@ -45,6 +47,7 @@ switch Args.method
 end
 
 switch effective_objective
+    case "modularity";  Cii_nrm = Cii;
     case "kmeans";      Cii_nrm = Cii ./ N;
     case "spectral";    Cii_nrm = Cii ./ D;
     case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);

@@ -19,15 +19,17 @@ if isnumeric(Args.start)
 end
 
 % Global residualization for kmodularity
-if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
+if ismember(Args.objective, ...
+        ["kmodularity", "kmodularity_ctr", "modularity", "modularity_ctr"])
     if Args.similarity == "network"
         % residualize in step4 to avoid constructing full n * n matrices
         Args.W = Args.W * (Args.n / Args.k) / sum(abs(Args.W), "all");
     else
         % residualize here to enable subsequent centering and normalization
-        switch Args.objective
-            case "kmodularity";     Args.X = residualn(Args.X, "global");
-            case "kmodularity_ctr"; Args.X = residualn(Args.X, "global_ctr");
+        if ismember(Args.objective, ["kmodularity", "modularity"])
+            Args.X = residualn(Args.X, "global");
+        elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+            Args.X = residualn(Args.X, "global_ctr");
         end
     end
 end

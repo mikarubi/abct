@@ -19,6 +19,8 @@ function [M, Q] = loyvain(varargin)
 %       objective: Clustering objective.
 %           "kmodularity": K-modularity with degree correction (default).
 %           "kmodularity_ctr": K-modularity with double centering.
+%           "modularity": Modularity with degree correction.
+%           "modularity_ctr": Modularity with double centering.
 %           "kmeans": K-means clustering objective.
 %           "spectral": Spectral clustering objective (normalized cut).
 %
