@@ -15,12 +15,14 @@
 
        k: Number of modules (positive integer or 0).
            Set to 0 to infer number from initial module assignment.
-           Note that for "modularity" objectives, k is an upper bound on,
-           rather than an exact value of, the number of modules.
+           Note that for "alignment" and "modularity" objectives, k forms
+           an upper bound on, rather than an exact, number of modules.
 
        objective: Clustering objective.
            "kmodularity": K-modularity with degree correction (default).
            "alignment_unc": Uncentered kernel alignment.
+           "alignment_ctr1": Kernel alignment with grand-mean centering.
+                              (defined only for "network" similarity).
            "modularity": Modularity with degree correction.
            "modularity_ctr1": Modularity with grand-mean centering
                               (defined only for "network" similarity).

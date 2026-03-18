@@ -19,7 +19,7 @@ switch Args.method
                 Smn = MM * (W - S * S' / s);
             elseif Args.objective == "modularity_ctr2"
                 Smn = MM * (W - S - S' + s);
-            elseif Args.objective == "modularity_ctr1"
+            elseif ismember(Args.objective, ["alignment_ctr1", "modularity_ctr1"])
                 Smn = MM * (W - s);
             else
                 Smn = MM * W;
@@ -50,6 +50,7 @@ end
 
 switch effective_objective
     case "alignment_unc";   Cii_nrm = Cii ./ sqrt(sum(N.^2));
+    case "alignment_ctr1";  Cii_nrm = Cii ./ sqrt(sum(N.^2) .* (1 - sum(N.^2)/(n^2)));
     case "modularity";      Cii_nrm = Cii;
     case "kmeans";          Cii_nrm = Cii ./ N;
     case "spectral";        Cii_nrm = Cii ./ D;

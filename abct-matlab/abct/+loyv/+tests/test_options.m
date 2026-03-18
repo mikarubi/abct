@@ -17,10 +17,11 @@ classdef test_options < matlab.unittest.TestCase
 
     properties (TestParameter)
         Method = {"loyvain", "coloyvain"};
-        NumClusters = {"one", "some", "all"};
+        NumClusters = {"some", "all"};
         NumBatches = {"one", "some", "all"};
-        Objective = {"kmodularity", "modularity", "modularity_ctr1", ...
-            "modularity_ctr2", "alignment_unc", "kmeans", "spectral"};
+        Objective = {"kmodularity", "alignment_unc", "alignment_ctr1", ...
+            "modularity", "modularity_ctr1", "modularity_ctr2", ...
+            "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
         Start = {"greedy", "balanced", "random", "custom"};
         MaxIter = {1, 10};
@@ -31,6 +32,7 @@ classdef test_options < matlab.unittest.TestCase
     methods (Test)
         function loyvain_tests(TestCase, Method, NumClusters, NumBatches, ...
                 Objective, Similarity, Start, MaxIter, Replicates)
+            Fixedk = ismember(Objective, ["kmodularity", "kmeans", "spectral"]);
 
             warning off
             rng(1)
@@ -53,12 +55,12 @@ classdef test_options < matlab.unittest.TestCase
                         Data = X;
                     end
                     if Similarity ~= "network"
-                        if Objective == "modularity_ctr1"
+                        if ismember(Objective, ["modularity_ctr1", "alignment_ctr1"])
                             return;
                         end
                     end
                 case "coloyvain"
-                    if ~ismember(Objective, ["kmodularity", "kmeans", "spectral"])
+                    if ~Fixedk
                         return;
                     end
                     if Similarity == "network"
@@ -108,11 +110,10 @@ classdef test_options < matlab.unittest.TestCase
 
             TestCase.verifyThat(M, matlab.unittest.constraints.IsFinite);
             TestCase.verifyThat(Q, matlab.unittest.constraints.IsFinite);
-            if ismember(Objective, ...
-                    ["modularity", "modularity_ctr1", "modularity_ctr2"])
-                TestCase.verifyEmpty(setdiff(unique(M), 1:N.(NumClusters)));
-            else
+            if Fixedk
                 TestCase.verifyEqual(unique(M), 1:N.(NumClusters));
+            else
+                TestCase.verifyEmpty(setdiff(unique(M), 1:N.(NumClusters)));
             end
         end
     end

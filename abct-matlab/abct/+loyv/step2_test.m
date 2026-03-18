@@ -1,8 +1,9 @@
 function step2_test(X, W, n, k, Args)
 % Loyvain arguments tests
 
-assert(k >= 1, "Specify number of modules or starting module assignment.")
-assert(k <= n, "Number of modules must be not exceed number of nodes or data points.")
+assert(k > 0, "Specify number of modules or starting module assignment.")
+assert(k > 1, "Number of modules must exceed 1.")
+assert(k <= n, "Number of modules must not exceed number of nodes or data points.")
 assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes or data points.")
 assert(all(isfinite(X), "all"), "Data matrix has non-finite elements after processing.")
 
@@ -24,12 +25,13 @@ if Args.method == "loyvain"
 
     % Test initialization
     if Args.start == "custom"
-        message = sprintf(...
-            "Initial module assignment must have length %d and contain integers 1 to %d.", n, k);
-        if ismember(Args.objective, ["modularity", "modularity_ctr1", "modularity_ctr2"])
-            assert((length(Args.M0) == n) && isempty(setdiff(unique(Args.M0), 1:k)), message)
+        beginning = "Initial module assignment must have length " + n;
+        if Args.fixedk
+            assert((length(Args.M0) == n) && isequal(unique(Args.M0), 1:k), ...
+                "%s and contain integers 1 to %d", beginning, k)
         else
-            assert((length(Args.M0) == n) && isequal(unique(Args.M0), 1:k), message)
+            assert((length(Args.M0) == n) && isempty(setdiff(unique(Args.M0), 1:k)), ...
+                "%s and contain integers that do not exceed %d.", beginning, k)
         end
     end
 
