@@ -22,7 +22,8 @@
 
        objective: Clustering objective.
            See LOYVAIN for all options.
-           Note that "modularity" objectives are not compatible with co-Loyvain.
+           Note that co-Loyvain is only compatible with
+               "kmodularity", "kmeans", and "spectral" objectives
 
        similarity: Type of similarity.
            See LOYVAIN for all options.

@@ -20,7 +20,7 @@ classdef test_options < matlab.unittest.TestCase
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};
         Objective = {"kmodularity", "modularity", "modularity_ctr1", ...
-                     "modularity_ctr2", "kmeans", "spectral"};
+            "modularity_ctr2", "alignment_unc", "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
         Start = {"greedy", "balanced", "random", "custom"};
         MaxIter = {1, 10};
@@ -58,8 +58,7 @@ classdef test_options < matlab.unittest.TestCase
                         end
                     end
                 case "coloyvain"
-                    if ismember(Objective, ...
-                            ["modularity", "modularity_ctr1", "modularity_ctr2"])
+                    if ~ismember(Objective, ["kmodularity", "kmeans", "spectral"])
                         return;
                     end
                     if Similarity == "network"

@@ -20,8 +20,10 @@
 
        objective: Clustering objective.
            "kmodularity": K-modularity with degree correction (default).
+           "alignment_unc": Uncentered kernel alignment.
            "modularity": Modularity with degree correction.
-           "modularity_ctr1": Modularity with grand-mean centering.
+           "modularity_ctr1": Modularity with grand-mean centering
+                              (defined only for "network" similarity).
            "modularity_ctr2": Modularity with double centering.
            "kmeans": K-means clustering objective.
            "spectral": Spectral clustering objective (normalized cut).
@@ -79,9 +81,8 @@
        K-modularity maximization is exactly equivalent to normalized
        modularity maximization and approximately equivalent to k-means
        clustering with residualization. Residualization is implemented 
-       as degree correction or double centering for network matrices 
-       and, respectively/equivalently, as global-signal regression or
-       global-signal subtraction (centering) for data matrices.
+       as degree correction for network matrices and, respectively/
+       equivalently, as global-signal regression for data matrices.
 
        For "network" similarity, k-modularity is rescaled by:
            (average module size) / (absolute sum of all weights)

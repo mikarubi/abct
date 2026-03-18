@@ -42,9 +42,13 @@ switch Args.method
         end
 
         Cii = diag(Smn * MM');                  % within-module weight sum
-        if Args.objective == "spectral"
-            S = sum(Smn, 1);                    % degree of node
-            D = sum(Smn, 2);                    % degree of module
+
+        switch Args.objective
+            case "alignment_unc"
+                vol = sum(N.^2);                % volume of within-module connections
+            case "spectral"
+                S = sum(Smn, 1);                % degree of node
+                D = sum(Smn, 2);                % degree of module
         end
 
         % Convert objectives after residualization
@@ -68,13 +72,13 @@ switch Args.method
 end
 
 switch effective_objective
-    case "modularity";  Cii_nrm = Cii;
-    case "kmeans";      Cii_nrm = Cii ./ N;
-    case "spectral";    Cii_nrm = Cii ./ D;
-    case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
-    case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
+    case "alignment_unc";   Cii_nrm = Cii ./ sqrt(vol);
+    case "modularity";      Cii_nrm = Cii;
+    case "kmeans";          Cii_nrm = Cii ./ N;
+    case "spectral";        Cii_nrm = Cii ./ D;
+    case "cokmeans";        Cii_nrm = Cii ./ sqrt(N .* Ny);
+    case "cospectral";      Cii_nrm = Cii ./ sqrt(D .* Dy);
 end
-
 if (k == 1) || ((k == n) && (effective_objective ~= "modularity"))
     Args.maxiter = 0;                           % skip loop if trivial partition
 end
@@ -89,6 +93,10 @@ for v = 1:Args.maxiter
         b = numel(U);                           % number of nodes in batch
 
         switch effective_objective
+            case "alignment_unc"
+                delta_QU = ...
+                    (sum(Cii) + 2 * (Smn(:, U) - Smn(LinU) + Wii(U))) ./ ...
+                    (sqrt(vol + 2 * (N - N(MU)' + 1))) - sum(Cii_nrm);
             case "modularity"
                 delta_QU = 2 * (Smn(:, U) - Smn(LinU) + Wii(U));
             case "kmeans"
@@ -108,7 +116,7 @@ for v = 1:Args.maxiter
                     (Cii      + Smn(:, U)) ./ sqrt((D      + S(U)) .* Dy     ) - Cii_nrm + ...
                     (Cii(MU)' - Smn(LinU)) ./ sqrt((D(MU)' - S(U)) .* Dy(MU)') - Cii_nrm(MU)';
         end
-        if effective_objective ~= "modularity"
+        if ~ismember(effective_objective, ["alignment_unc", "modularity"])
             delta_QU(:, N(MU) == 1) = - inf;    % no change allowed if one-node cluster
         end
         delta_QU(MU + k*(0:b-1)) = 0;           % no change if node stays in own module
@@ -159,7 +167,7 @@ for v = 1:Args.maxiter
                                 (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
                         elseif Args.objective == "modularity_ctr1"
                             delta_Smn = delta_MMI * W(I, :) - s * (delta_MMI * O(I)) * O';
-                        else                            % k-means and spectral objectives
+                        else    % k-means, spectral, and alignment_unc objectives
                             delta_Smn = delta_MMI * W(I, :);
                         end
                     else
@@ -175,16 +183,19 @@ for v = 1:Args.maxiter
                         delta_Smn = delta_MMI * W(I, :);
                     end
             end
-            if ismember(Args.objective, ["spectral", "cospectral"])
+            if Args.objective == "alignment_unc"
+                vol = sum(N.^2);                        % volume of within-module connections
+            elseif ismember(Args.objective, ["spectral", "cospectral"])
                 D = D + sum(delta_Smn, 2);
             end
 
             switch effective_objective
-                case "modularity";  Cii_nrm = Cii;
-                case "kmeans";      Cii_nrm = Cii ./ N;
-                case "spectral";    Cii_nrm = Cii ./ D;
-                case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
-                case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
+                case "alignment_unc";   Cii_nrm = Cii ./ sqrt(vol);
+                case "modularity";      Cii_nrm = Cii;
+                case "kmeans";          Cii_nrm = Cii ./ N;
+                case "spectral";        Cii_nrm = Cii ./ D;
+                case "cokmeans";        Cii_nrm = Cii ./ sqrt(N .* Ny);
+                case "cospectral";      Cii_nrm = Cii ./ sqrt(D .* Dy);
             end
             % % UNCOMMENT TO TEST VARIABLE UPDATES with runtests loyv.tests.test_options
             % Vals = struct();

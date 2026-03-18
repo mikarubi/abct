@@ -56,11 +56,12 @@ for i = 1:numel(U)
         end
 
         switch effective_objective
-            case "modularity";  Cii_nrm = Cii;
-            case "kmeans";      Cii_nrm = Cii ./ N;
-            case "spectral";    Cii_nrm = Cii ./ D;
-            case "cokmeans";    Cii_nrm = Cii ./ sqrt(N .* Ny);
-            case "cospectral";  Cii_nrm = Cii ./ sqrt(D .* Dy);
+            case "alignment_unc";   Cii_nrm = Cii ./ sqrt(sum(N.^2));
+            case "modularity";      Cii_nrm = Cii;
+            case "kmeans";          Cii_nrm = Cii ./ N;
+            case "spectral";        Cii_nrm = Cii ./ D;
+            case "cokmeans";        Cii_nrm = Cii ./ sqrt(N .* Ny);
+            case "cospectral";      Cii_nrm = Cii ./ sqrt(D .* Dy);
         end
 
         cii_nrm(mv) = sum(Cii_nrm);
