@@ -10,16 +10,12 @@ end
 [Args.px, Args.py] = size(Args.W);
 
 % Residualization for kmodularity
-if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
+if Args.objective == "kmodularity"
     Args.W = Args.W * (sqrt(Args.px*Args.py)/Args.k) / sum(abs(Args.W), "all");
-    switch Args.objective
-        case "kmodularity";     Args.W = residualn(Args.W, "degree");
-        case "kmodularity_ctr"; Args.W = residualn(Args.W, "degree_ctr");
-    end
+    Args.W = residualn(Args.W, "degree");
 end
 switch Args.objective
     case "kmodularity";         Args.objective = "cokmeans";
-    case "kmodularity_ctr";     Args.objective = "cokmeans";
     case "kmeans";              Args.objective = "cokmeans";
     case "spectral";            Args.objective = "cospectral";
 end

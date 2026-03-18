@@ -19,8 +19,8 @@ classdef test_options < matlab.unittest.TestCase
         Method = {"loyvain", "coloyvain"};
         NumClusters = {"one", "some", "all"};
         NumBatches = {"one", "some", "all"};
-        Objective = {"kmodularity", "kmodularity_ctr", "modularity", ...
-                     "modularity_ctr", "kmeans", "spectral"};
+        Objective = {"kmodularity", "modularity", "modularity_ctr1", ...
+                     "modularity_ctr2", "kmeans", "spectral"};
         Similarity = {"network", "corr", "cosim", "cov", "dot"};
         Start = {"greedy", "balanced", "random", "custom"};
         MaxIter = {1, 10};
@@ -52,8 +52,14 @@ classdef test_options < matlab.unittest.TestCase
                     else
                         Data = X;
                     end
+                    if Similarity ~= "network"
+                        if Objective == "modularity_ctr1"
+                            return;
+                        end
+                    end
                 case "coloyvain"
-                    if ismember(Objective, ["modularity", "modularity_ctr"])
+                    if ismember(Objective, ...
+                            ["modularity", "modularity_ctr1", "modularity_ctr2"])
                         return;
                     end
                     if Similarity == "network"
@@ -103,7 +109,8 @@ classdef test_options < matlab.unittest.TestCase
 
             TestCase.verifyThat(M, matlab.unittest.constraints.IsFinite);
             TestCase.verifyThat(Q, matlab.unittest.constraints.IsFinite);
-            if ismember(Objective, ["modularity", "modularity_ctr"])
+            if ismember(Objective, ...
+                    ["modularity", "modularity_ctr1", "modularity_ctr2"])
                 TestCase.verifyEmpty(setdiff(unique(M), 1:N.(NumClusters)));
             else
                 TestCase.verifyEqual(unique(M), 1:N.(NumClusters));

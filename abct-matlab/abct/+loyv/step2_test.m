@@ -26,7 +26,7 @@ if Args.method == "loyvain"
     if Args.start == "custom"
         message = sprintf(...
             "Initial module assignment must have length %d and contain integers 1 to %d.", n, k);
-        if ismember(Args.objective, ["modularity", "modularity_ctr"])
+        if ismember(Args.objective, ["modularity", "modularity_ctr1", "modularity_ctr2"])
             assert((length(Args.M0) == n) && isempty(setdiff(unique(Args.M0), 1:k)), message)
         else
             assert((length(Args.M0) == n) && isequal(unique(Args.M0), 1:k), message)

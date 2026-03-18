@@ -15,14 +15,14 @@ function [M, Q] = loyvain(varargin)
 %
 %       k: Number of modules (positive integer or 0).
 %           Set to 0 to infer number from initial module assignment.
-%           Note that for "modularity" and "modularity_ctr", k is an upper
-%           bound on, rather than an exact value of, the number of modules.
+%           Note that for "modularity" objectives, k is an upper bound on,
+%           rather than an exact value of, the number of modules.
 %
 %       objective: Clustering objective.
 %           "kmodularity": K-modularity with degree correction (default).
-%           "kmodularity_ctr": K-modularity with double centering.
 %           "modularity": Modularity with degree correction.
-%           "modularity_ctr": Modularity with double centering.
+%           "modularity_ctr1": Modularity with grand-mean centering.
+%           "modularity_ctr2": Modularity with double centering.
 %           "kmeans": K-means clustering objective.
 %           "spectral": Spectral clustering objective (normalized cut).
 %

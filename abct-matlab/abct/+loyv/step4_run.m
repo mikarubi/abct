@@ -22,10 +22,14 @@ switch Args.method
                 Smn = MM * W - (MM * S) * S' / s;
                 Wii = (diag(W) - (S .* S) / s)';
                 % Smn = MM * (W - S * S' / s);
-            elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+            elseif Args.objective == "modularity_ctr2"
                 Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
                 Wii = (diag(W) - S - S + s)';
                 % Smn = MM * (W - S - S' + s);
+            elseif Args.objective == "modularity_ctr1"
+                Smn = MM * W - s * (MM * O) * O';
+                Wii = (diag(W) - s)';
+                % Smn = MM * (W - s);
             else                                % k-means and spectral objectives
                 Smn = MM * W;
                 Wii = diag(W)';
@@ -44,9 +48,9 @@ switch Args.method
         end
 
         % Convert objectives after residualization
-        if ismember(Args.objective, ["kmodularity", "kmodularity_ctr"])
+        if Args.objective == "kmodularity"
             effective_objective = "kmeans";
-        elseif ismember(Args.objective, ["modularity", "modularity_ctr"])
+        elseif ismember(Args.objective, ["modularity", "modularity_ctr1", "modularity_ctr2"])
             effective_objective = "modularity";
         end
 
@@ -150,9 +154,11 @@ for v = 1:Args.maxiter
                     if Args.similarity == "network"
                         if ismember(Args.objective, ["kmodularity", "modularity"])
                             delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
-                        elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+                        elseif Args.objective == "modularity_ctr2"
                             delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
                                 (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
+                        elseif Args.objective == "modularity_ctr1"
+                            delta_Smn = delta_MMI * W(I, :) - s * (delta_MMI * O(I)) * O';
                         else                            % k-means and spectral objectives
                             delta_Smn = delta_MMI * W(I, :);
                         end

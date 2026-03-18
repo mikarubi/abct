@@ -17,8 +17,10 @@ switch Args.method
             s = mean(W, "all");                 % NB: mean not sum
             if ismember(Args.objective, ["kmodularity", "modularity"])
                 Smn = MM * (W - S * S' / s);
-            elseif ismember(Args.objective, ["kmodularity_ctr", "modularity_ctr"])
+            elseif Args.objective == "modularity_ctr2"
                 Smn = MM * (W - S - S' + s);
+            elseif Args.objective == "modularity_ctr1"
+                Smn = MM * (W - s);
             else
                 Smn = MM * W;
             end
