@@ -40,9 +40,9 @@ arguments
     Args.Y (:, :) double {mustBeNonempty, mustBeReal, mustBeFinite} = 0
     Args.k (1, 1) double {mustBeInteger, mustBeNonnegative} = 0
     Args.objective (1, 1) string {mustBeMember(Args.objective, ...
-        ["kmodularity", "alignment_unc", "alignment_ctr1", "modularity", ...
-        "modularity_ctr1", "modularity_ctr2", "kmeans", "spectral"])} = ...
-        "kmodularity"
+        ["kmodularity", "kmeans", "spectral", "alignment", ...
+        "alignment_ctr2", "alignment_ctr1", "alignment_unc", "modularity", ...
+        "modularity_ctr2", "modularity_ctr1"])} = "kmodularity"
     Args.similarity (1, 1) string {mustBeMember(Args.similarity, ...
         ["network", "corr", "cosim", "cov", "dot"])} = "network"
     Args.start (1, :) = "greedy"
@@ -54,21 +54,26 @@ arguments
         ["none", "replicate", "iteration"])} = "none"
 end
 Args.fixedk = ismember(Args.objective, ["kmodularity", "kmeans", "spectral"]);
-
-if Args.method == "coloyvain"
-    assert(Args.fixedk, "co-Loyvain is only compatible with " + ...
-        """kmodularity"", ""kmeans"", and ""spectral"" objectives.")
+Args.nonneg = ismember(Args.objective, ["kmodularity", "alignment", "modularity", "spectral"]);
+if ismember(Args.objective, ["kmodularity", "alignment", "modularity"])
+    Args.resid = 3;
+elseif ismember(Args.objective, ["alignment_ctr2", "modularity_ctr2"])
+    Args.resid = 2;
+elseif ismember(Args.objective, ["alignment_ctr1", "modularity_ctr1"])
+    Args.resid = 1;
+elseif ismember(Args.objective, ["kmeans", "spectral", "alignment_unc"])
+    Args.resid = 0;
 end
 
-if Args.similarity == "network"
-    if ismember(Args.objective, ["kmodularity", "modularity", "spectral"])
-        assert(all(Args.W >= 0, "all"), ...
-            "Network matrix must be non-negative for " + ...
-            """kmodularity"", ""modularity"", and ""spectral"" objectives.")
-    end
-else
-    assert(~ismember(Args.objective, ["alignment_ctr1", "modularity_ctr1"]), ...
-        """alignment_ctr1"" and ""modularity_ctr1"" objectives are only " + ...
+if (Args.similarity == "network") && (Args.nonneg)
+    assert(all(Args.W >= 0, "all"), ...
+        "Network matrix must be non-negative for ""kmodularity"", " + ...
+        """alignment"", ""modularity"", and ""spectral"" objectives.")
+end
+
+if Args.similarity ~= "network"
+    assert(Args.resid ~= 1, ...
+        "Grand-mean centered objectives are only " + ...
         "compatible with ""network"" similarity.")
 end
 
@@ -81,6 +86,9 @@ else
 end
 
 if Args.method == "coloyvain"
+    assert(Args.fixedk, "co-Loyvain is only compatible with " + ...
+        """kmodularity"", ""kmeans"", and ""spectral"" objectives.")
+
     assert(Args.k > 0, "k must be positive for co-Loyvain.")
     if Args.similarity == "network"
         assert(isequal(Args.X, 0) && isequal(Args.Y, 0), ...

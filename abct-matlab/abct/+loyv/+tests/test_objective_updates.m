@@ -24,14 +24,11 @@ for i = 1:numel(U)
                     % degree of module to node
                     S = mean(W, 2);                     % NB: mean not sum
                     s = mean(W, "all");                 % NB: mean not sum
-                    if ismember(Args.objective, ["kmodularity", "modularity"])
-                        Smn = MM * (W - S * S' / s);
-                    elseif Args.objective == "modularity_ctr2"
-                        Smn = MM * (W - S - S' + s);
-                    elseif ismember(Args.objective, ["alignment_ctr1", "modularity_ctr1"])
-                        Smn = MM * (W - s);
-                    else
-                        Smn = MM * W;
+                    switch Args.resid
+                        case 3;     Smn = MM * (W - S * S' / s);
+                        case 2;     Smn = MM * (W - S - S' + s);
+                        case 1;     Smn = MM * (W - s);
+                        case 0;     Smn = MM * W;
                     end
                 else
                     X = Args.X;
@@ -57,7 +54,7 @@ for i = 1:numel(U)
 
         switch effective_objective
             case "alignment_unc";   Cii_nrm = Cii ./ sqrt(sum(N.^2));
-            case "alignment_ctr1";  Cii_nrm = Cii ./ sqrt(sum(N.^2) .* (1 - sum(N.^2)/(n^2)));
+            case "alignment";       Cii_nrm = Cii ./ sqrt(sum(N.^2) .* (1 - sum(N.^2)/(n^2)));
             case "modularity";      Cii_nrm = Cii;
             case "kmeans";          Cii_nrm = Cii ./ N;
             case "spectral";        Cii_nrm = Cii ./ D;

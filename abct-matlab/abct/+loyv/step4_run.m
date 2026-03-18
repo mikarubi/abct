@@ -18,21 +18,22 @@ switch Args.method
             O = ones(n, 1);
 
             % Compute degrees of module to node and within-node weights
-            if ismember(Args.objective, ["kmodularity", "modularity"])
-                Smn = MM * W - (MM * S) * S' / s;
-                Wii = (diag(W) - (S .* S) / s)';
-                % Smn = MM * (W - S * S' / s);
-            elseif Args.objective == "modularity_ctr2"
-                Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
-                Wii = (diag(W) - S - S + s)';
-                % Smn = MM * (W - S - S' + s);
-            elseif ismember(Args.objective, ["alignment_ctr1", "modularity_ctr1"])
-                Smn = MM * W - s * (MM * O) * O';
-                Wii = (diag(W) - s)';
-                % Smn = MM * (W - s);
-            else                                % k-means and spectral objectives
-                Smn = MM * W;
-                Wii = diag(W)';
+            switch Args.resid                   % see legend in step0
+                case 3
+                    Smn = MM * W - (MM * S) * S' / s;
+                    Wii = (diag(W) - (S .* S) / s)';
+                    % Smn = MM * (W - S * S' / s);
+                case 2
+                    Smn = MM * W - (MM * S) * O' - (MM * O) * S' + s * (MM * O) * O';
+                    Wii = (diag(W) - S - S + s)';
+                    % Smn = MM * (W - S - S' + s);
+                case 1
+                    Smn = MM * W - s * (MM * O) * O';
+                    Wii = (diag(W) - s)';
+                    % Smn = MM * (W - s);
+                case 0
+                    Smn = MM * W;
+                    Wii = diag(W)';
             end
         else
             X = Args.X;
@@ -43,7 +44,7 @@ switch Args.method
 
         Cii = diag(Smn * MM');                  % within-module weight sum
 
-        if ismember(Args.objective, ["alignment_unc", "alignment_ctr1"])
+        if contains(Args.objective, "alignment")
             vol = sum(N.^2);                    % volume of within-module connections
         elseif Args.objective == "spectral"
             S = sum(Smn, 1);                    % degree of node
@@ -53,8 +54,10 @@ switch Args.method
         % Convert objectives after residualization
         if Args.objective == "kmodularity"
             effective_objective = "kmeans";
-        elseif ismember(Args.objective, ["modularity", "modularity_ctr1", "modularity_ctr2"])
+        elseif contains(Args.objective, "modularity")
             effective_objective = "modularity";
+        elseif contains(Args.objective, "alignment") && (Args.objective ~= "alignment_unc")
+            effective_objective = "alignment";
         end
 
     case "coloyvain"
@@ -72,7 +75,7 @@ end
 
 switch effective_objective
     case "alignment_unc";   Cii_nrm = Cii ./ sqrt(vol);
-    case "alignment_ctr1";  Cii_nrm = Cii ./ sqrt(vol .* (1 - vol / (n^2)));
+    case "alignment";       Cii_nrm = Cii ./ sqrt(vol .* (1 - vol / (n^2)));
     case "modularity";      Cii_nrm = Cii;
     case "kmeans";          Cii_nrm = Cii ./ N;
     case "spectral";        Cii_nrm = Cii ./ D;
@@ -97,7 +100,7 @@ for v = 1:Args.maxiter
                 delta_QU = ...
                     (sum(Cii) + 2 * (Smn(:, U) - Smn(LinU) + Wii(U))) ./ ...
                     (sqrt(vol + 2 * (N - N(MU)' + 1))) - sum(Cii_nrm);
-            case "alignment_ctr1"
+            case "alignment"
                 VolU = vol + 2 * (N - N(MU)' + 1);
                 delta_QU = ...
                     (sum(Cii) + 2 * (Smn(:, U) - Smn(LinU) + Wii(U))) ./ ...
@@ -165,15 +168,16 @@ for v = 1:Args.maxiter
                 case "loyvain"
                     % Update G and Smn
                     if Args.similarity == "network"
-                        if ismember(Args.objective, ["kmodularity", "modularity"])
-                            delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
-                        elseif Args.objective == "modularity_ctr2"
-                            delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
-                                (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
-                        elseif ismember(Args.objective, ["modularity_ctr1", "alignment_ctr1"])
-                            delta_Smn = delta_MMI * W(I, :) - s * (delta_MMI * O(I)) * O';
-                        else    % k-means, spectral, and alignment_unc objectives
-                            delta_Smn = delta_MMI * W(I, :);
+                        switch Args.resid
+                            case 3
+                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * S' / s;
+                            case 2
+                                delta_Smn = delta_MMI * W(I, :) - (delta_MMI * S(I)) * O' - ...
+                                    (delta_MMI * O(I)) * S' + s * (delta_MMI * O(I)) * O';
+                            case 1
+                                delta_Smn = delta_MMI * W(I, :) - s * (delta_MMI * O(I)) * O';
+                            case 0
+                                delta_Smn = delta_MMI * W(I, :);
                         end
                     else
                         delta_G = delta_MMI * X(I, :);  % change in centroid
@@ -188,15 +192,15 @@ for v = 1:Args.maxiter
                         delta_Smn = delta_MMI * W(I, :);
                     end
             end
-            if ismember(Args.objective, ["alignment_unc", "alignment_ctr1"])
+            if contains(Args.objective, "alignment")
                 vol = sum(N.^2);                        % volume of within-module connections
-            elseif ismember(Args.objective, ["spectral", "cospectral"])
+            elseif contains(Args.objective, "spectral")
                 D = D + sum(delta_Smn, 2);
             end
 
             switch effective_objective
                 case "alignment_unc";   Cii_nrm = Cii ./ sqrt(vol);
-                case "alignment_ctr1";  Cii_nrm = Cii ./ sqrt(vol .* (1 - vol / (n^2)));
+                case "alignment";       Cii_nrm = Cii ./ sqrt(vol .* (1 - vol / (n^2)));
                 case "modularity";      Cii_nrm = Cii;
                 case "kmeans";          Cii_nrm = Cii ./ N;
                 case "spectral";        Cii_nrm = Cii ./ D;

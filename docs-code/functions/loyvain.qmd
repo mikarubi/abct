@@ -23,6 +23,8 @@
            "alignment_unc": Uncentered kernel alignment.
            "alignment_ctr1": Kernel alignment with grand-mean centering.
                               (defined only for "network" similarity).
+           "alignment_ctr2": Kernel alignment with double centering.
+           "alignment":      Kernel alignment with degree correction.
            "modularity": Modularity with degree correction.
            "modularity_ctr1": Modularity with grand-mean centering
                               (defined only for "network" similarity).
@@ -33,7 +35,7 @@
        similarity: Type of similarity.
          The first option assumes that the first input is a network matrix.
            "network": Network connectivity (default).
-               W is a symmetric network matrix. The network must be 
+               W is a symmetric network matrix. The network must be
                non-negative for k-modularity, modularity, and spectral
                objectives. No additional similarity is computed.
          The other options assume that the first input is X, a data matrix.
@@ -82,7 +84,7 @@
 
        K-modularity maximization is exactly equivalent to normalized
        modularity maximization and approximately equivalent to k-means
-       clustering with residualization. Residualization is implemented 
+       clustering with residualization. Residualization is implemented
        as degree correction for network matrices and, respectively/
        equivalently, as global-signal regression for data matrices.
 

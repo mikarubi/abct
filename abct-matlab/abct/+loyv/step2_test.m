@@ -8,7 +8,7 @@ assert(Args.numbatches <= n, "Number of batches must not exceed number of nodes 
 assert(all(isfinite(X), "all"), "Data matrix has non-finite elements after processing.")
 
 % Test data non-negativity for spectral clustering
-if ismember(Args.objective, ["spectral", "cospectral"]) && (Args.similarity ~= "network")
+if contains(Args.objective, "spectral") && (Args.similarity ~= "network")
     ending = "non-negative for ""spectral"" objective.";
     if numel(X) < 1e6
         assert(all(X * X' >= 0, "all"), "Similarity matrix must be " + ending)
